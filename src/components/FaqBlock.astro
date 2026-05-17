@@ -55,7 +55,7 @@ const faqSchema = emitSchema && faqs.length > 0
 ---
 
 {faqs.length > 0 && (
-  <section class="fbq" id={id} itemscope itemtype="https://schema.org/FAQPage">
+  <section class="fbq" id={id}>
     <header class="fbq-hdr">
       <span class="hair left">{eyebrow}</span>
       <h2 class="fbq-h">
@@ -67,16 +67,16 @@ const faqSchema = emitSchema && faqs.length > 0
 
     <div class="fbq-list">
       {faqs.map((f, i) => (
-        <details class={`fbq-item${i===0?' is-open':''}`} open={i===0} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <details class={`fbq-item${i===0?' is-open':''}`} open={i===0}>
           <summary class="fbq-q">
             <span class="fbq-num">{String(i+1).padStart(2,'0')}</span>
-            <span class="fbq-q-text" itemprop="name">{f.q}</span>
+            <span class="fbq-q-text">{f.q}</span>
             <span class="fbq-icon" aria-hidden="true">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </span>
           </summary>
-          <div class="fbq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-            <p itemprop="text">{f.a}</p>
+          <div class="fbq-a">
+            <p>{f.a}</p>
           </div>
         </details>
       ))}

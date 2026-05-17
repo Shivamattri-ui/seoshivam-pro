@@ -455,8 +455,8 @@ const faqSchema = {
               <span class="gads-camp">Search · SaaS pipeline</span>
             </div>
             <div class="gads-mode" role="tablist" aria-label="Preview focus">
-              <button type="button" class="gads-tab act" data-gads-mode="leads">Lead gen</button>
-              <button type="button" class="gads-tab" data-gads-mode="saas">SaaS signup</button>
+              <button type="button" class="gads-tab act" role="tab" aria-selected="true" data-gads-mode="leads">Lead gen</button>
+              <button type="button" class="gads-tab" role="tab" aria-selected="false" data-gads-mode="saas">SaaS signup</button>
             </div>
             <div class="gads-metrics">
               <div class="gads-m"><span class="gads-mk">CTR</span><span class="gads-mv" id="gadsCtr">4.1%</span></div>
@@ -486,9 +486,9 @@ const faqSchema = {
         <div class="svc-visual">
           <div class="pseo-demo" id="pseoDemo">
             <div class="pseo-tabs" role="tablist" aria-label="Template preview">
-              <button type="button" class="pseo-tab act" data-pseo="saas">SaaS</button>
-              <button type="button" class="pseo-tab" data-pseo="market">Marketplace</button>
-              <button type="button" class="pseo-tab" data-pseo="loc">Locations</button>
+              <button type="button" class="pseo-tab act" role="tab" aria-selected="true" data-pseo="saas">SaaS</button>
+              <button type="button" class="pseo-tab" role="tab" aria-selected="false" data-pseo="market">Marketplace</button>
+              <button type="button" class="pseo-tab" role="tab" aria-selected="false" data-pseo="loc">Locations</button>
             </div>
             <div class="pseo-body">
               <div class="pseo-url" id="pseoUrl">yoursite.com/integrations/[integration]</div>
@@ -3090,8 +3090,8 @@ const GADS_MODES:Record<string,{ctr:string;conv:string;cpa:string;caption:string
 };
 document.querySelectorAll('.gads-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.gads-tab').forEach(b=>b.classList.remove('act'));
-    btn.classList.add('act');
+    document.querySelectorAll('.gads-tab').forEach(b=>{b.classList.remove('act');b.setAttribute('aria-selected','false');});
+    btn.classList.add('act');btn.setAttribute('aria-selected','true');
     const m=GADS_MODES[(btn as HTMLElement).dataset.gadsMode||'leads']||GADS_MODES.leads;
     const ctr=document.getElementById('gadsCtr'),conv=document.getElementById('gadsConv'),cpa=document.getElementById('gadsCpa'),cap=document.getElementById('gadsCaption');
     if(ctr)ctr.textContent=m.ctr;if(conv)conv.textContent=m.conv;if(cpa)cpa.textContent=m.cpa;if(cap)cap.textContent=m.caption;
@@ -3128,8 +3128,8 @@ function applyPseo(key:string){
 }
 document.querySelectorAll('.pseo-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.pseo-tab').forEach(b=>b.classList.remove('act'));
-    btn.classList.add('act');
+    document.querySelectorAll('.pseo-tab').forEach(b=>{b.classList.remove('act');b.setAttribute('aria-selected','false');});
+    btn.classList.add('act');btn.setAttribute('aria-selected','true');
     applyPseo((btn as HTMLElement).dataset.pseo||'saas');
   });
 });
