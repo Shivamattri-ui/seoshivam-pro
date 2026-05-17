@@ -3325,6 +3325,7 @@ document.getElementById('scoreCapForm')?.addEventListener('submit', async (e) =>
   const btn = (e.target as HTMLFormElement).querySelector('button') as HTMLButtonElement;
   btn.textContent = 'Sending...'; btn.disabled = true;
   await postSubscribe(email, 'ai-score-tool');
+  if (typeof gtag === 'function') gtag('event', 'sign_up', { event_category: 'tool', event_label: 'ai_score_capture' });
   document.getElementById('scoreCapForm')!.parentElement!.innerHTML = `<div style="font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;color:var(--w);text-align:center;padding:20px 0">Playbook sent. Check your inbox.</div>`;
 });
 
@@ -3335,6 +3336,7 @@ document.getElementById('leadForm')?.addEventListener('submit', async (e) => {
   const btn = (e.target as HTMLFormElement).querySelector('button') as HTMLButtonElement;
   btn.textContent = 'Sending...'; btn.disabled = true;
   const ok = await postSubscribe(email, 'blog-newsletter');
+  if (ok && typeof gtag === 'function') gtag('event', 'sign_up', { event_category: 'newsletter', event_label: 'homepage_lead' });
   (e.target as HTMLFormElement).parentElement!.innerHTML = ok
     ? `<div style="font-family:'Instrument Serif',serif;font-size:32px;font-style:italic;color:var(--w);text-align:center;padding:20px 0">You're in. Check your inbox.</div>`
     : `<div style="font-size:14px;color:var(--wd);text-align:center">Something went wrong. Email shivamattri27@gmail.com</div>`;

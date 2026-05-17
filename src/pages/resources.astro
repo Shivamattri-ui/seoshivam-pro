@@ -1023,6 +1023,7 @@ const nlStackLogos = [
             if (btnTxt) btnTxt.textContent = 'Sent';
             if (emailInput instanceof HTMLInputElement) emailInput.value = '';
             f.dataset.mountedAt = '';
+            if (typeof gtag === 'function') gtag('event', 'sign_up', { event_category: 'resource_download', event_label: resourceId || 'unknown' });
           } else {
             const errText = typeof data.error === 'string' ? data.error : 'Request failed.';
             throw new Error(errText);

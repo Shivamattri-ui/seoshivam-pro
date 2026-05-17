@@ -1433,6 +1433,7 @@ const schema = {
         if(sMsg){sMsg.textContent='You are in. Check your inbox.';sMsg.className='art-nl-msg ok'}
         if(sBtnTxt)sBtnTxt.textContent='Joined ✓';
         if(sEmail)sEmail.value='';
+        if(typeof gtag==='function') gtag('event','sign_up',{event_category:'newsletter',event_label:'blog_sidebar'});
       } else {
         const errText=typeof data.error==='string'&&data.error?data.error:'Could not subscribe. Try again.';
         if(sMsg){sMsg.textContent=errText;sMsg.className='art-nl-msg err'}
