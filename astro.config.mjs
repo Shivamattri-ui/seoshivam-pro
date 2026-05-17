@@ -22,6 +22,9 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: { enabled: false },
   }),
+  redirects: {
+    '/sitemap.xml': '/sitemap-index.xml',
+  },
   integrations: [sitemap()],
   build: {
     inlineStylesheets: 'auto',
