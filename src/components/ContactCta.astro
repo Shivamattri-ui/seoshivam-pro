@@ -457,7 +457,10 @@ const dialCodes = [
           setStatus(data.message || 'Got it. Replying within 4 hours.', 'ok');
           if(submitTxt) submitTxt.textContent = 'Sent ✓';
           form.reset();
-          if (typeof gtag === 'function') gtag('event', 'generate_lead', { event_category: 'contact', event_label: 'contact_form' });
+          if (typeof gtag === 'function') {
+            gtag('event', 'qualify_lead', { event_category: 'contact', event_label: 'contact_form' });
+            gtag('event', 'close_convert_lead', { event_category: 'contact', event_label: 'contact_form' });
+          }
         } else {
           throw new Error(data.error || `Server returned ${res.status}`);
         }
