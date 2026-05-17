@@ -1,0 +1,789 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import PortfolioGallery from '../../components/PortfolioGallery.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Service", "name": "AI-Visible Web Design: Webflow, Framer, Astro, WordPress", "provider": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" }, "url": "https://seoshivam.pro/services/web-design" },
+    { "@type": "BreadcrumbList", "itemListElement": [{"@type":"ListItem","position":1,"name":"Home","item":"https://seoshivam.pro"},{"@type":"ListItem","position":2,"name":"Services","item":"https://seoshivam.pro/services"},{"@type":"ListItem","position":3,"name":"Web Design","item":"https://seoshivam.pro/services/web-design"}] }
+  ]
+};
+
+const faqs = [
+  { q: "What makes a website AI-visible versus a typical website?", a: "In audits, I consistently find the same five missing elements on sites that are invisible in AI search: no JSON-LD schema on most pages, a robots.txt that blocks GPTBot or ClaudeBot by accident, HTML structure with no semantic landmark elements, content that buries the answer three paragraphs in, and no entity definition connecting the brand to the industry it operates in. The AI engine then cannot answer 'what does this company do and should I cite them' with confidence. Fixing all five is a build decision, not a plugin decision." },
+  { q: "Which platform should I build on?", a: "The platform matters less than the architecture underneath it. I have shipped AI-visible sites on all four: Astro for technical performance and full schema control, Webflow for marketing teams who want to self-manage content without developer dependency, Framer for brands where motion is the identity, and WordPress where editorial workflows and plugin integrations are already embedded in the business. I will tell you which fits your situation honestly, not based on what is easiest to build." },
+  { q: "Do you handle copywriting and SEO alongside the build?", a: "The most effective engagements do all three together. Copy written alongside build is structured for AI citability from draft one: answer-first sentences, entity definitions, question-match in headings. Schema gets implemented during build rather than retrofitted afterward. The alternative is a beautiful site that goes live, ranks nowhere, and needs an SEO engagement three months later to fix what the build got wrong. Starting together is faster and cheaper." },
+  { q: "How long does a typical build take?", a: "4 to 8 weeks for a full marketing site. 2 to 3 weeks for a focused landing page or product page build. The variable that determines timeline more than anything else is content readiness. Sites with clear copy and information architecture locked in before build starts ship in the lower half of the range. Sites where copy is being written during build take twice as long and cost more. The briefing process I use forces this clarity before a single pixel moves." }
+];
+
+const platforms = [
+  {
+    name: 'Webflow',
+    tag: 'Visual CMS · marketing-led edits',
+    desc: 'Visual design with client editing capability. Best for marketing teams who want to update content without developer dependency. What I find in practice: Webflow removes the bottleneck between content updates and the dev team, which alone speeds up SEO execution by weeks.',
+    icon: '/icons/webflow-icon.svg',
+    invertLogo: false,
+  },
+  {
+    name: 'Framer',
+    tag: 'Motion-led · interaction-heavy launches',
+    desc: 'Animation-first design platform. Best for brands where motion and interaction are central to the identity. The key is pairing Framer\'s motion layer with correct schema and crawlable HTML underneath: animation that AI bots skip past still needs the signal layer to be present.',
+    icon: '/icons/framer.svg',
+    invertLogo: true,
+  },
+  {
+    name: 'Astro',
+    tag: 'Static-first · this stack ships here',
+    desc: 'Zero-JavaScript by default. Best performance, best Core Web Vitals, best technical SEO foundation. This site is built on Astro. The result: 100% schema-validated on launch, sub-2s LCP, and AI bots that can crawl every page without JavaScript execution.',
+    icon: '/icons/astro-icon.svg',
+    invertLogo: false,
+  },
+  {
+    name: 'WordPress',
+    tag: 'Editorial workflows · plugin terrain',
+    desc: 'The most-used CMS in the world. Best for content-heavy sites with editorial workflows and plugin ecosystem requirements. The trap to avoid: default WordPress themes ship with almost no schema markup and generic HTML that AI engines cannot interpret as authoritative. This gets fixed at build, not retrofitted.',
+    icon: '/icons/wordpress-icon-alt.svg',
+    invertLogo: true,
+  },
+] as const;
+
+const compareRows = [
+  { bad: 'No JSON-LD schema markup anywhere', good: 'Full JSON-LD on every page: Person, FAQPage, Article' },
+  { bad: 'robots.txt blocks GPTBot and ClaudeBot', good: 'robots.txt explicitly allows all AI bots' },
+  { bad: 'Generic HTML with no semantic structure', good: 'Semantic HTML with article, section, and nav elements' },
+  { bad: 'Content starts with preamble, not answers', good: 'Answer-first content: the answer in sentence one' },
+  { bad: 'No entity definition: AI does not know who you are', good: 'Entity schema: AI knows who you are and what you do' },
+  { bad: 'Core Web Vitals failing on mobile', good: 'LCP under 2.5s, CLS under 0.1, INP under 200ms' },
+  { bad: 'No sitemap submitted to Bing or AI indexes', good: 'Sitemap submitted to Google, Bing, and indexed by AI' },
+  { bad: 'Brand invisible in ChatGPT and Perplexity', good: 'Brand cited in ChatGPT, Perplexity, and Google AIO' },
+] as const;
+
+const included = [
+  { n: '01', t: 'Full JSON-LD Schema', d: 'Person, Organization, WebSite, BreadcrumbList, and page-specific schema on every page. The complete identity layer that tells AI engines who you are and what you are authoritative on.' },
+  { n: '02', t: 'Semantic HTML Architecture', d: 'Proper use of article, section, main, header, aside, and nav elements. Not just visually correct: machine-readable from day one.' },
+  { n: '03', t: 'AI Bot Access Configuration', d: 'robots.txt explicitly allows GPTBot, ClaudeBot, PerplexityBot, and Bingbot. The most common reason brands are invisible in AI engines is a robots.txt that blocks them by accident.' },
+  { n: '04', t: 'Core Web Vitals Optimisation', d: 'LCP under 2.5s, CLS under 0.1, INP under 200ms. Fast sites rank higher, convert better, and get crawled more frequently by both Google and AI bots.' },
+  { n: '05', t: 'Mobile-First Responsive Design', d: 'Every layout tested on mobile before desktop. Google indexes the mobile version of your site. AI bots crawl both. Neither is an afterthought.' },
+  { n: '06', t: 'Launch Technical SEO', d: 'Sitemap submission to Google and Bing, GSC verification, canonical tag audit, redirect mapping for migrated URLs, and post-launch crawl monitoring.' },
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/services/web-design'].title}
+  description={SITE_ROUTE_META['/services/web-design'].description}
+  canonical="https://seoshivam.pro/services/web-design"
+  schema={schema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main class="wd-page">
+
+    <!-- Hero: full viewport, split editorial + motion panel -->
+    <section class="wd-hero" id="wd-hero">
+      <div class="container wd-hero-inner">
+        <div class="wd-hero-copy">
+          <nav class="pg-bc rv" aria-label="Breadcrumb">
+            <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>Web Design</span>
+          </nav>
+          <div class="rv"><span class="label">AI-Visible Web Design</span></div>
+          <h1 class="wd-h1 rv d1">Built to be understood<br>by machines<br><em class="grad-anim">from day one.</em></h1>
+          <p class="wd-sub rv d2">Most websites are designed for humans and ignored by <a href="/services/aeo" class="ilink">AI engines</a>. The difference between an AI-visible website and a typical one is not the design: it is the <a href="/insights/schema-markup-for-ai-search" class="ilink">architecture underneath it.</a></p>
+          <div class="wd-tags rv d3">
+            {['JSON-LD Schema', 'Semantic HTML', 'AI Bot Access', 'Core Web Vitals', 'Webflow', 'Framer', 'Astro', 'WordPress'].map(t => (
+              <span class="wd-tag">{t}</span>
+            ))}
+          </div>
+          <div class="wd-btns rv d4">
+            <a href="/contact" class="btn-p" data-cursor="Start a build">Discuss your project ↗</a>
+            <a href="#whats-different" class="btn-s" data-cursor="See the split">What is different →</a>
+            <a href="#platforms" class="btn-s wd-hero-skip">Four platforms ↓</a>
+          </div>
+        </div>
+        <aside class="wd-showcase rv d2" aria-label="Build stack preview">
+          <div class="wd-showcase-glow" aria-hidden="true"></div>
+          <div class="wd-showcase-inner">
+            <header class="wd-chrome">
+              <span class="wd-chrome-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="wd-chrome-title">seoshivam.build / preview</span>
+              <span class="wd-chrome-pill">Prerender</span>
+            </header>
+            <div class="wd-layers" role="list">
+              <div class="wd-layer" role="listitem">
+                <div class="wd-layer-meta">
+                  <span class="wd-layer-ix">01</span>
+                  <span class="wd-layer-cat">Structure</span>
+                </div>
+                <span class="wd-layer-name">Semantic HTML</span>
+                <span class="wd-layer-track" aria-hidden="true"><span class="wd-layer-fill" style="width:94%"></span></span>
+              </div>
+              <div class="wd-layer" role="listitem">
+                <div class="wd-layer-meta">
+                  <span class="wd-layer-ix">02</span>
+                  <span class="wd-layer-cat">Identity</span>
+                </div>
+                <span class="wd-layer-name">JSON-LD graph</span>
+                <span class="wd-layer-track" aria-hidden="true"><span class="wd-layer-fill" style="width:100%"></span></span>
+              </div>
+              <div class="wd-layer" role="listitem">
+                <div class="wd-layer-meta">
+                  <span class="wd-layer-ix">03</span>
+                  <span class="wd-layer-cat">Delivery</span>
+                </div>
+                <span class="wd-layer-name">Crawl + CWV budget</span>
+                <span class="wd-layer-track" aria-hidden="true"><span class="wd-layer-fill" style="width:81%"></span></span>
+              </div>
+            </div>
+            <div class="wd-rail-head">
+              <span class="wd-rail-label">Ship targets</span>
+              <span class="wd-rail-hint">same contract on every stack</span>
+            </div>
+            <div class="wd-logo-rail">
+              {platforms.map((p) => (
+                <div class="wd-logo-well">
+                  <img
+                    class:list={['wd-logo-rail-img', { 'wd-logo-rail-img--invert': p.invertLogo }]}
+                    src={p.icon}
+                    alt=""
+                    width="36"
+                    height="36"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+            <footer class="wd-vitals">
+              <div class="wd-v"><span class="wd-vk">LCP</span><span class="wd-vv">1.8s</span></div>
+              <div class="wd-vsep" aria-hidden="true"></div>
+              <div class="wd-v"><span class="wd-vk">CLS</span><span class="wd-vv">0.04</span></div>
+              <div class="wd-vsep" aria-hidden="true"></div>
+              <div class="wd-v"><span class="wd-vk">INP</span><span class="wd-vv">112ms</span></div>
+              <div class="wd-vsep wd-vsep--grow" aria-hidden="true"></div>
+              <div class="wd-v wd-v--badge"><span class="wd-vk">Launch</span><span class="wd-vv wd-vv--ok">schema clean</span></div>
+            </footer>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- AI-visible vs typical: editorial split audit -->
+    <section class="wd-diff-sec" id="whats-different" aria-labelledby="wd-diff-heading">
+      <div class="wd-diff-ambient" aria-hidden="true"></div>
+      <div class="container wd-diff-wrap">
+        <header class="wd-diff-hdr rv">
+          <div class="hair left">THE DIFFERENCE / CRAWL AUDIT</div>
+          <h2 class="sec-h rv d1" id="wd-diff-heading" style="margin-top:14px">What AI engines see<br><em class="grad-anim">vs what they usually find.</em></h2>
+          <p class="wd-diff-deck rv d2">Eight signals I check on every pre-build audit. Most sites fail five or more before a single design decision is made. The gap is architectural, not cosmetic.</p>
+          <div class="wd-diff-stats rv d3" aria-hidden="true">
+            <span class="wd-diff-stat"><strong>8</strong> crawl signals</span>
+            <span class="wd-diff-stat-sep"></span>
+            <span class="wd-diff-stat"><strong>5+</strong> typical failures</span>
+            <span class="wd-diff-stat-sep"></span>
+            <span class="wd-diff-stat"><strong>1</strong> build contract</span>
+          </div>
+        </header>
+
+        <div class="wd-diff-switch rv d2" role="tablist" aria-label="Comparison view">
+          <button type="button" class="wd-diff-tab is-on" role="tab" aria-selected="true" data-wd-diff-tab="bad">Typical site</button>
+          <button type="button" class="wd-diff-tab" role="tab" aria-selected="false" data-wd-diff-tab="good">AI-visible site</button>
+        </div>
+
+        <div class="wd-diff-stage rv d1" id="wd-diff-stage">
+          <div class="wd-diff-col wd-diff-col--bad" data-wd-diff-side="bad">
+            <header class="wd-diff-col-hd">
+              <span class="wd-diff-badge wd-diff-badge--bad">Typical website</span>
+              <span class="wd-diff-meter" aria-hidden="true"><span class="wd-diff-meter-fill wd-diff-meter-fill--bad" style="width:12%"></span></span>
+              <span class="wd-diff-meter-label">1 of 8 signals</span>
+            </header>
+            <div class="wd-diff-rows">
+              {compareRows.map((row, i) => (
+                <div class="wd-diff-row" data-wd-diff-row={i}>
+                  <span class="wd-diff-ix">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="wd-diff-icon wd-diff-icon--bad" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </span>
+                  <p class="wd-diff-copy">{row.bad}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="wd-diff-spine" aria-hidden="true">
+            <span class="wd-diff-spine-line"></span>
+            <span class="wd-diff-vs">vs</span>
+          </div>
+
+          <div class="wd-diff-col wd-diff-col--good" data-wd-diff-side="good">
+            <header class="wd-diff-col-hd">
+              <span class="wd-diff-badge wd-diff-badge--good">AI-visible website</span>
+              <span class="wd-diff-meter" aria-hidden="true"><span class="wd-diff-meter-fill wd-diff-meter-fill--good" style="width:100%"></span></span>
+              <span class="wd-diff-meter-label">8 of 8 signals</span>
+            </header>
+            <div class="wd-diff-rows">
+              {compareRows.map((row, i) => (
+                <div class="wd-diff-row" data-wd-diff-row={i}>
+                  <span class="wd-diff-ix">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="wd-diff-icon wd-diff-icon--good" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                  </span>
+                  <p class="wd-diff-copy">{row.good}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p class="wd-diff-foot rv d2">This is the same checklist baked into every build on <a href="/services/aeo" class="ilink">AEO</a> and <a href="/services/seo" class="ilink">SEO</a> engagements. Run your current site through the <a href="/tools/ai-visibility-score" class="ilink">AI Visibility Score</a> to see where you stand.</p>
+      </div>
+    </section>
+
+    <!-- Platforms: one viewport, 2×2 grid (official marks from /public/icons) -->
+    <section class="wd-plat-sec" id="platforms">
+      <div class="container wd-plat-viewport">
+        <header class="wd-plat-hdr rv">
+          <span class="label">Platforms</span>
+          <h2 class="sec-h rv d1" style="margin-top:10px">Four platforms.<br><em class="grad-anim">One approach.</em></h2>
+          <p class="wd-plat-lede rv d2">Same AI-visible architecture on every stack: <a href="/insights/schema-markup-for-ai-search" class="ilink">schema</a>, semantics, bot access, and performance budgets from draft one.</p>
+        </header>
+        <div class="wd-plat-grid">
+          {platforms.map((p, i) => (
+            <article class={`wd-plat-card rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
+              <span class="wd-plat-card-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div class="wd-plat-card-head">
+                <div class="wd-plat-card-logo">
+                  <img
+                    class:list={['wd-plat-logo', { 'wd-plat-logo--invert': p.invertLogo }]}
+                    src={p.icon}
+                    alt=""
+                    width="44"
+                    height="44"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <h3 class="wd-plat-card-name">{p.name}</h3>
+              </div>
+              <p class="wd-plat-card-tag">{p.tag}</p>
+              <p class="wd-plat-card-desc">{p.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- What is included -->
+    <section class="wd-inc-sec">
+      <div class="container">
+        <div class="wd-inc-hdr rv">
+          <span class="label">Every build includes</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Six things that make<br><em class="grad-anim">a site AI-ready.</em></h2>
+          <p class="wd-plat-lede rv d2" style="margin-top:20px">The build ships with <a href="/services/seo" class="ilink">technical SEO</a> and <a href="/services/aeo" class="ilink">AEO foundations</a> already in place. Not a separate audit needed three months after launch. Check your current AI readiness with the <a href="/tools/ai-visibility-score" class="ilink">AI Visibility Score tool.</a></p>
+        </div>
+        <div class="wd-inc-list">
+          {included.map((item, i) => (
+            <div class={`wd-inc-row rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
+              <div class="wd-inc-num">{item.n}</div>
+              <div class="wd-inc-body">
+                <div class="wd-inc-t">{item.t}</div>
+                <p class="wd-inc-d">{item.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio gallery -->
+    <PortfolioGallery />
+
+    <!-- FAQ -->
+    <section class="wd-faq-sec">
+      <div class="container">
+        <div class="rv" style="margin-bottom:48px">
+          <span class="label">Questions about the build</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">What to know<br><em class="grad-anim">before we start.</em></h2>
+        </div>
+        <div class="faq-list" style="max-width:760px">
+          {faqs.map((f, i) => (
+            <div class="faq-item">
+              <button class="faq-btn" aria-expanded="false"><span>{f.q}</span><i class="faq-icon">+</i></button>
+              <div class="faq-ans" hidden>{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <ContactCta
+      id="wd-cta"
+      source="services-web-design"
+      eyebrow="START THE BUILD / SCHEMA-FIRST FROM DAY ONE"
+      heading="Your website should be"
+      headingEm="working for you in AI search."
+      deck="Tell me about your project and I will tell you which platform fits, how long it will take, and what it will cost. No sales process. Replied within 4 hours."
+    />
+
+  </main>
+  <Footer />
+
+  <style>
+  /* Tokens local to this page for premium feel without globals leaking */
+  .wd-page{--wd-stroke:rgba(255,255,255,.06);--wd-stroke-2:var(--bd);--wd-tint:rgba(79,142,247,.12)}
+  html.light .wd-page{--wd-stroke:rgba(26,23,20,.08);--wd-stroke-2:var(--bd);--wd-tint:rgba(43,91,224,.10)}
+
+  .pg-bc{display:flex;align-items:center;gap:8px;font-family:var(--fm),monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);margin-bottom:24px}
+  .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
+
+  .wd-hero{
+    min-height:100dvh;min-height:100vh;
+    display:flex;align-items:center;
+    padding:clamp(88px,12vh,128px) 0 clamp(48px,8vh,88px);
+    box-sizing:border-box;
+  }
+  .wd-hero-inner{
+    display:grid;
+    grid-template-columns:minmax(0,1.04fr) minmax(280px,.96fr);
+    gap:clamp(28px,5vw,64px);
+    align-items:center;
+    width:100%;
+  }
+  .wd-hero-copy{
+    min-width:0;
+    padding-left:clamp(0px,1.6vw,16px);
+    position:relative;
+  }
+  .wd-hero-copy::before{
+    content:'';position:absolute;left:0;top:6px;bottom:6px;width:1px;
+    background:linear-gradient(180deg,transparent,rgba(79,142,247,.45) 18%,rgba(79,142,247,.18) 60%,transparent);
+  }
+  html.light .wd-hero-copy::before{background:linear-gradient(180deg,transparent,rgba(43,91,224,.45) 18%,rgba(43,91,224,.18) 60%,transparent)}
+  .wd-h1{font-family:var(--fd),serif;font-size:clamp(38px,5vw,72px);font-weight:400;line-height:.95;letter-spacing:-.024em;color:var(--w);margin:12px 0 18px}
+  .wd-h1 em.grad-anim{font-family:var(--fd),serif;font-style:italic}
+  .wd-sub{font-family:var(--fu),sans-serif;font-size:clamp(14px,1.45vw,17px);color:var(--wd);line-height:1.78;max-width:36rem;margin-bottom:26px}
+  .wd-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+  .wd-tag{
+    font-family:var(--fm),monospace;font-size:9px;letter-spacing:.11em;text-transform:uppercase;
+    color:var(--wd);background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:5px 11px;
+    transition:border-color .22s,color .22s,background .22s;
+  }
+  .wd-tag:hover{border-color:rgba(79,142,247,.38);color:var(--w);background:var(--s2)}
+  html.light .wd-tag:hover{color:var(--w);border-color:rgba(43,91,224,.34)}
+  .wd-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .wd-hero-skip{font-family:var(--fm),monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:12px 16px}
+
+  /* Build preview: editorial console card. No floating effects, real hierarchy. */
+  .wd-showcase{
+    position:relative;
+    border-radius:18px;
+    background:var(--s1);
+    border:1px solid var(--bd);
+    overflow:hidden;
+    box-shadow:0 24px 64px rgba(0,0,0,.32);
+  }
+  html.light .wd-showcase{box-shadow:0 18px 48px rgba(26,23,20,.06),0 1px 0 rgba(255,255,255,.9) inset}
+  .wd-showcase::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% -10%,rgba(79,142,247,.14),transparent 55%);
+    opacity:.9;
+  }
+  html.light .wd-showcase::before{
+    background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(43,91,224,.10),transparent 55%);
+  }
+  .wd-showcase-glow{display:none}
+  .wd-showcase-inner{
+    position:relative;z-index:1;
+    display:flex;flex-direction:column;
+    background:transparent;
+    border:none;
+  }
+  .wd-chrome{
+    display:flex;align-items:center;gap:12px;padding:12px 16px;
+    border-bottom:1px solid var(--wd-stroke-2);
+    background:var(--s2);
+  }
+  html.light .wd-chrome{background:var(--s2)}
+  .wd-chrome-dots{display:flex;gap:6px;flex-shrink:0}
+  .wd-chrome-dots span{width:8px;height:8px;border-radius:50%}
+  .wd-chrome-dots span:nth-child(1){background:#FF5F57}
+  .wd-chrome-dots span:nth-child(2){background:#FEBC2E}
+  .wd-chrome-dots span:nth-child(3){background:#28C840}
+  .wd-chrome-title{
+    flex:1;min-width:0;font-family:var(--fm),monospace;font-size:10px;letter-spacing:.04em;color:var(--wm);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .wd-chrome-pill{
+    flex-shrink:0;font-family:var(--fm),monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ac);padding:4px 10px;border-radius:999px;border:1px solid rgba(79,142,247,.28);background:rgba(79,142,247,.08);
+  }
+  html.light .wd-chrome-pill{border-color:rgba(43,91,224,.28);background:rgba(43,91,224,.06)}
+  .wd-layers{display:flex;flex-direction:column;gap:10px;padding:18px 18px 14px}
+  .wd-layer{
+    display:flex;flex-direction:column;gap:8px;
+    padding:14px 16px;border-radius:12px;
+    background:var(--bg);
+    border:1px solid var(--wd-stroke-2);
+  }
+  html.light .wd-layer{background:var(--s1)}
+  .wd-layer-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
+  .wd-layer-ix{font-family:var(--fm),monospace;font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--ac)}
+  .wd-layer-cat{font-family:var(--fm),monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm)}
+  .wd-layer-name{font-family:var(--fu),sans-serif;font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--w);line-height:1.2}
+  .wd-layer-track{height:4px;border-radius:99px;background:var(--s3);overflow:hidden}
+  .wd-layer-fill{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--ac2),var(--ac));opacity:.95}
+  .wd-rail-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:6px 18px 8px;margin-top:4px;border-top:1px solid var(--wd-stroke-2)}
+  .wd-rail-label{font-family:var(--fm),monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--w)}
+  .wd-rail-hint{font-family:var(--fm),monospace;font-size:8px;letter-spacing:.08em;color:var(--wm)}
+  .wd-logo-rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0 16px 16px}
+  .wd-logo-well{
+    display:flex;align-items:center;justify-content:center;
+    aspect-ratio:1;border-radius:14px;background:var(--bg);border:1px solid var(--wd-stroke-2);
+    transition:border-color .25s,background .25s,transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  html.light .wd-logo-well{background:var(--s1)}
+  .wd-logo-well:hover{border-color:rgba(79,142,247,.42);background:var(--s2);transform:translateY(-2px)}
+  html.light .wd-logo-well:hover{border-color:rgba(43,91,224,.4);background:var(--s3)}
+  .wd-logo-rail-img{width:34px;height:34px;object-fit:contain;display:block}
+  .wd-logo-rail-img--invert{filter:brightness(0) invert(1);opacity:.94}
+  html.light .wd-logo-rail-img--invert{filter:none;opacity:1}
+  .wd-vitals{
+    margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:0;padding:12px 16px;
+    border-top:1px solid var(--wd-stroke-2);
+    background:var(--s2);
+  }
+  html.light .wd-vitals{background:var(--s2)}
+  .wd-v{display:flex;align-items:baseline;gap:6px;padding:4px 12px;flex:0 1 auto}
+  .wd-vk{font-family:var(--fm),monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm)}
+  .wd-vv{font-family:var(--fu),sans-serif;font-size:13px;font-weight:700;color:var(--w);letter-spacing:-.02em;font-feature-settings:"tnum"}
+  .wd-vv--ok{color:var(--green);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+  .wd-v--badge{margin-left:auto;padding-left:14px;border-left:1px solid var(--wd-stroke-2)}
+  .wd-vsep{width:1px;height:14px;background:var(--wd-stroke-2);margin:0 0}
+  .wd-vsep--grow{flex:1;min-width:6px;height:1px;margin:0;background:transparent;border:none}
+
+  @media(max-width:960px){
+    .wd-hero-inner{grid-template-columns:1fr;gap:32px}
+    .wd-hero-copy{padding-left:0}
+    .wd-hero-copy::before{display:none}
+    .wd-showcase{max-width:480px;margin:0 auto}
+  }
+  @media(max-width:640px){
+    .wd-hero{padding:clamp(72px,16vw,104px) 0 32px}
+    .wd-hero-skip{display:none}
+    .wd-logo-rail{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 12px 12px}
+    .wd-logo-rail-img{width:28px;height:28px}
+    .wd-vitals{gap:6px 0;padding:10px 12px}
+    .wd-v{padding:4px 8px}
+    .wd-v--badge{flex-basis:100%;margin-left:0;margin-top:6px;padding:6px 8px 0;border-left:none;border-top:1px solid var(--wd-stroke-2)}
+  }
+
+  .wd-diff-sec{
+    position:relative;padding:clamp(72px,10vh,120px) 0;overflow:hidden;
+    border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--bg);
+  }
+  .wd-diff-ambient{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 50% 42% at 8% 18%,rgba(239,68,68,.07),transparent 58%),
+      radial-gradient(ellipse 48% 48% at 92% 72%,rgba(79,142,247,.14),transparent 58%),
+      radial-gradient(ellipse 65% 35% at 50% 105%,rgba(79,142,247,.05),transparent 52%);
+  }
+  html.light .wd-diff-ambient{
+    background:
+      radial-gradient(ellipse 50% 42% at 8% 18%,rgba(239,68,68,.05),transparent 58%),
+      radial-gradient(ellipse 48% 48% at 92% 72%,rgba(43,91,224,.10),transparent 58%);
+  }
+  .wd-diff-wrap{position:relative;z-index:1}
+  .wd-diff-hdr{max-width:52rem;margin-bottom:clamp(24px,4vh,40px)}
+  .wd-diff-deck{
+    font-family:var(--fu),sans-serif;font-size:clamp(14px,1.35vw,17px);line-height:1.78;
+    color:var(--wd);margin:18px 0 0;max-width:54ch;
+  }
+  .wd-diff-stats{
+    display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;
+    margin-top:22px;padding-top:18px;border-top:1px solid var(--bd);
+  }
+  .wd-diff-stat{font-family:var(--fm),monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm)}
+  .wd-diff-stat strong{color:var(--w);font-weight:600;margin-right:5px}
+  .wd-diff-stat-sep{width:4px;height:4px;border-radius:50%;background:var(--ac);opacity:.5;flex-shrink:0}
+  .wd-diff-switch{
+    display:none;width:100%;max-width:440px;margin:0 auto 22px;padding:5px;
+    border-radius:999px;border:1px solid var(--bd);background:var(--s1);gap:5px;
+  }
+  .wd-diff-tab{
+    flex:1;border:none;background:transparent;border-radius:999px;cursor:pointer;
+    font-family:var(--fm),monospace;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--wm);padding:11px 14px;transition:background .25s,color .25s,box-shadow .25s;
+  }
+  .wd-diff-tab.is-on{background:var(--s2);color:var(--w);box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+  html.light .wd-diff-tab.is-on{box-shadow:0 1px 0 rgba(255,255,255,.85) inset}
+  .wd-diff-stage{
+    display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);gap:0;
+    border:1px solid var(--bd);border-radius:22px;overflow:hidden;background:var(--s1);
+    box-shadow:0 36px 88px rgba(0,0,0,.36),0 0 0 1px rgba(255,255,255,.03) inset;
+  }
+  html.light .wd-diff-stage{box-shadow:0 24px 64px rgba(26,23,20,.07),0 1px 0 rgba(255,255,255,.9) inset}
+  .wd-diff-col{display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+  html.light .wd-diff-col{background:var(--s1)}
+  .wd-diff-col-hd{
+    padding:22px 24px 16px;display:flex;flex-direction:column;gap:11px;
+    border-bottom:1px solid var(--bd);
+  }
+  .wd-diff-col--bad .wd-diff-col-hd{background:linear-gradient(180deg,rgba(239,68,68,.07) 0%,transparent 72%)}
+  .wd-diff-col--good .wd-diff-col-hd{
+    background:linear-gradient(180deg,rgba(79,142,247,.1) 0%,transparent 72%);
+    box-shadow:inset 0 3px 0 var(--ac);
+  }
+  html.light .wd-diff-col--good .wd-diff-col-hd{background:linear-gradient(180deg,rgba(43,91,224,.08) 0%,transparent 72%)}
+  .wd-diff-badge{
+    font-family:var(--fm),monospace;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    padding:6px 12px;border-radius:8px;border:1px solid;width:fit-content;
+  }
+  .wd-diff-badge--bad{color:#EF4444;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.24)}
+  .wd-diff-badge--good{color:var(--green);background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.24)}
+  .wd-diff-meter{height:3px;border-radius:99px;background:var(--s3);overflow:hidden}
+  .wd-diff-meter-fill{display:block;height:100%;border-radius:inherit}
+  .wd-diff-meter-fill--bad{background:linear-gradient(90deg,#EF4444 0%,#B91C1C 100%)}
+  .wd-diff-meter-fill--good{background:linear-gradient(90deg,var(--ac) 0%,var(--green) 100%)}
+  .wd-diff-meter-label{font-family:var(--fm),monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+  .wd-diff-rows{display:flex;flex-direction:column;flex:1}
+  .wd-diff-row{
+    display:grid;grid-template-columns:28px 22px minmax(0,1fr);gap:8px 12px;align-items:start;
+    padding:15px 22px;border-bottom:1px solid var(--bd);
+    transition:background .22s ease,opacity .22s ease,padding-left .22s ease;
+  }
+  .wd-diff-row:last-child{border-bottom:none}
+  .wd-diff-ix{font-family:var(--fm),monospace;font-size:9px;font-weight:600;letter-spacing:.12em;color:var(--wm);padding-top:4px}
+  .wd-diff-copy{font-family:var(--fu),sans-serif;font-size:13.5px;line-height:1.58;color:var(--wd);margin:0}
+  .wd-diff-icon{
+    display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+    border-radius:7px;flex-shrink:0;margin-top:1px;
+  }
+  .wd-diff-icon--bad{color:#EF4444;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22)}
+  .wd-diff-icon--good{color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.24)}
+  .wd-diff-spine{
+    display:flex;align-items:center;justify-content:center;position:relative;
+    background:var(--s2);border-left:1px solid var(--bd);border-right:1px solid var(--bd);
+  }
+  .wd-diff-spine-line{
+    position:absolute;inset:16px 50% auto;width:1px;height:calc(100% - 32px);transform:translateX(-50%);
+    background:linear-gradient(180deg,transparent 0%,rgba(239,68,68,.35) 18%,var(--ac) 50%,rgba(34,197,94,.4) 82%,transparent 100%);
+  }
+  .wd-diff-vs{
+    position:relative;z-index:1;font-family:var(--fd),serif;font-style:italic;font-size:16px;color:var(--w);
+    width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    border-radius:50%;border:1px solid var(--bd);background:var(--bg);
+    box-shadow:0 10px 28px rgba(0,0,0,.32);
+  }
+  html.light .wd-diff-vs{background:var(--s1);box-shadow:0 8px 22px rgba(26,23,20,.08)}
+  #wd-diff-stage[data-active-row] .wd-diff-row{opacity:.34}
+  #wd-diff-stage .wd-diff-row.is-linked{opacity:1}
+  #wd-diff-stage .wd-diff-col--bad .wd-diff-row.is-linked{background:rgba(239,68,68,.06);padding-left:26px}
+  #wd-diff-stage .wd-diff-col--good .wd-diff-row.is-linked{background:var(--agl);padding-left:26px}
+  .wd-diff-foot{
+    font-family:var(--fu),sans-serif;font-size:14px;color:var(--wm);line-height:1.75;
+    margin:28px 0 0;max-width:58ch;
+  }
+
+  /* Platforms: full viewport, editorial layout */
+  .wd-plat-sec{
+    min-height:100dvh;min-height:100vh;
+    display:flex;align-items:center;
+    padding:clamp(56px,8vh,88px) 0;
+    box-sizing:border-box;
+    border-top:1px solid var(--bd);
+    background:var(--bg);
+    position:relative;overflow:hidden;
+  }
+  .wd-plat-sec::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 80% 50% at 50% -8%,rgba(79,142,247,.08),transparent 50%);
+  }
+  html.light .wd-plat-sec::before{background:radial-gradient(ellipse 80% 50% at 50% -8%,rgba(43,91,224,.07),transparent 50%)}
+  .wd-plat-viewport{width:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,3.5vh,32px);position:relative;z-index:1}
+  .wd-plat-hdr{margin:0;max-width:56rem}
+  .wd-plat-lede{font-family:var(--fu),sans-serif;font-size:clamp(14px,1.35vw,17px);line-height:1.75;color:var(--wd);margin:18px 0 0;max-width:54ch}
+  .wd-plat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+  }
+  .wd-plat-card{
+    position:relative;
+    padding:24px 22px 22px 56px;
+    border-radius:16px;
+    border:1px solid var(--bd);
+    background:var(--s1);
+    transition:border-color .3s,transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s;
+    overflow:hidden;
+  }
+  html.light .wd-plat-card{background:var(--s1);box-shadow:0 1px 0 rgba(255,255,255,.7) inset}
+  .wd-plat-card::after{
+    content:'';position:absolute;top:0;left:24px;width:32px;height:2px;
+    background:linear-gradient(90deg,var(--ac),transparent);
+    transition:width .4s cubic-bezier(.16,1,.3,1);
+  }
+  .wd-plat-card:hover::after{width:64px}
+  .wd-plat-card:hover{
+    border-color:rgba(79,142,247,.4);
+    transform:translateY(-3px);
+    box-shadow:0 18px 44px rgba(0,0,0,.24);
+  }
+  html.light .wd-plat-card:hover{
+    border-color:rgba(43,91,224,.32);
+    box-shadow:0 18px 40px rgba(26,23,20,.08),0 1px 0 rgba(255,255,255,.8) inset;
+  }
+  .wd-plat-card-num{
+    position:absolute;left:22px;top:28px;
+    font-family:var(--fm),monospace;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);
+  }
+  .wd-plat-card-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .wd-plat-card-logo{
+    width:48px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    border-radius:12px;background:var(--bg);border:1px solid var(--bd);
+  }
+  html.light .wd-plat-card-logo{background:var(--s2)}
+  .wd-plat-logo{width:36px;height:36px;object-fit:contain;display:block}
+  .wd-plat-logo--invert{filter:brightness(0) invert(1);opacity:.94}
+  html.light .wd-plat-logo--invert{filter:none;opacity:1}
+  .wd-plat-card-name{
+    font-family:var(--fu),sans-serif;font-size:clamp(20px,2.3vw,27px);font-weight:800;letter-spacing:-.034em;line-height:1.06;color:var(--w);margin:0;
+  }
+  .wd-plat-card-tag{
+    font-family:var(--fm),monospace;font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--wm);margin:0 0 10px;line-height:1.45;
+  }
+  .wd-plat-card-desc{
+    font-family:var(--fu),sans-serif;font-size:clamp(13px,1.12vw,15px);color:var(--wd);line-height:1.7;margin:0;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+
+  .wd-inc-sec{padding:88px 0;background:var(--bg);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .wd-inc-hdr{margin-bottom:48px}
+  .wd-inc-list{display:flex;flex-direction:column}
+  .wd-inc-row{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:28px 0;border-bottom:1px solid var(--bd);transition:background .25s}
+  .wd-inc-row:first-child{border-top:1px solid var(--bd)}
+  .wd-inc-row:hover{background:linear-gradient(90deg,var(--s1),transparent 60%)}
+  .wd-inc-num{font-family:var(--fm),monospace;font-size:24px;color:var(--wm);line-height:1;padding-top:4px;transition:color .25s}
+  .wd-inc-row:hover .wd-inc-num{color:var(--ac)}
+  .wd-inc-t{font-family:var(--fu),sans-serif;font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:6px}
+  .wd-inc-d{font-family:var(--fu),sans-serif;font-size:14px;color:var(--wd);line-height:1.75;margin:0;max-width:64ch}
+
+  /* ─── Receipts (live dashboard) ─── */
+  .wd-receipts-sec{padding:80px 0;position:relative;z-index:1}
+  .wd-rec-hdr{max-width:760px;margin:0 0 36px;display:flex;flex-direction:column;gap:14px}
+  .wd-rec-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.2vw,54px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+  .wd-rec-h em{font-style:italic}
+  .wd-rec-p{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:620px}
+  .wd-rec-foot{font-family:'Syne',sans-serif;font-size:13px;color:var(--wm);line-height:1.7;margin:24px 0 0;font-style:italic;max-width:680px}
+
+  .wd-faq-sec{padding:80px 0}
+  .wd-cta-sec{padding:80px 0 100px;background:var(--s1);border-top:1px solid var(--bd)}
+  .wd-cta-inner{text-align:center;max-width:600px;margin:0 auto}
+  .wd-cta-h{font-family:'Instrument Serif',serif;font-size:clamp(28px,3.5vw,50px);font-weight:400;color:var(--w);line-height:1.05;margin:16px 0 14px}
+  .wd-cta-h em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .wd-cta-sub{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0 auto 32px}
+
+  @media(max-width:960px){
+    .wd-diff-switch{display:flex}
+    .wd-diff-stage{grid-template-columns:1fr;border-radius:18px}
+    .wd-diff-spine{display:none}
+    .wd-diff-col{display:none}
+    #wd-diff-stage[data-tab="bad"] .wd-diff-col--bad,
+    #wd-diff-stage[data-tab="good"] .wd-diff-col--good{display:flex}
+    .wd-diff-col-hd{padding:20px 20px 14px}
+    .wd-diff-row{padding:14px 18px;grid-template-columns:26px 20px minmax(0,1fr)}
+  }
+  @media(min-width:961px){
+    .wd-diff-col--bad,.wd-diff-col--good{display:flex!important}
+  }
+  @media(max-width:760px){
+    .wd-plat-sec{min-height:auto;padding:64px 0}
+    .wd-plat-grid{grid-template-columns:1fr}
+    .wd-plat-card{padding:22px 20px 22px 52px}
+    .wd-plat-card-desc{-webkit-line-clamp:4}
+  }
+  @media(max-width:640px){
+    .wd-inc-sec,.wd-faq-sec{padding:64px 0}
+    .wd-diff-sec{padding:64px 0}
+    .wd-inc-row{grid-template-columns:44px 1fr;padding:22px 0}
+    .wd-inc-num{font-size:18px;padding-top:2px}
+    .wd-inc-t{font-size:16px}
+    .wd-inc-d{font-size:13.5px;line-height:1.7}
+  }
+  @media(max-width:480px){
+    .wd-hero{min-height:auto;padding:96px 0 32px}
+    .wd-layers{padding:14px 14px 10px}
+    .wd-layer{padding:12px 14px}
+    .wd-rail-head{padding:6px 14px 6px}
+    .wd-logo-rail{padding:0 10px 10px}
+    .wd-vitals{flex-direction:column;align-items:stretch;padding:10px 14px}
+    .wd-v{padding:6px 0}
+    .wd-vsep{display:none}
+    .wd-v--badge{margin-left:0;padding-left:0;border-left:none;border-top:1px solid var(--wd-stroke-2);padding-top:8px;margin-top:2px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .wd-logo-well,.wd-plat-card,.wd-plat-card::after,.wd-tag,.wd-inc-row,.wd-diff-row,.wd-diff-tab{transition:none}
+    #wd-diff-stage[data-active-row] .wd-diff-row{opacity:1}
+  }
+
+  /* CWV: render-skipping for off-screen sections (saves paint cost) */
+  .wd-diff-sec,.wd-inc-sec,.wd-faq-sec{content-visibility:auto;contain-intrinsic-size:0 800px}
+  </style>
+
+  <script>
+  const prog=document.getElementById('scrollProg');
+  window.addEventListener('scroll',()=>{if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}},{passive:true});
+  const dot=document.getElementById('curDot');const ring=document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot)dot.style.transform=`translate(${mx-4}px,${my-4}px)`},{passive:true});
+  (function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')})});
+  document.querySelectorAll('.faq-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const isOpen=btn.getAttribute('aria-expanded')==='true';
+      document.querySelectorAll('.faq-btn').forEach(b=>{b.setAttribute('aria-expanded','false');const a=b.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(a)a.hidden=true});
+      if(!isOpen){btn.setAttribute('aria-expanded','true');const ans=btn.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(ans)ans.hidden=false}
+    });
+  });
+
+  const diffStage=document.getElementById('wd-diff-stage');
+  if(diffStage){
+    diffStage.dataset.tab='bad';
+    const clearLinked=()=>{
+      delete diffStage.dataset.activeRow;
+      diffStage.querySelectorAll('.wd-diff-row.is-linked').forEach((r)=>r.classList.remove('is-linked'));
+    };
+    diffStage.querySelectorAll('.wd-diff-row').forEach((row)=>{
+      row.addEventListener('mouseenter',()=>{
+        const i=row.getAttribute('data-wd-diff-row');
+        if(i==null)return;
+        diffStage.dataset.activeRow=i;
+        diffStage.querySelectorAll(`.wd-diff-row[data-wd-diff-row="${i}"]`).forEach((r)=>r.classList.add('is-linked'));
+      });
+      row.addEventListener('mouseleave',clearLinked);
+    });
+    document.querySelectorAll('[data-wd-diff-tab]').forEach((btn)=>{
+      btn.addEventListener('click',()=>{
+        const tab=btn.getAttribute('data-wd-diff-tab')||'bad';
+        document.querySelectorAll('.wd-diff-tab').forEach((b)=>{
+          const on=b===btn;
+          b.classList.toggle('is-on',on);
+          b.setAttribute('aria-selected',on?'true':'false');
+        });
+        diffStage.dataset.tab=tab;
+        clearLinked();
+      });
+    });
+  }
+  </script>
+</Layout>

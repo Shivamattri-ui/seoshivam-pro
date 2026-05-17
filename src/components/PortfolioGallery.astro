@@ -1,0 +1,343 @@
+---
+/**
+ * PortfolioGallery — design-only showcase for web-design work.
+ *
+ * Each item is rendered inside a browser-window mockup with:
+ *   - Traffic-light dots
+ *   - A locked, non-clickable URL bar showing an industry/region label
+ *     (NEVER the real client domain)
+ *   - The design screenshot inside the canvas area (or a CSS-rendered
+ *     gradient placeholder when no image is given yet)
+ *   - Footer strip below: industry, platform, year, deliverable tags
+ *
+ * Drop screenshots into /public/work/<slug>.webp and reference via the
+ * `image` prop, or leave it undefined to show the gradient placeholder.
+ */
+interface Item {
+  slug: string;
+  /** Industry-only label shown in URL bar (no real domain) */
+  label: string;
+  /** Industry tag (rendered in footer strip) */
+  industry: string;
+  /** Region: "US", "UK", "EU", "AU", "IN", or any short string */
+  region: string;
+  /** Build platform: Webflow, Framer, Astro, WordPress */
+  platform: string;
+  /** Year of the build */
+  year: string;
+  /** Short outcome/deliverable line */
+  deliverable: string;
+  /** Optional path to design screenshot in /public */
+  image?: string;
+  /** Accessible description (no client brand names) */
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  /** Optional CSS gradient string for placeholder */
+  accent?: string;
+}
+
+interface Props {
+  items?: Item[];
+  eyebrow?: string;
+  heading?: string;
+  headingEm?: string;
+  deck?: string;
+  id?: string;
+}
+
+// Real client mockups + placeholder seeds so the grid stays 6-up.
+const defaultItems: Item[] = [
+  {
+    slug: 'jmj-creations',
+    label: 'Corporate Gifting / US',
+    industry: 'Corporate Gifting',
+    region: 'US',
+    platform: 'Shopify',
+    year: '2026',
+    deliverable: 'Bulk-ordering D2C with PDF catalogue + tax invoicing flow',
+    image: '/work/jmj-creations.webp',
+    imageAlt:
+      'Corporate gifting ecommerce homepage with product hero, catalogue download bar, and branded gift-set photography',
+    imageWidth: 1024,
+    imageHeight: 682,
+  },
+  {
+    slug: 'hotel-white-stone',
+    label: 'Hospitality / India',
+    industry: 'Hospitality',
+    region: 'IN',
+    platform: 'WordPress',
+    year: '2025',
+    deliverable: 'Full-screen hero rebuild + tariff & enquiry funnel',
+    image: '/work/hotel-white-stone.webp',
+    imageAlt:
+      'Hospitality website hero with full-width mountain lodge photography and destination headline typography',
+    imageWidth: 1024,
+    imageHeight: 488,
+  },
+  {
+    slug: 'connectio',
+    label: 'IT Recruitment / Global',
+    industry: 'Recruitment + IT Consulting',
+    region: 'US',
+    platform: 'Webflow',
+    year: '2025',
+    deliverable: 'Lead-gen marketing site with consultation funnel',
+    image: '/work/connectio.webp',
+    imageAlt:
+      'IT recruitment marketing homepage with split hero layout, team photography, and consultation call-to-action buttons',
+    imageWidth: 1024,
+    imageHeight: 768,
+  },
+  {
+    slug: 'av-production',
+    label: 'Audio Visual / US',
+    industry: 'Audio Visual',
+    region: 'US',
+    platform: 'WordPress',
+    year: '2025',
+    deliverable: 'Dark cinematic landing page with full-bleed hero and scroll cue',
+    image: '/work/av-production.webp',
+    imageAlt:
+      'Dark cinematic audio visual company homepage with centered hero headline and minimal top navigation',
+    imageWidth: 1024,
+    imageHeight: 494,
+  },
+  {
+    slug: 'fintech-startup',
+    label: 'FinTech / US',
+    industry: 'AP Automation FinTech',
+    region: 'US',
+    platform: 'Webflow',
+    year: '2024',
+    deliverable: 'Series-A launch site, GPTBot crawled day-of',
+    accent: 'linear-gradient(135deg, #134E4A 0%, #14B8A6 60%, #5EEAD4 100%)',
+  },
+  {
+    slug: 'devops-tech',
+    label: 'DevOps Tech / US',
+    industry: 'Observability SaaS',
+    region: 'US',
+    platform: 'Astro',
+    year: '2024',
+    deliverable: 'Static-first build, INP under 180ms on mobile',
+    accent: 'linear-gradient(135deg, #1E1B4B 0%, #6366F1 60%, #A5B4FC 100%)',
+  },
+];
+
+const {
+  items = defaultItems,
+  eyebrow = 'PORTFOLIO / DESIGN GALLERY',
+  heading = 'Selected work,',
+  headingEm = 'shipped to production.',
+  deck = 'Every site below is a real client engagement. Names withheld under NDA, designs anonymised by industry. Each frame is the actual marketing-site build, not a mockup.',
+  id = 'portfolio-gallery',
+} = Astro.props;
+---
+
+<section class="pgal" id={id}>
+  <div class="container">
+    <header class="pgal-hdr rv">
+      <span class="hair left">{eyebrow}</span>
+      <h2 class="pgal-h">
+        {heading}<br>
+        <em class="grad-anim">{headingEm}</em>
+      </h2>
+      {deck && <p class="pgal-deck">{deck}</p>}
+    </header>
+
+    <div class="pgal-grid">
+      {items.map((item, i) => (
+        <article class={`pgal-item rv${i < 3 ? ' d' + (i+1) : ''}`} data-pgal-slug={item.slug}>
+
+          <!-- Browser mockup -->
+          <div class="pgal-frame">
+            <div class="pgal-bar">
+              <div class="pgal-dots"><span></span><span></span><span></span></div>
+              <div class="pgal-url">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span class="pgal-url-label">{item.label}</span>
+              </div>
+              <span class="pgal-region">{item.region}</span>
+            </div>
+            <div class="pgal-canvas" style={!item.image && item.accent ? `background:${item.accent}` : undefined}>
+              {item.image ? (
+                <img
+                  src={item.image}
+                  alt={item.imageAlt ?? `${item.industry} website design preview`}
+                  width={item.imageWidth ?? 1024}
+                  height={item.imageHeight ?? 640}
+                  loading="lazy"
+                  decoding="async"
+                  data-scale-in
+                />
+              ) : (
+                <div class="pgal-placeholder" aria-hidden="true">
+                  <div class="pgal-ph-grid"></div>
+                  <div class="pgal-ph-grain"></div>
+                  <div class="pgal-ph-text">
+                    <span class="pgal-ph-eye">DESIGN PREVIEW</span>
+                    <span class="pgal-ph-name">{item.industry}</span>
+                  </div>
+                </div>
+              )}
+              <span class="pgal-shine" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <!-- Meta strip below the frame -->
+          <div class="pgal-meta">
+            <div class="pgal-meta-l">
+              <span class="pgal-tag pgal-tag--accent">{item.industry}</span>
+              <span class="pgal-tag">{item.platform}</span>
+              <span class="pgal-tag">{item.year}</span>
+            </div>
+            <p class="pgal-deliv">{item.deliverable}</p>
+          </div>
+
+        </article>
+      ))}
+    </div>
+
+    <p class="pgal-foot rv">
+      Real screenshots can be shared on a discovery call under mutual NDA. Drop a message via the form below to request the full case files.
+    </p>
+  </div>
+</section>
+
+<style is:global>
+.pgal{padding:80px 0;position:relative;z-index:1}
+.pgal-hdr{max-width:780px;margin:0 0 56px;display:flex;flex-direction:column;gap:14px}
+.pgal-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.4vw,56px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+.pgal-h em{font-style:italic}
+.pgal-deck{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:660px}
+
+.pgal-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:36px;
+}
+.pgal-item{display:flex;flex-direction:column;gap:18px}
+
+/* Browser mockup */
+.pgal-frame{
+  background:#0A0B14;
+  border:1px solid #1A1F2E;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 28px 70px rgba(0,0,0,.42);
+  transition:transform .55s cubic-bezier(.16,1,.3,1), box-shadow .55s;
+}
+.pgal-item:hover .pgal-frame{
+  transform:translateY(-4px);
+  box-shadow:0 36px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(79,142,247,.3);
+}
+
+.pgal-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#13141F;border-bottom:1px solid #1A1F2E}
+.pgal-dots{display:flex;gap:5px}
+.pgal-dots span{width:9px;height:9px;border-radius:50%}
+.pgal-dots span:nth-child(1){background:#FF5F56}
+.pgal-dots span:nth-child(2){background:#FFBD2E}
+.pgal-dots span:nth-child(3){background:#27C93F}
+.pgal-url{
+  flex:1;display:flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono', monospace;font-size:11px;color:#7A819A;
+  background:#0E1019;border:1px solid #1A1F2E;
+  border-radius:999px;padding:5px 14px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pgal-url svg{flex-shrink:0;color:#5A6178}
+.pgal-url-label{
+  display:inline-flex;align-items:center;
+  padding:2px 8px;border-radius:4px;
+  background:rgba(79,142,247,.1);
+  border:1px solid rgba(79,142,247,.22);
+  color:#7BAEFF;
+  letter-spacing:.04em;
+}
+.pgal-region{
+  font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:700;letter-spacing:.06em;
+  color:var(--ac);
+  background:var(--agl);
+  border:1px solid rgba(79,142,247,.28);
+  border-radius:4px;
+  padding:5px 7px;
+  flex-shrink:0;
+}
+
+.pgal-canvas{
+  position:relative;
+  aspect-ratio:16/10;
+  overflow:hidden;
+  background:var(--s2);
+}
+.pgal-canvas img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+.pgal-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.pgal-ph-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 90%);
+}
+.pgal-ph-grain{
+  position:absolute;inset:0;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+.pgal-ph-text{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:0 24px}
+.pgal-ph-eye{font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.pgal-ph-name{
+  font-family:'Instrument Serif',serif;font-size:clamp(28px,3.4vw,42px);font-style:italic;font-weight:400;
+  color:#fff;letter-spacing:-.02em;line-height:1.1;
+  text-shadow:0 4px 24px rgba(0,0,0,.35);
+}
+
+.pgal-shine{
+  position:absolute;top:0;left:-30%;width:30%;height:100%;
+  background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.16) 50%, transparent 100%);
+  transform:skewX(-20deg);
+  pointer-events:none;
+  transition:left .9s cubic-bezier(.16,1,.3,1);
+}
+.pgal-item:hover .pgal-shine{left:130%}
+
+/* Meta strip */
+.pgal-meta{display:flex;flex-direction:column;gap:8px}
+.pgal-meta-l{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pgal-tag{
+  font-family:'JetBrains Mono', monospace;font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wd);
+  padding:5px 10px;border-radius:4px;
+  border:1px solid var(--bd);
+  background:transparent;
+}
+.pgal-tag--accent{
+  color:var(--ac);
+  background:var(--agl);
+  border-color:rgba(79,142,247,.24);
+}
+.pgal-deliv{
+  font-family:'Syne',sans-serif;font-size:13px;
+  color:var(--wd);line-height:1.6;margin:0;
+}
+
+.pgal-foot{
+  font-family:'Syne',sans-serif;font-size:13px;color:var(--wm);
+  line-height:1.7;margin:48px 0 0;font-style:italic;
+  max-width:680px;
+}
+
+@media(max-width:780px){
+  .pgal-grid{grid-template-columns:1fr;gap:28px}
+  .pgal{padding:60px 0}
+}
+</style>

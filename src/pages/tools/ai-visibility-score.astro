@@ -1,0 +1,2343 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const whyCards = [
+  {
+    title: 'AI discovery',
+    body: 'ChatGPT, Perplexity, Claude, and Google AI Overviews need structured pages they can parse. If bots cannot crawl you or schema is missing, you are invisible before content quality matters.',
+  },
+  {
+    title: 'Citation-ready answers',
+    body: 'AI engines quote pages that lead with direct answers, FAQ markup, and consistent entity signals. The quiz scores how close your site is to that format.',
+  },
+  {
+    title: 'Competitive edge',
+    body: 'Most B2B sites still optimize for blue links only. Fixing bot access and entity schema now compounds while competitors catch up.',
+  },
+  {
+    title: 'Buyer intent',
+    body: 'Founders researching AEO ask AI first. A strong visibility score maps to real fixes: robots.txt, JSON-LD, topical clusters, and performance.',
+  },
+];
+
+const checkGroups = [
+  {
+    label: 'Technical foundation',
+    items: [
+      'GPTBot, ClaudeBot, and PerplexityBot access via robots.txt',
+      'XML sitemap submitted to Google Search Console and Bing',
+      'Core Web Vitals and mobile performance',
+      'Semantic HTML and crawlable internal links',
+    ],
+  },
+  {
+    label: 'AI and content signals',
+    items: [
+      'Person or Organization JSON-LD on key pages',
+      'FAQPage schema with buyer questions answered first',
+      'Answer-first content structure under each heading',
+      'Topical authority clusters and entity consistency across profiles',
+    ],
+  },
+];
+
+const improveSteps = [
+  { n: '01', t: 'Run the quiz', d: 'Answer all 10 questions honestly. The score is directional but the gap list is specific.' },
+  { n: '02', t: 'Fix access first', d: 'Unblock AI crawlers in robots.txt before you invest in new content.' },
+  { n: '03', t: 'Ship entity schema', d: 'Add Person or Organization JSON-LD with sameAs links to LinkedIn and other profiles.' },
+  { n: '04', t: 'Structure for citation', d: 'Rewrite key pages answer-first and add FAQPage markup on service URLs.' },
+  { n: '05', t: 'Track citations', d: 'Search your brand in ChatGPT and Perplexity monthly. Pair with the free robots checker on this site.' },
+];
+
+const scoreBands = [
+  { v: '0', pct: 0, key: 'red', label: 'Rebuild' },
+  { v: '40', pct: 40, key: 'amber', label: 'Heavy gaps' },
+  { v: '55', pct: 55, key: 'orange', label: 'Closing in' },
+  { v: '70', pct: 70, key: 'lime', label: 'Mostly there' },
+  { v: '80+', pct: 90, key: 'green', label: 'Strong' },
+];
+
+const toolFaqs = [
+  {
+    q: 'What does the AI Visibility Score measure?',
+    a: 'Ten weighted dimensions that influence whether AI engines can crawl, understand, and cite your site: bot access, entity schema, FAQPage markup, content structure, topical authority, citation status, Article schema, Core Web Vitals, sitemap indexation, and cross-profile entity consistency.',
+  },
+  {
+    q: 'How long does the quiz take?',
+    a: 'Most people finish in under five minutes. You get a score out of 100 immediately, then a full breakdown after email so you can share it with your team.',
+  },
+  {
+    q: 'Is this the same as a full AEO audit?',
+    a: 'No. The quiz is a self-assessment rubric I use on first calls. A paid engagement adds query-level citation tracking, competitor gap analysis, and a prioritized implementation roadmap across all four major AI engines.',
+  },
+  {
+    q: 'Which AI engines does this relate to?',
+    a: 'The rubric maps to signals used by ChatGPT, Perplexity, Google AI Overviews, Claude, Microsoft Copilot, and other assistants that rely on crawlable web content and structured data.',
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'No account. Unlimited runs. Email unlocks the detailed per-dimension breakdown you can forward to dev or content.',
+  },
+];
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebApplication',
+      name: 'AI Visibility Score',
+      url: 'https://seoshivam.pro/tools/ai-visibility-score',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      description:
+        'Free 10-question quiz that scores B2B websites for AI search visibility across bot access, schema, content structure, and technical SEO signals.',
+      author: { '@type': 'Person', name: 'Shivam Attri', url: 'https://seoshivam.pro/about' },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: toolFaqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title={SITE_ROUTE_META['/tools/ai-visibility-score'].title}
+  description={SITE_ROUTE_META['/tools/ai-visibility-score'].description}
+  canonical="https://seoshivam.pro/tools/ai-visibility-score"
+  schema={pageSchema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <div class="ray" style={`--i:${i}`} />)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+
+  <main class="avs-page">
+    {/* ====================================================================== */}
+    {/* 1 · HERO                                                                */}
+    {/* ====================================================================== */}
+    <section class="avs-hero">
+      <div class="container avs-hero-c">
+        <div class="avs-hero-mast rv">
+          <span class="avs-mast-pill">Live quiz · Rev 2026</span>
+          <span class="avs-mast-line" aria-hidden="true"></span>
+          <span class="avs-mast-meta">10 signals · 5 min · No login</span>
+        </div>
+
+        <nav class="avs-bc rv d1" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/tools">Tools</a><span aria-hidden="true">/</span><span>AI Visibility Score</span>
+        </nav>
+
+        <div class="rv d2"><span class="label">Free quiz</span></div>
+
+        <h1 class="sec-h avs-h1 rv d3">
+          How visible is your brand<br /><em class="grad-anim">to AI engines?</em>
+        </h1>
+
+        <p class="avs-lede rv d4">
+          Ten weighted checks you would run on a paid audit, automated for free. Score your bot access, schema, and citation surface for ChatGPT, Perplexity, Claude, and Google AI Overviews.
+        </p>
+
+        <div class="avs-hero-foot rv d5">
+          <a href="#run-quiz" class="btn-p avs-hero-cta" data-cursor="Start the quiz">
+            <span>Start the quiz</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+          </a>
+          <span class="avs-hero-cap">Same rubric I use on every paid AEO engagement</span>
+        </div>
+
+        <div class="avs-scroll-cue rv d5" aria-hidden="true">
+          <span class="avs-cue-line"></span>
+          <span class="avs-cue-dot"></span>
+        </div>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 2 · TOOL · 3 · GATE · 4 · RESULTS                                       */}
+    {/* ====================================================================== */}
+    <section class="avs-tool" id="run-quiz" aria-labelledby="avs-tool-h">
+      <div class="container">
+        <header class="avs-tool-hdr rv">
+          <span class="hair left">The quiz / 10 weighted signals</span>
+          <h2 id="avs-tool-h" class="sec-h">
+            Answer ten questions,<br /><em class="grad-anim">leave with a fix list.</em>
+          </h2>
+        </header>
+
+        <div class="avs-stage-frame rv d2">
+          <div class="avs-stage">
+            {/* ============ QUIZ STAGE ============ */}
+            <div class="avs-quiz" id="avsQuiz">
+              <div id="avsProgressBar" style="display:none" data-pct="0"></div>
+
+              <aside class="avs-quiz-left">
+                <div class="avs-step-row">
+                  <span class="avs-step-num" id="avsStepNum"><em>01</em></span>
+                  <span class="avs-step-of">/ 10</span>
+                </div>
+                <span class="avs-cat-eyebrow" id="avsCatEyebrow">Bot Access</span>
+                <div class="avs-tick-track" id="avsTickTrack" role="presentation"></div>
+                <p class="avs-quiz-left-copy">
+                  Be honest. The score is directional, the fixes are specific.
+                </p>
+                <span class="avs-sr-only" id="avsCounter">Question 1 of 10</span>
+              </aside>
+
+              <div class="avs-quiz-right">
+                <div class="avs-question-wrap" id="avsQuestionWrap"></div>
+                <div class="avs-quiz-nav">
+                  <button type="button" class="avs-prev" id="avsPrev" style="visibility:hidden">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    <span>Back</span>
+                  </button>
+                  <button type="button" class="avs-next btn-p" id="avsNext" disabled>
+                    <span>Next</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* ============ GATE ============ */}
+            <div class="avs-gate" id="avsGate" style="display:none" aria-hidden="true">
+              <div class="avs-gate-left">
+                <div class="avs-gate-score" id="avsGateScore" data-band="">
+                  <span class="avs-gate-num" data-avs-gate-num>0</span>
+                  <span class="avs-gate-of">out of 100</span>
+                </div>
+                <div class="avs-gate-band-track">
+                  <div class="avs-gate-band-fill" id="avsGateBandFill"></div>
+                </div>
+                <span class="avs-gate-band-label" id="avsGateBandLabel">Closing in</span>
+              </div>
+
+              <div class="avs-gate-right">
+                <span class="hair left">Unlock the full report</span>
+                <h3 class="avs-gate-h">
+                  Your full report<br /><em class="grad-anim">is ready.</em>
+                </h3>
+                <p class="avs-gate-sub">
+                  Drop your email to see the per-signal breakdown: where you are losing AI visibility, what to fix first, and what the fix looks like in practice.
+                </p>
+                <form class="avs-gate-form" id="avsGateForm" novalidate>
+                  <label class="avs-hp" aria-hidden="true">
+                    Leave blank
+                    <input type="text" name="website" tabindex="-1" autocomplete="off" />
+                  </label>
+                  <div class="avs-gate-row">
+                    <input
+                      type="email"
+                      placeholder="you@company.com"
+                      class="avs-gate-input"
+                      id="avsGateEmail"
+                      required
+                      autocomplete="email"
+                    />
+                    <button type="submit" class="btn-p avs-gate-btn" data-cursor="Request report">
+                      <span>Request full report</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </button>
+                  </div>
+                  <p class="avs-gate-msg" id="avsGateMsg" role="status"></p>
+                  <p class="avs-gate-fine">One email. No newsletter spam. Unsubscribe inside the report.</p>
+                </form>
+              </div>
+            </div>
+
+            {/* ============ RESULTS ============ */}
+            <div class="avs-results" id="avsResults" style="display:none" aria-hidden="true">
+              <div class="avs-r-left">
+                <div class="avs-r-ring" id="avsRingWrap" data-band="">
+                  <svg viewBox="0 0 200 200" class="avs-r-svg" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="avsRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#4F8EF7"></stop>
+                        <stop offset="100%" stop-color="#1A3A8F"></stop>
+                      </linearGradient>
+                    </defs>
+                    <circle cx="100" cy="100" r="86" fill="none" stroke="var(--s3)" stroke-width="14"></circle>
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="86"
+                      fill="none"
+                      stroke="url(#avsRingGrad)"
+                      stroke-width="14"
+                      stroke-dasharray="540"
+                      stroke-dashoffset="540"
+                      stroke-linecap="round"
+                      transform="rotate(-90 100 100)"
+                      id="avsRingProgress"></circle>
+                  </svg>
+                  <div class="avs-r-center">
+                    <span class="avs-r-num grad-anim" id="avsRingNum">0</span>
+                    <span class="avs-r-of">/ 100</span>
+                  </div>
+                </div>
+                <div class="avs-r-band-row" id="avsRingLabel">
+                  <span class="avs-r-band-dot"></span>
+                  <span class="avs-r-band-text">Closing in</span>
+                </div>
+              </div>
+
+              <div class="avs-r-right">
+                <span class="hair left">Per-signal breakdown</span>
+                <h3 class="sec-h avs-r-h">
+                  Where you stand on each<br /><em class="grad-anim">of the ten signals.</em>
+                </h3>
+                <ol class="avs-r-list" id="avsRItems"></ol>
+                <div class="avs-r-cta-row">
+                  <a href="/contact" class="btn-p" data-cursor="Book audit call">
+                    <span>Book a free audit call</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  </a>
+                  <a href="/tools/robots-txt-checker" class="avs-r-cta-2" data-cursor="Open bot checker">
+                    Pair with bot checker
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 5 · WHY                                                                 */}
+    {/* ====================================================================== */}
+    <section class="avs-why" aria-labelledby="avs-why-h">
+      <div class="container">
+        <div class="avs-why-grid">
+          <header class="avs-why-hdr rv">
+            <span class="hair left">Why it matters</span>
+            <h2 id="avs-why-h" class="sec-h">
+              AI search is not<br /><em class="grad-anim">a future channel.</em>
+            </h2>
+            <p class="avs-why-deck">
+              Buyers ask ChatGPT before they ask Google. If your site cannot be crawled, parsed, and cited, you are invisible in that conversation. Read more on <a href="/insights/how-to-get-cited-by-chatgpt" class="ilink">how AI citations work</a> or see the <a href="/services/aeo" class="ilink">full AEO strategy.</a>
+            </p>
+          </header>
+
+          <ol class="avs-why-list">
+            {whyCards.map((card, i) => (
+              <li class:list={['avs-why-row', 'rv', i > 0 && `d${Math.min(i, 4)}`]}>
+                <span class="avs-why-n">{String(i + 1).padStart(2, '0')}</span>
+                <div class="avs-why-body">
+                  <h3 class="avs-why-t">{card.title}</h3>
+                  <p class="avs-why-b">{card.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 6 · SIGNALS                                                             */}
+    {/* ====================================================================== */}
+    <section class="avs-signals" aria-labelledby="avs-signals-h">
+      <div class="container">
+        <header class="avs-tool-hdr rv">
+          <span class="hair left">Ten weighted signals</span>
+          <h2 id="avs-signals-h" class="sec-h">
+            The exact rubric I run<br /><em class="grad-anim">on every paid audit.</em>
+          </h2>
+        </header>
+
+        <div class="avs-sig-table rv d2">
+          {checkGroups.map((group, gi) => (
+            <div class="avs-sig-col">
+              <span class="avs-sig-label">{group.label}</span>
+              <ol class="avs-sig-list">
+                {group.items.map((item, i) => (
+                  <li class="avs-sig-row">
+                    <span class="avs-sig-n">{String(gi * 4 + i + 1).padStart(2, '0')}</span>
+                    <span class="avs-sig-t">{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 7 · BANDS                                                               */}
+    {/* ====================================================================== */}
+    <section class="avs-bands" aria-labelledby="avs-bands-h">
+      <div class="container">
+        <header class="avs-bands-hdr rv">
+          <span class="hair left">Score bands</span>
+          <h2 id="avs-bands-h" class="avs-bands-h">
+            Five bands. <em>One honest read.</em>
+          </h2>
+        </header>
+
+        <div class="avs-bands-scale rv d2" aria-hidden="true">
+          <div class="avs-bands-bar"></div>
+          <div class="avs-bands-ticks">
+            {scoreBands.map((b, i) => (
+              <div class:list={['avs-bands-tick', `is-${b.key}`, 'rv', i > 0 && `d${Math.min(i, 4)}`]} style={`--pct:${b.pct}%`}>
+                <span class="avs-bands-line"></span>
+                <span class="avs-bands-v">{b.v}</span>
+                <span class="avs-bands-cap">{b.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <ul class="avs-bands-mobile" aria-label="Score bands list">
+          {scoreBands.map((b) => (
+            <li class:list={['avs-bands-mrow', `is-${b.key}`]}>
+              <span class="avs-bands-mv">{b.v}</span>
+              <span class="avs-bands-mcap">{b.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 8 · STEPS                                                               */}
+    {/* ====================================================================== */}
+    <section class="avs-steps" aria-labelledby="avs-steps-h">
+      <div class="container">
+        <header class="avs-tool-hdr rv">
+          <span class="hair left">After the quiz</span>
+          <h2 id="avs-steps-h" class="sec-h">
+            From score to<br /><em class="grad-anim">shipped fixes.</em>
+          </h2>
+        </header>
+
+        <ol class="avs-steps-list">
+          {improveSteps.map((step, i) => (
+            <li class:list={['avs-steps-row', 'rv', i > 0 && `d${Math.min(i, 4)}`]}>
+              <span class="avs-steps-n">{step.n}</span>
+              <div class="avs-steps-body">
+                <h3 class="avs-steps-t">{step.t}</h3>
+                <p class="avs-steps-d">{step.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <p class="avs-steps-note rv">
+          Pair this quiz with the <a href="/tools/robots-txt-checker" data-cursor="Open robots checker">AI Bot Access Checker</a> to confirm crawlers can reach your pages. For a deeper breakdown: <a href="/insights/schema-markup-for-ai-search" class="ilink">schema for AI search</a> and <a href="/resources" class="ilink">free AEO resources.</a>
+        </p>
+      </div>
+    </section>
+
+    {/* ====================================================================== */}
+    {/* 9 · FAQ + ContactCta                                                    */}
+    {/* ====================================================================== */}
+    <section class="avs-faq-sec">
+      <div class="container">
+        <FaqBlock
+          id="avs-faq"
+          eyebrow="QUESTIONS / ABOUT THIS QUIZ"
+          heading="Common questions about"
+          headingEm="the AI Visibility Score."
+          deck="Accuracy, privacy, and how this compares to a full AEO engagement."
+          faqs={toolFaqs}
+          emitSchema={false}
+        />
+      </div>
+    </section>
+
+    <ContactCta
+      id="avs-cta"
+      source="ai-visibility-score"
+      eyebrow="WANT THE FULL AUDIT?"
+      heading="The quiz scores the surface."
+      headingEm="The audit goes deeper."
+      deck="Query-level citation tracking, competitor gaps, and a prioritized roadmap across ChatGPT, Perplexity, Google AI Overviews, and Claude. Tell me about the project."
+    />
+  </main>
+  <Footer />
+
+  <style is:global>
+    .avs-page {
+      position: relative;
+      z-index: 1;
+      overflow-x: clip;
+    }
+
+    /* ====================================================================== */
+    /* 1 · HERO                                                                */
+    /* ====================================================================== */
+    .avs-hero {
+      padding: clamp(120px, 14vw, 160px) 0 clamp(80px, 10vw, 120px);
+      position: relative;
+    }
+    .avs-hero-c {
+      position: relative;
+    }
+    .avs-hero-mast {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .avs-mast-pill {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ac);
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(79, 142, 247, 0.32);
+      background: var(--agl);
+      white-space: nowrap;
+    }
+    .avs-mast-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--bd), transparent);
+      transform-origin: left center;
+      transform: scaleX(0);
+      animation: avsLineDraw 1.2s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes avsLineDraw {
+      to { transform: scaleX(1); }
+    }
+    .avs-mast-meta {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--wm);
+      white-space: nowrap;
+    }
+
+    .avs-bc {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--wm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .avs-bc a {
+      color: var(--wm);
+      transition: color 0.15s;
+    }
+    .avs-bc a:hover { color: var(--ac); }
+    .avs-bc span { opacity: 0.4; }
+    .avs-bc span:last-child { opacity: 1; color: var(--w); }
+
+    .avs-h1 {
+      font-size: clamp(44px, 7vw, 96px) !important;
+      margin: 14px 0 22px;
+      max-width: 18ch;
+      line-height: 1.02;
+    }
+    .avs-h1 em.grad-anim {
+      padding-bottom: 0.1em;
+    }
+    .avs-lede {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(16px, 1.5vw, 19px);
+      color: var(--wd);
+      line-height: 1.7;
+      max-width: 56ch;
+      margin: 0 0 36px;
+    }
+    .avs-hero-foot {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .avs-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .avs-hero-cap {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--wm);
+      text-transform: uppercase;
+    }
+
+    .avs-scroll-cue {
+      margin-top: clamp(60px, 8vw, 88px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      width: 12px;
+    }
+    .avs-cue-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(180deg, transparent, var(--bd) 30%, var(--bd) 70%, transparent);
+      margin-left: 5px;
+      display: block;
+    }
+    .avs-cue-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ac);
+      box-shadow: 0 0 0 4px var(--agl);
+      animation: avsScrollCue 1.8s ease-in-out infinite;
+      display: block;
+      margin-left: 3px;
+    }
+    @keyframes avsScrollCue {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(12px); opacity: 0.4; }
+    }
+
+    /* ====================================================================== */
+    /* 2 · TOOL STAGE                                                          */
+    /* ====================================================================== */
+    .avs-tool {
+      padding: clamp(56px, 8vw, 96px) 0;
+      position: relative;
+    }
+    .avs-tool-hdr {
+      max-width: 48rem;
+      margin-bottom: clamp(28px, 4vw, 44px);
+    }
+    .avs-tool-hdr .sec-h {
+      margin-top: 12px;
+    }
+
+    .avs-stage-frame {
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(125deg, var(--ac), var(--ac2), #7baeff, var(--ac2), var(--ac));
+      background-size: 280% 280%;
+      animation: avsBorderShift 9s linear infinite;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.36);
+    }
+    @media (max-width: 900px) {
+      .avs-stage-frame {
+        animation: none;
+        background: var(--bd);
+        background-size: auto;
+      }
+    }
+    @keyframes avsBorderShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 280% 50%; }
+    }
+    .avs-stage {
+      background: var(--s1);
+      border-radius: 22px;
+      padding: clamp(28px, 4vw, 44px);
+      position: relative;
+      overflow: visible;
+    }
+    .avs-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 80% at 100% 0%, rgba(79, 142, 247, 0.06) 0%, transparent 60%);
+    }
+
+    .avs-sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ============ QUIZ ============ */
+    .avs-quiz {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: clamp(28px, 4vw, 56px);
+      position: relative;
+    }
+    .avs-quiz-left {
+      position: relative;
+      border-right: 1px solid var(--bd);
+      padding-right: clamp(20px, 2.5vw, 32px);
+    }
+    .avs-step-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 16px;
+      overflow: visible;
+    }
+    .avs-step-num {
+      font-family: var(--fd), serif;
+      font-size: clamp(48px, 6vw, 72px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.08;
+      color: var(--ac);
+      letter-spacing: -0.02em;
+      display: inline-block;
+      padding-right: 0.1em;
+      overflow: visible;
+    }
+    .avs-step-num em {
+      background: linear-gradient(110deg, var(--ac), #7baeff, var(--ac2), #7baeff, var(--ac));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+      font-style: italic;
+      display: inline-block;
+      line-height: 1.08;
+      padding: 0.05em 0.12em 0.08em 0;
+      overflow: visible;
+    }
+    .avs-step-of {
+      font-family: var(--fm), monospace;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--wm);
+    }
+    .avs-cat-eyebrow {
+      display: block;
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ac);
+      margin-bottom: 18px;
+      transition: color 0.3s ease;
+    }
+    .avs-tick-track {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 22px;
+      padding: 4px 0;
+    }
+    .avs-tick {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background: var(--s3);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s ease;
+    }
+    .avs-tick::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--ac), var(--ac2));
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .avs-tick.is-done::after {
+      transform: scaleX(1);
+    }
+    .avs-tick.is-current {
+      background: var(--s4);
+      box-shadow: 0 0 0 2px var(--agl);
+    }
+    .avs-tick.is-current::after {
+      transform: scaleX(0.4);
+    }
+    .avs-quiz-left-copy {
+      display: block;
+      font-family: var(--fu), sans-serif;
+      font-size: 12px;
+      color: var(--wm);
+      line-height: 1.55;
+      max-width: 22ch;
+    }
+
+    .avs-quiz-right {
+      min-width: 0;
+      position: relative;
+    }
+    .avs-question-wrap {
+      position: relative;
+      min-height: 280px;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.32s ease-out, transform 0.32s ease-out;
+    }
+    .avs-question-wrap.is-out {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    .avs-q-text {
+      font-family: var(--fd), serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 400;
+      color: var(--w);
+      letter-spacing: -0.018em;
+      line-height: 1.15;
+      max-width: 32ch;
+      margin: 0 0 28px;
+    }
+    .avs-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .avs-opt {
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      border-radius: 14px;
+      cursor: pointer;
+      transition:
+        border-color 0.2s,
+        background 0.2s,
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: left;
+      width: 100%;
+      color: var(--w);
+      font: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .avs-opt-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: transparent;
+      transition: background 0.25s ease, width 0.25s ease;
+    }
+    .avs-opt:hover {
+      border-color: rgba(79, 142, 247, 0.5);
+    }
+    .avs-opt:hover .avs-opt-bar {
+      background: var(--ac);
+      width: 3px;
+    }
+    .avs-opt.selected {
+      border-color: var(--ac);
+      background: var(--agl);
+      transform: translateX(2px);
+    }
+    .avs-opt.selected .avs-opt-bar {
+      background: var(--ac);
+      width: 4px;
+    }
+    .avs-opt-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--wm);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .avs-opt:hover .avs-opt-radio {
+      border-color: var(--ac);
+    }
+    .avs-opt.selected .avs-opt-radio {
+      border-color: var(--ac);
+      background: var(--ac);
+    }
+    .avs-opt.selected .avs-opt-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .avs-opt-text {
+      font-family: var(--fu), sans-serif;
+      font-size: 15px;
+      color: var(--w);
+      line-height: 1.55;
+      font-weight: 500;
+      flex: 1;
+    }
+    .avs-opt.selected .avs-opt-text {
+      font-weight: 600;
+    }
+
+    .avs-quiz-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 32px;
+      padding-top: 22px;
+      border-top: 1px solid var(--bd);
+      gap: 12px;
+    }
+    .avs-prev {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: var(--wd);
+      font-family: var(--fu), sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      padding: 10px 14px 10px 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.18s ease;
+    }
+    .avs-prev:hover { color: var(--w); }
+    .avs-prev svg { transition: transform 0.25s ease; }
+    .avs-prev:hover svg { transform: translateX(-3px); }
+    .avs-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avs-next:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* ============ GATE ============ */
+    .avs-gate {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: clamp(28px, 5vw, 56px);
+      align-items: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .avs-gate.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .avs-gate-left {
+      padding-right: clamp(16px, 2.5vw, 32px);
+      border-right: 1px solid var(--bd);
+      overflow: visible;
+      min-width: 0;
+    }
+    .avs-gate-score {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      margin-bottom: 22px;
+    }
+    .avs-gate-num {
+      font-family: var(--fd), serif;
+      font-size: clamp(72px, 12vw, 128px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      display: block;
+      padding-right: 0.06em;
+      overflow: visible;
+      background: linear-gradient(110deg, var(--ac), #7baeff, var(--ac2), #7baeff, var(--ac));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+    }
+    .avs-gate-score[data-band] .avs-gate-num {
+      background: linear-gradient(110deg, var(--avs-band-from, var(--ac)), var(--avs-band-to, var(--ac2)), var(--avs-band-from, var(--ac)));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+    }
+    .avs-gate-of {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--wm);
+    }
+    .avs-gate-band-track {
+      height: 6px;
+      background: var(--s3);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .avs-gate-band-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--avs-band-from, var(--ac)), var(--avs-band-to, var(--ac2)));
+      border-radius: 3px;
+      transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .avs-gate-band-label {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w);
+    }
+
+    .avs-gate-right {
+      min-width: 0;
+    }
+    .avs-gate-h {
+      font-family: var(--fd), serif;
+      font-size: clamp(28px, 3.6vw, 44px);
+      font-weight: 400;
+      color: var(--w);
+      letter-spacing: -0.022em;
+      line-height: 1.05;
+      margin: 10px 0 14px;
+    }
+    .avs-gate-sub {
+      font-family: var(--fu), sans-serif;
+      font-size: 15px;
+      color: var(--wd);
+      line-height: 1.65;
+      margin: 0 0 22px;
+      max-width: 48ch;
+    }
+    .avs-gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .avs-hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .avs-gate-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+    .avs-gate-input {
+      flex: 1 1 240px;
+      min-width: 0;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      color: var(--w);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .avs-gate-input::placeholder { color: var(--wm); }
+    .avs-gate-input:focus {
+      border-color: var(--ac);
+      background: var(--s3);
+    }
+    .avs-gate-btn {
+      flex: 1 1 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      min-width: min(100%, 12.5rem);
+    }
+    @media (max-width: 720px) {
+      .avs-gate-row {
+        flex-direction: column;
+      }
+      .avs-gate-input {
+        flex: 1 1 100%;
+        width: 100%;
+      }
+      .avs-gate-btn {
+        width: 100%;
+      }
+    }
+    .avs-gate-msg {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--wm);
+      margin: 4px 0 0;
+      min-height: 14px;
+    }
+    .avs-gate-msg.ok { color: var(--green); }
+    .avs-gate-msg.err { color: var(--red); }
+    .avs-gate-fine {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--wm);
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* ============ RESULTS ============ */
+    .avs-results {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: clamp(32px, 5vw, 64px);
+      align-items: start;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .avs-results.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .avs-r-left {
+      position: sticky;
+      top: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .avs-r-ring {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      --avs-band-from: var(--ac);
+      --avs-band-to: var(--ac2);
+    }
+    .avs-r-ring[data-band='red']    { --avs-band-from: #EF4444; --avs-band-to: #B91C1C; }
+    .avs-r-ring[data-band='amber']  { --avs-band-from: #F59E0B; --avs-band-to: #B45309; }
+    .avs-r-ring[data-band='orange'] { --avs-band-from: #FB923C; --avs-band-to: #C2410C; }
+    .avs-r-ring[data-band='lime']   { --avs-band-from: #84CC16; --avs-band-to: #4D7C0F; }
+    .avs-r-ring[data-band='green']  { --avs-band-from: #22C55E; --avs-band-to: #15803D; }
+
+    .avs-gate-score[data-band='red']    { --avs-band-from: #EF4444; --avs-band-to: #B91C1C; }
+    .avs-gate-score[data-band='amber']  { --avs-band-from: #F59E0B; --avs-band-to: #B45309; }
+    .avs-gate-score[data-band='orange'] { --avs-band-from: #FB923C; --avs-band-to: #C2410C; }
+    .avs-gate-score[data-band='lime']   { --avs-band-from: #84CC16; --avs-band-to: #4D7C0F; }
+    .avs-gate-score[data-band='green']  { --avs-band-from: #22C55E; --avs-band-to: #15803D; }
+
+    .avs-r-band-row[data-band='red']    { --avs-band-from: #EF4444; --avs-band-to: #B91C1C; }
+    .avs-r-band-row[data-band='amber']  { --avs-band-from: #F59E0B; --avs-band-to: #B45309; }
+    .avs-r-band-row[data-band='orange'] { --avs-band-from: #FB923C; --avs-band-to: #C2410C; }
+    .avs-r-band-row[data-band='lime']   { --avs-band-from: #84CC16; --avs-band-to: #4D7C0F; }
+    .avs-r-band-row[data-band='green']  { --avs-band-from: #22C55E; --avs-band-to: #15803D; }
+
+    .avs-r-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(0deg);
+    }
+    .avs-r-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .avs-r-num {
+      font-family: var(--fd), serif;
+      font-size: 68px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      background: linear-gradient(110deg, var(--avs-band-from, var(--ac)), var(--avs-band-to, var(--ac2)), var(--avs-band-from, var(--ac)));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+    }
+    .avs-r-of {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--wm);
+    }
+    .avs-r-band-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--bd);
+      background: var(--s2);
+    }
+    .avs-r-band-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--avs-band-from, var(--ac));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--avs-band-from, var(--ac)) 18%, transparent);
+      animation: avsTickPulse 1.6s ease-in-out infinite;
+    }
+    @keyframes avsTickPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.75; }
+    }
+    .avs-r-band-text {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w);
+    }
+
+    .avs-r-right {
+      min-width: 0;
+    }
+    .avs-r-h {
+      font-size: clamp(28px, 3.4vw, 42px) !important;
+      margin: 12px 0 28px !important;
+    }
+    .avs-r-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px;
+      border-top: 1px solid var(--bd);
+    }
+    .avs-r-row {
+      display: grid;
+      grid-template-columns: 52px 1fr 22px;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 16px 18px 14px;
+      border-bottom: 1px solid var(--bd);
+      border-left: 4px solid var(--bd);
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .avs-r-row[data-pass='true'] {
+      border-left-color: var(--green);
+    }
+    .avs-r-row[data-pass='false'] {
+      border-left-color: var(--red);
+    }
+    .avs-r-row:hover {
+      background: var(--s2);
+    }
+    .avs-r-row-n {
+      font-family: var(--fd), serif;
+      font-size: 22px;
+      font-style: italic;
+      color: var(--wm);
+      line-height: 1;
+    }
+    .avs-r-row-body {
+      min-width: 0;
+    }
+    .avs-r-row-t {
+      display: block;
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--w);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .avs-r-row-d {
+      font-family: var(--fu), sans-serif;
+      font-size: 13px;
+      color: var(--wd);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .avs-r-row-ic {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--w);
+      flex-shrink: 0;
+    }
+    .avs-r-row-ic.pass {
+      background: rgba(34, 197, 94, 0.14);
+      color: var(--green);
+    }
+    .avs-r-row-ic.fail {
+      background: rgba(239, 68, 68, 0.14);
+      color: var(--red);
+    }
+
+    .avs-r-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .avs-r-cta-2 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--wd);
+      letter-spacing: -0.01em;
+      transition: color 0.18s ease;
+    }
+    .avs-r-cta-2:hover { color: var(--w); }
+    .avs-r-cta-2 svg { transition: transform 0.25s ease; }
+    .avs-r-cta-2:hover svg { transform: translate(2px, -2px); }
+
+    /* ====================================================================== */
+    /* 5 · WHY                                                                 */
+    /* ====================================================================== */
+    .avs-why {
+      padding: clamp(72px, 10vw, 120px) 0;
+    }
+    .avs-why-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: clamp(40px, 6vw, 80px);
+      align-items: start;
+    }
+    .avs-why-hdr {
+      position: sticky;
+      top: 120px;
+    }
+    .avs-why-hdr .sec-h {
+      margin-top: 12px;
+    }
+    .avs-why-deck {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(15px, 1.4vw, 17px);
+      color: var(--wd);
+      line-height: 1.7;
+      max-width: 40ch;
+      margin: 18px 0 0;
+    }
+    .avs-why-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid var(--bd);
+    }
+    .avs-why-row {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: clamp(18px, 2.5vw, 32px);
+      padding: clamp(24px, 3vw, 36px) 0;
+      border-bottom: 1px solid var(--bd);
+      align-items: baseline;
+    }
+    .avs-why-n {
+      font-family: var(--fd), serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-style: italic;
+      color: var(--wm);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .avs-why-row:hover .avs-why-n {
+      color: var(--ac);
+      transform: translateX(-3px);
+    }
+    .avs-why-t {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(18px, 1.8vw, 22px);
+      font-weight: 700;
+      color: var(--w);
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .avs-why-b {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      color: var(--wd);
+      line-height: 1.68;
+      margin: 0;
+      max-width: 60ch;
+    }
+
+    /* ====================================================================== */
+    /* 6 · SIGNALS                                                             */
+    /* ====================================================================== */
+    .avs-signals {
+      padding: clamp(56px, 8vw, 100px) 0;
+    }
+    .avs-sig-table {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(32px, 5vw, 64px);
+      border-top: 1px solid var(--bd);
+      padding-top: clamp(24px, 3vw, 36px);
+    }
+    .avs-sig-col + .avs-sig-col {
+      border-left: 1px solid var(--bd);
+      padding-left: clamp(28px, 4vw, 56px);
+    }
+    .avs-sig-label {
+      display: block;
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ac);
+      margin-bottom: 18px;
+    }
+    .avs-sig-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .avs-sig-row {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 18px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--bd);
+    }
+    .avs-sig-row:last-child {
+      border-bottom: none;
+    }
+    .avs-sig-n {
+      font-family: var(--fd), serif;
+      font-size: 22px;
+      font-style: italic;
+      color: var(--wm);
+      line-height: 1;
+    }
+    .avs-sig-t {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      color: var(--w);
+      line-height: 1.55;
+      letter-spacing: -0.005em;
+    }
+
+    /* ====================================================================== */
+    /* 7 · BANDS                                                               */
+    /* ====================================================================== */
+    .avs-bands {
+      padding: clamp(56px, 8vw, 100px) 0;
+    }
+    .avs-bands-hdr {
+      max-width: 44rem;
+      margin-bottom: clamp(40px, 5vw, 64px);
+    }
+    .avs-bands-h {
+      font-family: var(--fd), serif;
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 400;
+      color: var(--w);
+      letter-spacing: -0.022em;
+      line-height: 1.05;
+      margin: 12px 0 0;
+    }
+    .avs-bands-h em {
+      font-style: italic;
+      background: linear-gradient(110deg, var(--ac), #7baeff, var(--ac2), #7baeff, var(--ac));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+    }
+
+    .avs-bands-scale {
+      position: relative;
+      padding: 0 4px 80px;
+    }
+    .avs-bands-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background: linear-gradient(
+        90deg,
+        #EF4444 0%,
+        #EF4444 18%,
+        #F59E0B 32%,
+        #FB923C 48%,
+        #84CC16 64%,
+        #22C55E 82%,
+        #22C55E 100%
+      );
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.32);
+    }
+    .avs-bands-ticks {
+      position: relative;
+      width: 100%;
+      height: 0;
+    }
+    .avs-bands-tick {
+      position: absolute;
+      top: 0;
+      left: var(--pct);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-top: 12px;
+    }
+    .avs-bands-line {
+      width: 1px;
+      height: 22px;
+      background: var(--wm);
+      transform-origin: top center;
+      transform: scaleY(0);
+      animation: avsLineDraw 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .avs-bands-tick.d2 .avs-bands-line { animation-delay: 0.55s; }
+    .avs-bands-tick.d3 .avs-bands-line { animation-delay: 0.7s; }
+    .avs-bands-tick.d4 .avs-bands-line { animation-delay: 0.85s; }
+    .avs-bands-v {
+      font-family: var(--fd), serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      color: var(--w);
+      line-height: 1;
+    }
+    .avs-bands-tick.is-red    .avs-bands-v { color: #EF4444; }
+    .avs-bands-tick.is-amber  .avs-bands-v { color: #F59E0B; }
+    .avs-bands-tick.is-orange .avs-bands-v { color: #FB923C; }
+    .avs-bands-tick.is-lime   .avs-bands-v { color: #84CC16; }
+    .avs-bands-tick.is-green  .avs-bands-v { color: #22C55E; }
+    .avs-bands-cap {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--wm);
+      white-space: nowrap;
+    }
+    @keyframes avsLineDraw {
+      to { transform: scaleX(1) scaleY(1); }
+    }
+
+    .avs-bands-mobile {
+      display: none;
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+      gap: 12px;
+    }
+    .avs-bands-mrow {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--bd);
+    }
+    .avs-bands-mv {
+      font-family: var(--fd), serif;
+      font-style: italic;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--w);
+    }
+    .avs-bands-mrow.is-red    .avs-bands-mv { color: #EF4444; }
+    .avs-bands-mrow.is-amber  .avs-bands-mv { color: #F59E0B; }
+    .avs-bands-mrow.is-orange .avs-bands-mv { color: #FB923C; }
+    .avs-bands-mrow.is-lime   .avs-bands-mv { color: #84CC16; }
+    .avs-bands-mrow.is-green  .avs-bands-mv { color: #22C55E; }
+    .avs-bands-mcap {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w);
+    }
+
+    /* ====================================================================== */
+    /* 8 · STEPS                                                               */
+    /* ====================================================================== */
+    .avs-steps {
+      padding: clamp(56px, 8vw, 100px) 0 clamp(40px, 6vw, 80px);
+    }
+    .avs-steps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .avs-steps-row {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: clamp(18px, 2.5vw, 36px);
+      padding: clamp(28px, 3.5vw, 36px) 0;
+      border-top: 1px solid var(--bd);
+      align-items: baseline;
+      transition: padding-left 0.3s ease;
+    }
+    .avs-steps-row:last-child {
+      border-bottom: 1px solid var(--bd);
+    }
+    .avs-steps-row:hover {
+      padding-left: 6px;
+    }
+    .avs-steps-n {
+      font-family: var(--fd), serif;
+      font-size: clamp(48px, 5vw, 64px);
+      font-style: italic;
+      color: var(--wm);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .avs-steps-row:hover .avs-steps-n {
+      background: linear-gradient(110deg, var(--ac), #7baeff, var(--ac2), #7baeff, var(--ac));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: gradShift 8s linear infinite;
+      transform: translateX(-4px);
+    }
+    .avs-steps-t {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(18px, 1.6vw, 22px);
+      font-weight: 700;
+      color: var(--w);
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .avs-steps-d {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      color: var(--wd);
+      line-height: 1.68;
+      margin: 0;
+      max-width: 64ch;
+    }
+    .avs-steps-note {
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      color: var(--wm);
+      margin: clamp(24px, 3vw, 36px) 0 0;
+    }
+    .avs-steps-note a {
+      color: var(--ac);
+      border-bottom: 1px solid currentColor;
+    }
+
+    .avs-faq-sec {
+      padding: clamp(40px, 6vw, 80px) 0 clamp(24px, 4vw, 40px);
+    }
+
+    /* ====================================================================== */
+    /* Responsive                                                              */
+    /* ====================================================================== */
+    @media (max-width: 1024px) {
+      .avs-r-left {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .avs-quiz {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .avs-quiz-left {
+        border-right: none;
+        border-bottom: 1px solid var(--bd);
+        padding-right: 0;
+        padding-bottom: 20px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+          'num cat'
+          'ticks ticks'
+          'copy copy';
+        column-gap: 18px;
+        row-gap: 12px;
+        align-items: end;
+      }
+      .avs-step-row { grid-area: num; margin: 0; }
+      .avs-cat-eyebrow { grid-area: cat; margin: 0; align-self: end; }
+      .avs-tick-track {
+        grid-area: ticks;
+        flex-direction: row;
+        margin: 0;
+        gap: 4px;
+      }
+      .avs-tick { height: 4px; }
+      .avs-quiz-left-copy { grid-area: copy; max-width: none; }
+
+      .avs-gate {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .avs-gate-left {
+        border-right: none;
+        border-bottom: 1px solid var(--bd);
+        padding-right: 0;
+        padding-bottom: 24px;
+      }
+      .avs-results {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .avs-r-left {
+        align-items: flex-start;
+      }
+
+      .avs-why-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .avs-why-hdr { position: relative; top: 0; }
+
+      .avs-sig-table {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .avs-sig-col + .avs-sig-col {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--bd);
+        padding-top: 28px;
+      }
+
+      .avs-bands-scale { display: none; }
+      .avs-bands-mobile { display: flex; flex-direction: column; }
+    }
+
+    @media (max-width: 640px) {
+      .avs-hero {
+        padding: 110px 0 60px;
+      }
+      .avs-mast-meta { display: none; }
+      .avs-stage {
+        padding: 24px 20px;
+      }
+      .avs-r-ring {
+        width: 160px;
+        height: 160px;
+      }
+      .avs-r-num { font-size: 50px; }
+      .avs-steps-row {
+        grid-template-columns: 64px 1fr;
+      }
+      .avs-steps-n { font-size: 44px; }
+      .avs-why-row {
+        grid-template-columns: 56px 1fr;
+      }
+      .avs-r-row {
+        grid-template-columns: 40px 1fr 20px;
+        gap: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .avs-stage-frame {
+        animation: none !important;
+        background: var(--bd) !important;
+      }
+      .avs-mast-line,
+      .avs-bands-line {
+        animation: none !important;
+        transform: scaleX(1) scaleY(1) !important;
+      }
+      .avs-cue-dot,
+      .avs-r-band-dot {
+        animation: none !important;
+      }
+      .avs-step-num em,
+      .avs-r-num,
+      .avs-gate-num,
+      .avs-bands-h em,
+      .avs-steps-row:hover .avs-steps-n {
+        animation: none !important;
+      }
+      #avsRingProgress {
+        transition: none !important;
+      }
+      .avs-gate-band-fill {
+        transition: none !important;
+      }
+      .avs-question-wrap,
+      .avs-gate,
+      .avs-results {
+        transition: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    document.querySelectorAll<HTMLAnchorElement>('a.avs-hero-cta').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById('run-quiz');
+        if (!target) return;
+        const lenis = (window as unknown as { __lenis?: { scrollTo: (t: Element | number, opts?: { offset?: number }) => void } }).__lenis;
+        if (lenis && typeof lenis.scrollTo === 'function') {
+          lenis.scrollTo(target, { offset: -80 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    type Opt = { label: string; points: number; note: string };
+    type Q = { text: string; category: string; options: Opt[] };
+
+    const questions: Q[] = [
+      {
+        text: 'Does your robots.txt explicitly allow AI bots like GPTBot and ClaudeBot?',
+        category: 'Bot Access',
+        options: [
+          {
+            label: 'Yes: GPTBot, ClaudeBot, and PerplexityBot are all explicitly allowed',
+            points: 10,
+            note: 'Bot access is open.',
+          },
+          {
+            label: 'Partially: some bots are allowed but not all AI crawlers',
+            points: 5,
+            note: 'Some AI bots may be blocked.',
+          },
+          { label: "I haven't checked my robots.txt", points: 2, note: 'You may be blocking AI crawlers without knowing it.' },
+          {
+            label: "No: bots are restricted or I'm using a platform default that blocks them",
+            points: 0,
+            note: 'AI crawlers cannot access your content.',
+          },
+        ],
+      },
+      {
+        text: 'Does your website have JSON-LD Person or Organization schema on the homepage?',
+        category: 'Entity Schema',
+        options: [
+          {
+            label: 'Yes: implemented correctly with name, description, knowsAbout, and sameAs',
+            points: 10,
+            note: 'Entity is established.',
+          },
+          { label: "Yes: but it's basic or incomplete", points: 5, note: 'Entity is partially established.' },
+          { label: 'No schema at all', points: 0, note: 'AI engines do not recognize your brand as an entity.' },
+          { label: "I don't know what JSON-LD schema is", points: 0, note: 'Schema is missing. This is a priority fix.' },
+        ],
+      },
+      {
+        text: 'Do your key service or product pages have FAQPage schema?',
+        category: 'FAQPage Schema',
+        options: [
+          {
+            label: 'Yes: FAQPage schema with real buyer questions and direct answers',
+            points: 10,
+            note: 'AI citation surface is active.',
+          },
+          {
+            label: 'I have FAQ sections but no structured schema markup',
+            points: 3,
+            note: 'Content exists but is not machine-readable.',
+          },
+          { label: 'No FAQ sections or schema', points: 0, note: 'Zero direct citation surface.' },
+        ],
+      },
+      {
+        text: 'How is your content structured?',
+        category: 'Content Format',
+        options: [
+          {
+            label: 'Answer-first: each section starts with a direct answer to its heading question',
+            points: 10,
+            note: 'Optimized for AI citation.',
+          },
+          {
+            label: 'Mixed: some sections are answer-first, others build context before the answer',
+            points: 5,
+            note: 'Partially optimized.',
+          },
+          {
+            label: 'Narrative: content builds to conclusions rather than starting with them',
+            points: 2,
+            note: 'Not structured for AI synthesis.',
+          },
+          { label: 'No consistent structure', points: 0, note: 'Content structure needs a full rebuild.' },
+        ],
+      },
+      {
+        text: 'Do you have a topical content cluster (10+ pieces of content on one core topic)?',
+        category: 'Topical Authority',
+        options: [
+          {
+            label: 'Yes: a full cluster with pillar page and 10+ supporting posts with internal links',
+            points: 10,
+            note: 'Topical authority established.',
+          },
+          {
+            label: 'Partially: some related content but no structured cluster',
+            points: 4,
+            note: 'Authority is fragmented.',
+          },
+          { label: 'No: my content covers multiple topics without depth in any', points: 0, note: 'No topical authority signals.' },
+        ],
+      },
+      {
+        text: 'Have you searched for your brand in ChatGPT or Perplexity recently?',
+        category: 'AI Citation Status',
+        options: [
+          { label: 'Yes: my brand is cited for relevant queries', points: 10, note: 'AI citations active.' },
+          { label: 'Yes: my brand appears occasionally or indirectly', points: 5, note: 'Partial citation presence.' },
+          { label: 'Yes: my brand does not appear at all', points: 1, note: 'Zero AI citation currently.' },
+          { label: "No: I haven't checked", points: 0, note: 'Unknown baseline. Check this today.' },
+        ],
+      },
+      {
+        text: 'Does your website have correct Article schema on blog posts?',
+        category: 'Content Schema',
+        options: [
+          {
+            label: 'Yes: Article schema with author, datePublished, and dateModified',
+            points: 10,
+            note: 'Content is properly attributed.',
+          },
+          { label: 'Partial: some pages have it but not all', points: 5, note: 'Incomplete coverage.' },
+          { label: 'No Article schema', points: 0, note: 'Content authorship is not machine-readable.' },
+        ],
+      },
+      {
+        text: 'How would you rate your Core Web Vitals (page speed and performance)?',
+        category: 'Technical Performance',
+        options: [
+          {
+            label: 'Passing: LCP under 2.5s, CLS under 0.1 on mobile',
+            points: 10,
+            note: 'Performance is not a crawl barrier.',
+          },
+          {
+            label: 'Partially passing: some metrics pass, others need work',
+            points: 5,
+            note: 'May slow AI bot crawling.',
+          },
+          {
+            label: 'Failing: slow load times, layout shift, or poor mobile performance',
+            points: 0,
+            note: 'Performance issues can limit AI bot crawl depth.',
+          },
+          {
+            label: "I don't know my Core Web Vitals scores",
+            points: 2,
+            note: "Check Google Search Console's Core Web Vitals report.",
+          },
+        ],
+      },
+      {
+        text: 'Have you submitted an XML sitemap to Google Search Console and Bing Webmaster Tools?',
+        category: 'Indexation',
+        options: [
+          { label: 'Yes: submitted to both and monitored for errors', points: 10, note: 'Discovery surface is complete.' },
+          { label: 'Submitted to Google only', points: 6, note: 'Bing and Copilot may have slower discovery.' },
+          { label: 'Not submitted anywhere', points: 0, note: 'Indexation relies entirely on crawl discovery.' },
+          { label: "I don't have a sitemap", points: 0, note: 'Generate and submit a sitemap. This is a priority fix.' },
+        ],
+      },
+      {
+        text: 'Is your brand described consistently across your website, LinkedIn, and other crawlable profiles?',
+        category: 'Entity Consistency',
+        options: [
+          {
+            label: 'Yes: same name, title, description, and expertise across all profiles',
+            points: 10,
+            note: 'Entity is consistent and reinforced.',
+          },
+          {
+            label: 'Mostly: minor variations between profiles',
+            points: 6,
+            note: 'Minor inconsistency reduces entity confidence.',
+          },
+          {
+            label: 'No: different descriptions, titles, or positioning across platforms',
+            points: 0,
+            note: 'Inconsistent entity signals reduce citation reliability.',
+          },
+        ],
+      },
+    ];
+
+    let score = 0;
+    let current = 0;
+    const answers: number[] = new Array(questions.length).fill(-1);
+
+    const quizEl = document.getElementById('avsQuiz');
+    const wrap = document.getElementById('avsQuestionWrap');
+    const counter = document.getElementById('avsCounter');
+    const bar = document.getElementById('avsProgressBar');
+    const nextBtn = document.getElementById('avsNext') as HTMLButtonElement | null;
+    const prevBtn = document.getElementById('avsPrev') as HTMLButtonElement | null;
+    const stepNum = document.getElementById('avsStepNum');
+    const catEyebrow = document.getElementById('avsCatEyebrow');
+    const tickTrack = document.getElementById('avsTickTrack');
+
+    if (tickTrack) {
+      tickTrack.innerHTML = questions
+        .map((_, i) => `<span class="avs-tick" data-i="${i}" aria-hidden="true"></span>`)
+        .join('');
+    }
+
+    function updateTicks(idx: number) {
+      if (!tickTrack) return;
+      tickTrack.querySelectorAll<HTMLElement>('.avs-tick').forEach((t, i) => {
+        t.classList.remove('is-done', 'is-current');
+        if (answers[i] !== -1) t.classList.add('is-done');
+        if (i === idx) t.classList.add('is-current');
+      });
+    }
+
+    function paintQuestion(idx: number) {
+      const q = questions[idx];
+      if (!wrap) return;
+      wrap.innerHTML = `
+        <div class="avs-q-text">${q.text}</div>
+        <div class="avs-options" role="radiogroup" aria-label="Answer options">
+          ${q.options
+            .map(
+              (o, i) => `
+            <button type="button" class="avs-opt${answers[idx] === i ? ' selected' : ''}" data-opt="${i}" role="radio" aria-checked="${answers[idx] === i}">
+              <span class="avs-opt-bar" aria-hidden="true"></span>
+              <span class="avs-opt-radio" aria-hidden="true"></span>
+              <span class="avs-opt-text">${o.label}</span>
+            </button>
+          `,
+            )
+            .join('')}
+        </div>
+      `;
+      wrap.querySelectorAll<HTMLButtonElement>('.avs-opt').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const opt = parseInt(btn.dataset.opt || '0', 10);
+          answers[idx] = opt;
+          wrap.querySelectorAll<HTMLButtonElement>('.avs-opt').forEach((b) => {
+            b.classList.remove('selected');
+            b.setAttribute('aria-checked', 'false');
+          });
+          btn.classList.add('selected');
+          btn.setAttribute('aria-checked', 'true');
+          if (nextBtn) nextBtn.disabled = false;
+          updateTicks(idx);
+        });
+      });
+    }
+
+    function renderQuestion(idx: number) {
+      if (!wrap || !counter || !bar) return;
+      const q = questions[idx];
+
+      if (stepNum) stepNum.innerHTML = `<em>${String(idx + 1).padStart(2, '0')}</em>`;
+      if (catEyebrow) catEyebrow.textContent = q.category;
+      counter.textContent = `Question ${idx + 1} of ${questions.length}`;
+      bar.dataset.pct = String(((idx + 1) / questions.length) * 100);
+      bar.style.width = `${((idx + 1) / questions.length) * 100}%`;
+
+      if (prevBtn) prevBtn.style.visibility = idx > 0 ? 'visible' : 'hidden';
+      if (nextBtn) {
+        const lastBtnTxt = nextBtn.querySelector('span');
+        if (lastBtnTxt) lastBtnTxt.textContent = idx === questions.length - 1 ? 'See my score' : 'Next';
+        nextBtn.disabled = answers[idx] === -1;
+      }
+
+      updateTicks(idx);
+
+      wrap.classList.add('is-out');
+      window.setTimeout(() => {
+        paintQuestion(idx);
+        requestAnimationFrame(() => {
+          wrap.classList.remove('is-out');
+        });
+      }, 180);
+    }
+
+    if (wrap) {
+      paintQuestion(0);
+      const q0 = questions[0];
+      if (stepNum) stepNum.innerHTML = `<em>01</em>`;
+      if (catEyebrow) catEyebrow.textContent = q0.category;
+      if (counter) counter.textContent = `Question 1 of ${questions.length}`;
+      if (bar) bar.style.width = `${(1 / questions.length) * 100}%`;
+      updateTicks(0);
+    }
+
+    nextBtn?.addEventListener('click', () => {
+      if (answers[current] === -1) return;
+      if (current < questions.length - 1) {
+        current++;
+        renderQuestion(current);
+      } else {
+        score = answers.reduce((sum, ans, qi) => {
+          if (ans === -1) return sum;
+          return sum + questions[qi].options[ans].points;
+        }, 0);
+        showGate();
+      }
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      if (current > 0) {
+        current--;
+        renderQuestion(current);
+      }
+    });
+
+    function bandFromScore(s: number): 'red' | 'amber' | 'orange' | 'lime' | 'green' {
+      if (s < 40) return 'red';
+      if (s < 55) return 'amber';
+      if (s < 70) return 'orange';
+      if (s < 80) return 'lime';
+      return 'green';
+    }
+    function labelFromBand(b: string): string {
+      switch (b) {
+        case 'red': return 'Rebuild zone';
+        case 'amber': return 'Heavy gaps';
+        case 'orange': return 'Closing in';
+        case 'lime': return 'Mostly there';
+        default: return 'Strong foundation';
+      }
+    }
+    const palette: Record<string, [string, string]> = {
+      red: ['#EF4444', '#B91C1C'],
+      amber: ['#F59E0B', '#B45309'],
+      orange: ['#FB923C', '#C2410C'],
+      lime: ['#84CC16', '#4D7C0F'],
+      green: ['#22C55E', '#15803D'],
+    };
+
+    function showGate() {
+      if (quizEl) quizEl.style.display = 'none';
+      const gate = document.getElementById('avsGate');
+      const gateForm = document.getElementById('avsGateForm') as HTMLFormElement | null;
+      const numEl = gate?.querySelector('[data-avs-gate-num]') as HTMLElement | null;
+      const scoreBlock = document.getElementById('avsGateScore');
+      const bandFill = document.getElementById('avsGateBandFill');
+      const bandLabelEl = document.getElementById('avsGateBandLabel');
+
+      const band = bandFromScore(score);
+      const [from, to] = palette[band];
+      if (scoreBlock) {
+        scoreBlock.setAttribute('data-band', band);
+        scoreBlock.style.setProperty('--avs-band-from', from);
+        scoreBlock.style.setProperty('--avs-band-to', to);
+      }
+      if (bandLabelEl) bandLabelEl.textContent = labelFromBand(band);
+
+      if (gateForm) gateForm.dataset.mountedAt = String(Date.now());
+
+      if (gate) {
+        gate.style.display = 'grid';
+        gate.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => {
+          gate.classList.add('is-in');
+        });
+      }
+
+      if (numEl) {
+        let n = 0;
+        const step = Math.max(1, Math.ceil(score / 24));
+        const tick = window.setInterval(() => {
+          n = Math.min(n + step, score);
+          numEl.textContent = String(n);
+          if (n >= score) window.clearInterval(tick);
+        }, 32);
+      }
+
+      window.setTimeout(() => {
+        if (bandFill) bandFill.style.width = `${score}%`;
+      }, 240);
+
+      const lenis = (window as unknown as { __lenis?: { scrollTo: (t: Element | number, opts?: { offset?: number }) => void } }).__lenis;
+      if (gate && lenis && typeof lenis.scrollTo === 'function') {
+        lenis.scrollTo(gate, { offset: -100 });
+      } else {
+        gate?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    const gateFormEl = document.getElementById('avsGateForm');
+    gateFormEl?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('avsGateEmail') as HTMLInputElement | null;
+      const msgEl = document.getElementById('avsGateMsg');
+      const submitBtn = gateFormEl.querySelector('.avs-gate-btn') as HTMLButtonElement | null;
+      const email = emailInput?.value.trim();
+      if (!email) return;
+      const honey =
+        (gateFormEl.querySelector('[name="website"]') as HTMLInputElement | null)?.value?.trim() || '';
+      const mountedAt = parseInt((gateFormEl as HTMLFormElement).dataset.mountedAt || '0', 10) || 0;
+      if (submitBtn) submitBtn.disabled = true;
+      if (msgEl) {
+        msgEl.textContent = 'Sending...';
+        msgEl.className = 'avs-gate-msg';
+      }
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { accept: 'application/json', 'content-type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            website: honey,
+            mountedAt,
+            leadSource: 'ai-score-tool',
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          if (msgEl) {
+            msgEl.textContent = 'Report unlocked. Loading your breakdown.';
+            msgEl.className = 'avs-gate-msg ok';
+          }
+          showResults();
+        } else {
+          throw new Error(data.error || 'Subscribe failed');
+        }
+      } catch {
+        if (msgEl) {
+          msgEl.textContent = 'Try emailing shivamattri27@gmail.com directly.';
+          msgEl.className = 'avs-gate-msg err';
+        }
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    function showResults() {
+      const gate = document.getElementById('avsGate');
+      const results = document.getElementById('avsResults');
+      if (gate) {
+        gate.style.display = 'none';
+        gate.setAttribute('aria-hidden', 'true');
+      }
+      if (results) {
+        results.style.display = 'grid';
+        results.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => results.classList.add('is-in'));
+      }
+
+      const ring = document.getElementById('avsRingProgress') as unknown as SVGCircleElement | null;
+      const ringWrap = document.getElementById('avsRingWrap');
+      const ringNum = document.getElementById('avsRingNum');
+      const ringLabel = document.getElementById('avsRingLabel');
+      const items = document.getElementById('avsRItems');
+
+      const band = bandFromScore(score);
+      const [from, to] = palette[band];
+      if (ringWrap) {
+        ringWrap.setAttribute('data-band', band);
+        ringWrap.style.setProperty('--avs-band-from', from);
+        ringWrap.style.setProperty('--avs-band-to', to);
+      }
+      const stops = document.querySelectorAll('#avsRingGrad stop');
+      if (stops[0]) stops[0].setAttribute('stop-color', from);
+      if (stops[1]) stops[1].setAttribute('stop-color', to);
+
+      const circumference = 540;
+      if (ring) {
+        ring.style.strokeDasharray = String(circumference);
+        ring.style.strokeDashoffset = String(circumference);
+        requestAnimationFrame(() => {
+          ring.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(0.2,0.7,0.2,1)';
+          ring.style.strokeDashoffset = String(circumference - (score / 100) * circumference);
+        });
+      }
+
+      let p = 0;
+      const stepSize = Math.max(1, Math.ceil(score / 30));
+      const anim = window.setInterval(() => {
+        p = Math.min(p + stepSize, score);
+        if (ringNum) ringNum.textContent = String(p);
+        if (p >= score) window.clearInterval(anim);
+      }, 28);
+
+      if (ringLabel) {
+        ringLabel.setAttribute('data-band', band);
+        (ringLabel as HTMLElement).style.setProperty('--avs-band-from', from);
+        (ringLabel as HTMLElement).style.setProperty('--avs-band-to', to);
+        ringLabel.innerHTML = `<span class="avs-r-band-dot"></span><span class="avs-r-band-text">${labelFromBand(band)}</span>`;
+      }
+
+      const rows = answers.map((ans, qi) => {
+        const q = questions[qi];
+        const opt = ans === -1 ? { points: 0, note: 'Not answered' } : q.options[ans];
+        return { label: q.category, note: opt.note, pass: opt.points >= 8 };
+      });
+
+      if (items) {
+        items.innerHTML = rows
+          .map(
+            (l, i) => `
+        <li class="avs-r-row" data-pass="${l.pass}">
+          <span class="avs-r-row-n">${String(i + 1).padStart(2, '0')}</span>
+          <div class="avs-r-row-body">
+            <span class="avs-r-row-t">${l.label}</span>
+            <p class="avs-r-row-d">${l.note}</p>
+          </div>
+          <span class="avs-r-row-ic ${l.pass ? 'pass' : 'fail'}" aria-hidden="true">
+            ${
+              l.pass
+                ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+            }
+          </span>
+        </li>
+      `,
+          )
+          .join('');
+      }
+
+      const lenis = (window as unknown as { __lenis?: { scrollTo: (t: Element | number, opts?: { offset?: number }) => void } }).__lenis;
+      if (results && lenis && typeof lenis.scrollTo === 'function') {
+        lenis.scrollTo(results, { offset: -100 });
+      } else {
+        results?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+</Layout>

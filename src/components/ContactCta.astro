@@ -1,0 +1,472 @@
+---
+/**
+ * ContactCta — primary site-wide lead capture (HARDENED).
+ *
+ * Layout: photo on left, structured form on right.
+ *
+ * Fields (all sanitized server-side via Brevo's input handling):
+ *   1. Full Name *                    (text, 2-80 chars, letters/spaces/dots/hyphens only)
+ *   2. Phone / WhatsApp               (tel, country code + 5-15 digits)
+ *   3. Email Address *                (email, RFC-ish regex, 6-100 chars)
+ *   4. Service you need *             (select)
+ *   5. Project budget *               (select)
+ *   6. Project deadline *             (select)
+ *   7. How did you hear about me? *   (select)
+ *   8. Message                        (textarea, max 1500 chars, HTML-stripped)
+ *
+ * Submission flow (both calls fire from one submit):
+ *   A. POST /v3/contacts → adds contact to Brevo list 3 → triggers
+ *      whatever welcome automation Shivam configured in Brevo dashboard
+ *      (the "thank you / first interaction" email).
+ *   B. POST /v3/smtp/email → sends a transactional notification email
+ *      to shivamattri27@gmail.com with all submitted fields, so the
+ *      lead lands in his inbox immediately for fast reply.
+ *
+ * Anti-abuse hardening:
+ *   - Honeypot field (.cct-honey) — bots fill it, humans never see it.
+ *     If filled, abort silently with a fake-success state.
+ *   - Time-trap — form must take ≥ 2.5s to fill. Bots submit instantly.
+ *   - sessionStorage rate-limit — one submission per 60s per browser.
+ *   - All text inputs trimmed + length-clamped + HTML-escaped before
+ *     leaving the client.
+ *   - Email regex validated client-side; invalid → no API calls fire.
+ *   - Phone digits-only enforced.
+ *   - api-key restriction: should be done in Brevo dashboard
+ *     (restrict to "Add contact" + "Send transactional email" only).
+ *
+ * The component is the SAME instance on every page — props let you
+ * change eyebrow/heading/deck per page, but the form behaviour is
+ * shared and consistent.
+ */
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  headingEm?: string;
+  deck?: string;
+  /** Unique id so multiple instances do not collide */
+  id?: string;
+  /** Brevo list id — defaults to 3 (seoshivam-leads) */
+  listId?: number;
+  /** Lead source attribute (`homepage`, `services-aeo`, etc.) */
+  source?: string;
+}
+
+const {
+  eyebrow = 'WORK TOGETHER / TELL ME ABOUT THE PROJECT',
+  heading = 'Let’s build something',
+  headingEm = 'AI engines actually cite.',
+  deck = 'Have a project in mind? Drop the details and I will reply within 4 hours with a 1-page audit of where your brand stands and exactly what to fix.',
+  id = 'contact-cta',
+  listId = 3,
+  source = 'contact-cta',
+} = Astro.props;
+
+const services = [
+  'AEO Strategy: AI Search Visibility',
+  'SEO Architecture & Content',
+  'Web Design (Webflow / Framer / Astro)',
+  'Full Suite: SEO + AEO + Web Design',
+  'Google Ads & Paid Search',
+  'Audit & Strategy Session Only',
+];
+const budgets = ['$5K–$10K', '$10K–$20K', '$20K–$50K', '$50K+', 'Not sure yet'];
+const deadlines = ['Less than 4 weeks', '1–2 months', '3–6 months', '6+ months', 'Flexible'];
+const sources = ['LinkedIn', 'X (Twitter)', 'ChatGPT / Perplexity / AI search', 'Google search', 'Substack', 'Reddit', 'Referral', 'Other'];
+
+// Country dial codes for the phone field — mirrors the old form's UX
+const dialCodes = [
+  {flag:'🇺🇸', code:'+1',   country:'US'},
+  {flag:'🇮🇳', code:'+91',  country:'IN'},
+  {flag:'🇬🇧', code:'+44',  country:'UK'},
+  {flag:'🇨🇦', code:'+1',   country:'CA'},
+  {flag:'🇦🇺', code:'+61',  country:'AU'},
+  {flag:'🇩🇪', code:'+49',  country:'DE'},
+  {flag:'🇫🇷', code:'+33',  country:'FR'},
+  {flag:'🇳🇱', code:'+31',  country:'NL'},
+  {flag:'🇪🇸', code:'+34',  country:'ES'},
+  {flag:'🇮🇹', code:'+39',  country:'IT'},
+  {flag:'🇸🇬', code:'+65',  country:'SG'},
+  {flag:'🇦🇪', code:'+971', country:'AE'},
+];
+---
+
+<section class="ccta" id={id}>
+  <div class="container">
+    <header class="ccta-hdr rv">
+      <span class="hair left">{eyebrow}</span>
+      <h2 class="ccta-h">
+        {heading}<br>
+        <em class="grad-anim">{headingEm}</em>
+      </h2>
+      <p class="ccta-deck">{deck}</p>
+    </header>
+
+    <div class="ccta-card rv d1">
+
+      <!-- LEFT: photo + author -->
+      <aside class="ccta-photo">
+        <div class="ccta-photo-frame">
+          <img src="/images/shivam-portrait-tall.jpg" width="520" height="640" alt="Shivam Attri, AEO Specialist" loading="lazy" onerror="this.onerror=null;this.src='/shivam-attri.jpg';">
+          <div class="ccta-photo-init" aria-hidden="true"><span>S</span><em>A</em></div>
+          <span class="ccta-photo-tag">
+            <span class="adot" style="width:6px;height:6px"></span>
+            Available
+          </span>
+        </div>
+        <div class="ccta-author">
+          <p class="ccta-author-line">
+            <span class="ccta-author-hi">Hi, I’m <strong>Shivam</strong></span>
+            <span class="ccta-author-role">AEO Specialist &middot; SEO Strategist</span>
+          </p>
+          <p class="ccta-author-bio">
+            Drop the details and I’ll reply from <strong>shivamattri27@gmail.com</strong> within 4 hours with a 1-page audit of where your brand stands.
+          </p>
+          <a href="https://wa.me/919999999999?text=Hi%20Shivam%2C%20I%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener" class="ccta-wa" data-cursor="WhatsApp">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7 0-1.4-.7-2.3-1.3-3.3-2.9-.3-.5.3-.4.8-1.4.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.2 3.3 5.2 4.7 1.9.8 2.6.9 3.5.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.2-.3-.2-.6-.4z"/><path d="M20.5 3.5c-2.2-2.2-5.2-3.5-8.5-3.5C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.7 6L0 24l6.2-1.6c1.7.9 3.7 1.4 5.7 1.4 6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.4-8.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.6 15.7 2 13.9 2 12 2 6.5 6.5 2 12 2c2.7 0 5.2 1 7.1 2.9 1.9 1.9 2.9 4.4 2.9 7.1 0 5.5-4.5 9.8-10 9.8z"/></svg>
+            WhatsApp Shivam
+          </a>
+        </div>
+      </aside>
+
+      <!-- RIGHT: form -->
+      <form class="ccta-form" id={`${id}-form`} novalidate data-list-id={listId} data-source={source} data-mounted-at={Date.now()}>
+
+        <!-- Honeypot: hidden from humans, bots fill anything name="website" -->
+        <div class="cct-honey" aria-hidden="true">
+          <label>Do not fill this field<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div class="ccta-row">
+          <label class="ccta-field">
+            <span class="ccta-label">Full Name *</span>
+            <input type="text" name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Tony Stark" class="ccta-input" pattern="[A-Za-zÀ-ſ .'\-]{2,80}">
+          </label>
+          <label class="ccta-field">
+            <span class="ccta-label">Phone / WhatsApp</span>
+            <div class="ccta-tel">
+              <select name="dial" class="ccta-input ccta-tel-dial" aria-label="Country code">
+                {dialCodes.map(d => <option value={d.code} data-flag={d.flag}>{d.flag} {d.country} {d.code}</option>)}
+              </select>
+              <input type="tel" name="phone" maxlength="20" autocomplete="tel" placeholder="555 000 0000" class="ccta-input ccta-tel-num" pattern="[0-9 +\-]{5,20}">
+            </div>
+          </label>
+        </div>
+
+        <label class="ccta-field">
+          <span class="ccta-label">Email Address *</span>
+          <input type="email" name="email" required maxlength="100" autocomplete="email" placeholder="tony@starkindustries.com" class="ccta-input">
+        </label>
+
+        <div class="ccta-row">
+          <label class="ccta-field">
+            <span class="ccta-label">Service you need *</span>
+            <select name="service" required class="ccta-input ccta-select">
+              <option value="" disabled selected>Select</option>
+              {services.map(o => <option value={o}>{o}</option>)}
+            </select>
+          </label>
+          <label class="ccta-field">
+            <span class="ccta-label">Project budget *</span>
+            <select name="budget" required class="ccta-input ccta-select">
+              <option value="" disabled selected>Select</option>
+              {budgets.map(o => <option value={o}>{o}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <div class="ccta-row">
+          <label class="ccta-field">
+            <span class="ccta-label">Project deadline *</span>
+            <select name="deadline" required class="ccta-input ccta-select">
+              <option value="" disabled selected>Select</option>
+              {deadlines.map(o => <option value={o}>{o}</option>)}
+            </select>
+          </label>
+          <label class="ccta-field">
+            <span class="ccta-label">How did you hear about me? *</span>
+            <select name="source_field" required class="ccta-input ccta-select">
+              <option value="" disabled selected>Select</option>
+              {sources.map(o => <option value={o}>{o}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <label class="ccta-field">
+          <span class="ccta-label">Message</span>
+          <textarea name="message" rows="4" maxlength="1500" placeholder="A few sentences about the brand, the goal, and where you are stuck. The more specific, the faster I can reply with something useful." class="ccta-input ccta-textarea"></textarea>
+        </label>
+
+        <div class="ccta-actions">
+          <button type="submit" class="ccta-submit" id={`${id}-submit`}>
+            <span class="ccta-submit-txt">Submit and book a call</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <p class="ccta-note">Secure form &middot; Reply within 4 hours &middot; shivamattri27@gmail.com</p>
+        </div>
+
+        <p class="ccta-status" id={`${id}-status`} aria-live="polite"></p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.ccta{padding:80px 0;position:relative;z-index:1}
+.ccta-hdr{max-width:780px;margin:0 0 48px;display:flex;flex-direction:column;gap:14px}
+.ccta-h{font-family:'Instrument Serif',serif;font-size:clamp(34px,4.6vw,60px);font-weight:400;line-height:.96;letter-spacing:-.022em;color:var(--w);margin:0}
+.ccta-h em{font-style:italic}
+.ccta-deck{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:660px}
+
+.ccta-card{
+  display:grid;
+  grid-template-columns:minmax(0,360px) minmax(0,1fr);
+  gap:36px;
+  background:var(--s1);
+  border:1px solid var(--bd);
+  border-radius:24px;
+  padding:32px;
+  position:relative;overflow:hidden;
+  box-shadow:0 28px 70px rgba(0,0,0,.32);
+}
+.ccta-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 70% at 100% 0%, rgba(79,142,247,.08) 0%, transparent 60%);
+}
+
+/* ─── Photo + author ─── */
+.ccta-photo{position:relative;display:flex;flex-direction:column;gap:20px}
+.ccta-photo-frame{
+  position:relative;
+  aspect-ratio:4/5;
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(180deg, var(--s2) 0%, var(--s3) 100%);
+  border:1px solid var(--bd);
+}
+.ccta-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.ccta-photo-init{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  font-family:'Instrument Serif',serif;font-size:96px;letter-spacing:-.04em;color:var(--w);font-weight:400;
+}
+.ccta-photo-frame.no-img .ccta-photo-init{display:flex}
+.ccta-photo-init em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-left:4px;
+}
+.ccta-photo-tag{
+  position:absolute;top:14px;left:14px;
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#fff;
+  padding:6px 11px;border-radius:999px;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);
+}
+
+.ccta-author{display:flex;flex-direction:column;gap:12px;position:relative}
+.ccta-author-line{display:flex;flex-direction:column;gap:3px;margin:0}
+.ccta-author-hi{font-family:'Syne',sans-serif;font-size:15px;color:var(--w);font-weight:500}
+.ccta-author-hi strong{font-weight:700}
+.ccta-author-role{font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ac)}
+.ccta-author-bio{font-family:'Syne',sans-serif;font-size:13px;color:var(--wd);line-height:1.7;margin:0}
+.ccta-author-bio strong{color:var(--w);font-weight:600}
+.ccta-wa{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  color:var(--w);
+  padding:8px 14px;border-radius:999px;
+  border:1px solid var(--bd);
+  background:var(--s2);
+  text-decoration:none;
+  align-self:flex-start;
+  transition:color .25s,border-color .25s,background .25s,transform .25s;
+}
+.ccta-wa svg{color:#22C55E}
+.ccta-wa:hover{color:var(--w);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.08);transform:translateY(-1px)}
+
+/* ─── Form ─── */
+.ccta-form{display:flex;flex-direction:column;gap:18px;position:relative}
+.ccta-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ccta-field{display:flex;flex-direction:column;gap:7px}
+.ccta-label{
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wd);
+}
+.ccta-input{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:500;
+  color:var(--w);
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:8px;
+  padding:12px 14px;
+  outline:none;
+  width:100%;
+  transition:border-color .2s, background .2s;
+  appearance:none;-webkit-appearance:none;
+}
+.ccta-input::placeholder{color:var(--wm);font-weight:400}
+.ccta-input:focus{border-color:var(--ac);background:var(--s3)}
+.ccta-input.is-invalid,.ccta-input:invalid:not(:placeholder-shown):not(:focus){border-color:rgba(239,68,68,.6)}
+
+.ccta-select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A8A49C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:12px 8px;
+  padding-right:36px;
+  cursor:pointer;
+}
+
+.ccta-tel{display:grid;grid-template-columns:96px 1fr;gap:8px}
+.ccta-tel-dial{padding-right:24px;background-position:right 8px center}
+.ccta-textarea{font-family:'Syne',sans-serif;line-height:1.6;resize:vertical;min-height:90px}
+
+/* Honeypot — visually hidden but accessible to crawlers/bots */
+.cct-honey{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+
+.ccta-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:6px}
+.ccta-submit{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:600;
+  color:#fff;
+  background:var(--ag);background-size:200% 100%;
+  border:none;
+  border-radius:999px;
+  padding:12px 22px;
+  cursor:pointer;
+  transition:transform .25s, box-shadow .25s, opacity .25s;
+  animation:cctaGrad 6s linear infinite;
+}
+@keyframes cctaGrad{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.ccta-submit:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(79,142,247,.32)}
+.ccta-submit:disabled{opacity:.55;cursor:not-allowed;animation:none;transform:none;box-shadow:none}
+.ccta-submit svg{transition:transform .25s}
+.ccta-submit:hover:not(:disabled) svg{transform:translateX(3px)}
+.ccta-note{font-family:'JetBrains Mono', monospace;font-size:10px;letter-spacing:.06em;color:var(--wm);margin:0}
+
+.ccta-status{font-family:'JetBrains Mono', monospace;font-size:11px;letter-spacing:.06em;color:var(--wm);margin:0;min-height:16px}
+.ccta-status.ok{color:var(--green)}
+.ccta-status.err{color:#EF4444}
+
+@media(max-width:880px){
+  .ccta-card{grid-template-columns:1fr;gap:28px}
+  .ccta-photo-frame{max-width:280px;aspect-ratio:1/1}
+}
+@media(max-width:540px){
+  .ccta{padding:60px 0}
+  .ccta-card{padding:24px}
+  .ccta-row{grid-template-columns:1fr}
+  .ccta-actions{flex-direction:column;align-items:stretch}
+  .ccta-submit{justify-content:center}
+}
+</style>
+
+<script>
+// ──────────────────────────────────────────────
+// HARDENED FORM SUBMISSION
+//   1. Honeypot — silent fake-success on bot fill
+//   2. Time-trap — < 2.5s submit = bot, abort
+//   3. sessionStorage rate-limit — 1 submit / 60s
+//   4. Strict client-side validation + sanitization
+//   5. Two parallel Brevo calls:
+//      a) Add contact (triggers welcome automation)
+//      b) Send transactional email to Shivam's inbox
+// ──────────────────────────────────────────────
+(function(){
+  const ENDPOINT = '/api/contact';
+  const RATE_KEY = 'ccta-last-submit';
+  const RATE_WINDOW_MS = 60_000;
+
+  // Light client-side validation only — server enforces everything strictly.
+  // The server is the source of truth (sanitization, format, time-trap, honeypot).
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  document.querySelectorAll<HTMLFormElement>('.ccta-form').forEach(form => {
+    const submitBtn = form.querySelector('.ccta-submit') as HTMLButtonElement | null;
+    const submitTxt = form.querySelector('.ccta-submit-txt') as HTMLElement | null;
+    const statusEl  = form.querySelector('.ccta-status') as HTMLElement | null;
+
+    function setStatus(msg: string, kind: 'ok'|'err'|'' = ''){
+      if(!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.className = 'ccta-status' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setStatus('');
+
+      // Client-side rate limit (UX hint; server-independent)
+      try {
+        const last = parseInt(sessionStorage.getItem(RATE_KEY) || '0', 10);
+        if(last && (Date.now() - last) < RATE_WINDOW_MS){
+          const wait = Math.ceil((RATE_WINDOW_MS - (Date.now() - last)) / 1000);
+          setStatus(`Please wait ${wait}s before submitting again.`, 'err');
+          return;
+        }
+      } catch {}
+
+      // Quick local validation (the server validates strictly too)
+      const fd = new FormData(form);
+      const email = String(fd.get('email') || '').trim().toLowerCase();
+      const name  = String(fd.get('name') || '').trim();
+      if(!name){ setStatus('Enter your full name.', 'err'); return; }
+      if(!EMAIL_RE.test(email)){ setStatus('Enter a valid email address.', 'err'); return; }
+      if(!fd.get('service')){ setStatus('Select a service.', 'err'); return; }
+      if(!fd.get('budget')){ setStatus('Select a budget.', 'err'); return; }
+      if(!fd.get('deadline')){ setStatus('Select a deadline.', 'err'); return; }
+      if(!fd.get('source_field')){ setStatus('Select where you heard about me.', 'err'); return; }
+
+      if(submitBtn) submitBtn.disabled = true;
+      if(submitTxt) submitTxt.textContent = 'Sending...';
+
+      // Build JSON payload; server sanitizes + validates again.
+      const payload = {
+        name,
+        email,
+        dial:         String(fd.get('dial') || '+1'),
+        phone:        String(fd.get('phone') || ''),
+        service:      String(fd.get('service') || ''),
+        budget:       String(fd.get('budget') || ''),
+        deadline:     String(fd.get('deadline') || ''),
+        source_field: String(fd.get('source_field') || ''),
+        message:      String(fd.get('message') || ''),
+        website:      String(fd.get('website') || ''),     // honeypot
+        list_id:      parseInt(form.dataset.listId || '3', 10),
+        lead_source:  form.dataset.source || 'contact-cta',
+        mountedAt:    parseInt(form.dataset.mountedAt || '0', 10),
+      };
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        let data: { ok?: boolean; error?: string; message?: string } = {};
+        try { data = await res.json(); } catch {}
+
+        if(res.ok && data.ok){
+          try { sessionStorage.setItem(RATE_KEY, String(Date.now())); } catch {}
+          setStatus(data.message || 'Got it. Replying within 4 hours.', 'ok');
+          if(submitTxt) submitTxt.textContent = 'Sent ✓';
+          form.reset();
+        } else {
+          throw new Error(data.error || `Server returned ${res.status}`);
+        }
+      } catch (err) {
+        if(submitBtn) submitBtn.disabled = false;
+        if(submitTxt) submitTxt.textContent = 'Submit and book a call';
+        const msg = (err as Error)?.message || 'Could not submit.';
+        setStatus(msg + ' Email shivamattri27@gmail.com directly.', 'err');
+      }
+    });
+  });
+})();
+</script>

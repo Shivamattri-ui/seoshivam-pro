@@ -1,0 +1,574 @@
+---
+import {
+  MAP_WIDTH,
+  MAP_HEIGHT,
+  WORLD_LAND_PATHS,
+  COVERAGE_MARKETS,
+  COVERAGE_ARCS,
+} from '../lib/world-map-data';
+
+const hub = COVERAGE_MARKETS.find((m) => m.hub)!;
+---
+
+<section class="cov" id="coverage-map" aria-labelledby="cov-heading">
+  <div class="container">
+    <header class="cov-hdr rv">
+      <span class="hair left">GLOBAL COVERAGE / REMOTE-FIRST</span>
+      <h2 class="sec-h cov-h" id="cov-heading">
+        Clients across<br /><em class="grad-anim">nine time zones.</em>
+      </h2>
+      <p class="cov-deck">
+        Based in Gurugram, India. Engagements run async across the US, UK, EU, Germany, Ireland, Canada, Singapore, and Australia. Hover a dot for regional coverage.
+      </p>
+    </header>
+
+    <div class="cov-stage rv d1">
+      <div class="cov-frame" data-cov-map>
+        <div class="cov-ambient" aria-hidden="true"></div>
+        <div class="cov-ambient cov-ambient-b" aria-hidden="true"></div>
+        <div class="cov-vignette" aria-hidden="true"></div>
+
+        <svg
+          class="cov-svg"
+          viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label="World map showing Shivam Attri client coverage"
+        >
+          <defs>
+            <clipPath id="cov-land-clip">
+              {WORLD_LAND_PATHS.map((d) => (
+                <path d={d} />
+              ))}
+            </clipPath>
+            <linearGradient id="cov-arc-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#4F8EF7" stop-opacity="0.15" />
+              <stop offset="50%" stop-color="#4F8EF7" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#1A3A8F" stop-opacity="0.25" />
+            </linearGradient>
+            <radialGradient id="cov-hub-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#4F8EF7" stop-opacity="0.45" />
+              <stop offset="100%" stop-color="#4F8EF7" stop-opacity="0" />
+            </radialGradient>
+            <pattern id="cov-dots" width="5" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.45" fill="#4F8EF7" fill-opacity="0.22" />
+            </pattern>
+            <filter id="cov-glow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="3" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <g class="cov-graticule" aria-hidden="true">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <line x1="0" y1={((i + 1) * MAP_HEIGHT) / 8} x2={MAP_WIDTH} y2={((i + 1) * MAP_HEIGHT) / 8} />
+            ))}
+            {Array.from({ length: 11 }).map((_, i) => (
+              <line x1={((i + 1) * MAP_WIDTH) / 12} y1="0" x2={((i + 1) * MAP_WIDTH) / 12} y2={MAP_HEIGHT} />
+            ))}
+          </g>
+
+          <g class="cov-land">
+            {WORLD_LAND_PATHS.map((d) => (
+              <path class="cov-land-fill" d={d} />
+            ))}
+            <g clip-path="url(#cov-land-clip)">
+              <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#cov-dots)" />
+            </g>
+            {WORLD_LAND_PATHS.map((d) => (
+              <path class="cov-land-stroke" d={d} />
+            ))}
+          </g>
+
+          <circle class="cov-hub-bloom" cx={hub.x} cy={hub.y} r="52" fill="url(#cov-hub-glow)" />
+
+          <g class="cov-arcs" aria-hidden="true">
+            {COVERAGE_ARCS.map((arc, i) => (
+              <path class="cov-arc" data-arc={arc.id} d={arc.d} style={`--arc-i:${i}`} />
+            ))}
+          </g>
+
+          {COVERAGE_MARKETS.map((m, i) => (
+            <g
+              class:list={['cov-pin', m.hub && 'is-hub']}
+              transform={`translate(${m.x}, ${m.y})`}
+              data-id={m.id}
+              style={`--pin-i:${i}`}
+              tabindex="0"
+              role="button"
+              aria-label={m.tip}
+            >
+              <circle class="cov-pin-hit" r="22" data-cov-hit />
+              <circle class="cov-pin-pulse" r="5" />
+              <circle class="cov-pin-core" r="3.5" filter="url(#cov-glow)" />
+            </g>
+          ))}
+        </svg>
+
+        <div class="cov-tips" data-cov-tips aria-hidden="true">
+          {COVERAGE_MARKETS.map((m) => (
+            <div
+              class="cov-tip-card"
+              data-tip={m.id}
+              data-x={((m.x / MAP_WIDTH) * 100).toFixed(2)}
+              data-y={((m.y / MAP_HEIGHT) * 100).toFixed(2)}
+            >
+              <span class="cov-tip-k">{m.hub ? 'HQ · Gurugram' : m.label}</span>
+              <p class="cov-tip-t">{m.tip}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="cov-legend" aria-hidden="true">
+          <span class="cov-leg"><span class="cov-leg-dot is-hub"></span> HQ · Gurugram</span>
+          <span class="cov-leg"><span class="cov-leg-dot"></span> Hover a dot for coverage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCoverageMap(root: HTMLElement) {
+    const tipsWrap = root.querySelector<HTMLElement>('[data-cov-tips]');
+    const pins = root.querySelectorAll<SVGGElement>('.cov-pin');
+    const arcs = root.querySelectorAll<SVGPathElement>('.cov-arc');
+    const tips = root.querySelectorAll<HTMLElement>('.cov-tip-card');
+    const touchUi = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    let activeId: string | null = null;
+
+    function placeTip(tip: HTMLElement) {
+      const x = Number(tip.dataset.x);
+      const y = Number(tip.dataset.y);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+
+      if (touchUi) {
+        tip.style.left = '50%';
+        tip.style.top = 'auto';
+        tip.style.bottom = '52px';
+        tip.dataset.placement = 'dock';
+        return;
+      }
+
+      const edge = 14;
+      const clampedX = Math.min(100 - edge, Math.max(edge, x));
+      const clampedY = Math.min(88, Math.max(12, y));
+      tip.style.left = `${clampedX}%`;
+      tip.style.top = `${clampedY}%`;
+      tip.style.bottom = 'auto';
+      tip.dataset.placement = clampedY < 22 ? 'below' : 'above';
+    }
+
+    function setActive(id: string | null) {
+      activeId = id;
+      pins.forEach((p) => p.classList.toggle('is-active', !!id && p.dataset.id === id));
+      arcs.forEach((a) => a.classList.toggle('is-lit', !!id && a.dataset.arc === id));
+      tips.forEach((t) => {
+        const on = !!id && t.dataset.tip === id;
+        t.classList.toggle('is-on', on);
+        if (on) placeTip(t);
+      });
+      root.classList.toggle('has-active', !!id);
+      tipsWrap?.classList.toggle('has-tip', !!id);
+    }
+
+    pins.forEach((pin) => {
+      const id = pin.dataset.id || null;
+
+      pin.addEventListener('mouseenter', () => {
+        if (!touchUi) setActive(id);
+      });
+      pin.addEventListener('focus', () => setActive(id));
+      pin.addEventListener('mouseleave', () => {
+        if (!touchUi) setActive(null);
+      });
+      pin.addEventListener('blur', () => setActive(null));
+
+      pin.addEventListener('click', (e: MouseEvent) => {
+        if (!touchUi) return;
+        e.preventDefault();
+        setActive(activeId === id ? null : id);
+      });
+    });
+
+    if (touchUi) {
+      root.addEventListener('click', (e: MouseEvent) => {
+        const target = e.target;
+        if (target instanceof Element && !target.closest('.cov-pin')) setActive(null);
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      const on = root.querySelector<HTMLElement>('.cov-tip-card.is-on');
+      if (on) placeTip(on);
+    });
+  }
+
+  const mapEl = document.querySelector('[data-cov-map]');
+  if (mapEl instanceof HTMLElement) initCoverageMap(mapEl);
+</script>
+
+<style>
+  .cov {
+    padding: 40px 0 100px;
+    position: relative;
+    z-index: 1;
+  }
+  .cov-hdr {
+    max-width: 720px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cov-h {
+    margin: 0;
+  }
+  .cov-deck {
+    font-family: var(--fu);
+    font-size: 15px;
+    color: var(--wd);
+    line-height: 1.75;
+    margin: 0;
+    max-width: 620px;
+  }
+
+  .cov-stage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Map card stays cinematic dark in both themes */
+  .cov-frame {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 2 / 1;
+    max-height: min(62vh, 520px);
+    border-radius: 24px;
+    border: 1px solid rgba(79, 142, 247, 0.14);
+    background: #04050a;
+    overflow: hidden;
+    box-shadow:
+      0 48px 100px rgba(0, 0, 0, 0.65),
+      inset 0 1px 0 rgba(79, 142, 247, 0.08);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cov-ambient {
+    position: absolute;
+    inset: -20%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 45% at 22% 38%, rgba(26, 58, 143, 0.35) 0%, transparent 62%),
+      radial-gradient(ellipse 50% 40% at 78% 62%, rgba(79, 142, 247, 0.14) 0%, transparent 58%);
+    opacity: 0.55;
+    animation: covAmbientA 18s ease-in-out infinite alternate;
+  }
+  .cov-ambient-b {
+    background:
+      radial-gradient(ellipse 60% 50% at 55% 30%, rgba(79, 142, 247, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 35% at 40% 75%, rgba(26, 58, 143, 0.2) 0%, transparent 50%);
+    opacity: 0.4;
+    animation: covAmbientB 22s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes covAmbientA {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(2%, -1.5%) scale(1.06);
+      opacity: 0.62;
+    }
+  }
+  @keyframes covAmbientB {
+    0% {
+      transform: translate(0, 0) scale(1.02);
+      opacity: 0.28;
+    }
+    100% {
+      transform: translate(-2%, 2%) scale(1.08);
+      opacity: 0.48;
+    }
+  }
+
+  .cov-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background:
+      radial-gradient(ellipse 72% 65% at 50% 48%, transparent 28%, rgba(0, 0, 0, 0.72) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.45) 100%);
+  }
+
+  .cov-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .cov-graticule line {
+    stroke: rgba(79, 142, 247, 0.08);
+    stroke-width: 0.5;
+  }
+
+  .cov-land-fill {
+    fill: rgba(79, 142, 247, 0.04);
+    stroke: none;
+  }
+
+  .cov-land-stroke {
+    fill: none;
+    stroke: rgba(79, 142, 247, 0.16);
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .cov-arc {
+    fill: none;
+    stroke: url(#cov-arc-grad);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-dasharray: 4 10;
+    opacity: 0.28;
+    transition:
+      opacity 0.35s ease,
+      stroke-width 0.35s ease;
+    animation: covDash 6s linear infinite;
+    animation-delay: calc(var(--arc-i, 0) * 0.45s);
+  }
+  .cov-frame.has-active .cov-arc:not(.is-lit) {
+    opacity: 0.08;
+  }
+  .cov-arc.is-lit {
+    opacity: 0.85;
+    stroke-width: 1.6;
+  }
+  @keyframes covDash {
+    to {
+      stroke-dashoffset: -28;
+    }
+  }
+
+  .cov-pin {
+    cursor: pointer;
+    outline: none;
+  }
+  .cov-pin-hit {
+    fill: transparent;
+    pointer-events: all;
+  }
+  .cov-pin-pulse {
+    fill: none;
+    stroke: #4f8ef7;
+    stroke-width: 1;
+    opacity: 0.45;
+    transform-origin: center;
+    animation: covPulse 3s ease-out infinite;
+    animation-delay: calc(var(--pin-i, 0) * 0.35s);
+  }
+  .cov-pin.is-hub .cov-pin-pulse {
+    animation-duration: 2.4s;
+  }
+  .cov-pin.is-active .cov-pin-pulse {
+    opacity: 0.85;
+    stroke-width: 1.25;
+  }
+  @keyframes covPulse {
+    0% {
+      r: 4;
+      opacity: 0.55;
+    }
+    100% {
+      r: 18;
+      opacity: 0;
+    }
+  }
+  .cov-pin-core {
+    fill: #4f8ef7;
+    stroke: #04050a;
+    stroke-width: 2;
+    transition:
+      fill 0.25s ease,
+      r 0.25s ease,
+      filter 0.25s ease;
+  }
+  .cov-pin.is-active .cov-pin-core {
+    fill: #7baeff;
+    r: 4.5;
+  }
+  .cov-pin.is-hub .cov-pin-core {
+    fill: #f5f2ec;
+    stroke: #4f8ef7;
+    stroke-width: 2.5;
+  }
+  .cov-pin.is-hub.is-active .cov-pin-core {
+    fill: #fff;
+  }
+
+  .cov-tips {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .cov-tip-card {
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 16px));
+    min-width: 200px;
+    max-width: 260px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(79, 142, 247, 0.45);
+    background: rgba(10, 12, 18, 0.88);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.28s;
+  }
+  .cov-tip-card.is-on {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, calc(-100% - 20px));
+  }
+  .cov-tip-card.is-on[data-placement='below'] {
+    transform: translate(-50%, 20px);
+  }
+  .cov-tip-card.is-on[data-placement='dock'] {
+    transform: translateX(-50%);
+    width: min(280px, calc(100% - 32px));
+    max-width: none;
+  }
+  .cov-tip-k {
+    display: block;
+    font-family: var(--fm);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #4f8ef7;
+    margin-bottom: 5px;
+  }
+  .cov-tip-t {
+    margin: 0;
+    font-family: var(--fu);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #f5f2ec;
+  }
+
+  .cov-legend {
+    position: absolute;
+    left: 18px;
+    bottom: 16px;
+    z-index: 6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    font-family: var(--fm);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(168, 164, 156, 0.65);
+  }
+  .cov-leg {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cov-leg-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4f8ef7;
+    opacity: 0.7;
+  }
+  .cov-leg-dot.is-hub {
+    background: #f5f2ec;
+    box-shadow: 0 0 0 2px #4f8ef7;
+  }
+
+  @media (max-width: 720px) {
+    .cov {
+      padding: 28px 0 72px;
+    }
+    .cov-hdr {
+      margin-bottom: 28px;
+    }
+    .cov-deck {
+      font-size: 14px;
+    }
+    .cov-frame {
+      aspect-ratio: 16 / 11;
+      max-height: none;
+      border-radius: 16px;
+    }
+    .cov-pin [data-cov-hit] {
+      r: 28;
+    }
+    .cov-pin-core {
+      r: 4;
+    }
+    .cov-tip-card {
+      min-width: 0;
+      max-width: none;
+      padding: 9px 12px;
+    }
+    .cov-tip-t {
+      font-size: 11px;
+    }
+    .cov-legend {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 8px;
+      padding: 0;
+    }
+    .cov-tips.has-tip .cov-legend {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .cov-frame {
+      aspect-ratio: 4 / 3;
+    }
+    .cov-leg:last-child {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cov-ambient,
+    .cov-ambient-b,
+    .cov-arc,
+    .cov-pin-pulse {
+      animation: none;
+    }
+    .cov-tip-card {
+      transition-duration: 0.01s;
+    }
+  }
+</style>

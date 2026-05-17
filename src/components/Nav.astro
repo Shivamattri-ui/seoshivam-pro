@@ -1,0 +1,779 @@
+---
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  {label:'About',href:'/about'},
+  {label:'Services',href:'/services',drop:true},
+  {label:'Work',href:'/work'},
+  {label:'Insights',href:'/insights'},
+  {label:'Resources',href:'/resources'},
+  {label:'Tools',href:'/tools'},
+  {label:'Contact',href:'/contact'},
+];
+const drops = [
+  {label:'AEO Strategy',href:'/services/aeo',desc:'Get cited by ChatGPT & Perplexity'},
+  {label:'SEO Architecture',href:'/services/seo',desc:'Rankings that compound over time'},
+  {label:'Web Design',href:'/services/web-design',desc:'AI-visible Webflow, Framer & Astro builds'},
+];
+---
+<header class="nav-wrap" id="mainNav">
+  <div class="nav-pill container">
+    <a href="/" class="logo" aria-label="Home">
+      <span class="logo-s" id="logoScramble">Shivam</span><em class="logo-e"> Attri</em>
+    </a>
+    <ul class="nl hide-mob">
+      {navLinks.map(l=>(
+        <li class={l.drop?'has-drop':''}>
+          <a href={l.href} class={`nl-a${currentPath===l.href?' act':''}`}>
+            {l.label}
+            {l.drop&&<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>}
+          </a>
+          {l.drop&&(
+            <div class="drop" role="menu">
+              {drops.map(d=>(
+                <a href={d.href} class="drop-item" role="menuitem">
+                  <span class="di-l">{d.label}</span>
+                  <span class="di-d">{d.desc}</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+    <div class="nr">
+      <div class="avail hide-mob"><span class="adot"></span>Available</div>
+      <!-- Dark/Light toggle — brand matched -->
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light mode" aria-pressed="false">
+        <svg class="icon-dark" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-light" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <a href="/contact" class="btn-p nav-cta hide-mob">Work with me ↗</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+ 
+<div class="mob-menu" id="mobMenu" aria-hidden="true">
+  <div class="mm-inner">
+    <ul class="mm-links">
+      <li><a href="/" class="mm-a">Home</a></li>
+      {navLinks.map(l=><li><a href={l.href} class="mm-a">{l.label}</a></li>)}
+    </ul>
+    <a href="/contact" class="btn-p" style="margin-top:32px;justify-content:center;width:100%">Work with me ↗</a>
+  </div>
+</div>
+ 
+<style>
+.nav-wrap{position:fixed;top:0;left:0;right:0;z-index:500;padding:16px 0;transition:padding .4s cubic-bezier(.16,1,.3,1),transform .3s ease}
+.nav-wrap.sc{padding:10px 0}
+.nav-wrap.hidden{transform:translateY(-100%)}
+ 
+.nav-pill{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(8,8,8,.82);border:1px solid #2A2A2A;border-radius:999px;padding:8px 8px 8px 24px;backdrop-filter:blur(28px) saturate(1.6);-webkit-backdrop-filter:blur(28px) saturate(1.6);transition:box-shadow .4s}
+html.light .nav-pill{background:rgba(248,246,242,.88);border-color:#D4CFC6}
+.nav-wrap.sc .nav-pill{box-shadow:0 12px 48px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.05)}
+ 
+.logo{display:flex;align-items:baseline;gap:1px;text-decoration:none;flex-shrink:0}
+.logo-s{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.03em;color:var(--w);white-space:nowrap;transition:color .2s}
+.logo-e{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:18px;background:linear-gradient(135deg,#4F8EF7,#1A3A8F);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+ 
+.nl{display:flex;align-items:center;gap:2px;flex:1;justify-content:center}
+.nl li{position:relative}
+.nl-a{font-size:13px;font-weight:500;color:var(--wd);padding:7px 12px;border-radius:999px;transition:color .2s,background .2s;display:flex;align-items:center;gap:4px;white-space:nowrap;letter-spacing:-.01em}
+.nl-a:hover,.nl-a.act{color:var(--w);background:var(--s3)}
+.nl-a svg{opacity:.5;transition:transform .2s}
+.has-drop:hover .nl-a svg{transform:rotate(180deg)}
+ 
+.drop{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(-8px);background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:8px;min-width:240px;opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;box-shadow:0 20px 60px rgba(0,0,0,.45);pointer-events:none}
+.drop.open{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:all}
+.has-drop::after{content:'';position:absolute;bottom:-12px;left:0;right:0;height:12px}
+.drop-item{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:10px;transition:background .15s}
+.drop-item:hover{background:var(--s2)}
+.di-l{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--w);letter-spacing:-.01em}
+.di-d{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--wm);text-transform:uppercase}
+ 
+.nr{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.avail{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--wd);padding:0 10px}
+ 
+.theme-toggle{
+  width:32px;height:32px;border-radius:8px;
+  background:transparent;border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--wm);transition:border-color .2s,color .2s,background .2s;
+  flex-shrink:0;
+}
+.theme-toggle:hover{border-color:var(--ac);color:var(--ac);background:var(--agl)}
+.theme-toggle .icon-light{display:none}
+html.light .theme-toggle .icon-dark{display:none}
+html.light .theme-toggle .icon-light{display:block}
+html.light .theme-toggle{color:var(--wm)}
+ 
+.nav-cta{font-size:13px;padding:10px 20px}
+ 
+.burger{display:none;flex-direction:column;gap:5px;width:36px;height:36px;padding:9px;border-radius:999px;background:var(--s3);border:1px solid var(--bd);transition:background .2s}
+.burger span{display:block;width:100%;height:1.5px;background:var(--w);border-radius:2px;transition:transform .3s,opacity .3s;transform-origin:center}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+ 
+.mob-menu{position:fixed;inset:0;background:rgba(8,8,8,.97);backdrop-filter:blur(20px);z-index:490;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+html.light .mob-menu{background:rgba(248,246,242,.97)}
+.mob-menu.open{opacity:1;visibility:visible}
+.mm-inner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:40px 20px;width:100%;max-width:400px}
+.mm-links{width:100%;display:flex;flex-direction:column;gap:2px}
+.mm-a{display:block;font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--wd);padding:10px 0;border-bottom:1px solid var(--s3);transition:color .2s,padding-left .2s}
+.mm-a:hover{color:var(--w);padding-left:8px}
+ 
+@media(max-width:900px){.burger{display:flex}}
+@media(max-width:768px){
+  .nav-pill{
+    padding:8px 8px 8px 16px;
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+    background:rgba(8,8,8,.96);
+  }
+  html.light .nav-pill{background:rgba(248,246,242,.98)}
+}
+</style>
+ 
+<script>
+// ── NAV scroll behaviour ──
+const nav = document.getElementById('mainNav');
+const burger = document.getElementById('burger');
+const mob = document.getElementById('mobMenu');
+let last = 0, tick = false;
+ 
+window.addEventListener('scroll',()=>{
+  if(!tick){
+    requestAnimationFrame(()=>{
+      const sy = window.scrollY;
+      nav?.classList.toggle('sc', sy>40);
+      if(sy>last && sy>200) nav?.classList.add('hidden');
+      else nav?.classList.remove('hidden');
+      last=sy; tick=false;
+    });
+    tick=true;
+  }
+},{passive:true});
+ 
+// ── Hamburger ──
+burger?.addEventListener('click',()=>{
+  const open = burger.classList.toggle('open');
+  burger.setAttribute('aria-expanded',String(open));
+  mob?.classList.toggle('open',open);
+  mob?.setAttribute('aria-hidden',String(!open));
+  document.body.style.overflow = open?'hidden':'';
+});
+mob?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  burger?.classList.remove('open');
+  mob?.classList.remove('open');
+  document.body.style.overflow='';
+}));
+ 
+// ── Logo scramble ──
+const logoEl = document.getElementById('logoScramble');
+const ORIG = 'Shivam';
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+function scramble(el:HTMLElement, text:string){
+  let f=0;
+  const id=setInterval(()=>{
+    el.textContent=text.split('').map((c,i)=>{
+      if(c===' ')return ' ';
+      if(i<Math.floor((f/20)*text.length))return c;
+      return CHARS[Math.floor(Math.random()*CHARS.length)];
+    }).join('');
+    f++;
+    if(f>=20){clearInterval(id);el.textContent=text;}
+  },28);
+}
+logoEl?.parentElement?.addEventListener('mouseenter',()=>{if(logoEl)scramble(logoEl,ORIG)});
+ 
+// ── Nav links stagger in on load ──
+document.querySelectorAll('.nl-a').forEach((el,i)=>{
+  (el as HTMLElement).style.opacity='0';
+  (el as HTMLElement).style.transform='translateY(-10px)';
+  setTimeout(()=>{
+    (el as HTMLElement).style.transition='opacity 0.4s ease,transform 0.4s ease';
+    (el as HTMLElement).style.opacity='1';
+    (el as HTMLElement).style.transform='translateY(0)';
+  },300+i*60);
+});
+ 
+// ── Dropdown hover with delay (so users can click) ──
+document.querySelectorAll('.has-drop').forEach(item=>{
+  let timer:ReturnType<typeof setTimeout>;
+  const drop=item.querySelector('.drop') as HTMLElement|null;
+  item.addEventListener('mouseenter',()=>{clearTimeout(timer);drop?.classList.add('open');});
+  item.addEventListener('mouseleave',()=>{timer=setTimeout(()=>drop?.classList.remove('open'),220);});
+  drop?.addEventListener('mouseenter',()=>clearTimeout(timer));
+  drop?.addEventListener('mouseleave',()=>{timer=setTimeout(()=>drop?.classList.remove('open'),220);});
+});
+
+// ── Theme toggle ──────────────────────────────────────────────
+// The Layout inline boot script in <head> is the single source of truth
+// for painting html.light + theme-color meta. We only:
+//   1. Reflect the current state on the toggle button (aria-pressed/label).
+//   2. On click: flip html.light, persist to localStorage, update meta.
+// We do NOT set inline styles on <html> or <body>. CSS variables in
+// the inline boot CSS + global.css handle every colour transition.
+// dataset guard prevents duplicate listeners during Vite HMR.
+// ─────────────────────────────────────────────────────────────
+const THEME_KEY = 'seoshivam.theme';
+const themeBtn = document.getElementById('themeToggle') as HTMLButtonElement | null;
+function syncThemeUi() {
+  const light = document.documentElement.classList.contains('light');
+  themeBtn?.setAttribute('aria-pressed', light ? 'true' : 'false');
+  themeBtn?.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+}
+syncThemeUi();
+window.addEventListener('pageshow', syncThemeUi);
+window.addEventListener('storage', (e) => {
+  if (e.key === THEME_KEY) syncThemeUi();
+});
+if (themeBtn && !themeBtn.dataset.spmThemeBound) {
+  themeBtn.dataset.spmThemeBound = '1';
+  themeBtn.addEventListener('click', () => {
+    const nextLight = !document.documentElement.classList.contains('light');
+    document.documentElement.classList.toggle('light', nextLight);
+    try {
+      if (nextLight) localStorage.setItem(THEME_KEY, 'light');
+      else localStorage.removeItem(THEME_KEY);
+    } catch (_e) {}
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', nextLight ? '#F7F4EE' : '#080808');
+    syncThemeUi();
+  });
+}
+
+// ──────────────────────────────────────────────
+// BRAND CURSOR (descriptive, brand-colored)
+// Single cursor element. Stays centered on the actual mouse via
+// translate(-50%,-50%). Default: small dot. On hover over any
+// link/button: subtle ring grows. On data-cursor="..." hover:
+// expands into a brand-gradient pill containing the label text.
+// ──────────────────────────────────────────────
+(function(){
+  if(matchMedia('(hover:none)').matches) return;
+  if(document.querySelector('.bcur')) return; // guard against double-mount
+
+  const cursor = document.createElement('div');
+  cursor.className = 'bcur';
+  const lbl = document.createElement('span');
+  lbl.className = 'bcur-lbl';
+  cursor.appendChild(lbl);
+  document.body.appendChild(cursor);
+
+  let mx = -100, my = -100;
+  let cx = -100, cy = -100;
+
+  function loop(){
+    cx += (mx - cx) * 0.22;
+    cy += (my - cy) * 0.22;
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+  }, {passive:true});
+
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+  });
+
+  // Hover state delegation: data-cursor elements activate label pill.
+  // Any other interactive element auto-generates a smart label from
+  // its text/aria/role so the descriptive cursor works site-wide.
+  let activeText = '';
+
+  function smartLabel(el: HTMLElement): string {
+    // 1. Explicit
+    if(el.dataset.cursor) return el.dataset.cursor;
+    // 2. Aria-label
+    const aria = el.getAttribute('aria-label');
+    if(aria && aria.length < 40) return aria;
+    // 3. Title attr
+    const ttl = el.getAttribute('title');
+    if(ttl && ttl.length < 40) return ttl;
+    // 4. By tag/role
+    const tag = el.tagName.toLowerCase();
+    const role = el.getAttribute('role');
+    // External link?
+    if(tag === 'a'){
+      const href = (el as HTMLAnchorElement).href || '';
+      const target = (el as HTMLAnchorElement).target;
+      if(target === '_blank') return 'Open ↗';
+      // Anchor on same page
+      if(href.includes('#') && href.split('#')[0] === location.href.split('#')[0]) return 'Jump to';
+      // Mailto / tel
+      if(href.startsWith('mailto:')) return 'Send email';
+      if(href.startsWith('tel:')) return 'Call';
+    }
+    // Form fields
+    if(tag === 'input' || tag === 'textarea') return 'Type here';
+    if(tag === 'select') return 'Choose';
+    // Submit-style buttons
+    if(tag === 'button' || role === 'button'){
+      const t = (el.textContent || '').trim();
+      if(t && t.length < 22) return t;
+      return 'Click';
+    }
+    // Default link
+    if(tag === 'a'){
+      const t = (el.textContent || '').trim();
+      if(t && t.length < 22) return t;
+      return 'View';
+    }
+    return '';
+  }
+
+  function setLabel(text: string){
+    if(!text){
+      cursor.classList.add('hov');
+      cursor.classList.remove('lbl');
+      activeText = '';
+      return;
+    }
+    if(text === activeText) return;
+    activeText = text;
+    lbl.textContent = text;
+    cursor.classList.add('lbl');
+    cursor.classList.remove('hov');
+  }
+  function reset(){
+    activeText = '';
+    cursor.classList.remove('lbl');
+    cursor.classList.remove('hov');
+    cursor.classList.remove('soc-off');
+  }
+
+  function isSocialIconTarget(el: HTMLElement): boolean {
+    if(el.closest('[data-cursor-skip]')) return true;
+    if(el.closest('.ft-soc, .ft-socials, .art-au-socials, .ab-soc-row')) return true;
+    if(el.classList.contains('ft-soc')) return true;
+    const svgOnly = el.tagName === 'A' && el.querySelector('svg, img') && !(el.textContent || '').trim();
+    if(svgOnly && el.closest('.ft-socials, .art-au-socials, footer')) return true;
+    return false;
+  }
+
+  function parkCursorForSocial(){
+    activeText = '';
+    cursor.classList.remove('lbl');
+    cursor.classList.remove('hov');
+    cursor.classList.add('soc-off');
+  }
+
+  document.addEventListener('mouseover', (e) => {
+    const t = e.target as HTMLElement | null;
+    if(!t || !t.closest) return;
+    const interactive = t.closest('[data-cursor], a, button, [role="button"], input, textarea, select, summary') as HTMLElement | null;
+    if(!interactive) return;
+    if(isSocialIconTarget(interactive)){
+      parkCursorForSocial();
+      return;
+    }
+    cursor.classList.remove('soc-off');
+    setLabel(smartLabel(interactive));
+  });
+  document.addEventListener('mouseout', (e) => {
+    const from = (e.target as HTMLElement | null);
+    const to = (e.relatedTarget as HTMLElement | null);
+    if(!from?.closest) return;
+    const fromInteractive = from.closest('[data-cursor], a, button, [role="button"], input, textarea, select, summary');
+    const toInteractive = to?.closest?.('[data-cursor], a, button, [role="button"], input, textarea, select, summary');
+    if(fromInteractive && fromInteractive !== toInteractive) reset();
+  });
+})();
+
+// ──────────────────────────────────────────────
+// GLOBAL SCROLL-ENGAGEMENT LAYER
+//
+// Site-wide scroll behaviours that run on every page without
+// per-page wiring. Applies automatically based on data-attributes
+// or known classes that already exist in the markup.
+//
+// Features:
+//   1. .rv → .in reveal observer (replaces per-page duplicates)
+//   2. [data-parallax] → translateY based on scroll position
+//   3. [data-reveal-stagger] containers stagger-reveal their children
+//      with a 0.06s offset between siblings
+//   4. .grad-anim H2/H3 with [data-word-reveal] → word-by-word fade-up
+//      as the heading scrolls into the upper-third of the viewport
+//   5. [data-tilt] elements get a subtle 3D tilt on mouse-move
+//   6. .ic-cover → very subtle parallax shift (8px max) on scroll
+//   7. Section-scoped progress bar (data-section-prog) — fills as the
+//      section passes through the viewport
+// ──────────────────────────────────────────────
+(function(){
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── 1. .rv → .in reveal (ALWAYS runs, even with reduced-motion,
+  //    because otherwise content stays invisible forever) ──
+  const rvObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        rvObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.rv:not(.in)').forEach(el => rvObs.observe(el));
+
+  // NOTE: A previous build wrapped each word of every gradient
+  // heading in a <span> for "word reveal". That broke the
+  // background-clip:text gradient on every site-wide heading
+  // (gradient is computed per-span, so it appeared as plain white).
+  // Removed entirely. Heading entrance is handled by the parent
+  // .rv reveal — gradient text stays intact.
+
+  // Reduced-motion users: stop here. The CSS rule above flattens
+  // .rv transitions for them — content still appears, just without
+  // the slide choreography.
+  if(reduced) return;
+
+  // Re-observe late `.rv` nodes briefly only (full subtree MutationObserver is costly during scroll/layout).
+  const mut = new MutationObserver((muts) => {
+    muts.forEach(m => {
+      m.addedNodes.forEach((n) => {
+        if(!(n instanceof HTMLElement)) return;
+        if(n.classList?.contains('rv') && !n.classList.contains('in')) rvObs.observe(n);
+        n.querySelectorAll?.('.rv:not(.in)').forEach((el) => rvObs.observe(el));
+      });
+    });
+  });
+  mut.observe(document.body, { childList: true, subtree: true });
+  const sweepRv = () => {
+    document.querySelectorAll('.rv:not(.in)').forEach((el) => rvObs.observe(el));
+  };
+  if (typeof requestIdleCallback !== 'undefined') {
+    requestIdleCallback(sweepRv, { timeout: 2000 });
+  }
+  window.setTimeout(() => {
+    sweepRv();
+    mut.disconnect();
+  }, 3200);
+
+  // ── 2. Stagger reveals — children of [data-reveal-stagger] fade up sequentially ──
+  document.querySelectorAll<HTMLElement>('[data-reveal-stagger]').forEach(parent => {
+    const kids = Array.from(parent.children) as HTMLElement[];
+    kids.forEach((k, i) => {
+      k.style.transition = 'opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1)';
+      k.style.transitionDelay = `${0.06 * i}s`;
+      k.style.opacity = '0';
+      k.style.transform = 'translateY(14px)';
+    });
+    const o = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          kids.forEach(k => { k.style.opacity = '1'; k.style.transform = 'translateY(0)'; });
+          o.unobserve(parent);
+        }
+      });
+    }, { threshold: 0.18 });
+    o.observe(parent);
+  });
+
+  // ── 3. Mouse-move tilt on [data-tilt] (max 8deg) ──
+  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(card => {
+    const max = parseFloat(card.dataset.tilt || '8');
+    card.style.transformStyle = 'preserve-3d';
+    card.style.transition = 'transform .35s cubic-bezier(.16,1,.3,1)';
+    card.addEventListener('mousemove', (ev) => {
+      const r = card.getBoundingClientRect();
+      const px = (ev.clientX - r.left) / r.width;
+      const py = (ev.clientY - r.top) / r.height;
+      const rx = (py - 0.5) * -2 * max;
+      const ry = (px - 0.5) *  2 * max;
+      card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(0)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(900px) rotateX(0) rotateY(0)';
+    });
+  });
+
+  // ── Section-scoped progress bars [data-section-prog] ──
+  type ProgItem = { section: HTMLElement; bar: HTMLElement };
+  const progItems: ProgItem[] = [];
+  document.querySelectorAll<HTMLElement>('[data-section-prog]').forEach(section => {
+    const bar = document.createElement('div');
+    bar.className = 'sec-prog-bar';
+    bar.style.cssText = 'position:absolute;top:0;left:0;height:2px;width:0;background:var(--ag);z-index:5;border-radius:0 2px 2px 0;transition:width .15s linear;pointer-events:none';
+    if(getComputedStyle(section).position === 'static') section.style.position = 'relative';
+    section.appendChild(bar);
+    progItems.push({ section, bar });
+  });
+
+  function tick(){
+    const vh = window.innerHeight;
+
+    const pageProg = document.getElementById('scrollProg') as HTMLElement | null;
+    if(pageProg){
+      const s = document.documentElement;
+      const denom = s.scrollHeight - s.clientHeight;
+      pageProg.style.width = denom > 0 ? ((s.scrollTop / denom) * 100).toFixed(2) + '%' : '0%';
+    }
+
+    // Section progress bars
+    for(let i = 0; i < progItems.length; i++){
+      const { section, bar } = progItems[i];
+      const r = section.getBoundingClientRect();
+      const totalH = r.height + vh;
+      const passed = Math.max(0, vh - r.top);
+      const pct = Math.max(0, Math.min(1, passed / totalH));
+      bar.style.width = (pct * 100).toFixed(2) + '%';
+    }
+  }
+
+  let queued = false;
+  function onScrollLayer(){
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      tick();
+      queued = false;
+    });
+  }
+  let unbindWindowScroll: (() => void) | null = null;
+  if(progItems.length){
+    const onWinScroll = () => onScrollLayer();
+    window.addEventListener('scroll', onWinScroll, { passive: true });
+    window.addEventListener('resize', onWinScroll, { passive: true });
+    unbindWindowScroll = () => {
+      window.removeEventListener('scroll', onWinScroll);
+      window.removeEventListener('resize', onWinScroll);
+    };
+    onScrollLayer();
+  }
+
+  // ──────────────────────────────────────────────
+  // PREMIUM MOTION LAYER (Awwwards-grade, safe)
+  //
+  // 1. Lenis smooth-scroll  → buttery wheel/touch scroll, RAF-driven.
+  //    Operates on the scroll OFFSET (NOT a body transform), so
+  //    position:fixed elements (nav, cursor, scroll-progress) stay
+  //    pinned to the viewport.
+  //
+  // 2. Magnetic hover on .btn-p  → primary CTAs subtly pull toward
+  //    the cursor on hover. Transform applied to the BUTTON element
+  //    itself — never an ancestor of fixed-position content.
+  //
+  // 3. Scroll-linked image scale → <img> elements with [data-scale-in]
+  //    fade + scale 1.05→1.00 as they enter the viewport. Uses
+  //    transform on the IMG, not a parent.
+  //
+  // Reduced-motion: every effect respects prefers-reduced-motion.
+  // ──────────────────────────────────────────────
+  (async function premiumMotion(){
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = matchMedia('(hover:none)').matches;
+
+    // ── 1. Lenis everywhere smooth wheel + touch sync (skip only when reduced motion). autoRaf avoids a second global RAF loop.
+    if(!reduceMotion){
+      try {
+        // @ts-ignore — Lenis is bundled by Vite from npm
+        const Lenis = (await import('lenis')).default;
+        const easeOut = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+        const lenis = new Lenis({
+          autoRaf: true,
+          // Higher lerp: wheel input tracks faster (less floaty lag on desktop).
+          lerp: isTouch ? 0.12 : 0.2,
+          duration: isTouch ? 0.85 : 0.55,
+          easing: easeOut,
+          orientation: 'vertical',
+          smoothWheel: !isTouch,
+          wheelMultiplier: 1,
+          touchMultiplier: 1,
+          syncTouch: false,
+        });
+        (window as unknown as { __lenis?: typeof lenis }).__lenis = lenis;
+
+        unbindWindowScroll?.();
+
+        lenis.on('scroll', () => onScrollLayer());
+        window.addEventListener('resize', onScrollLayer, { passive: true });
+
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(a => {
+          a.addEventListener('click', (e) => {
+            const id = a.getAttribute('href')!.slice(1);
+            if(!id) return;
+            const target = document.getElementById(id);
+            if(!target) return;
+            e.preventDefault();
+            lenis.scrollTo(target, { offset: -80, duration: 0.95 });
+          });
+        });
+      } catch (_err) {
+        /* Lenis missing: native scroll */
+      }
+    }
+
+    // ── 2. Magnetic hover on primary CTAs ──
+    if(!isTouch && !reduceMotion){
+      const STRENGTH = 0.22;       // 0–1, how strongly the button follows the cursor
+      const MAX_SHIFT = 8;         // px clamp so it never feels broken
+      const targets = document.querySelectorAll<HTMLElement>(
+        '.btn-p, .ccta-submit, .lead-sbtn, .cf-submit'
+      );
+      targets.forEach(el => {
+        let raf = 0, tx = 0, ty = 0, cx = 0, cy = 0;
+
+        function animate(){
+          cx += (tx - cx) * 0.18;
+          cy += (ty - cy) * 0.18;
+          el.style.transform = `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0)`;
+          if(Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05){
+            raf = requestAnimationFrame(animate);
+          } else {
+            raf = 0;
+          }
+        }
+        function onMove(e: MouseEvent){
+          const r = el.getBoundingClientRect();
+          const px = e.clientX - (r.left + r.width / 2);
+          const py = e.clientY - (r.top + r.height / 2);
+          tx = Math.max(-MAX_SHIFT, Math.min(MAX_SHIFT, px * STRENGTH));
+          ty = Math.max(-MAX_SHIFT, Math.min(MAX_SHIFT, py * STRENGTH));
+          if(!raf) raf = requestAnimationFrame(animate);
+        }
+        function onLeave(){
+          tx = 0; ty = 0;
+          if(!raf) raf = requestAnimationFrame(animate);
+        }
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+      });
+    }
+
+    // ── 3. Scroll-linked image fade + scale on viewport entry ──
+    if(!reduceMotion && 'IntersectionObserver' in window){
+      // Style hook — we set the initial state inline so even if JS is
+      // late, images don't pop. Once observed and intersecting, we
+      // remove the inline style for a smooth transition.
+      const candidates = document.querySelectorAll<HTMLImageElement>(
+        'img[data-scale-in], .ic-cover img, .pgal-canvas img, .ab-doss-img, .ccta-photo img'
+      );
+      candidates.forEach(img => {
+        img.style.willChange = 'opacity, transform';
+        img.style.transition = 'opacity .8s cubic-bezier(.16,1,.3,1), transform 1.2s cubic-bezier(.16,1,.3,1)';
+        if(!img.complete){
+          img.style.opacity = '0';
+          img.style.transform = 'scale(1.06)';
+        }
+      });
+      const imgObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            const im = e.target as HTMLImageElement;
+            im.style.opacity = '1';
+            im.style.transform = 'scale(1)';
+            imgObs.unobserve(im);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      candidates.forEach(img => imgObs.observe(img));
+    }
+  })();
+
+})();
+
+// ── Internal link hover previews: body copy only (blog prose + inline notes) ──
+(function contentLinkPreviewLayer(){
+  if(document.documentElement.dataset.spmLinkPreviewBound) return;
+  document.documentElement.dataset.spmLinkPreviewBound = '1';
+
+  const dataEl = document.getElementById('site-link-preview-data');
+  if(!dataEl?.textContent) return;
+  let map: Record<string, { t: string; d: string }>;
+  try {
+    map = JSON.parse(dataEl.textContent) as Record<string, { t: string; d: string }>;
+  } catch { return; }
+
+  const ORIGIN = window.location.origin;
+  const CONTENT_LINK_SELECTOR = '#artProse a[href], .art-prose a[href], .avs-steps-note a[href], .aeo-mac-ui a.ilink[href], a.ilink[href], a.ilink-muted[href]';
+
+  document.querySelectorAll<HTMLAnchorElement>('a.site-int').forEach((a) => a.classList.remove('site-int'));
+
+  function pathKey(href: string): string | null {
+    try {
+      const u = new URL(href, ORIGIN);
+      const base = new URL(ORIGIN);
+      const sameHost = u.hostname.replace(/^www\./, '') === base.hostname.replace(/^www\./, '');
+      if(!sameHost) return null;
+      return u.pathname.replace(/\/$/, '') || '/';
+    } catch {
+      return null;
+    }
+  }
+
+  function fallbackMeta(key: string): { t: string; d: string } {
+    const title = key === '/'
+      ? 'Home'
+      : key.split('/').filter(Boolean).pop()?.replace(/[-_]+/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase()) || 'Internal page';
+    return { t: title, d: 'Internal page on seoshivam.pro' };
+  }
+
+  const tip = document.createElement('div');
+  tip.className = 'site-link-tip';
+  tip.innerHTML = '<div class="site-link-tip-k">On this site</div><p class="site-link-tip-t"></p><p class="site-link-tip-d"></p><div class="site-link-tip-u"></div>';
+  document.body.appendChild(tip);
+  const tipTitle = tip.querySelector('.site-link-tip-t');
+  const tipDesc = tip.querySelector('.site-link-tip-d');
+  const tipUrl = tip.querySelector('.site-link-tip-u');
+  let hideTimer: ReturnType<typeof setTimeout> | 0 = 0;
+
+  function showTip(x: number, y: number, href: string) {
+    const key = pathKey(href);
+    if (!key || !tipTitle || !tipDesc || !tipUrl) return;
+    const meta = map[key] || fallbackMeta(key);
+    tipTitle.textContent = meta.t;
+    tipDesc.textContent = meta.d;
+    tipUrl.textContent = href.startsWith('http') ? href : ORIGIN + href;
+    const pad = 16;
+    let left = x + pad;
+    let top = y + pad;
+    tip.classList.add('is-on');
+    const tw = tip.offsetWidth;
+    const th = tip.offsetHeight;
+    if (left + tw > window.innerWidth - 12) left = Math.max(12, x - tw - pad);
+    if (top + th > window.innerHeight - 12) top = Math.max(12, y - th - pad);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
+  }
+  function hideTip() {
+    tip.classList.remove('is-on');
+  }
+
+  function bindContentLink(a: HTMLAnchorElement) {
+    if (a.dataset.spmLinkBound) return;
+    const href = a.getAttribute('href') || '';
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (!a.matches(CONTENT_LINK_SELECTOR)) return;
+    if (!pathKey(a.href)) return;
+
+    a.dataset.spmLinkBound = '1';
+    a.classList.add('content-int');
+    a.addEventListener('pointerenter', (ev) => {
+      if (matchMedia('(hover:none)').matches) return;
+      clearTimeout(hideTimer);
+      showTip(ev.clientX, ev.clientY, a.href);
+    });
+    a.addEventListener('pointerleave', () => {
+      hideTimer = setTimeout(hideTip, 120);
+    });
+    a.addEventListener('focus', () => {
+      const r = a.getBoundingClientRect();
+      showTip(r.left, r.bottom + 6, a.href);
+    });
+    a.addEventListener('blur', hideTip);
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>(CONTENT_LINK_SELECTOR).forEach(bindContentLink);
+})();
+</script>
+ 

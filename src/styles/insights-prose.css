@@ -1,0 +1,715 @@
+/**
+ * Blog article markdown — MUST be global: Astro scoped CSS adds [data-astro-cid] to
+ * selectors, but remark-rendered <table>, <h2>, <p>, etc. do NOT get that attribute,
+ * so scoped `.art-prose table { }` never matched the real DOM.
+ * Scope everything with #artProse (the wrapper around <Content />).
+ */
+
+#artProse {
+  font-family: var(--fu);
+  font-size: 18.5px;
+  color: var(--wd);
+  line-height: 1.92;
+  max-width: 760px;
+  letter-spacing: 0.002em;
+}
+
+#artProse > p:first-of-type::first-letter {
+  font-family: var(--fd);
+  font-size: 6.4em;
+  font-weight: 400;
+  float: left;
+  line-height: 0.78;
+  margin: 12px 18px 0 0;
+  background: linear-gradient(140deg, var(--ac) 0%, #7baeff 50%, var(--ac2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+}
+
+#artProse > p:first-of-type {
+  font-size: 1.12em;
+  color: var(--w);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+#artProse h2 {
+  font-family: var(--fd);
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 400;
+  color: var(--w);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  margin: 72px 0 22px;
+  scroll-margin-top: 96px;
+  position: relative;
+  padding-top: 28px;
+}
+
+#artProse h2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ac) 0%, var(--ac2) 100%);
+  border-radius: 2px;
+}
+
+#artProse h2 + p,
+#artProse h2 + ul,
+#artProse h2 + ol,
+#artProse h2 + .art-table-wrap {
+  margin-top: 0;
+}
+
+#artProse h3 {
+  font-family: var(--fu);
+  font-size: clamp(20px, 2vw, 24px);
+  font-weight: 700;
+  color: var(--w);
+  letter-spacing: -0.018em;
+  line-height: 1.35;
+  margin: 52px 0 16px;
+  scroll-margin-top: 96px;
+}
+
+#artProse h3 + p,
+#artProse h3 + ul,
+#artProse h3 + ol,
+#artProse h3 + .art-table-wrap {
+  margin-top: 0;
+}
+
+#artProse h4 {
+  font-family: var(--fu);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--w);
+  margin: 36px 0 12px;
+  letter-spacing: -0.012em;
+  line-height: 1.4;
+}
+
+#artProse p {
+  margin: 0 0 28px;
+}
+
+#artProse p + p {
+  margin-top: 0;
+}
+
+#artProse strong {
+  color: var(--w);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+#artProse em {
+  font-style: italic;
+  color: var(--w);
+}
+
+#artProse hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--bd) 20%, var(--bd) 80%, transparent 100%);
+  margin: 72px auto;
+  width: 60%;
+  position: relative;
+}
+
+#artProse hr::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wm);
+  opacity: 0.5;
+}
+
+#artProse a:not(.no-style) {
+  color: var(--ac);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: rgba(79, 142, 247, 0.42);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s, color 0.2s, text-decoration-thickness 0.2s;
+}
+
+#artProse a:not(.no-style):hover {
+  text-decoration-color: var(--ac);
+  color: #7baeff;
+}
+
+#artProse ul,
+#artProse ol {
+  margin: 0 0 36px;
+  padding: 0;
+}
+
+#artProse > ul {
+  padding: 20px 24px 24px 52px;
+  margin-left: 0;
+  margin-right: 0;
+  border-left: 3px solid rgba(79, 142, 247, 0.28);
+  border-radius: 0 14px 14px 0;
+  background: linear-gradient(90deg, var(--agl) 0%, transparent 72%);
+}
+
+#artProse ul {
+  list-style: none;
+}
+
+#artProse ul > li {
+  position: relative;
+  padding-left: 26px;
+  margin: 0 0 16px;
+  line-height: 1.85;
+  color: var(--wd);
+}
+
+#artProse ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 14px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ac) 0%, var(--ac2) 100%);
+  border-radius: 2px;
+}
+
+#artProse ul > li:last-child {
+  margin-bottom: 0;
+}
+
+#artProse ul ul,
+#artProse ol ul,
+#artProse ul ol,
+#artProse ol ol {
+  margin: 10px 0 0;
+}
+
+#artProse ul ul > li::before {
+  width: 8px;
+  background: var(--wm);
+  opacity: 0.6;
+}
+
+#artProse ol {
+  counter-reset: olc;
+  list-style: none;
+  padding-left: 0;
+}
+
+#artProse ol > li {
+  counter-increment: olc;
+  position: relative;
+  padding-left: 42px;
+  margin: 0 0 16px;
+  line-height: 1.78;
+  color: var(--wd);
+}
+
+#artProse ol > li::before {
+  content: counter(olc, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-family: var(--fm);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ac);
+  background: var(--agl);
+  border: 1px solid rgba(79, 142, 247, 0.28);
+  border-radius: 5px;
+  padding: 2px 6px;
+  line-height: 1.4;
+  min-width: 26px;
+  text-align: center;
+}
+
+#artProse ol > li:last-child {
+  margin-bottom: 0;
+}
+
+#artProse li > strong:first-child {
+  display: inline;
+  color: var(--w);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+#artProse li p {
+  margin: 0 0 8px;
+}
+
+#artProse li p:last-child {
+  margin-bottom: 0;
+}
+
+#artProse blockquote {
+  margin: 52px 0;
+  padding: 36px 40px 32px;
+  border-left: 3px solid var(--ac);
+  background: linear-gradient(135deg, var(--agl) 0%, transparent 70%);
+  border-radius: 0 16px 16px 0;
+  font-family: var(--fd);
+  font-size: 1.32em;
+  font-style: italic;
+  color: var(--w);
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  position: relative;
+}
+
+#artProse blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -6px;
+  left: 18px;
+  font-family: var(--fd);
+  font-size: 84px;
+  color: var(--ac);
+  opacity: 0.32;
+  line-height: 1;
+}
+
+#artProse blockquote p {
+  margin: 0;
+}
+
+#artProse blockquote p + p {
+  margin-top: 18px;
+}
+
+#artProse code {
+  font-family: var(--fm);
+  font-size: 0.88em;
+  font-weight: 500;
+  background: rgba(79, 142, 247, 0.1);
+  color: var(--ac);
+  padding: 1.5px 7px;
+  border-radius: 5px;
+  border: 1px solid rgba(79, 142, 247, 0.18);
+  word-break: break-word;
+}
+
+#artProse .cb-wrap {
+  margin: 40px 0;
+  border: 1px solid #1f2434;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: #0d1117;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+}
+
+#artProse pre,
+#artProse pre.astro-code {
+  margin: 40px 0;
+  background: #0d1117;
+  border: 1px solid #1f2434;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+}
+
+#artProse .cb-wrap > pre,
+#artProse .cb-wrap > pre.astro-code {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+#artProse pre code {
+  display: block;
+  background: transparent;
+  border: none;
+  padding: 22px 26px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13.5px;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+
+#artProse pre.astro-code code {
+  color: inherit;
+}
+
+#artProse .cb-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(79, 142, 247, 0.45) 50%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+#artProse .cb-wrap.is-collapsible,
+#artProse pre.is-collapsible {
+  max-height: 380px;
+  transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#artProse .cb-wrap.is-collapsible.is-open,
+#artProse pre.is-collapsible.is-open {
+  max-height: none;
+}
+
+#artProse .cb-wrap.is-collapsible::after,
+#artProse pre.is-collapsible::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, #0d1117 90%);
+  transition: opacity 0.35s;
+  opacity: 1;
+  z-index: 1;
+}
+
+#artProse .cb-wrap.is-collapsible.is-open::after,
+#artProse pre.is-collapsible.is-open::after {
+  opacity: 0;
+}
+
+#artProse img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--bd);
+  margin: 36px 0;
+  display: block;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+#artProse figure {
+  margin: 36px 0;
+}
+
+#artProse figcaption {
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--wm);
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* Table wrapper + table (remark/rehype output) */
+#artProse .art-table-wrap {
+  margin: 44px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  border: 1px solid var(--bd);
+  background: var(--s1);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  scrollbar-color: rgba(79, 142, 247, 0.35) var(--s2);
+}
+
+#artProse .art-table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+#artProse .art-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(79, 142, 247, 0.35);
+  border-radius: 8px;
+}
+
+#artProse table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  font-family: var(--fu);
+  font-size: 15px;
+  line-height: 1.55;
+  border: none;
+  background: transparent;
+  table-layout: fixed;
+}
+
+#artProse thead {
+  background: var(--s2);
+}
+
+#artProse thead th {
+  border-bottom: 2px solid rgba(79, 142, 247, 0.35);
+}
+
+#artProse th {
+  text-align: left;
+  padding: 18px 22px;
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ac);
+  vertical-align: bottom;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+#artProse td {
+  padding: 16px 22px;
+  color: var(--wd);
+  border-bottom: 1px solid var(--bd);
+  vertical-align: top;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+#artProse tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+#artProse tbody tr:last-child td {
+  border-bottom: none;
+}
+
+#artProse tbody tr {
+  transition: background 0.2s;
+}
+
+#artProse tbody tr:hover {
+  background: var(--agl);
+}
+
+/* Space after tables / before next paragraph */
+#artProse .art-table-wrap + p {
+  margin-top: 12px;
+}
+
+#artProse details {
+  margin: 0 0 14px;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+#artProse details[open] {
+  border-color: rgba(79, 142, 247, 0.4);
+}
+
+#artProse details summary {
+  padding: 18px 22px;
+  cursor: pointer;
+  font-family: var(--fu);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--w);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: color 0.2s;
+}
+
+#artProse details summary::-webkit-details-marker {
+  display: none;
+}
+
+#artProse details summary::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-right: 1.5px solid var(--ac);
+  border-bottom: 1.5px solid var(--ac);
+  transform: rotate(45deg);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#artProse details[open] summary::after {
+  transform: rotate(225deg);
+}
+
+#artProse details > *:not(summary) {
+  padding: 18px 22px;
+  color: var(--wd);
+  border-top: 1px solid var(--bd);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* Light mode */
+html.light #artProse > ul {
+  border-left-color: rgba(37, 84, 214, 0.32);
+  background: linear-gradient(90deg, rgba(37, 84, 214, 0.07) 0%, transparent 72%);
+}
+
+html.light #artProse .art-table-wrap {
+  box-shadow: 0 18px 48px rgba(20, 16, 12, 0.08), 0 2px 8px rgba(37, 84, 214, 0.06);
+  border-color: rgba(37, 84, 214, 0.18);
+}
+
+@media (max-width: 540px) {
+  #artProse > ul {
+    padding: 14px 16px 18px 38px;
+  }
+
+  #artProse h2 {
+    margin: 56px 0 18px;
+  }
+
+  #artProse > p:first-of-type::first-letter {
+    font-size: 4.4em;
+    margin: 6px 12px 0 0;
+  }
+}
+
+/* Code chrome injected by client script (no data-astro-cid) */
+#artProse .cb-expand {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fu);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--ag);
+  background-size: 200% 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(79, 142, 247, 0.32);
+  animation: cctaGrad 6s linear infinite;
+  transition: transform 0.25s;
+}
+
+#artProse .cb-expand:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+
+#artProse .cb-expand svg {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#artProse .cb-wrap.is-open .cb-expand svg {
+  transform: rotate(180deg);
+}
+
+@keyframes cctaGrad {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+#artProse .cb-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: #13141f;
+  border-bottom: 1px solid #1f2434;
+  font-family: var(--fm);
+}
+
+#artProse .cb-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+#artProse .cb-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#artProse .cb-dots span:nth-child(1) {
+  background: #ff5f56;
+}
+
+#artProse .cb-dots span:nth-child(2) {
+  background: #ffbd2e;
+}
+
+#artProse .cb-dots span:nth-child(3) {
+  background: #27c93f;
+}
+
+#artProse .cb-lang {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ac);
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: rgba(79, 142, 247, 0.1);
+  border: 1px solid rgba(79, 142, 247, 0.22);
+}
+
+#artProse .cb-spacer {
+  flex: 1 1 auto;
+}
+
+#artProse .cb-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a8b0c8;
+  background: transparent;
+  border: 1px solid #1f2434;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+#artProse .cb-copy:hover {
+  color: var(--w);
+  border-color: rgba(79, 142, 247, 0.4);
+  background: rgba(79, 142, 247, 0.06);
+}
+
+#artProse .cb-copy.is-ok {
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.06);
+}
+
+#artProse .cb-copy svg {
+  flex-shrink: 0;
+}

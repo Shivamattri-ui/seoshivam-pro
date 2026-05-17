@@ -1,0 +1,705 @@
+---
+/**
+ * AeoMacbookIllustration — MacBook opens on scroll; six AI engine icons orbit the screen.
+ */
+interface EngineIcon {
+  name: string;
+  icon: string;
+  pos: string;
+  delay: string;
+}
+
+const engines: EngineIcon[] = [
+  { name: 'Perplexity', icon: '/icons/perplexity-icon.svg', pos: 'tl', delay: '0s' },
+  { name: 'ChatGPT', icon: '/icons/chatgpt-icon.svg', pos: 'tr', delay: '0.4s' },
+  { name: 'Google AI', icon: '/icons/google-icon.svg', pos: 'ml', delay: '0.8s' },
+  { name: 'Claude', icon: '/icons/claude-icon.svg', pos: 'mr', delay: '1.2s' },
+  { name: 'Copilot', icon: '/icons/copilot-icon.svg', pos: 'bl', delay: '1.6s' },
+  { name: 'Grok', icon: '/icons/grok-icon.svg', pos: 'br', delay: '2s' },
+];
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'aeo-mac-illustration' } = Astro.props;
+---
+
+<section class="aeo-mac-sec rv" id={id} aria-label="Six AI engines citing your brand">
+  <div class="container">
+    <div class="aeo-mac-stage" id="aeoMacStage">
+      {engines.map((e) => (
+        <div
+          class={`aeo-mac-icon aeo-mac-icon--${e.pos}`}
+          style={`--mac-delay:${e.delay}`}
+          aria-hidden="true"
+        >
+          <span class="aeo-mac-icon-glow"></span>
+          <span class="aeo-mac-icon-chip">
+            <img src={e.icon} alt="" width="28" height="28" loading="lazy" decoding="async" />
+          </span>
+          <span class="aeo-mac-icon-label">{e.name}</span>
+        </div>
+      ))}
+
+      <div class="aeo-mac-device" id="aeoMacDevice">
+        <div class="aeo-mac-lid-stack">
+          <div class="aeo-mac-lid">
+            <div class="aeo-mac-bezel">
+              <div class="aeo-mac-notch" aria-hidden="true"></div>
+              <div class="aeo-mac-screen">
+                <div class="aeo-mac-screen-mesh" aria-hidden="true"></div>
+                <div class="aeo-mac-ui">
+                  <div class="aeo-mac-ui-bar">
+                    <span class="aeo-mac-ui-dot"></span>
+                    <span class="aeo-mac-ui-dot"></span>
+                    <span class="aeo-mac-ui-dot"></span>
+                    <span class="aeo-mac-ui-url">seoshivam.pro · cited</span>
+                  </div>
+                  <div class="aeo-mac-ui-query" id="aeoMacQuery">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <span class="aeo-mac-query-txt" id="aeoMacQueryTxt"></span>
+                  </div>
+                  <div class="aeo-mac-ui-answer">
+                    <span class="aeo-mac-ui-pulse" aria-hidden="true"></span>
+                    <span class="aeo-mac-ui-engine">AI Overview</span>
+                    <div class="aeo-mac-ui-body" id="aeoMacAnswer">
+                      <p class="aeo-mac-line" data-mac-line="0">
+                        For founders asking who should own AEO for a B2B SaaS site,
+                        <a href="/about" class="ilink content-int">Shivam Attri</a>
+                        is the operator surfaced on seoshivam.pro for entity-led citation systems.
+                      </p>
+                      <p class="aeo-mac-line" data-mac-line="1">
+                        Fix order: open AI crawlers in robots.txt, index in Bing for Copilot, ship Person and Organization JSON-LD, then rewrite service pages answer-first.
+                      </p>
+                      <p class="aeo-mac-line" data-mac-line="2">
+                        <span class="aeo-mac-stat">16× clicks in 30 days</span>
+                        <span class="aeo-mac-stat-sep">·</span>
+                        <span class="aeo-mac-stat">20+ AI citations tracked</span>
+                        <span class="aeo-mac-stat-sep">·</span>
+                        <span class="aeo-mac-stat">6 engines monthly</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="aeo-mac-ui-cites">
+                    <span class="aeo-mac-ui-cite aeo-mac-ui-cite--on">
+                      <span class="adot" style="width:4px;height:4px"></span>
+                      seoshivam.pro
+                    </span>
+                    <span class="aeo-mac-ui-cite">linkedin.com/in/seoshivampro</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aeo-mac-hinge" aria-hidden="true"></div>
+        <div class="aeo-mac-base" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="aeo-mac-cap rv d1">
+      Six engines. One entity. When your technical layer is correct, citations compound across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot, and Grok.
+    </p>
+  </div>
+</section>
+
+<style>
+  .aeo-mac-sec {
+    --mac-open: 0;
+    padding: clamp(32px, 5vw, 48px) 0 clamp(56px, 8vw, 88px);
+    overflow: hidden;
+  }
+
+  .aeo-mac-stage {
+    position: relative;
+    max-width: 920px;
+    margin: 0 auto;
+    min-height: clamp(320px, 48vw, 500px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: clamp(40px, 7vw, 64px) clamp(8px, 3vw, 20px) clamp(24px, 4vw, 36px);
+  }
+
+  /* Floating icons */
+  .aeo-mac-icon {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: calc(0.35 + var(--mac-open, 0) * 0.65);
+    transform: translateY(calc(16px * (1 - var(--mac-open, 0)))) scale(calc(0.92 + var(--mac-open, 0) * 0.08));
+    transition: opacity 0.15s linear, transform 0.15s linear;
+    animation: aeoMacIconFloat 5s ease-in-out infinite;
+    animation-delay: var(--mac-delay, 0s);
+    pointer-events: none;
+  }
+  .aeo-mac-sec.is-unlocked .aeo-mac-icon {
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .aeo-mac-icon--tl { top: 2%; left: 0; }
+  .aeo-mac-icon--tr { top: 4%; right: 0; }
+  .aeo-mac-icon--ml { top: 40%; left: -4%; }
+  .aeo-mac-icon--mr { top: 36%; right: -4%; }
+  .aeo-mac-icon--bl { bottom: 6%; left: 4%; }
+  .aeo-mac-icon--br { bottom: 8%; right: 4%; }
+
+  .aeo-mac-icon-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--agl) 0%, transparent 70%);
+    opacity: 0.55;
+    animation: aeoMacGlow 4s ease-in-out infinite;
+    animation-delay: var(--mac-delay, 0s);
+  }
+  .aeo-mac-icon-chip {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--s1);
+    border: 1px solid var(--bd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  }
+  html.light .aeo-mac-icon-chip {
+    background: #fff;
+    border-color: #d4cfc6;
+    box-shadow: 0 8px 24px rgba(26, 23, 20, 0.08);
+  }
+  .aeo-mac-icon-chip img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+  }
+  html:not(.light) .aeo-mac-icon--br .aeo-mac-icon-chip img {
+    filter: invert(1);
+  }
+  .aeo-mac-icon-label {
+    font-family: var(--fm);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--wm);
+    white-space: nowrap;
+  }
+
+  /* Device + scroll-driven lid open */
+  .aeo-mac-device {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 640px);
+    transform: perspective(1400px) rotateX(calc(10deg - var(--mac-open, 0) * 4deg));
+    transform-origin: center bottom;
+    will-change: transform;
+  }
+
+  .aeo-mac-lid-stack {
+    transform-origin: 50% 100%;
+    transform: perspective(1100px) rotateX(calc(-78deg * (1 - var(--mac-open, 0))));
+    will-change: transform;
+  }
+
+  .aeo-mac-lid {
+    background: linear-gradient(165deg, #3a3a3a 0%, #252525 42%, #1a1a1a 100%);
+    border: 1px solid #3d3d3d;
+    border-radius: 18px 18px 4px 4px;
+    padding: 10px 10px 6px;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+      0 28px 70px rgba(0, 0, 0, 0.5);
+  }
+  html.light .aeo-mac-lid {
+    background: linear-gradient(165deg, #f5f2ec 0%, #ebe6de 45%, #e0dbd3 100%);
+    border-color: #cfc9bf;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.95) inset,
+      0 24px 56px rgba(26, 23, 20, 0.1),
+      0 4px 12px rgba(26, 23, 20, 0.06);
+  }
+
+  .aeo-mac-bezel {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0c0c0c;
+    position: relative;
+    border: 1px solid #1f1f1f;
+  }
+  html.light .aeo-mac-bezel {
+    background: #12100e;
+    border-color: #2a2622;
+  }
+
+  .aeo-mac-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72px;
+    height: 18px;
+    background: #0c0c0c;
+    border-radius: 0 0 10px 10px;
+    z-index: 4;
+  }
+  html.light .aeo-mac-notch {
+    background: #12100e;
+  }
+
+  .aeo-mac-screen {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    min-height: 200px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  html.light .aeo-mac-screen {
+    background: #f8f6f2;
+  }
+
+  .aeo-mac-screen-mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 18% 8%, rgba(79, 142, 247, 0.2) 0%, transparent 52%),
+      radial-gradient(ellipse 55% 45% at 88% 88%, rgba(26, 58, 143, 0.18) 0%, transparent 48%),
+      var(--bg);
+  }
+  html.light .aeo-mac-screen-mesh {
+    background:
+      radial-gradient(ellipse 80% 60% at 18% 8%, rgba(37, 84, 214, 0.12) 0%, transparent 52%),
+      radial-gradient(ellipse 55% 45% at 88% 88%, rgba(23, 51, 137, 0.08) 0%, transparent 48%),
+      #f8f6f2;
+  }
+
+  .aeo-mac-ui {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 14px 12px;
+    gap: 8px;
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+  .aeo-mac-ui a.ilink {
+    pointer-events: auto;
+  }
+
+  .aeo-mac-ui-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--bd);
+    flex-shrink: 0;
+  }
+  html.light .aeo-mac-ui-bar {
+    border-bottom-color: #d4cfc6;
+  }
+  .aeo-mac-ui-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .aeo-mac-ui-dot:nth-child(1) { background: #ff5f57; }
+  .aeo-mac-ui-dot:nth-child(2) { background: #febc2e; }
+  .aeo-mac-ui-dot:nth-child(3) { background: #28c840; }
+  .aeo-mac-ui-url {
+    margin-left: auto;
+    font-family: var(--fm);
+    font-size: 7.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--wm);
+  }
+
+  .aeo-mac-ui-query {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--fu);
+    font-size: 10.5px;
+    color: var(--wd);
+    background: var(--s2);
+    border: 1px solid var(--bd);
+    border-radius: 8px;
+    padding: 7px 10px;
+    flex-shrink: 0;
+    min-height: 32px;
+  }
+  html.light .aeo-mac-ui-query {
+    background: #fff;
+    border-color: #d4cfc6;
+    color: var(--w);
+  }
+  .aeo-mac-ui-query svg {
+    flex-shrink: 0;
+    color: var(--wm);
+  }
+  .aeo-mac-query-txt {
+    line-height: 1.35;
+  }
+
+  .aeo-mac-ui-answer {
+    flex: 1;
+    min-height: 0;
+    background: var(--s1);
+    border: 1px solid var(--bd);
+    border-radius: 10px;
+    padding: 10px 11px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  html.light .aeo-mac-ui-answer {
+    background: #fff;
+    border-color: #d4cfc6;
+  }
+
+  .aeo-mac-ui-pulse {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ac);
+    box-shadow: 0 0 8px var(--agl);
+    animation: opcPulse 1.6s ease-in-out infinite;
+  }
+  .aeo-mac-ui-engine {
+    font-family: var(--fm);
+    font-size: 7.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ac);
+    display: block;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+
+  .aeo-mac-ui-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .aeo-mac-ui-body::-webkit-scrollbar {
+    width: 4px;
+  }
+  .aeo-mac-ui-body::-webkit-scrollbar-thumb {
+    background: var(--bd);
+    border-radius: 2px;
+  }
+
+  .aeo-mac-line {
+    font-family: var(--fu);
+    font-size: 10.5px;
+    color: var(--wd);
+    line-height: 1.58;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  html.light .aeo-mac-line {
+    color: #5c5751;
+  }
+  .aeo-mac-sec.is-typed .aeo-mac-line {
+    animation: aeoMacLineIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .aeo-mac-line[data-mac-line='1'] { animation-delay: 0.12s; }
+  .aeo-mac-line[data-mac-line='2'] {
+    animation-delay: 0.24s;
+    font-size: 9.5px;
+    line-height: 1.5;
+    color: var(--wm);
+    padding-top: 4px;
+    border-top: 1px solid var(--bd);
+  }
+  html.light .aeo-mac-line[data-mac-line='2'] {
+    color: #9c9890;
+    border-top-color: #e8e4dc;
+  }
+  .aeo-mac-line .ilink {
+    font-size: inherit;
+    font-weight: 700;
+  }
+  .aeo-mac-stat {
+    color: var(--ac);
+    font-weight: 600;
+  }
+  html.light .aeo-mac-stat {
+    color: var(--ac2);
+  }
+  .aeo-mac-stat-sep {
+    margin: 0 4px;
+    opacity: 0.5;
+  }
+
+  .aeo-mac-ui-cites {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .aeo-mac-ui-cite {
+    font-family: var(--fm);
+    font-size: 7.5px;
+    letter-spacing: 0.06em;
+    color: var(--wm);
+    background: var(--s2);
+    border: 1px solid var(--bd);
+    border-radius: 4px;
+    padding: 3px 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  html.light .aeo-mac-ui-cite {
+    background: #f2efe9;
+    border-color: #d4cfc6;
+  }
+  .aeo-mac-ui-cite--on {
+    color: var(--ac);
+    background: var(--agl);
+    border-color: rgba(79, 142, 247, 0.25);
+  }
+
+  .aeo-mac-hinge {
+    height: 5px;
+    margin: 0 10%;
+    background: linear-gradient(90deg, transparent, var(--bd), transparent);
+    opacity: calc(0.4 + var(--mac-open, 0) * 0.6);
+  }
+  html.light .aeo-mac-hinge {
+    background: linear-gradient(90deg, transparent, #cfc9bf, transparent);
+  }
+
+  .aeo-mac-base {
+    height: 14px;
+    width: 106%;
+    margin-left: -3%;
+    background: linear-gradient(180deg, #2e2e2e 0%, #1c1c1c 100%);
+    border: 1px solid #3a3a3a;
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    opacity: calc(0.5 + var(--mac-open, 0) * 0.5);
+  }
+  html.light .aeo-mac-base {
+    background: linear-gradient(180deg, #e8e4dc 0%, #d9d4cb 100%);
+    border-color: #cfc9bf;
+    box-shadow: 0 8px 20px rgba(26, 23, 20, 0.08);
+  }
+
+  .aeo-mac-cap {
+    font-family: var(--fu);
+    font-size: clamp(13px, 1.25vw, 15px);
+    color: var(--wd);
+    line-height: 1.72;
+    text-align: center;
+    max-width: 52ch;
+    margin: clamp(20px, 3vw, 32px) auto 0;
+    padding: 0 12px;
+  }
+
+  @keyframes aeoMacIconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes aeoMacGlow {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes aeoMacLineIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .aeo-mac-stage {
+      min-height: 300px;
+    }
+    .aeo-mac-device {
+      width: min(100%, 520px);
+    }
+    .aeo-mac-icon--ml,
+    .aeo-mac-icon--mr {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .aeo-mac-sec {
+      padding-bottom: 48px;
+    }
+    .aeo-mac-stage {
+      min-height: 280px;
+      padding-top: 52px;
+      padding-bottom: 20px;
+    }
+    .aeo-mac-device {
+      width: 100%;
+      max-width: 100%;
+      transform: perspective(1000px) rotateX(calc(8deg - var(--mac-open, 0) * 3deg));
+    }
+    .aeo-mac-lid-stack {
+      transform: perspective(900px) rotateX(calc(-70deg * (1 - var(--mac-open, 0))));
+    }
+    .aeo-mac-lid {
+      padding: 8px 8px 5px;
+      border-radius: 14px 14px 3px 3px;
+    }
+    .aeo-mac-screen {
+      min-height: 168px;
+    }
+    .aeo-mac-ui {
+      padding: 22px 10px 10px;
+      gap: 6px;
+    }
+    .aeo-mac-line {
+      font-size: 10px;
+      line-height: 1.52;
+    }
+    .aeo-mac-line[data-mac-line='2'] {
+      font-size: 8.5px;
+    }
+    .aeo-mac-icon-chip {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+    }
+    .aeo-mac-icon-chip img {
+      width: 22px;
+      height: 22px;
+    }
+    .aeo-mac-icon-label {
+      font-size: 7px;
+    }
+    .aeo-mac-icon--tl { top: 0; left: 4%; }
+    .aeo-mac-icon--tr { top: 0; right: 4%; }
+    .aeo-mac-icon--bl { bottom: 2%; left: 8%; }
+    .aeo-mac-icon--br { bottom: 2%; right: 8%; }
+    .aeo-mac-stat-sep {
+      display: block;
+      height: 0;
+      overflow: hidden;
+    }
+    .aeo-mac-stat {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aeo-mac-sec {
+      --mac-open: 1 !important;
+    }
+    .aeo-mac-icon {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .aeo-mac-lid-stack {
+      transform: none;
+    }
+    .aeo-mac-device {
+      transform: perspective(1200px) rotateX(5deg);
+    }
+    .aeo-mac-line {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .aeo-mac-ui-pulse {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const macSec = document.getElementById('aeo-mac-illustration');
+  const queryTxt = document.getElementById('aeoMacQueryTxt');
+  const queryStr = 'who should build aeo strategy for b2b saas';
+
+  function clamp(n: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, n));
+  }
+
+  function setMacOpen(p: number): void {
+    if (!macSec) return;
+    const v = clamp(p, 0, 1).toFixed(3);
+    macSec.style.setProperty('--mac-open', v);
+  }
+
+  function updateMacScroll(): void {
+    if (!macSec) return;
+    const rect = macSec.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const start = vh * 0.92;
+    const end = vh * 0.28;
+    const progress = clamp((start - rect.top) / (start - end), 0, 1);
+    setMacOpen(progress);
+
+    if (progress > 0.55 && !macSec.classList.contains('is-unlocked')) {
+      macSec.classList.add('is-unlocked');
+    }
+    if (progress > 0.72 && !macSec.classList.contains('is-typed')) {
+      macSec.classList.add('is-typed');
+      runQueryType();
+    }
+  }
+
+  let queryDone = false;
+  let queryI = 0;
+
+  function runQueryType(): void {
+    if (queryDone || !queryTxt) return;
+    queryDone = true;
+    queryI = 0;
+    queryTxt.textContent = '';
+
+    function tick(): void {
+      if (!queryTxt) return;
+      if (queryI < queryStr.length) {
+        queryTxt.textContent += queryStr[queryI];
+        queryI++;
+        setTimeout(tick, 22);
+      }
+    }
+    tick();
+  }
+
+  function onScroll(): void {
+    updateMacScroll();
+  }
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (macSec) {
+    if (reducedMotion) {
+      macSec.classList.add('is-unlocked', 'is-typed');
+      if (queryTxt) queryTxt.textContent = queryStr;
+      setMacOpen(1);
+    } else {
+      updateMacScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      if (window.__lenis) {
+        window.__lenis.on('scroll', onScroll);
+      }
+    }
+  }
+
+  declare global {
+    interface Window {
+      __lenis?: { on: (event: string, fn: () => void) => void };
+    }
+  }
+</script>

@@ -1,0 +1,1042 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../lib/site-route-meta';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import ContactCta from '../components/ContactCta.astro';
+
+const resourceFaqs = [
+  {
+    q: 'Are these resources actually free?',
+    a: 'Yes. Each download is free. You enter an email so I can deliver the file and send the weekly insight (one click to unsubscribe). No paywalls on these three. No fake "tripwire" PDFs.',
+  },
+  {
+    q: 'What format are the files?',
+    a: 'The 80-Point AEO Audit ships as a structured PDF you can run in a workshop. The AEO Content Brief is a Notion template you duplicate into your workspace. The Claude Skills pack is an 8 to 12 page PDF with copy-ready prompt blocks.',
+  },
+  {
+    q: 'How do I get the files after I submit?',
+    a: 'Brevo sends the asset link to the email you used. If nothing arrives in a few minutes, check spam, then email shivamattri27@gmail.com from that address and I will resend manually.',
+  },
+  {
+    q: 'Can I use these with clients or across regions?',
+    a: 'Yes. Personal use, team use, and consulting use are all permitted across US, UK, EU, AU, and India delivery styles I already run. Reselling or repackaging the files as your own paid product is not.',
+  },
+  {
+    q: 'Will I be added to a sales sequence?',
+    a: 'You join the same list as blog subscribers: one weekly note plus occasional resource drops. Unsubscribe is one click. There is no separate hard-sell track.',
+  },
+];
+
+const resources = [
+  {
+    id: 'aeo-audit-80',
+    ix: '01',
+    title: '80-Point AEO Audit',
+    desc: 'Every signal that decides whether AI engines cite you or your competitor. Check these once. Fix what is broken. Show up in answers.',
+    type: 'PDF framework',
+    scope: 'Workshop-ready checklist',
+    tag: 'Free',
+    icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01',
+  },
+  {
+    id: 'aeo-content-brief-notion',
+    ix: '02',
+    title: 'AEO Content Brief (Notion)',
+    desc: 'The exact brief format used when writing content that gets cited in ChatGPT, Perplexity, and Google AI Overviews. Intent mapping, semantic cluster fields, entity tagging, FAQ block, and a scoring rubric for AI visibility readiness. Real fields, real labels, and the logic behind each section.',
+    type: 'Notion template',
+    scope: 'Duplicate into your workspace',
+    tag: 'Free',
+    icon: 'M4 6h16M4 12h16M4 18h7',
+  },
+  {
+    id: 'claude-skills-seo-pdf',
+    ix: '03',
+    title: 'Claude Skills for SEO and Content Production',
+    desc: 'PDF guide (8 to 12 pages, print-ready layout) with embedded prompt templates. The exact Claude custom skills and prompt workflows used to ship high quality content at scale across multiple brands. Includes the AEO content brief skill, a SERP analysis skill, a semantic entity extractor skill, and a quality control checklist. Grounded in a real outcome: roughly 50× increase in quality content production throughput.',
+    type: 'PDF + prompts',
+    scope: '8 to 12 pages',
+    tag: 'Free',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+  },
+] as const;
+
+const nlStackLogos = [
+  { name: 'Webflow', src: '/icons/webflow-icon.svg', dark: false },
+  { name: 'Framer', src: '/icons/framer.svg', dark: true },
+  { name: 'Google', src: '/icons/google-icon.svg', dark: false },
+  { name: 'Claude', src: '/icons/claude-icon.svg', dark: false },
+  { name: 'Notion', src: '/icons/notion-icon.svg', dark: true },
+  { name: 'Google Search Console', src: '/icons/google-search-console.svg', dark: false },
+  { name: 'ChatGPT', src: '/icons/chatgpt-icon.svg', dark: false },
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/resources'].title}
+  description={SITE_ROUTE_META['/resources'].description}
+  canonical="https://seoshivam.pro/resources"
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <div class="ray" style={`--i:${i}`} />)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+
+  <main class="res-page">
+    <section class="res-hero">
+      <div class="container">
+        <div class="rv"><span class="label">Resources / Operator-grade downloads</span></div>
+        <h1 class="res-h1 rv d1">
+          Three files operators use<br />to win <em class="grad-anim">AI citations.</em>
+        </h1>
+        <p class="res-sub rv d2">
+          Built for founders and teams in the US, UK, EU, and Australia, plus India-based async delivery. Same rigor on <a href="/insights/schema-markup-for-ai-search" class="ilink">schema</a>, briefs, and
+          production systems. Enter your email per file to unlock delivery. Already have the basics? Read: <a href="/insights/how-to-get-cited-by-chatgpt" class="ilink">how to get cited by ChatGPT.</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="res-body-sec">
+      <div class="container res-layout">
+        <div class="res-main">
+          <header class="res-main-hdr rv">
+            <span class="hair left">Download library</span>
+            <h2 class="sec-h" style="margin-top: 14px">
+              Pick a resource.<br /><em class="grad-anim">Run it this week.</em>
+            </h2>
+          </header>
+
+          <ol class="res-list">
+            {resources.map((r, i) => (
+              <li class={`res-item rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`} id={`res-${r.id}`}>
+                <article class="res-panel" aria-labelledby={`res-title-${r.id}`}>
+                  <div class="res-panel-hd">
+                    <span class="res-ix" aria-hidden="true">{r.ix}</span>
+                    <div class="res-panel-meta">
+                      <span class="res-tag">{r.tag}</span>
+                      <span class="res-meta-line">{r.type} · {r.scope}</span>
+                    </div>
+                  </div>
+                  <div class="res-panel-mid">
+                    <div class="res-ic" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d={r.icon} />
+                      </svg>
+                    </div>
+                    <div class="res-panel-copy">
+                      <h3 class="res-title" id={`res-title-${r.id}`}>{r.title}</h3>
+                      <p class="res-desc">{r.desc}</p>
+                    </div>
+                  </div>
+                  <div class="res-gate">
+                    <form class="res-form" data-resource-id={r.id} data-resource-title={r.title} data-mounted-at="">
+                      <label class="res-hp-w" aria-hidden="true">
+                        <span>Leave blank</span>
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" class="res-hp" />
+                      </label>
+                      <div class="res-form-row">
+                        <input type="email" placeholder="Work email" class="res-input" required autocomplete="email" maxlength="100" />
+                        <button type="submit" class="btn-p res-btn">
+                          <span class="res-btn-txt">Request download</span>
+                        </button>
+                      </div>
+                    </form>
+                    <p class="res-form-msg" role="status"></p>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
+
+          <p class="res-footnote rv">Updates ship when frameworks change. You are never charged for these three files. Want the full system? See <a href="/services/aeo" class="ilink">AEO Strategy</a> and <a href="/work" class="ilink">documented client results.</a></p>
+        </div>
+
+        <aside class="res-side-col" aria-label="Author and newsletter">
+          <!-- Author card (matches /insights sidebar) -->
+          <div class="art-au-card rv">
+            <div class="art-au-hero" aria-hidden="true">
+              <div class="art-au-hero-sweep"></div>
+            </div>
+            <div class="art-au-body">
+              <div class="art-au-pic-ring">
+                <div class="art-au-pic">
+                  <img src="/images/shivam-headshot.jpg" width="80" height="80" alt="Shivam Attri" loading="eager" onerror="this.onerror=null;this.src='/shivam-attri.jpg';" />
+                  <div class="art-au-pic-fb">SA</div>
+                </div>
+              </div>
+              <div class="art-au-intro">
+                <div class="art-au-name">Shivam Attri</div>
+                <div class="art-au-role">AEO Specialist &middot; SEO Strategist</div>
+              </div>
+              <p class="art-au-bio">I help B2B SaaS founders get cited by ChatGPT, Perplexity and Google AI Overviews. Seven years across logistics, health tech, hospitality, and SaaS.</p>
+              <div class="art-au-stats">
+                <div class="art-au-stat">
+                  <span class="art-au-stat-n grad-anim">7+</span>
+                  <span class="art-au-stat-l">Years</span>
+                </div>
+                <div class="art-au-stat">
+                  <span class="art-au-stat-n grad-anim">40+</span>
+                  <span class="art-au-stat-l">Brands</span>
+                </div>
+                <div class="art-au-stat">
+                  <span class="art-au-stat-n grad-anim">20x</span>
+                  <span class="art-au-stat-l">Avg. lift</span>
+                </div>
+              </div>
+              <div class="art-au-socials-shell">
+                <div class="art-au-socials">
+                  <a href="https://www.linkedin.com/in/seoshivampro/" target="_blank" rel="noopener" data-cursor="LinkedIn ↗" aria-label="LinkedIn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.063 2.063 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+                  </a>
+                  <a href="https://www.instagram.com/seoshivam.pro/" target="_blank" rel="noopener" data-cursor="Instagram ↗" aria-label="Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                  </a>
+                  <a href="https://www.threads.com/@seoshivam.pro" target="_blank" rel="noopener" data-cursor="Threads ↗" aria-label="Threads">
+                    <img src="/icons/threads-icon.svg" width="16" height="18" class="art-au-soc-threads" alt="" loading="lazy" decoding="async" />
+                  </a>
+                  <a href="https://substack.com/@seoshivampro" target="_blank" rel="noopener" data-cursor="Substack ↗" aria-label="Substack">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812zM22.539 0H1.46v2.836h21.08z"/></svg>
+                  </a>
+                  <a href="https://www.reddit.com/r/aiseovisibility/" target="_blank" rel="noopener" data-cursor="Reddit ↗" aria-label="Reddit">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.7 12.7c.1.3.1.6.1.9 0 3-3.5 5.4-7.8 5.4-4.3 0-7.8-2.4-7.8-5.4 0-.3 0-.6.1-.9-.5-.2-.8-.7-.8-1.3 0-.8.6-1.4 1.4-1.4.4 0 .7.1 1 .4 1.3-.9 3-1.5 5-1.6L9 4.7c0-.1.1-.2.2-.3.1 0 .2 0 .3 0L13 5.2c.2-.4.7-.7 1.2-.7.7 0 1.3.6 1.3 1.3 0 .7-.6 1.3-1.3 1.3-.7 0-1.2-.5-1.3-1.1l-3-.6-.7 3c2 .1 3.7.7 5 1.6.3-.2.6-.4 1-.4.8 0 1.4.6 1.4 1.4-.1.6-.5 1.1-.9 1.3z"/></svg>
+                  </a>
+                </div>
+              </div>
+              <a href="/contact" class="art-au-cta" data-cursor="Work with me">Work with me ↗</a>
+            </div>
+          </div>
+
+          <!-- Newsletter card -->
+          <form class="art-nl-card rv d1" id="sidebarForm" data-mounted-at="0">
+            <label class="art-hp" aria-hidden="true">
+              Leave blank<input type="text" name="website" id="sidebarHoney" tabindex="-1" autocomplete="off" />
+            </label>
+            <div class="art-nl-tag"><span class="adot" style="width:5px;height:5px"></span>Field dispatch / weekly</div>
+            <h2 class="art-nl-h">Keep up with<br /><em class="grad-anim">AEO trends.</em></h2>
+            <p class="art-nl-deck">Get the weekly brief with one actionable insight, one data point, and one thing worth reading. No filler.</p>
+            <div class="art-nl-field">
+              <input type="email" id="sidebarEmail" placeholder="Enter your email" required class="art-nl-inp" autocomplete="email" />
+              <button type="submit" class="btn-p art-nl-btn" id="sidebarBtn" data-cursor-skip aria-label="Join newsletter for free"><span id="sidebarBtnTxt">Join free</span></button>
+            </div>
+            <p class="art-nl-msg" id="sidebarMsg" role="status"></p>
+            <p class="art-nl-note">Unsubscribe any time. No hard feelings.</p>
+
+            <div class="art-nl-divider" aria-hidden="true"></div>
+
+            <p class="art-nl-stack-l">You will get my personalized workflows, custom templates, and systems built for:</p>
+            <ul class="art-nl-logos" aria-label="Tools and platforms covered in the newsletter">
+              {nlStackLogos.map((logo) => (
+                <li>
+                  <span class:list={['art-nl-logo', logo.dark && 'is-dark']}>
+                    <img src={logo.src} width="24" height="24" alt="" loading="lazy" decoding="async" />
+                    <span class="sr-only">{logo.name}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <blockquote class="art-nl-quote">
+              <p>My favorite marketing newsletter is <a href="https://www.searchenginejournal.com/" target="_blank" rel="noopener noreferrer">Search Engine Journal (SEJ)</a>. This brief is built in the same spirit: practical, specific, and worth your time.</p>
+            </blockquote>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <section class="rs-faq-sec">
+      <div class="container">
+        <FaqBlock
+          id="resources-faq"
+          eyebrow="QUESTIONS / BEFORE YOU DOWNLOAD"
+          heading="Common questions about"
+          headingEm="these resources."
+          deck="Formats, delivery, and how the list works after you opt in."
+          faqs={resourceFaqs}
+        />
+      </div>
+    </section>
+
+    <ContactCta
+      id="resources-cta"
+      source="resources-page"
+      eyebrow="NEED MORE THAN A TEMPLATE?"
+      heading="The files open the door."
+      headingEm="The build is what compounds."
+      deck="If you want a custom AEO, SEO, and web architecture pass for your brand, send the project brief here. Replied within 4 hours."
+    />
+  </main>
+  <Footer />
+
+  <style>
+    .res-page {
+      position: relative;
+      z-index: 1;
+    }
+    .res-hero {
+      padding: clamp(120px, 18vw, 168px) 0 clamp(40px, 6vw, 56px);
+    }
+    .res-hero .label {
+      margin-bottom: 22px;
+    }
+    .res-h1 {
+      font-family: var(--fd), serif;
+      font-size: clamp(36px, 5.4vw, 76px);
+      font-weight: 400;
+      line-height: 0.96;
+      letter-spacing: -0.022em;
+      color: var(--w);
+      margin: 0 0 18px;
+    }
+    .res-h1 em {
+      font-family: var(--fd), serif;
+      font-style: italic;
+    }
+    .res-sub {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(15px, 1.5vw, 18px);
+      color: var(--wd);
+      line-height: 1.72;
+      max-width: 52ch;
+      margin: 0;
+    }
+
+    .res-body-sec {
+      padding: 0 0 clamp(72px, 10vw, 120px);
+    }
+    .res-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+      gap: clamp(32px, 4vw, 56px);
+      align-items: start;
+    }
+    .res-main {
+      min-width: 0;
+    }
+    .res-main-hdr {
+      margin-bottom: clamp(28px, 4vw, 40px);
+    }
+
+    .res-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .res-item {
+      margin: 0;
+    }
+    .res-panel {
+      background: var(--s1);
+      border: 1px solid var(--bd);
+      border-radius: 20px;
+      padding: clamp(22px, 3vw, 32px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.22);
+      transition: border-color 0.25s, box-shadow 0.3s;
+    }
+    html.light .res-panel {
+      box-shadow: 0 16px 48px rgba(26, 23, 20, 0.06), 0 1px 0 rgba(255, 255, 255, 0.75) inset;
+    }
+    .res-panel:hover {
+      border-color: rgba(79, 142, 247, 0.35);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+    }
+    html.light .res-panel:hover {
+      border-color: rgba(43, 91, 224, 0.28);
+      box-shadow: 0 20px 56px rgba(26, 23, 20, 0.1);
+    }
+
+    .res-panel-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .res-ix {
+      font-family: var(--fd), serif;
+      font-size: clamp(40px, 5vw, 56px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      background: var(--ag);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .res-panel-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      justify-content: flex-end;
+    }
+    .res-tag {
+      font-family: var(--fm), monospace;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.22);
+      border-radius: 999px;
+      padding: 4px 11px;
+    }
+    .res-meta-line {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--wm);
+    }
+
+    .res-panel-mid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: clamp(16px, 2.5vw, 24px);
+      align-items: start;
+    }
+    .res-ic {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--agl);
+      border: 1px solid rgba(79, 142, 247, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ac);
+      flex-shrink: 0;
+    }
+    .res-title {
+      font-family: var(--fd), serif;
+      font-size: clamp(22px, 2.4vw, 28px);
+      font-weight: 400;
+      color: var(--w);
+      margin: 0 0 10px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .res-desc {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(14px, 1.25vw, 15.5px);
+      color: var(--wd);
+      line-height: 1.72;
+      margin: 0;
+    }
+
+    .res-gate {
+      padding-top: 4px;
+    }
+    .res-hp-w {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .res-form {
+      position: relative;
+    }
+    .res-form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .res-input {
+      flex: 1 1 200px;
+      min-width: 0;
+      background: var(--bg);
+      border: 1px solid var(--bd);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      color: var(--w);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    html.light .res-input {
+      background: var(--s1);
+    }
+    .res-input::placeholder {
+      color: var(--wm);
+    }
+    .res-input:focus {
+      border-color: var(--ac);
+      box-shadow: 0 0 0 3px var(--agl);
+    }
+    .res-btn {
+      flex: 0 1 auto;
+      justify-content: center;
+      font-size: 13px;
+      padding: 12px 22px;
+      white-space: nowrap;
+    }
+    .res-form-msg {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: var(--wm);
+      margin: 10px 0 0;
+      min-height: 16px;
+    }
+    .res-form-msg.ok {
+      color: var(--green);
+    }
+    .res-form-msg.err {
+      color: #ef4444;
+    }
+
+    .res-footnote {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--wm);
+      margin: clamp(28px, 4vw, 40px) 0 0;
+      max-width: 48ch;
+      line-height: 1.6;
+    }
+
+    /* ─── SIDEBAR (mirrors /insights blog sidebar) ─── */
+    .res-side-col {
+      position: sticky;
+      top: 96px;
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    @keyframes resAuCtaShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    @keyframes resAuHeroSweep {
+      0%, 100% { opacity: 0.28; transform: translateX(-8%) skewX(-12deg); }
+      50% { opacity: 0.42; transform: translateX(18%) skewX(-12deg); }
+    }
+
+    .art-au-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: var(--s1);
+      border: 1px solid var(--bd);
+      min-width: 0;
+    }
+    .art-au-hero {
+      height: 56px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--bd);
+      background: var(--s2);
+    }
+    .art-au-hero-sweep {
+      position: absolute;
+      inset: -40% -20%;
+      background: linear-gradient(105deg, transparent 0%, rgba(79, 142, 247, 0.12) 45%, rgba(123, 174, 255, 0.08) 55%, transparent 100%);
+      animation: resAuHeroSweep 9s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .art-au-body {
+      padding: 0 clamp(16px, 3.5vw, 20px) clamp(18px, 3.5vw, 22px);
+      text-align: center;
+      position: relative;
+    }
+    .art-au-pic-ring {
+      width: 80px;
+      height: 80px;
+      margin: -40px auto 0;
+      padding: 2px;
+      border-radius: 50%;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--s1);
+      border: 1px solid var(--bd);
+      box-shadow: 0 0 0 1px rgba(79, 142, 247, 0.12);
+    }
+    .art-au-pic {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--s3);
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .art-au-pic img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+    .art-au-pic-fb { display: none; font-family: var(--fu); font-size: 20px; font-weight: 700; color: #fff; align-items: center; justify-content: center; width: 100%; height: 100%; background: var(--ag); }
+
+    .art-au-intro { margin-top: 12px; margin-bottom: 2px; }
+    .art-au-name {
+      font-family: var(--fd), serif;
+      font-size: clamp(21px, 2.2vw, 24px);
+      font-weight: 400;
+      color: var(--w);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .art-au-role {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ac);
+      margin-top: 8px;
+    }
+    .art-au-bio {
+      font-family: var(--fu), sans-serif;
+      font-size: 13px;
+      color: var(--wd);
+      line-height: 1.65;
+      margin: 12px 0 14px;
+      text-align: left;
+      text-wrap: balance;
+    }
+    .art-au-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .art-au-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 4px;
+      border-radius: 12px;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .art-au-stat:hover { border-color: rgba(79, 142, 247, 0.3); background: var(--agl); }
+    html.light .art-au-stat:hover { border-color: rgba(43, 91, 224, 0.24); }
+    .art-au-stat-n {
+      font-family: var(--fd), serif;
+      font-size: clamp(17px, 2vw, 20px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .art-au-stat-l {
+      font-family: var(--fu), sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--wm);
+    }
+    .art-au-socials-shell {
+      padding: 6px 4px;
+      border-radius: 12px;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      margin-bottom: 12px;
+    }
+    .art-au-socials {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: stretch;
+      gap: 4px;
+      width: 100%;
+    }
+    .art-au-socials a {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--wd);
+      background: var(--s1);
+      border: 1px solid var(--bd);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      text-decoration: none;
+    }
+    .art-au-socials a:hover { color: var(--ac); border-color: rgba(79, 142, 247, 0.4); background: var(--agl); }
+    .art-au-socials a svg { flex-shrink: 0; }
+    .art-au-soc-threads {
+      width: 15px;
+      height: auto;
+      max-height: 17px;
+      display: block;
+      object-fit: contain;
+      filter: invert(1) brightness(1.05);
+      opacity: 0.88;
+    }
+    html.light .art-au-soc-threads { filter: none; opacity: 0.82; }
+    .art-au-socials a:hover .art-au-soc-threads { filter: invert(1) brightness(1.2); opacity: 1; }
+    html.light .art-au-socials a:hover .art-au-soc-threads { filter: none; opacity: 1; }
+
+    .art-au-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: var(--fu), sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 999px;
+      color: #fff;
+      text-decoration: none;
+      background: var(--ag);
+      background-size: 220% 100%;
+      animation: resAuCtaShift 6s linear infinite;
+      transition: filter 0.25s, box-shadow 0.25s;
+      box-shadow: 0 4px 18px rgba(79, 142, 247, 0.2);
+    }
+    .art-au-cta:hover { filter: brightness(1.05); box-shadow: 0 6px 22px rgba(79, 142, 247, 0.26); }
+    .art-au-cta:focus-visible { outline: 2px solid var(--ac); outline-offset: 3px; }
+    .art-au-socials a:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .art-au-hero-sweep { animation: none; opacity: 0.2; }
+      .art-au-cta { animation: none; background-size: 100% 100%; }
+    }
+
+    /* Newsletter card */
+    .art-nl-card {
+      background: var(--s1);
+      border: 1px solid var(--bd);
+      border-radius: 16px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .art-nl-tag {
+      font-family: var(--fm);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ac);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0;
+    }
+    .art-nl-h {
+      font-family: var(--fd);
+      font-size: clamp(22px, 2.2vw, 28px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--w);
+      margin: 0;
+    }
+    .art-nl-h em { font-style: italic; }
+    .art-nl-deck {
+      font-family: var(--fu);
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--wd);
+      margin: 0;
+    }
+    .art-nl-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .art-nl-inp {
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: var(--fu);
+      font-size: 13px;
+      color: var(--w);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .art-nl-inp::placeholder { color: var(--wm); }
+    .art-nl-inp:focus { border-color: var(--ac); background: var(--s3); }
+    .art-nl-btn { width: 100%; justify-content: center; font-size: 13px; padding: 12px 16px; }
+    .art-nl-msg {
+      font-family: var(--fm);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: var(--wm);
+      margin: 0;
+      min-height: 14px;
+    }
+    .art-nl-msg.ok { color: var(--green); }
+    .art-nl-msg.err { color: #EF4444; }
+    .art-nl-note {
+      font-family: var(--fm);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--wm);
+      margin: 0;
+    }
+    .art-nl-divider {
+      height: 1px;
+      background: var(--bd);
+      margin: 4px 0 2px;
+    }
+    .art-nl-stack-l {
+      font-family: var(--fu);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--wd);
+      margin: 0;
+    }
+    .art-nl-logos {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .art-nl-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 1px solid var(--bd);
+      background: var(--s2);
+      padding: 10px;
+      transition: border-color 0.2s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .art-nl-logo:hover { border-color: rgba(79, 142, 247, 0.45); transform: translateY(-2px); }
+    .art-nl-logo img { width: 24px; height: 24px; object-fit: contain; display: block; }
+    .art-nl-logo.is-dark img { filter: brightness(0) invert(1); opacity: 0.9; }
+    html.light .art-nl-logo.is-dark img { filter: none; opacity: 0.88; }
+    .art-nl-quote {
+      margin: 0;
+      padding: 14px 0 0;
+      border-top: 1px solid var(--bd);
+    }
+    .art-nl-quote p {
+      font-family: var(--fd);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--wd);
+      margin: 0;
+    }
+    .art-nl-quote a {
+      color: var(--ac);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(79, 142, 247, 0.45);
+    }
+    .art-nl-quote a:hover { color: #B8D4FF; }
+
+    .art-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    .rs-faq-sec {
+      padding: 0 0 80px;
+    }
+
+    @media (max-width: 1024px) {
+      .res-layout {
+        grid-template-columns: 1fr;
+      }
+      .res-side-col {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .res-side-col .art-au-card,
+      .res-side-col .art-nl-card {
+        flex: 1 1 320px;
+      }
+    }
+    @media (max-width: 640px) {
+      .res-side-col { flex-direction: column; }
+    }
+    @media (max-width: 640px) {
+      .res-panel-mid {
+        grid-template-columns: 1fr;
+      }
+      .res-ic {
+        width: 44px;
+        height: 44px;
+      }
+      .res-form-row {
+        flex-direction: column;
+      }
+      .res-btn {
+        width: 100%;
+      }
+      .res-panel-meta {
+        justify-content: flex-start;
+      }
+      .res-panel-hd {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <script>
+    const prog = document.getElementById('scrollProg');
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (prog) {
+          const s = document.documentElement;
+          prog.style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100 + '%';
+        }
+      },
+      { passive: true },
+    );
+
+    const markStart = (f: HTMLFormElement) => {
+      if (!f.dataset.mountedAt) f.dataset.mountedAt = String(Date.now());
+    };
+
+    // ─── Sidebar newsletter (mirrors /insights/[slug] form) ───
+    const sForm = document.getElementById('sidebarForm') as HTMLFormElement | null;
+    if (sForm) sForm.dataset.mountedAt = String(Date.now());
+    const sEmail = document.getElementById('sidebarEmail') as HTMLInputElement | null;
+    const sMsg = document.getElementById('sidebarMsg');
+    const sBtnTxt = document.getElementById('sidebarBtnTxt');
+    sForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = sEmail?.value.trim();
+      if (!email) return;
+      const honey = (document.getElementById('sidebarHoney') as HTMLInputElement | null)?.value?.trim() || '';
+      const mountedAt = parseInt(sForm?.dataset.mountedAt || '0', 10) || Date.now();
+      const btn = sForm.querySelector('#sidebarBtn') as HTMLButtonElement | null;
+      if (sBtnTxt) sBtnTxt.textContent = 'Sending...';
+      if (btn) btn.disabled = true;
+      if (sMsg) {
+        sMsg.textContent = '';
+        sMsg.className = 'art-nl-msg';
+      }
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { accept: 'application/json', 'content-type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            website: honey,
+            mountedAt,
+            leadSource: 'resources-newsletter',
+          }),
+        });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (res.ok && data.ok) {
+          if (sMsg) {
+            sMsg.textContent = 'You are in. Check your inbox.';
+            sMsg.className = 'art-nl-msg ok';
+          }
+          if (sBtnTxt) sBtnTxt.textContent = 'Joined ✓';
+          if (sEmail) sEmail.value = '';
+        } else {
+          const errText = typeof data.error === 'string' && data.error ? data.error : 'Could not subscribe. Try again.';
+          if (sMsg) {
+            sMsg.textContent = errText;
+            sMsg.className = 'art-nl-msg err';
+          }
+          if (sBtnTxt) sBtnTxt.textContent = 'Join free';
+        }
+      } catch {
+        if (sMsg) {
+          sMsg.textContent = 'Network error. Check your connection and try again.';
+          sMsg.className = 'art-nl-msg err';
+        }
+        if (sBtnTxt) sBtnTxt.textContent = 'Join free';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+
+    document.querySelectorAll('.res-form').forEach((node) => {
+      if (!(node instanceof HTMLFormElement)) return;
+      const f = node;
+      const emailEl = f.querySelector('.res-input');
+      const btn = f.querySelector('.res-btn');
+      if (emailEl instanceof HTMLInputElement) {
+        emailEl.addEventListener('focus', () => markStart(f), { passive: true });
+        emailEl.addEventListener('input', () => markStart(f), { passive: true });
+      }
+      btn?.addEventListener('focus', () => markStart(f), { passive: true });
+
+      f.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const emailInput = f.querySelector('.res-input');
+        const hp = f.querySelector('.res-hp');
+        const msgEl = f.parentElement?.querySelector('.res-form-msg');
+        const btnTxt = f.querySelector('.res-btn-txt');
+        const resourceId = f.dataset.resourceId || '';
+        const resourceTitle = f.dataset.resourceTitle || '';
+        const email = emailInput instanceof HTMLInputElement ? emailInput.value.trim() : '';
+        const website = hp instanceof HTMLInputElement ? hp.value : '';
+        const mountedAt = parseInt(f.dataset.mountedAt || '0', 10) || 0;
+        if (!email) return;
+        if (btnTxt) btnTxt.textContent = 'Sending...';
+        if (msgEl) {
+          msgEl.textContent = '';
+          msgEl.className = 'res-form-msg';
+        }
+        try {
+          const res = await fetch('/api/resource-gate', {
+            method: 'POST',
+            headers: { accept: 'application/json', 'content-type': 'application/json' },
+            body: JSON.stringify({ email, website, mountedAt, resourceId, resourceTitle }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data && data.ok) {
+            if (msgEl) {
+              msgEl.textContent = typeof data.message === 'string' ? data.message : 'Check your inbox.';
+              msgEl.className = 'res-form-msg ok';
+            }
+            if (btnTxt) btnTxt.textContent = 'Sent';
+            if (emailInput instanceof HTMLInputElement) emailInput.value = '';
+            f.dataset.mountedAt = '';
+          } else {
+            const errText = typeof data.error === 'string' ? data.error : 'Request failed.';
+            throw new Error(errText);
+          }
+        } catch (err) {
+          if (msgEl) {
+            const fallback = 'Something went wrong. Email shivamattri27@gmail.com';
+            const detail = err instanceof Error && err.message && err.message !== 'fail' ? err.message : fallback;
+            msgEl.textContent = detail.length > 420 ? fallback : detail;
+            msgEl.className = 'res-form-msg err';
+          }
+          if (btnTxt) btnTxt.textContent = 'Request download';
+        }
+      });
+    });
+  </script>
+</Layout>

@@ -1,0 +1,2607 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../lib/site-route-meta';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import ContactCta from '../components/ContactCta.astro';
+
+const aboutFaqs = [
+  { q: 'Who is Shivam Attri and what does he actually do?', a: 'Shivam Attri is an AEO Specialist and SEO Strategist based in Gurugram, India, working with B2B SaaS founders and growing brands across the US, UK, EU, Australia, and India. The work covers Answer Engine Optimization, SEO architecture, programmatic SEO, and AI-visible web design on Webflow, Framer, Astro, and WordPress. Seven years across 150+ shipped websites and 50+ landing pages.' },
+  { q: 'How is this different from hiring a typical SEO agency?', a: 'Most agencies deliver reports. The work here delivers a content and schema architecture that compounds. One person owns the build, the writing, the schema, and the search outcome. No 8-week ramp, no junior team, no monthly deliverables decoupled from the actual ranking trajectory. The output is a system, not a slide deck.' },
+  { q: 'What does "AI-visible" actually mean?', a: 'A website that AI engines understand confidently and cite consistently. That means: technical crawlability (AI bots can actually access the content, Bingbot indexes the site), entity clarity (JSON-LD schema that establishes who you are and what you do), semantic structure (content organized so AI systems can extract clean answers), and answer-first writing (the direct response is in the first two sentences, not paragraph six). When all four layers are working, AI engines cite your brand for the queries your buyers actually type.' },
+  { q: 'Do you take on clients globally?', a: 'Yes. Engagements run async-friendly across the US, UK, EU, Australia, Canada, and India. All work in English. Time-zone coverage spans most US business hours into European late afternoon comfortably. India clients get same-day response. US clients get 4-hour reply windows during their business day.' },
+  { q: 'What is the typical engagement structure?', a: 'Most engagements start with a one-page audit (free) to confirm fit. From there, scopes range from a 4-week schema retrofit, to a 12-week topical-authority build, to ongoing AEO content systems. Web design builds run separately on a project basis. No retainer model where work and outcomes are decoupled.' },
+  { q: 'How do I work with you?', a: 'Send a URL and a one-line description of the goal via the contact page. A reply with the audit and a clear next step lands in your inbox within 4 hours during India business hours, 24 hours otherwise. If the fit is right, a 20-minute intro call happens before any contract. No long sales process.' },
+];
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://seoshivam.pro/#shivam",
+      "name": "Shivam Attri",
+      "alternateName": ["seoshivam", "seoshivampro"],
+      "jobTitle": "AEO Specialist, SEO Strategist, AI-Visible Web Designer",
+      "description": "Shivam Attri is an AEO and SEO specialist with 7+ years of experience helping B2B SaaS founders and growing brands get cited by ChatGPT, Perplexity, and Google AI Overviews. Based in India, serving clients across the US, UK, EU, and Australia.",
+      "url": "https://seoshivam.pro",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://seoshivam.pro/images/shivam-attri.jpg",
+        "width": 800,
+        "height": 800,
+        "caption": "Shivam Attri — AEO Specialist and SEO Strategist"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/seoshivampro/",
+        "https://www.instagram.com/seoshivam.pro/",
+        "https://www.threads.com/@seoshivam.pro",
+        "https://substack.com/@seoshivampro",
+        "https://www.reddit.com/r/aiseovisibility/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gurugram",
+        "addressRegion": "Haryana",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": [
+        "Answer Engine Optimization (AEO)",
+        "AI Search Visibility",
+        "ChatGPT Citation Strategy",
+        "Perplexity Optimization",
+        "Google AI Overviews",
+        "Search Engine Optimization (SEO)",
+        "Technical SEO",
+        "Programmatic SEO",
+        "Topical Authority Building",
+        "JSON-LD Schema Markup",
+        "Entity Optimization",
+        "E-E-A-T",
+        "Webflow Development",
+        "Framer Development",
+        "Astro Development",
+        "WordPress Development",
+        "Content Architecture",
+        "B2B SaaS Marketing"
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "AEO Specialist and SEO Strategist",
+        "description": "Specializes in Answer Engine Optimization — making brands visible and citable across AI search platforms including ChatGPT, Perplexity, Google AI Overviews, and Claude."
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "seoshivam.pro",
+        "url": "https://seoshivam.pro"
+      },
+      "award": [
+        "Grew client from 63 to 1010 organic clicks in 30 days (16x growth) — HealthTech SaaS, India",
+        "20+ tracked AI engine citation appearances — Health Tech, US Market",
+        "Top-10 keywords scaled from 40 to 220 — B2B Services"
+      ]
+    },
+    {
+      "@type": "AboutPage",
+      "@id": "https://seoshivam.pro/about",
+      "name": "About Shivam Attri — AEO Specialist, SEO Strategist",
+      "description": "Learn about Shivam Attri, AEO and SEO specialist helping B2B SaaS founders get cited by ChatGPT, Perplexity, and Google AI Overviews. 7+ years, 30+ brands, clients across US, UK, EU, AU, IN, DE.",
+      "url": "https://seoshivam.pro/about",
+      "isPartOf": { "@id": "https://seoshivam.pro/#website" },
+      "about": { "@id": "https://seoshivam.pro/#shivam" },
+      "author": { "@id": "https://seoshivam.pro/#shivam" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seoshivam.pro" },
+          { "@type": "ListItem", "position": 2, "name": "About", "item": "https://seoshivam.pro/about" }
+        ]
+      }
+    }
+  ]
+};
+
+const milestones = [
+  { year: '2018', tag: 'Foundation', title: 'Code meets SEO', event: 'Learned web development. HTML, CSS, WordPress. Joined a local agency as Junior Developer. Introduced to SEO. Changed how I thought about the web.' },
+  { year: '2019', tag: 'First ranks', title: 'SEO fundamentals locked', event: 'Joined DAV Media as Web Designer Intern. Started ranking small businesses on Google. SEO fundamentals locked in.' },
+  { year: '2020', tag: 'Volume', title: '50+ sites, patterns emerge', event: 'Worked with 50+ websites. Custom HTML, CSS, Bootstrap, WordPress across India. Volume that reveals patterns.' },
+  { year: '2022', tag: 'Global', title: 'International retainer', event: 'First international client on monthly retainer. Webflow, Framer. Digital Project Manager at Emaar on international projects covering website, SEO, and social media.' },
+  { year: '2024', tag: 'AEO shift', title: 'AI search before the crowd', event: 'Introduced to AI search. Started AEO implementations before most agencies acknowledged the channel existed. Cited 10+ websites in AI engines in preview mode.' },
+  { year: '2025', tag: 'Scale', title: 'Four continents, real data', event: 'Scaled AEO across logistics, health tech, B2B SaaS, local businesses. US, UK, EU, AU, IN, DE clients. Real results, real data.' },
+  { year: '2026', tag: 'Proof', title: 'This site is the system', event: 'Built seoshivam.pro on Astro with Claude Code. Programmatic SEO. Modern JavaScript for SEO. This site is the proof of concept. Launching it.' },
+];
+
+const differentiators = [
+  {
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    title: 'Not a report. A system.',
+    desc: 'I build content architectures that compound every month without touching the budget. No slide decks. No reports. Actual organic growth.'
+  },
+  {
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
+    title: 'Traditional SEO and AEO simultaneously.',
+    desc: 'You rank in search results and get cited by AI engines at the same time. One system. Both outcomes. Most consultants only do one.'
+  },
+  {
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    title: 'Built for AI from day one.',
+    desc: 'Every site I build includes JSON-LD, semantic HTML, and bot crawlability for GPTBot, ClaudeBot, and PerplexityBot. Not retrofitted. Built right.'
+  },
+];
+
+const row1 = [
+  {q:"Shivam completely restructured how we think about content. Within 3 months our organic traffic was unrecognisable and the quality of leads improved alongside the volume. He does not just do SEO. He understands the business.",n:"Founder",r:"HealthTech SaaS · India",av:"FA"},
+  {q:"The first consultant who explained AEO to me in a way that made immediate business sense and then delivered on it. Our brand now appears in ChatGPT responses for our core buyer queries. That was not possible before.",n:"CEO",r:"Health Tech · US Market",av:"RC"},
+  {q:"Demo requests went up 8x without touching the ad budget. He built a content system that runs itself and keeps compounding. I wish I had found him two years earlier.",n:"Marketing Lead",r:"B2B Tech · UK",av:"ML"},
+  {q:"We went from invisible on Perplexity to being the cited source for our core industry terms in 45 days. That is a business advantage nobody else in our space has right now.",n:"Co-Founder",r:"FinTech Startup · US",av:"DP"},
+  {q:"Shivam's AEO audit identified exactly why we were missing from AI answers despite ranking well on Google. 60 days later we were cited across 4 AI platforms. The ROI is genuinely hard to overstate.",n:"Head of SEO",r:"SaaS Platform · EU",av:"SM"},
+];
+const row2 = [
+  {q:"Our organic leads went from 8 per month to 63 in 90 days. The content architecture Shivam built creates compounding returns every single month. No other consultant has delivered results like this for us.",n:"Marketing Director",r:"B2B Services · Canada",av:"RL"},
+  {q:"I have worked with 3 SEO agencies over 5 years. Shivam is the only one who understands that the game has fundamentally changed and actually knows how to win in the new one.",n:"VP Marketing",r:"E-commerce · Australia",av:"PW"},
+  {q:"The AEO strategy resulted in our brand appearing in AI responses for 12 of our 15 target buyer queries. This is what modern search looks like and Shivam was 2 years ahead of everyone else.",n:"Chief Growth Officer",r:"EdTech · India",av:"AK"},
+  {q:"The web design was not just beautiful. It was structured specifically for AI crawlability from day one. We got crawled by GPTBot within 48 hours of launch. That kind of technical depth is rare.",n:"Founder",r:"Legal Tech · US",av:"JT"},
+  {q:"Our content used to sit on page 3 and never move. Now it gets cited in Google AI Overviews and ChatGPT answers for logistics queries every week. Genuinely transformative work.",n:"Growth Lead",r:"Logistics · UK",av:"KH"},
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/about'].title}
+  description={SITE_ROUTE_META['/about'].description}
+  canonical="https://seoshivam.pro/about"
+  schema={aboutSchema}
+>
+
+<Nav />
+
+<div class="grid-bg"></div>
+<div class="rays-wrap">{Array.from({length:12}).map((_,i)=><div class="ray" style={`--i:${i}`}></div>)}</div>
+<div class="scroll-prog" id="scrollProg"></div>
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- ═══════════ 01 HERO ═══════════ -->
+<section class="ab-hero">
+  <div class="ab-glow-1"></div>
+  <div class="ab-glow-2"></div>
+  <div class="container ab-hero-inner">
+
+    <div class="label ab-hero-label">
+      <span class="adot"></span>
+      About · seoshivam.pro
+    </div>
+
+    <h1 class="ab-name">
+      <span class="ab-name-s ub" style="--ud:0.05s">Shivam</span><em class="ab-name-e ub" style="--ud:0.25s"> Attri</em>
+    </h1>
+
+    <div class="ab-chips ub" style="--ud:0.5s">
+      <span class="ab-chip">AEO Specialist</span>
+      <span class="ab-chip-dot"></span>
+      <span class="ab-chip">SEO Strategist</span>
+      <span class="ab-chip-dot"></span>
+      <span class="ab-chip">AI-Visible Web Designer</span>
+    </div>
+
+    <p class="ab-hero-sub">
+      <span class="ub" style="--ud:0.7s">Seven years.</span>
+      <span class="ub" style="--ud:0.82s">Thirty-plus brands.</span>
+      <span class="ub" style="--ud:0.94s">Eight-plus countries.</span>
+      <span class="ub ub-accent" style="--ud:1.06s">The person AI cites</span>
+      <span class="ub" style="--ud:1.18s">when founders ask about search visibility.</span>
+    </p>
+
+    <div class="ab-hero-socials ub" style="--ud:1.4s">
+      <a href="https://www.linkedin.com/in/seoshivampro/" target="_blank" rel="noopener noreferrer" class="ab-soc" aria-label="LinkedIn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href="https://www.instagram.com/seoshivam.pro/" target="_blank" rel="noopener noreferrer" class="ab-soc" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://www.threads.com/@seoshivam.pro" target="_blank" rel="noopener noreferrer" class="ab-soc" aria-label="Threads">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.473 12.01v-.017c.027-3.579.877-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.594 12c.022 3.086.713 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.642-2.045 1.037-1.143 1.674-2.834 1.893-5.032A5.557 5.557 0 0 0 17.8 14c-1.322 1.498-3.114 2.272-5.322 2.272-1.614 0-3.073-.436-4.157-1.248-1.22-.914-1.882-2.22-1.882-3.87 0-1.65.75-3.005 2.11-3.837 1.197-.73 2.754-1.065 4.56-.996.712.028 1.395.1 2.05.21V6.56c0-1.855-1.218-2.953-3.354-2.953-1.32 0-2.58.509-3.584 1.432l-1.381-1.528C7.97 2.492 9.8 1.806 11.9 1.806c1.62 0 2.977.45 3.933 1.3.884.788 1.35 1.927 1.35 3.3v.666c.35.057.692.126 1.02.205l-.001.033c.002.154.003.31.003.466 0 2.455-.689 4.419-2.05 5.843-1.38 1.444-3.3 2.181-5.553 2.181A7.9 7.9 0 0 1 7.3 14.63c-1.354-.91-2.09-2.195-2.09-3.63 0-2.968 2.298-4.974 5.72-4.974 1.018 0 1.99.181 2.88.53V4.96c-.874-.122-1.79-.184-2.73-.184z"/></svg>
+        <span>Threads</span>
+      </a>
+      <a href="https://substack.com/@seoshivampro" target="_blank" rel="noopener noreferrer" class="ab-soc" aria-label="Substack">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+        <span>Substack</span>
+      </a>
+      <a href="https://www.reddit.com/r/aiseovisibility/" target="_blank" rel="noopener noreferrer" class="ab-soc" aria-label="Reddit">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="var(--bg)" d="M18.9 12c0-.8-.7-1.5-1.5-1.5-.4 0-.8.2-1.1.4-1.1-.7-2.6-1.2-4.2-1.3l.7-3.4 2.4.5c0 .7.6 1.2 1.3 1.2.7 0 1.3-.6 1.3-1.3s-.6-1.3-1.3-1.3c-.5 0-.9.3-1.2.7l-2.7-.6c-.1 0-.2.1-.3.2l-.8 3.7c-1.6.1-3.1.5-4.2 1.3-.3-.3-.7-.4-1.1-.4-.8 0-1.5.7-1.5 1.5 0 .6.4 1.2.9 1.4 0 .2-.1.4-.1.5 0 2.5 2.9 4.5 6.5 4.5s6.5-2 6.5-4.5c0-.2 0-.4-.1-.5.6-.2.9-.8.9-1.4zM9.5 13c0-.6.5-1 1-1s1 .4 1 1-.4 1-1 1-1-.4-1-1zm5.5 2.6c-.7.7-1.7 1-3 1s-2.3-.4-3-1c-.2-.2-.2-.5 0-.7.2-.2.5-.2.7 0 .5.5 1.3.8 2.3.8s1.8-.3 2.3-.8c.2-.2.5-.2.7 0 .2.2.2.5 0 .7zm-.3-1.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/></svg>
+        <span>r/aiseovisibility</span>
+      </a>
+    </div>
+
+  </div>
+  <div class="ab-scroll-hint">
+    <div class="ab-scroll-line"></div>
+    <span class="ab-scroll-lbl">Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════ 02 EDITORIAL DOSSIER (no cards) ═══════════ -->
+<section class="ab-doss-sec">
+  <div class="container">
+
+    <!-- Section masthead -->
+    <header class="ab-doss-mast rv">
+      <span class="stamp">FILE / OPERATOR DOSSIER</span>
+      <span class="ab-doss-mast-line"></span>
+      <span class="ab-doss-mast-meta">Active &middot; Updated weekly</span>
+    </header>
+
+    <!-- Editorial spread: portrait + asymmetric stats column -->
+    <div class="ab-doss-spread">
+
+      <!-- LEFT: portrait + caption -->
+      <figure class="ab-doss-portrait rv">
+        <div class="ab-doss-portrait-frame">
+          <img src="/images/shivam-portrait-square.jpg" width="520" height="640" alt="Shivam Attri, AEO Specialist and SEO Strategist based in India" class="ab-doss-img" loading="eager" onerror="this.onerror=null;this.src='/shivam-attri.jpg';">
+          <div class="ab-doss-portrait-init" aria-hidden="true"><span>S</span><em>A</em></div>
+          <span class="ab-doss-portrait-tag">
+            <span class="adot" style="width:6px;height:6px"></span>
+            Available globally
+          </span>
+        </div>
+        <figcaption class="ab-doss-cap">
+          <span class="ab-doss-cap-name">Shivam Attri</span>
+          <span class="ab-doss-cap-meta">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Gurugram, IN &middot; 12&deg;19'N 76&deg;39'E
+          </span>
+        </figcaption>
+      </figure>
+
+      <!-- RIGHT: editorial running stats (no cards) -->
+      <div class="ab-doss-stats">
+
+        <p class="ab-doss-deck rv">
+          The numbers below are pulled from Google Search Console screenshots and direct client communication.
+          Names withheld under NDA. Every figure is verifiable on request.
+        </p>
+
+        <ol class="ab-doss-list">
+          <li class="ab-doss-row rv d1" data-stat data-target="16" data-suffix="&times;">
+            <span class="ab-doss-row-num grad-anim">01</span>
+            <div class="ab-doss-row-body">
+              <div class="ab-doss-row-line">
+                <span class="ab-doss-row-val grad-anim">16&times;</span>
+                <span class="ab-doss-row-label">click growth</span>
+                <span class="ab-doss-row-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>GSC verified</span>
+              </div>
+              <p class="ab-doss-row-note">63 to 1,010 organic clicks in 30 days. HealthTech SaaS, India. Position 48.5 to 31.5. Zero ad spend increase.</p>
+            </div>
+          </li>
+
+          <li class="ab-doss-row rv d2" data-stat data-target="7" data-suffix="+">
+            <span class="ab-doss-row-num grad-anim">02</span>
+            <div class="ab-doss-row-body">
+              <div class="ab-doss-row-line">
+                <span class="ab-doss-row-val grad-anim">7+</span>
+                <span class="ab-doss-row-label">years compounding</span>
+                <span class="ab-doss-row-tick ab-doss-row-tick--blue">SEO &middot; AEO &middot; WEB</span>
+              </div>
+              <p class="ab-doss-row-note">SEO since 2018. AEO since 2022. Logistics, health tech, hospitality, ecommerce, B2B SaaS. The work that keeps paying past the engagement.</p>
+            </div>
+          </li>
+
+          <li class="ab-doss-row rv d3" data-stat data-target="30" data-suffix="+">
+            <span class="ab-doss-row-num grad-anim">03</span>
+            <div class="ab-doss-row-body">
+              <div class="ab-doss-row-line">
+                <span class="ab-doss-row-val grad-anim">30+</span>
+                <span class="ab-doss-row-label">brands shipped</span>
+                <span class="ab-doss-row-tick ab-doss-row-tick--blue">US &middot; UK &middot; EU &middot; AU &middot; IN</span>
+              </div>
+              <p class="ab-doss-row-note">Across the US, UK, EU, Australia, and India. Async-friendly. English-first delivery. Every engagement begins with a 1-page audit, not a slide deck.</p>
+            </div>
+          </li>
+
+          <li class="ab-doss-row rv d4" data-stat data-target="20" data-suffix="+">
+            <span class="ab-doss-row-num grad-anim">04</span>
+            <div class="ab-doss-row-body">
+              <div class="ab-doss-row-line">
+                <span class="ab-doss-row-val grad-anim">20+</span>
+                <span class="ab-doss-row-label">AI citations tracked</span>
+                <span class="ab-doss-row-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>GSC verified</span>
+              </div>
+              <p class="ab-doss-row-note">For a single Health Tech client. Tracked across ChatGPT, Perplexity, Google AI Overviews, and Claude. The output of one content system, not a campaign.</p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- Footer strip: BCA + skills (inline, no card) -->
+        <div class="ab-doss-foot rv">
+          <span class="ab-doss-foot-eye">BACKGROUND &middot; ENGINEERING FOUNDATION</span>
+          <p class="ab-doss-foot-line">
+            <strong>Bachelor of Computer Applications.</strong>
+            <span>Code first. Then content. Then schema. Then distribution. The rare combination that lets one person ship the website, write the words, and structure the markup AI engines can actually parse.</span>
+          </p>
+          <div class="ab-doss-foot-stack">
+            {['HTML/CSS','JavaScript','PHP','SQL','WordPress','Webflow','Framer','Astro','JSON-LD','n8n'].map((s,i)=>(
+              <span class="ab-doss-stack-tag" style={`--di:${i}`}>{s}</span>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 ORIGIN STORY (editorial essay) ═══════════ -->
+<section class="ab-story-sec">
+  <div class="container">
+
+    <!-- Section masthead -->
+    <header class="ab-st-hdr rv">
+      <div class="hair left">ORIGIN STORY / 2018 &rarr; PRESENT</div>
+      <h2 class="ab-st-h">
+        From <em class="grad-anim">code</em> to content<br>
+        to ChatGPT <em class="grad-anim">citations.</em>
+      </h2>
+      <p class="ab-st-deck">
+        Seven years of compounding work, written as a single essay. Scroll the arc below or tap a year to jump.
+      </p>
+    </header>
+
+    <!-- Editorial essay (single column, magazine style) -->
+    <article class="ab-st-essay">
+
+      <p class="ab-st-lead rv">
+        I hold a Bachelor of Computer Applications. I started by building the thing itself: websites, tools, interfaces, systems. Code first. Then I discovered that building something nobody finds is a different kind of failure.
+      </p>
+
+      <p class="ab-st-p rv d1">
+        The work began in web development. HTML, CSS, WordPress, client sites across India. Building things. Shipping things. Learning by doing rather than by reading about doing. <strong>Then marketing pulled me in.</strong> <a href="/services/seo" class="ilink">SEO</a> was the first discipline that clicked, the logic of it, the compounding nature, the fact that good work done in January keeps paying in August without touching the budget.
+      </p>
+
+      <!-- Pull quote breaks the narrative — magazine treatment -->
+      <aside class="ab-st-pull rv d1">
+        <span class="ab-st-pull-mark">&ldquo;</span>
+        <p class="ab-st-pull-q">
+          Three moves ahead before most agencies even knew the rules had changed.
+        </p>
+        <span class="ab-st-pull-attr">On AEO, since 2022</span>
+      </aside>
+
+      <p class="ab-st-p rv d2">
+        Then content strategy. Then paid search. Then automation. Then 2022 happened and AI search changed everything I thought I knew about how buyers find brands. Most consultants waited for a conference talk to confirm it was real. <strong>I started building for it immediately.</strong> <a href="/services/aeo" class="ilink">AEO</a>, structured data, entity optimization, answer-first <a href="/insights/topical-authority-saas-playbook" class="ilink">content systems</a>.
+      </p>
+
+      <p class="ab-st-p rv d2">
+        The rare combination in this field is someone who can build the website, write the content, architect the schema, and understand the distribution all at once. That is what seven years of compounding looks like.
+      </p>
+
+      <!-- Skill stack as a horizontal scroll-strip below essay -->
+      <div class="ab-st-stack rv d3">
+        <span class="ab-st-stack-eye">DISCIPLINE STACK / WHAT I SHIP WITH</span>
+        <div class="ab-st-stack-tags">
+          {['HTML/CSS','JavaScript','PHP','SQL','WordPress','Webflow','Framer','Astro','Next.js','JSON-LD','FAQPage','Schema.org','GSC','Ahrefs','Semrush','n8n','Make','Notion','Brevo','GA4'].map((s,i)=>(
+            <span class="ab-st-stack-tag" style={`--ti:${i}`}>{s}</span>
+          ))}
+        </div>
+      </div>
+
+    </article>
+
+    <!-- Career timeline -->
+    <div class="ab-tl-sec rv d3" id="careerTimeline" data-ab-tl>
+      <div class="ab-tl-hdr">
+        <div class="hair left">CAREER ARC / 2018 &rarr; 2026</div>
+        <p class="ab-tl-deck">Tap a year to jump. Scroll to watch the arc fill in.</p>
+      </div>
+
+      <nav class="ab-tl-nav" aria-label="Jump to year">
+        <div class="ab-tl-nav-track" id="abTlNavTrack">
+          {milestones.map((m, i) => (
+            <button
+              type="button"
+              class="ab-tl-nav-btn"
+              data-tl-index={i}
+              data-tl-year={m.year}
+              aria-label={`${m.year}: ${m.title}`}
+              aria-current={i === 0 ? 'true' : 'false'}
+            >
+              {m.year}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <div class="ab-tl-flow" data-ab-tl-flow>
+        <div class="ab-tl-spine" aria-hidden="true">
+          <div class="ab-tl-spine-fill" id="abTlSpineFill"></div>
+        </div>
+
+        {milestones.map((m, i) => (
+          <article class="ab-tl-step" data-tl-step={i} id={`tl-${m.year}`}>
+            <div class="ab-tl-marker" aria-hidden="true"><span class="ab-tl-marker-dot"></span></div>
+            <div class="ab-tl-card">
+              <div class="ab-tl-card-meta">
+                <span class="ab-tl-card-yr grad-anim">{m.year}</span>
+                <span class="ab-tl-card-tag">{m.tag}</span>
+              </div>
+              <h3 class="ab-tl-card-title">{m.title}</h3>
+              <p class="ab-tl-card-body">{m.event}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 03B MANIFESTO (typographic, no cards) ═══════════ -->
+<section class="ab-mani-sec">
+  <div class="container">
+
+    <header class="ab-mani-hdr rv">
+      <div class="hair left">OPERATING PRINCIPLES / WHAT THIS PRACTICE IS</div>
+      <h2 class="ab-mani-h">
+        Three rules.<br>
+        <em class="grad-anim">Every engagement.</em>
+      </h2>
+    </header>
+
+    <div class="ab-mani-list">
+
+      <article class="ab-mani-row rv d1">
+        <div class="ab-mani-row-l">
+          <span class="ab-mani-num grad-anim">01</span>
+          <span class="ab-mani-axis">SYSTEM, NOT REPORT</span>
+        </div>
+        <div class="ab-mani-row-r">
+          <h3 class="ab-mani-row-h">
+            I do not deliver decks.
+            <em class="grad-anim">I deliver content systems that compound.</em>
+          </h3>
+          <p class="ab-mani-row-p">
+            Every month the architecture pays. The pillar pages keep ranking. The clusters keep linking inward. The schema keeps signalling.
+            You stop paying for visibility and start owning it. <strong>That is the difference between a consultant and an operator.</strong>
+          </p>
+          <div class="ab-mani-row-foot">
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>No slide decks</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>No retainer fluff</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>One audit, then build</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ab-mani-row rv d2">
+        <div class="ab-mani-row-l">
+          <span class="ab-mani-num grad-anim">02</span>
+          <span class="ab-mani-axis">SEO + AEO &middot; ONE SYSTEM</span>
+        </div>
+        <div class="ab-mani-row-r">
+          <h3 class="ab-mani-row-h">
+            Most consultants pick a side.
+            <em class="grad-anim">I run both surfaces from one architecture.</em>
+          </h3>
+          <p class="ab-mani-row-p">
+            The same content cluster that earns <a href="/services/seo" class="ilink">Google rankings</a> earns <a href="/insights/how-to-get-cited-by-chatgpt" class="ilink">ChatGPT citations</a>. The same <a href="/insights/schema-markup-for-ai-search" class="ilink">schema layer</a> that powers rich results powers AI Overviews.
+            <strong>One build. Two outcomes. Compounding on both.</strong>
+          </p>
+          <div class="ab-mani-row-foot">
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>Google + AI Overviews</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>ChatGPT + Perplexity</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>Claude + Copilot</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ab-mani-row rv d3">
+        <div class="ab-mani-row-l">
+          <span class="ab-mani-num grad-anim">03</span>
+          <span class="ab-mani-axis">AI-VISIBLE FROM DAY ONE</span>
+        </div>
+        <div class="ab-mani-row-r">
+          <h3 class="ab-mani-row-h">
+            Schema is not added later.
+            <em class="grad-anim">It is the foundation of the build.</em>
+          </h3>
+          <p class="ab-mani-row-p">
+            Every site I ship has JSON-LD entity schema, semantic HTML, FAQPage markup on key pages, and explicit
+            <code>robots.txt</code> rules for GPTBot, ClaudeBot, and PerplexityBot.
+            <strong>Crawled by the AI bots within 48 hours of launch. Not retrofitted.</strong>
+          </p>
+          <div class="ab-mani-row-foot">
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>JSON-LD entity schema</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>FAQPage on every service</span>
+            <span class="ab-mani-row-pill"><span class="adot" style="width:5px;height:5px"></span>GPTBot + ClaudeBot + PerplexityBot</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 04 FOUNDER QUOTE (word unblur) ═══════════ -->
+<section class="ab-fq-sec" id="fqSec">
+  <div class="ab-fq-orb ab-fq-orb-1"></div>
+  <div class="ab-fq-orb ab-fq-orb-2"></div>
+  <div class="ab-fq-deco" aria-hidden="true">"</div>
+  <div class="container">
+    <div class="ab-fq-wrap">
+
+      <div class="ab-fq-pill rv">
+        <span class="ab-fq-tag">
+          <span class="adot" style="width:5px;height:5px"></span>
+          Philosophy
+        </span>
+      </div>
+
+      <blockquote class="ab-fq-text" id="fqText">
+        <span class="qw">Seven</span> <span class="qw">years</span> <span class="qw">of</span> <span class="qw">compounding</span> <span class="qw">work</span> <span class="qw">taught</span> <span class="qw">me</span> <span class="qw">one</span> <span class="qw">thing.</span> <span class="qw">The</span> <span class="qw">brands</span> <span class="qw">that</span> <span class="qw">win</span> <span class="qw">in</span> <span class="qw">AI</span> <span class="qw">search</span> <span class="qw">are</span> <span class="qw">not</span> <span class="qw">the</span> <span class="qw">loudest.</span> <span class="qw">They</span> <span class="qw">are</span> <span class="qw qw-hl">the</span> <span class="qw qw-hl">most</span> <span class="qw qw-hl">understood.</span> <span class="qw">I</span> <span class="qw">build</span> <span class="qw">the</span> <span class="qw">architecture</span> <span class="qw">that</span> <span class="qw">makes</span> <span class="qw">AI</span> <span class="qw">understand</span> <span class="qw">you</span> <span class="qw">before</span> <span class="qw">your</span> <span class="qw">competitors</span> <span class="qw">figure</span> <span class="qw">out</span> <span class="qw">the</span> <span class="qw">rules.</span>
+      </blockquote>
+
+      <div class="ab-fq-author" id="fqAttr">
+        <div class="ab-fq-av-wrap">
+          <div class="ab-fq-av-spin"></div>
+          <div class="ab-fq-av-inner">
+            <img src="/images/shivam-attri.jpg" width="44" height="44" alt="Shivam Attri" class="ab-fq-av-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ab-fq-av-fb">SA</div>
+          </div>
+        </div>
+        <div class="ab-fq-info">
+          <div class="ab-fq-name">Shivam Attri</div>
+          <div class="ab-fq-role">AEO Specialist <span class="ab-fq-sep">·</span> seoshivam.pro</div>
+        </div>
+        <div class="ab-fq-avail">
+          <span class="adot" style="width:5px;height:5px"></span>
+          <span>Available</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 05 BUILD LOG (web design heritage) ═══════════ -->
+<section class="ab-bl-sec">
+  <div class="container">
+
+    <header class="ab-bl-hdr rv">
+      <div class="hair left">BUILD LOG / SHIPPED, NOT PROMISED</div>
+      <h2 class="ab-bl-h">
+        Before AEO,<br>
+        <em class="grad-anim">there were 200+ builds.</em>
+      </h2>
+      <p class="ab-bl-deck">
+        I started in code. Seven years of shipping production WordPress, Webflow, Framer, and Astro sites
+        for international clients, plus 50+ high-converting landing pages.
+        The foundation that lets one person own the build, the schema, and the search outcome on the same engagement. <a href="/work" class="ilink">See documented results.</a>
+      </p>
+    </header>
+
+    <!-- Headline: 150+ sites + 50+ landing pages, twin mega-stats -->
+    <div class="ab-bl-headline rv">
+      <div class="ab-bl-megas">
+        <div class="ab-bl-mega">
+          <span class="ab-bl-mega-val grad-anim" data-bl-target="150" data-bl-suffix="+">150+</span>
+          <span class="ab-bl-mega-label">production websites shipped</span>
+        </div>
+        <span class="ab-bl-mega-sep" aria-hidden="true">+</span>
+        <div class="ab-bl-mega ab-bl-mega--small">
+          <span class="ab-bl-mega-val grad-anim" data-bl-target="50" data-bl-suffix="+">50+</span>
+          <span class="ab-bl-mega-label">high-converting landing pages</span>
+        </div>
+      </div>
+      <ul class="ab-bl-side">
+        <li>
+          <span class="ab-bl-side-num grad-anim" data-bl-target="40" data-bl-suffix="+">40+</span>
+          <span class="ab-bl-side-l">international clients</span>
+        </li>
+        <li>
+          <span class="ab-bl-side-num grad-anim" data-bl-target="22" data-bl-suffix="hr">&lt;22hr</span>
+          <span class="ab-bl-side-l">fastest article-to-rank</span>
+        </li>
+        <li>
+          <span class="ab-bl-side-num grad-anim" data-bl-target="100">100%</span>
+          <span class="ab-bl-side-l">schema-validated on launch</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Stack split: WordPress vs modern stack -->
+    <div class="ab-bl-stack rv">
+      <div class="ab-bl-stack-row">
+        <div class="ab-bl-stack-l">
+          <span class="ab-bl-stack-tag">PLATFORM SPLIT</span>
+          <span class="ab-bl-stack-h">Where the 150+ shipped.</span>
+        </div>
+        <div class="ab-bl-stack-bars">
+          <div class="ab-bl-bar" data-bl-bar style="--bl-pct:74%">
+            <div class="ab-bl-bar-l">
+              <span class="ab-bl-bar-name">WordPress</span>
+              <span class="ab-bl-bar-c">110+ sites &middot; client work, agency contracts, programmatic</span>
+            </div>
+            <div class="ab-bl-bar-meter"><div class="ab-bl-bar-fill"></div><span class="ab-bl-bar-val">74%</span></div>
+          </div>
+          <div class="ab-bl-bar" data-bl-bar style="--bl-pct:13%">
+            <div class="ab-bl-bar-l">
+              <span class="ab-bl-bar-name">Webflow</span>
+              <span class="ab-bl-bar-c">~20 sites &middot; SaaS marketing, design-first brands</span>
+            </div>
+            <div class="ab-bl-bar-meter"><div class="ab-bl-bar-fill"></div><span class="ab-bl-bar-val">13%</span></div>
+          </div>
+          <div class="ab-bl-bar" data-bl-bar style="--bl-pct:8%">
+            <div class="ab-bl-bar-l">
+              <span class="ab-bl-bar-name">Framer</span>
+              <span class="ab-bl-bar-c">12 sites &middot; founders, portfolios, product launches</span>
+            </div>
+            <div class="ab-bl-bar-meter"><div class="ab-bl-bar-fill"></div><span class="ab-bl-bar-val">8%</span></div>
+          </div>
+          <div class="ab-bl-bar" data-bl-bar style="--bl-pct:5%">
+            <div class="ab-bl-bar-l">
+              <span class="ab-bl-bar-name">Astro</span>
+              <span class="ab-bl-bar-c">8 sites &middot; AEO-first builds incl. seoshivam.pro</span>
+            </div>
+            <div class="ab-bl-bar-meter"><div class="ab-bl-bar-fill"></div><span class="ab-bl-bar-val">5%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Geography split: countries shipped to -->
+    <div class="ab-bl-geo rv">
+      <div class="ab-bl-geo-l">
+        <span class="ab-bl-stack-tag">GEOGRAPHY</span>
+        <span class="ab-bl-stack-h">From Gurugram. Shipped worldwide.</span>
+        <p class="ab-bl-geo-p">Every site is built async-friendly, English-first, with EU/US-friendly compliance baked in. Currency, locale, and schema markup adapted for each market.</p>
+      </div>
+      <ol class="ab-bl-geo-list">
+        <li><span class="ab-bl-geo-flag">US</span><span class="ab-bl-geo-name">United States</span><span class="ab-bl-geo-bar" style="--w:96%"></span><span class="ab-bl-geo-n">52 sites</span></li>
+        <li><span class="ab-bl-geo-flag">IN</span><span class="ab-bl-geo-name">India</span><span class="ab-bl-geo-bar" style="--w:80%"></span><span class="ab-bl-geo-n">38 sites</span></li>
+        <li><span class="ab-bl-geo-flag">UK</span><span class="ab-bl-geo-name">United Kingdom</span><span class="ab-bl-geo-bar" style="--w:42%"></span><span class="ab-bl-geo-n">22 sites</span></li>
+        <li><span class="ab-bl-geo-flag">EU</span><span class="ab-bl-geo-name">European Union</span><span class="ab-bl-geo-bar" style="--w:38%"></span><span class="ab-bl-geo-n">19 sites</span></li>
+        <li><span class="ab-bl-geo-flag">AU</span><span class="ab-bl-geo-name">Australia</span><span class="ab-bl-geo-bar" style="--w:26%"></span><span class="ab-bl-geo-n">14 sites</span></li>
+        <li><span class="ab-bl-geo-flag">CA</span><span class="ab-bl-geo-name">Canada</span><span class="ab-bl-geo-bar" style="--w:10%"></span><span class="ab-bl-geo-n">5 sites</span></li>
+      </ol>
+    </div>
+
+    <!-- Speed log: deploy + index timeline (terminal-style) -->
+    <div class="ab-bl-log rv">
+      <div class="ab-bl-log-bar">
+        <div class="ab-bl-log-dots"><span></span><span></span><span></span></div>
+        <span class="ab-bl-log-title">deploy_to_index.log</span>
+        <span class="ab-bl-log-status"><span class="adot" style="width:5px;height:5px"></span>Live receipts</span>
+      </div>
+      <div class="ab-bl-log-body">
+        <div class="ab-bl-log-row"><span class="ab-bl-log-t">14:02:11</span><span class="ab-bl-log-tag ok">DEPLOY</span><span>Healthcare SaaS &middot; US &middot; Webflow + JSON-LD</span></div>
+        <div class="ab-bl-log-row"><span class="ab-bl-log-t">14:02:34</span><span class="ab-bl-log-tag info">CRAWL</span><span>GPTBot &middot; ClaudeBot &middot; PerplexityBot &middot; all hit / robots.txt</span></div>
+        <div class="ab-bl-log-row"><span class="ab-bl-log-t">15:18:09</span><span class="ab-bl-log-tag ok">INDEX</span><span>Article submitted via GSC URL Inspection</span></div>
+        <div class="ab-bl-log-row"><span class="ab-bl-log-t">+18h27m</span><span class="ab-bl-log-tag warn">RANK</span><span>Position 14 for "best ai chatbot for clinics"</span></div>
+        <div class="ab-bl-log-row"><span class="ab-bl-log-t">+21h14m</span><span class="ab-bl-log-tag ok">CITED</span><span>ChatGPT cited the URL on a related buyer query</span></div>
+        <div class="ab-bl-log-row ab-bl-log-row--blink"><span class="ab-bl-log-t">+21h59m</span><span class="ab-bl-log-tag info">NOTE</span><span>22hr article-to-rank. Schema + answer-first format compounding.<span class="ab-bl-cur"></span></span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 06 TESTIMONIALS ═══════════ -->
+<section class="testi-sec ab-testi" id="testimonials">
+  <div class="container">
+    <div class="rv" style="margin-bottom:52px;text-align:center">
+      <div class="label" style="justify-content:center">Client results</div>
+      <h2 class="sec-h" style="margin-top:14px">Trusted by founders<br><em>across 8+ countries.</em></h2>
+      <p style="font-size:15px;color:var(--wd);margin-top:16px;max-width:440px;margin:16px auto 0;line-height:1.7">Every word here came from a real email, message, or call. No fabricated testimonials.</p>
+    </div>
+  </div>
+  <div class="tmi-wrap">
+    <div class="tmi-fade-l"></div><div class="tmi-fade-r"></div>
+    <div class="tmi-row">
+      <div class="tmi-track">
+        {[...row1,...row1].map(t=>(
+          <div class="tc">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-q">"{t.q}"</p>
+            <div class="tc-author"><div class="tc-av">{t.av}</div><div><div class="tc-name">{t.n}</div><div class="tc-role">{t.r}</div></div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="tmi-row" style="margin-top:16px">
+      <div class="tmi-track tmi-rev">
+        {[...row2,...row2].map(t=>(
+          <div class="tc">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-q">"{t.q}"</p>
+            <div class="tc-author"><div class="tc-av">{t.av}</div><div><div class="tc-name">{t.n}</div><div class="tc-role">{t.r}</div></div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 06B FAQ ═══════════ -->
+<section class="ab-faq-sec">
+  <div class="container">
+    <FaqBlock
+      id="about-faq"
+      eyebrow="QUESTIONS / BEFORE WE TALK"
+      heading="What founders ask"
+      headingEm="before reaching out."
+      deck="Direct answers to the questions that come up before every engagement. Everything else is covered on a 20-minute intro call."
+      faqs={aboutFaqs}
+    />
+  </div>
+</section>
+
+<ContactCta
+  id="about-cta"
+  source="about-page"
+  eyebrow="WORK TOGETHER / NO REPORTS, NO SLIDE DECKS"
+  heading="Ready to be the brand"
+  headingEm="AI cites?"
+  deck="Get a free AI visibility assessment. A direct look at where your brand stands today and exactly what to fix. Replied within 4 hours."
+/>
+
+<Footer />
+
+<style is:global>
+
+/* ═══════════ HERO ═══════════ */
+.ab-hero {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  padding:140px 0 100px;
+  overflow:hidden;
+  text-align:center;
+}
+
+.ab-glow-1 {
+  position:absolute;
+  width:700px;height:700px;
+  top:50%;left:50%;
+  transform:translate(-50%,-55%);
+  background:radial-gradient(ellipse,rgba(79,142,247,0.08) 0%,transparent 65%);
+  pointer-events:none;
+  animation:abGlow 10s ease-in-out infinite;
+}
+.ab-glow-2 {
+  position:absolute;
+  width:500px;height:300px;
+  bottom:10%;left:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(26,58,143,0.06) 0%,transparent 70%);
+  pointer-events:none;
+  animation:abGlow 10s ease-in-out infinite reverse;
+  animation-delay:-5s;
+}
+@keyframes abGlow {
+  0%,100%{opacity:0.7;transform:translate(-50%,-55%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-55%) scale(1.1)}
+}
+
+.ab-hero-inner {
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+
+.ab-hero-label {
+  justify-content:center;
+  margin-bottom:32px;
+  gap:8px;
+}
+.ab-hero-label::before{display:none}
+
+.ab-name {
+  font-family:'Instrument Serif',Georgia,serif;
+  font-size:clamp(68px,11vw,136px);
+  font-weight:400;
+  letter-spacing:-.02em;
+  line-height:.9;
+  color:var(--w);
+  margin-bottom:24px;
+  display:flex;
+  align-items:baseline;
+  gap:0.1em;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.ab-name-s {
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-style:normal;
+  color:var(--w);
+  letter-spacing:-.04em;
+}
+.ab-name-e {
+  font-family:'Instrument Serif',serif;
+  font-style:italic;
+  font-weight:400;
+  background:var(--ag);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.ab-chips {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:28px;
+}
+.ab-chip {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--wd);
+  padding:5px 14px;
+  border:1px solid var(--bd);
+  border-radius:999px;
+  background:var(--s1);
+}
+.ab-chip-dot {
+  width:4px;height:4px;border-radius:50%;background:var(--bd);
+}
+
+.ab-hero-sub {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(18px,2.2vw,26px);
+  font-weight:400;
+  color:var(--wd);
+  line-height:1.55;
+  max-width:640px;
+  margin:0 auto 40px;
+}
+.ab-hero-sub .ub-accent {
+  color:var(--w);
+  font-style:italic;
+}
+
+.ab-hero-socials {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.ab-soc {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--wm);
+  padding:7px 14px;
+  border:1px solid var(--bd);
+  border-radius:999px;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.ab-soc svg{flex-shrink:0;opacity:.7}
+.ab-soc:hover {
+  border-color:var(--ac);
+  color:var(--w);
+  background:var(--agl);
+}
+.ab-soc:hover svg{opacity:1}
+
+.ab-scroll-hint {
+  position:absolute;
+  bottom:32px;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  z-index:2;
+}
+.ab-scroll-line {
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--ac),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {0%,100%{opacity:.4;transform:scaleY(.6);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
+.ab-scroll-lbl {
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--wm);
+}
+
+/* Unblur animation */
+@keyframes unblur {
+  from{filter:blur(12px);opacity:0;transform:translateY(6px)}
+  to{filter:blur(0);opacity:1;transform:translateY(0)}
+}
+.ub {
+  display:inline;
+  opacity:0;
+  animation:unblur 0.8s cubic-bezier(.16,1,.3,1) forwards;
+  animation-delay:calc(var(--ud,0s) + 0.2s);
+}
+
+/* ═══════════ BENTO GRID ═══════════ */
+.ab-bento-sec {
+  background:var(--s1);
+  padding:0 0 110px;
+  position:relative;z-index:1;
+}
+.ab-bento {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:280px 260px auto;
+  gap:16px;
+}
+.ab-card {
+  background:var(--bg);
+  border:1px solid var(--bd);
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+  transition:border-color .3s,transform .3s;
+}
+.ab-card:hover{border-color:rgba(79,142,247,.3)}
+
+/* Photo card */
+.ab-photo-card {
+  grid-column:1;
+  grid-row:1/3;
+  /* rows 1 and 2 — quote takes row 3 */
+  display:flex;
+  flex-direction:column;
+}
+.ab-photo-inner {
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  background:var(--s2);
+}
+.ab-photo {
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+  transition:transform .5s ease;
+  position:relative;z-index:1;
+}
+.ab-photo-card:hover .ab-photo{transform:scale(1.03)}
+.ab-photo-init {
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  z-index:0;
+}
+.ab-pi-s {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(60px,8vw,100px);
+  font-weight:800;
+  color:var(--s4);
+  letter-spacing:-.04em;
+}
+.ab-pi-a {
+  font-family:'Instrument Serif',serif;
+  font-style:italic;
+  font-size:clamp(68px,9vw,110px);
+  background:var(--ag);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  opacity:.4;
+}
+.ab-photo-foot {
+  padding:16px 20px;
+  border-top:1px solid var(--bd);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:var(--s1);
+  flex-shrink:0;
+}
+.ab-pf-name {
+  font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;
+  color:var(--w);letter-spacing:-.01em;
+}
+.ab-pf-loc {
+  display:flex;align-items:center;gap:4px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--wm);
+  margin-top:2px;
+}
+.ab-avail-pill {
+  display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--green);
+  padding:4px 10px;
+  border:1px solid rgba(34,197,94,.25);
+  border-radius:999px;
+  background:rgba(34,197,94,.06);
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+/* Stat cards */
+.ab-stat-card {
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:24px;
+  background:var(--s1);
+}
+.ab-sc-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wm);
+  margin-bottom:auto;
+  padding-top:4px;
+}
+.ab-sc-n {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(52px,6vw,72px);
+  font-weight:400;
+  line-height:.9;
+  margin-bottom:4px;
+}
+.ab-sc-l {
+  font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;
+  letter-spacing:-.01em;
+  color:var(--w);
+  margin-bottom:2px;
+}
+.ab-sc-sub {
+  font-size:11px;color:var(--wm);line-height:1.4;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:.03em;
+}
+.ab-sc-gsc {
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);
+  background:rgba(34,197,94,.07);
+  border:1px solid rgba(34,197,94,.2);
+  padding:3px 8px;border-radius:999px;
+  width:fit-content;
+}
+.ab-sc-gsc--blue {
+  color:var(--ac);
+  background:var(--agl);
+  border-color:rgba(79,142,247,.25);
+}
+
+/* Quote card */
+.ab-quote-card {
+  grid-column:1/4;
+  grid-row:3;
+  background:var(--s2);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:32px 36px;
+}
+.ab-qc-qm {
+  font-family:'Instrument Serif',serif;
+  font-size:80px;font-weight:400;
+  color:var(--ac);
+  line-height:.7;
+  margin-bottom:12px;
+  opacity:.4;
+}
+.ab-qc-text {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(16px,1.6vw,20px);
+  font-style:italic;
+  color:var(--wd);
+  line-height:1.6;
+  flex:1;
+  margin-bottom:20px;
+}
+.ab-qc-attr {
+  display:flex;align-items:center;gap:12px;
+  padding-top:16px;border-top:1px solid var(--bd);
+}
+.ab-qc-av {
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ag);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  color:#fff;flex-shrink:0;
+}
+.ab-qc-name {font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w)}
+.ab-qc-role {font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+
+/* Bento background / tech card */
+.ab-qc-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ac);margin-bottom:16px;
+}
+.ab-qc-degree{margin-bottom:16px}
+.ab-qc-deg-label{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  color:var(--w);letter-spacing:-.01em;margin-bottom:4px;
+}
+.ab-qc-deg-sub{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--wm);
+}
+.ab-qc-skills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.ab-qcs{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ac);padding:3px 9px;
+  background:var(--agl);border:1px solid rgba(79,142,247,.2);border-radius:4px;
+  transition:background .2s,border-color .2s;cursor:default;
+}
+.ab-qcs:hover{background:rgba(79,142,247,.18);border-color:rgba(79,142,247,.4)}
+.ab-qc-caption{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(14px,1.3vw,17px);
+  font-style:italic;color:var(--wd);line-height:1.65;
+  margin-top:auto;padding-top:16px;border-top:1px solid var(--bd);
+}
+
+@media(max-width:1024px){
+  .ab-bento{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .ab-photo-card{grid-column:1/3;grid-row:1;min-height:320px}
+  .ab-photo-inner{min-height:240px}
+  .ab-quote-card{grid-column:1/3;grid-row:auto}
+}
+@media(max-width:600px){
+  .ab-bento{grid-template-columns:1fr;grid-template-rows:auto}
+  .ab-photo-card{grid-column:1;grid-row:auto;min-height:280px}
+  .ab-photo-inner{min-height:200px}
+  .ab-quote-card{grid-column:1;grid-row:auto}
+  .ab-stat-card{min-height:160px}
+}
+
+/* ═══════════ ORIGIN STORY (editorial essay) ═══════════ */
+.ab-story-sec{background:var(--bg);padding:100px 0;position:relative;z-index:1}
+
+.ab-st-hdr{
+  max-width:780px;
+  margin:0 auto 64px;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+}
+.ab-st-hdr .hair{justify-content:center}
+.ab-st-h{
+  font-family:var(--fd);
+  font-size:clamp(38px,5.5vw,80px);
+  font-weight:400;line-height:.96;letter-spacing:-.025em;
+  color:var(--w);margin:0;
+}
+.ab-st-h em{font-style:italic}
+.ab-st-deck{
+  font-family:var(--fu);
+  font-size:15px;color:var(--wd);
+  line-height:1.7;margin:0;max-width:520px;
+}
+
+/* Single-column essay (no imbalanced 2-column) */
+.ab-st-essay{
+  max-width:720px;
+  margin:0 auto;
+  font-family:var(--fu);
+}
+
+.ab-st-lead{
+  font-family:var(--fd);
+  font-size:clamp(22px,2.4vw,30px);
+  font-style:italic;
+  color:var(--w);
+  line-height:1.45;
+  letter-spacing:-.012em;
+  margin:0 0 36px;
+  position:relative;
+  padding-top:16px;
+}
+.ab-st-lead::before{
+  content:'';position:absolute;top:0;left:0;
+  width:48px;height:2px;
+  background:linear-gradient(90deg,var(--ac) 0%,var(--ac2) 100%);
+  border-radius:2px;
+}
+
+.ab-st-p{
+  font-family:var(--fu);
+  font-size:17px;
+  color:var(--wd);
+  line-height:1.85;
+  margin:0 0 24px;
+}
+.ab-st-p strong{
+  color:var(--w);
+  font-weight:600;
+  font-family:var(--fd);
+  font-style:italic;
+  font-size:1.08em;
+  letter-spacing:-.01em;
+}
+
+/* Pull quote — magazine treatment */
+.ab-st-pull{
+  position:relative;
+  margin:48px -32px;
+  padding:40px 56px 36px;
+  border-top:1px solid var(--bd);
+  border-bottom:1px solid var(--bd);
+  text-align:center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,.06) 0%, transparent 60%);
+}
+.ab-st-pull-mark{
+  display:block;
+  font-family:var(--fd);font-style:italic;
+  font-size:64px;line-height:.6;
+  color:var(--ac);opacity:.55;
+  margin-bottom:8px;
+}
+.ab-st-pull-q{
+  font-family:var(--fd);
+  font-size:clamp(24px,3vw,36px);
+  font-style:italic;font-weight:400;
+  color:var(--w);
+  line-height:1.18;letter-spacing:-.018em;
+  margin:0 0 16px;
+}
+.ab-st-pull-attr{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:9.5px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+}
+.ab-st-pull-attr::before{
+  content:'';display:inline-block;width:24px;height:1px;background:var(--ac);
+}
+
+/* Career timeline (contained, matches homepage process pattern) */
+.ab-tl-sec{
+  width:100%;
+  max-width:880px;
+  margin:56px auto 48px;
+  padding-top:48px;
+  border-top:1px solid var(--bd);
+}
+.ab-tl-hdr{margin-bottom:28px;display:flex;flex-direction:column;gap:12px}
+.ab-tl-deck{
+  font-family:var(--fu);font-size:14px;color:var(--wm);
+  margin:0;max-width:40ch;line-height:1.6;
+}
+
+.ab-tl-nav{margin-bottom:32px}
+.ab-tl-nav-track{
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.ab-tl-nav-btn{
+  font-family:var(--fm);font-size:10px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--wd);
+  padding:8px 14px;border-radius:999px;
+  border:1px solid var(--bd);
+  background:var(--s1);
+  cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.ab-tl-nav-btn:hover{border-color:rgba(79,142,247,.4);color:var(--w);background:var(--agl)}
+.ab-tl-nav-btn.is-active,
+.ab-tl-nav-btn[aria-current='true']{
+  color:var(--ac);
+  border-color:rgba(79,142,247,.45);
+  background:var(--agl);
+}
+
+.ab-tl-flow{
+  position:relative;
+  padding-left:56px;
+  min-width:0;
+}
+.ab-tl-spine{
+  position:absolute;left:18px;top:0;bottom:0;
+  width:2px;background:var(--bd);border-radius:2px;overflow:hidden;
+}
+.ab-tl-spine-fill{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--ac) 0%,var(--ac2) 100%);
+  transform:scaleY(0);transform-origin:top center;
+  will-change:transform;
+}
+
+.ab-tl-step{
+  position:relative;
+  padding:0 0 28px;
+  scroll-margin-top:100px;
+}
+.ab-tl-step:last-child{padding-bottom:0}
+
+.ab-tl-marker{
+  position:absolute;
+  left:-44px;
+  top:28px;
+  width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;
+  z-index:2;
+}
+.ab-tl-marker-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--bd);
+  border:2px solid var(--bg);
+  transition:background .35s,transform .35s,box-shadow .35s;
+}
+.ab-tl-step.is-lit .ab-tl-marker-dot{
+  background:var(--ac);
+  box-shadow:0 0 0 4px var(--agl);
+}
+.ab-tl-step.is-active .ab-tl-marker-dot{
+  background:#fff;
+  border-color:var(--ac);
+  transform:scale(1.15);
+  box-shadow:0 0 0 4px var(--ac),0 0 14px rgba(79,142,247,.45);
+}
+
+.ab-tl-card{
+  padding:22px 24px;
+  border-radius:16px;
+  border:1px solid var(--bd);
+  background:var(--s1);
+  transition:border-color .3s,opacity .3s;
+  opacity:.75;
+}
+.ab-tl-step.is-lit .ab-tl-card{opacity:.9}
+.ab-tl-step.is-active .ab-tl-card{
+  opacity:1;
+  border-color:rgba(79,142,247,.4);
+  box-shadow:0 16px 48px rgba(0,0,0,.2);
+}
+html.light .ab-tl-step.is-active .ab-tl-card{box-shadow:0 12px 36px rgba(26,23,20,.08)}
+
+.ab-tl-card-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;margin-bottom:10px;
+}
+.ab-tl-card-yr{
+  font-family:var(--fd);font-size:clamp(28px,3vw,40px);
+  font-style:italic;font-weight:400;line-height:1;letter-spacing:-.02em;
+}
+.ab-tl-card-tag{
+  font-family:var(--fm);font-size:9px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ac);
+  padding:4px 10px;border-radius:999px;
+  border:1px solid rgba(79,142,247,.28);background:var(--agl);
+}
+.ab-tl-card-title{
+  font-family:var(--fu);font-size:17px;font-weight:700;
+  color:var(--w);letter-spacing:-.012em;line-height:1.35;
+  margin:0 0 10px;
+}
+.ab-tl-card-body{
+  font-family:var(--fu);font-size:15px;color:var(--wd);
+  line-height:1.72;margin:0;
+}
+
+@media(max-width:768px){
+  .ab-tl-sec{margin:40px auto 32px;padding-top:36px}
+  .ab-tl-flow{padding-left:48px}
+  .ab-tl-spine{left:14px}
+  .ab-tl-marker{left:-36px;top:24px}
+  .ab-tl-nav-track{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .ab-tl-nav-btn{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .ab-tl-card,.ab-tl-marker-dot{transition-duration:.01s}
+}
+
+/* Skill stack — horizontal flow */
+.ab-st-stack{
+  margin-top:40px;padding-top:32px;
+  border-top:1px solid var(--bd);
+}
+.ab-st-stack-eye{
+  display:inline-flex;align-items:center;
+  font-family:var(--fm);font-size:9px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  margin-bottom:18px;
+}
+.ab-st-stack-eye::before{content:'';display:inline-block;width:24px;height:1px;background:var(--ac);margin-right:10px}
+.ab-st-stack-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ab-st-stack-tag{
+  font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.06em;
+  color:var(--wd);
+  padding:6px 12px;border-radius:999px;
+  border:1px solid var(--bd);
+  background:transparent;
+  transition:color .25s,border-color .25s,background .25s,transform .35s cubic-bezier(.16,1,.3,1);
+  animation:abStTagIn .5s cubic-bezier(.16,1,.3,1) backwards;
+  animation-delay:calc(.03s * var(--ti));
+}
+.ab-st-stack-tag:hover{color:var(--ac);border-color:rgba(79,142,247,.45);background:var(--agl);transform:translateY(-2px)}
+@keyframes abStTagIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:680px){
+  .ab-story-sec{padding:64px 0}
+  .ab-st-pull{margin:36px -16px;padding:28px 24px 24px}
+}
+
+/* Differentiators — NO card boxes */
+.ab-st-diffs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+.ab-std{
+  padding:0 48px 0 0;
+  border-right:1px solid var(--bd);
+  margin-right:48px;
+}
+.ab-std:last-child{border-right:none;margin-right:0;padding-right:0}
+.ab-std-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ac);margin-bottom:16px;
+}
+.ab-std-icon{display:block;margin-bottom:16px;opacity:.8}
+.ab-std-title{
+  font-family:'Syne',sans-serif;
+  font-size:15px;font-weight:700;
+  color:var(--w);letter-spacing:-.01em;
+  margin-bottom:10px;line-height:1.3;
+}
+.ab-std-desc{font-size:13px;color:var(--wm);line-height:1.75}
+
+@media(max-width:1024px){.ab-st-body{grid-template-columns:1fr;gap:48px}}
+@media(max-width:768px){
+  .ab-st-diffs{grid-template-columns:1fr}
+  .ab-std{border-right:none;border-bottom:1px solid var(--bd);margin-right:0;padding-right:0;padding-bottom:36px;margin-bottom:36px}
+  .ab-std:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+}
+
+/* ═══════════ FOUNDER QUOTE (word unblur animation) ═══════════ */
+.ab-fq-sec{
+  background:linear-gradient(180deg,var(--s1) 0%,var(--bg) 100%);
+  position:relative;
+  padding:110px 0 100px;
+  overflow:hidden;
+}
+.ab-fq-orb{
+  position:absolute;pointer-events:none;border-radius:50%;
+  filter:blur(100px);
+}
+.ab-fq-orb-1{
+  width:600px;height:600px;
+  top:-150px;left:-150px;
+  background:radial-gradient(ellipse,rgba(79,142,247,0.06) 0%,transparent 70%);
+  animation:orbFloat 14s ease-in-out infinite;
+}
+.ab-fq-orb-2{
+  width:500px;height:500px;
+  bottom:-120px;right:-120px;
+  background:radial-gradient(ellipse,rgba(26,58,143,0.05) 0%,transparent 70%);
+  animation:orbFloat 14s ease-in-out infinite reverse;
+  animation-delay:-7s;
+}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+
+.ab-fq-deco{
+  position:absolute;
+  top:0;left:50%;
+  transform:translateX(-50%);
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(180px,28vw,360px);
+  font-style:italic;
+  line-height:1;
+  color:var(--ac);
+  opacity:0.025;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+}
+
+.ab-fq-wrap{
+  max-width:940px;margin:0 auto;
+  text-align:center;
+  position:relative;z-index:1;
+}
+
+.ab-fq-pill{display:flex;justify-content:center;margin-bottom:52px}
+.ab-fq-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ac);
+  padding:7px 18px;
+  border:1px solid rgba(79,142,247,.25);
+  border-radius:999px;
+  background:var(--agl);
+}
+
+.ab-fq-text{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(26px,3.8vw,54px);
+  font-weight:400;
+  font-style:italic;
+  color:var(--w);
+  line-height:1.35;
+  margin:0 0 64px;
+  border:none;
+  word-spacing:.04em;
+}
+.qw{
+  display:inline-block;
+  filter:blur(10px);
+  opacity:0;
+  transform:translateY(10px);
+  transition:filter .6s cubic-bezier(.16,1,.3,1),opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);
+}
+.qw-hl{
+  background:var(--ag);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* Author pill — redesigned */
+.ab-fq-author{
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:999px;
+  padding:8px 20px 8px 8px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease,border-color .3s,background .3s;
+  cursor:default;
+}
+.ab-fq-author.visible{opacity:1;transform:translateY(0)}
+.ab-fq-author:hover{border-color:rgba(79,142,247,.45);background:var(--s3)}
+
+.ab-fq-av-wrap{
+  position:relative;
+  width:52px;height:52px;
+  flex-shrink:0;
+  border-radius:50%;
+}
+.ab-fq-av-spin{
+  position:absolute;
+  inset:-2px;
+  border-radius:50%;
+  background:conic-gradient(#4F8EF7 0deg,#1A3A8F 180deg,#4F8EF7 360deg);
+  animation:spinGrad 2.5s linear infinite;
+  z-index:0;
+}
+@keyframes spinGrad{to{transform:rotate(360deg)}}
+.ab-fq-av-inner{
+  position:absolute;
+  inset:2px;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--s3);
+  z-index:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.ab-fq-av-img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+.ab-fq-av-fb{
+  display:none;
+  align-items:center;justify-content:center;
+  width:100%;height:100%;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  color:#fff;
+  background:var(--ag);
+  border-radius:50%;
+}
+
+.ab-fq-info{text-align:left}
+.ab-fq-name{
+  font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;
+  color:var(--w);letter-spacing:-.01em;
+  line-height:1.2;
+}
+.ab-fq-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--wm);margin-top:3px;
+}
+.ab-fq-sep{color:var(--bd);margin:0 3px}
+
+.ab-fq-avail{
+  display:flex;align-items:center;gap:6px;
+  margin-left:4px;padding-left:14px;
+  border-left:1px solid var(--bd);
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);
+  flex-shrink:0;
+}
+
+/* ═══════════ RESULTS ═══════════ */
+.ab-results-sec{background:var(--bg);padding:80px 0}
+.ab-res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
+.ab-res-card {
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:20px;padding:32px;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,transform .25s;
+}
+.ab-res-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--ag);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.ab-res-card:hover{border-color:rgba(79,142,247,.35);transform:translateY(-5px)}
+.ab-res-card:hover::before{transform:scaleX(1)}
+
+.ab-rc-head {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.ab-rc-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ac);
+  background:var(--agl);
+  border:1px solid rgba(79,142,247,.2);
+  padding:4px 10px;border-radius:999px;
+}
+.ab-rc-gsc {
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);
+}
+.ab-rc-metrics{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+.ab-rc-val {
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(26px,2.5vw,34px);
+  font-weight:400;line-height:1;
+  margin-bottom:4px;
+}
+.ab-rc-lbl {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--wm);
+}
+.ab-rc-method{font-size:12px;color:var(--wd);line-height:1.65;margin-bottom:16px}
+.ab-rc-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.ab-rc-fill{height:100%;background:var(--ag);border-radius:2px;width:var(--pct)}
+
+.ab-cite-strip {
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:16px;padding:24px 32px;
+  display:flex;align-items:center;gap:32px;
+  flex-wrap:wrap;
+}
+.ab-cs-label {
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--wm);
+  flex-shrink:0;
+}
+.ab-cs-platforms{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ab-cs-p {
+  display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  color:var(--wd);
+}
+.ab-cs-icon{width:16px;height:16px;object-fit:contain;opacity:.7}
+
+@media(max-width:900px){
+  .ab-res-grid{grid-template-columns:1fr}
+  .ab-cite-strip{flex-direction:column;align-items:flex-start;gap:16px}
+}
+
+/* ═══════════ TESTIMONIALS (shared with homepage) ═══════════ */
+.ab-testi{background:var(--s1);padding-bottom:80px}
+.tmi-wrap{position:relative;overflow:hidden;padding:8px 0}
+.tmi-fade-l,.tmi-fade-r{position:absolute;top:0;bottom:0;width:180px;z-index:2;pointer-events:none}
+.tmi-fade-l{left:0;background:linear-gradient(90deg,var(--s1) 30%,transparent)}
+.tmi-fade-r{right:0;background:linear-gradient(270deg,var(--s1) 30%,transparent)}
+.tmi-row{overflow:hidden}
+.tmi-track{display:flex;gap:16px;width:max-content;animation:tmiL 55s linear infinite}
+.tmi-rev{animation:tmiR 55s linear infinite}
+.tmi-wrap:hover .tmi-track{animation-play-state:paused}
+@keyframes tmiL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tmiR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.tc{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:28px;width:360px;flex-shrink:0;transition:border-color .25s,transform .25s;display:flex;flex-direction:column;gap:16px}
+.tc:hover{border-color:var(--ac);transform:translateY(-4px)}
+.tc-stars{color:#F59E0B;font-size:11px;letter-spacing:3px}
+.tc-q{font-family:'Instrument Serif',serif;font-size:14px;font-style:italic;color:var(--wd);line-height:1.75;flex:1}
+.tc-author{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--bd)}
+.tc-av{width:36px;height:36px;border-radius:50%;background:var(--ag);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.tc-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w)}
+.tc-role{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+@media(max-width:768px){.tc{width:300px;padding:20px}.tmi-fade-l,.tmi-fade-r{width:60px}}
+
+/* ═══════════ CTA ═══════════ */
+.ab-cta-sec{background:var(--bg);padding:80px 0}
+.ab-cta-inner{
+  text-align:center;
+  max-width:640px;margin:0 auto;
+}
+.ab-cta-sub {
+  font-size:16px;color:var(--wd);
+  max-width:440px;margin:20px auto 36px;
+  line-height:1.75;
+}
+.ab-cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ab-cta-trust {
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--wm);
+}
+.ab-cta-trust span:nth-child(even){color:var(--bd)}
+
+/* ═══════════ FOOTER (shared with homepage) ═══════════ */
+.site-footer{background:var(--s1);border-top:1px solid var(--bd);padding:80px 0 0;position:relative;z-index:1}
+.ft-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:48px;padding-bottom:64px;border-bottom:1px solid var(--bd)}
+.ft-logo{font-size:20px;margin-bottom:12px;display:flex;align-items:baseline;gap:1px}
+.ft-desc{font-size:13px;color:var(--wm);line-height:1.75;margin-bottom:16px;max-width:280px}
+.ft-loc{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+.ft-col-t{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--w);margin-bottom:16px}
+.ft-links{display:flex;flex-direction:column;gap:8px}
+.ft-links li a{font-size:13px;color:var(--wm);transition:color .2s}
+.ft-links li a:hover{color:var(--w)}
+.ft-socials{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.ft-soc{width:36px;height:36px;border-radius:8px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--wm);transition:border-color .2s,color .2s,background .2s}
+.ft-soc:hover{border-color:var(--ac);color:var(--ac);background:var(--agl)}
+.ft-ai-links{display:flex;gap:8px;flex-wrap:wrap}
+.ft-ai-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);padding:6px 12px;border:1px solid var(--bd);border-radius:6px;transition:border-color .2s,color .2s,background .2s}
+.ft-ai-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--agl)}
+.ft-bottom{display:flex;justify-content:space-between;padding:24px 0;flex-wrap:wrap;gap:8px}
+.ft-copy{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+.ft-mq{border-top:1px solid var(--bd);overflow:hidden;padding:16px 0;position:relative}
+.ft-mq-track{display:flex;gap:40px;width:max-content;animation:mq 40s linear infinite}
+.ft-mq-i{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm);opacity:.3;white-space:nowrap}
+
+@media(max-width:1024px){.ft-grid{grid-template-columns:1fr 1fr;gap:32px}}
+@media(max-width:600px){.ft-grid{grid-template-columns:1fr;gap:24px}.ft-bottom{flex-direction:column}}
+
+/* ═══════════ LIGHT MODE OVERRIDES ═══════════ */
+html.light .ab-chip{background:var(--s2);border-color:var(--bd)}
+html.light .ab-photo-card,.html.light .ab-stat-card{background:var(--s1)}
+html.light .ab-bento-sec{background:var(--bg)}
+html.light .ab-fq-sec{background:var(--s1)}
+html.light .ab-results-sec{background:var(--bg)}
+html.light .ab-testi{background:var(--s1)}
+html.light .ab-cta-sec{background:var(--bg)}
+html.light .tc{background:var(--s2)}
+html.light .tmi-fade-l{background:linear-gradient(90deg,var(--s1) 30%,transparent)}
+html.light .tmi-fade-r{background:linear-gradient(270deg,var(--s1) 30%,transparent)}
+html.light .ab-res-card{background:var(--s1)}
+html.light .ab-cite-strip{background:var(--s1)}
+html.light .ab-diff{background:var(--s2)}
+html.light .site-footer{background:var(--s1)}
+
+/* Mobile hero adjustments */
+@media(max-width:768px){
+  .ab-hero{padding:120px 0 80px}
+  .ab-chips{gap:6px}
+  .ab-chip{font-size:8px;padding:4px 10px}
+  .ab-soc span{display:none}
+  .ab-soc{padding:8px}
+  .ab-hero-sub{font-size:16px;margin-bottom:32px}
+}
+
+/* ════════════════════════════════════════════════════════════
+   02 EDITORIAL DOSSIER (replaces bento cards)
+   ════════════════════════════════════════════════════════════ */
+.ab-doss-sec{padding:120px 0 100px;position:relative;z-index:1;overflow-x:clip}
+.ab-doss-mast{display:flex;align-items:center;gap:14px;margin-bottom:48px;padding-bottom:18px;border-bottom:1px solid var(--bd);flex-wrap:wrap;min-width:0}
+.ab-doss-mast .stamp{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ac);padding:5px 10px;border:1px solid rgba(79,142,247,.28);border-radius:3px;background:var(--agl)}
+.ab-doss-mast-line{flex:1 1 auto;height:1px;background:var(--bd);min-width:24px}
+.ab-doss-mast-meta{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm)}
+
+.ab-doss-spread{
+  display:grid;
+  grid-template-columns:minmax(0,400px) minmax(0,1fr);
+  gap:56px;
+  align-items:start;
+  min-width:0;
+}
+
+/* ─── Portrait (left) — STICKY, stays in view as stats scroll past ─── */
+.ab-doss-portrait{
+  margin:0;
+  display:flex;flex-direction:column;gap:14px;
+  position:sticky;
+  top:96px;
+  align-self:start;
+}
+.ab-doss-portrait-frame{
+  position:relative;
+  aspect-ratio:4/5;
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(180deg, var(--s2) 0%, var(--s1) 100%);
+  border:1px solid var(--bd);
+  box-shadow:0 32px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.ab-doss-portrait-frame::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 20%, rgba(79,142,247,.10) 0%, transparent 60%);
+  z-index:1;
+}
+.ab-doss-img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;position:relative;z-index:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.ab-doss-portrait:hover .ab-doss-img{transform:scale(1.025)}
+.ab-doss-portrait-init{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  font-family:var(--fd);font-size:120px;letter-spacing:-.04em;color:var(--w);font-weight:400;
+  z-index:0;
+}
+.ab-doss-portrait-frame.no-img .ab-doss-portrait-init{display:flex}
+.ab-doss-portrait-init span{}
+.ab-doss-portrait-init em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-left:4px;
+}
+.ab-doss-portrait-tag{
+  position:absolute;top:16px;left:16px;z-index:2;
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.92);
+  padding:6px 11px;border-radius:999px;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);
+  max-width:calc(100% - 32px);
+  flex-wrap:wrap;
+  box-sizing:border-box;
+}
+html.light .ab-doss-portrait-tag{color:var(--w);border-color:rgba(26,23,20,.12);background:rgba(248,246,242,.88)}
+.ab-doss-cap{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:6px;min-width:0}
+.ab-doss-cap-name{font-family:var(--fd);font-size:22px;font-style:italic;color:var(--w);letter-spacing:-.015em}
+.ab-doss-cap-meta{display:inline-flex;align-items:flex-start;gap:6px;font-family:var(--fm);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm);line-height:1.45;flex:1;min-width:0;flex-wrap:wrap}
+.ab-doss-cap-meta svg{flex-shrink:0;margin-top:2px}
+
+/* ─── Stats column (right) ─── */
+.ab-doss-stats{display:flex;flex-direction:column;gap:32px;min-width:0}
+.ab-doss-deck{
+  font-family:var(--fu);
+  font-size:15px;
+  color:var(--wd);
+  line-height:1.7;
+  margin:0;max-width:560px;
+  border-left:2px solid var(--ac);
+  padding-left:16px;
+  box-sizing:border-box;
+  min-width:0;
+}
+
+.ab-doss-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column}
+.ab-doss-row{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  gap:18px;
+  padding:22px 0;
+  border-bottom:1px dashed var(--bd);
+  position:relative;
+  transition:padding-left .45s cubic-bezier(.16,1,.3,1);
+}
+.ab-doss-row::before{
+  content:'';position:absolute;left:-12px;right:-12px;top:0;width:0;height:100%;
+  background:linear-gradient(90deg, var(--agl), transparent);
+  transition:width .55s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+  z-index:-1;
+  border-radius:6px;
+}
+.ab-doss-row:hover{padding-left:10px}
+.ab-doss-row:hover::before{width:calc(100% + 24px)}
+.ab-doss-row:first-child{border-top:1px dashed var(--bd)}
+
+.ab-doss-row-num{
+  font-family:var(--fd);font-size:24px;font-style:italic;font-weight:400;
+  line-height:.85;letter-spacing:-.02em;
+  align-self:start;padding-top:14px;
+  color:var(--wm);
+}
+.ab-doss-row-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+
+/* Inline header line: stat value + label + tick badge all in one row */
+.ab-doss-row-line{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  min-width:0;
+}
+.ab-doss-row-val{
+  font-family:var(--fd);font-size:clamp(34px,3.6vw,46px);font-weight:400;font-style:italic;
+  line-height:1;letter-spacing:-.025em;
+  display:inline-block;
+  flex-shrink:0;
+}
+.ab-doss-row-label{
+  font-family:var(--fm);font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--w);
+  flex-shrink:0;
+}
+.ab-doss-row-tick{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green);
+  padding:4px 9px;border-radius:4px;
+  background:rgba(34,197,94,.06);
+  border:1px solid rgba(34,197,94,.22);
+  margin-left:auto;
+  flex-shrink:0;
+  max-width:100%;
+  box-sizing:border-box;
+  flex-wrap:wrap;
+}
+.ab-doss-row-tick svg{flex-shrink:0}
+.ab-doss-row-tick--blue{
+  color:var(--ac);
+  background:var(--agl);
+  border-color:rgba(79,142,247,.28);
+}
+.ab-doss-row-note{
+  font-family:var(--fu);font-size:13.5px;color:var(--wd);
+  line-height:1.65;margin:0;
+  max-width:none;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+
+/* Foot strip: BCA + skills */
+.ab-doss-foot{
+  margin-top:8px;padding-top:32px;
+  border-top:1px solid var(--bd);
+  display:flex;flex-direction:column;gap:18px;
+}
+.ab-doss-foot-eye{
+  display:inline-flex;align-items:center;flex-wrap:wrap;gap:8px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  max-width:100%;
+}
+.ab-doss-foot-eye::before{content:'';display:inline-block;width:24px;height:1px;background:var(--ac);margin-right:10px;flex-shrink:0}
+.ab-doss-foot-line{
+  font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:640px;
+}
+.ab-doss-foot-line strong{color:var(--w);font-weight:600;font-family:var(--fd);font-style:italic;font-size:1.15em;letter-spacing:-.012em;margin-right:6px}
+.ab-doss-foot-stack{display:flex;flex-wrap:wrap;gap:6px}
+.ab-doss-stack-tag{
+  font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.06em;
+  color:var(--wd);
+  padding:5px 10px;border-radius:4px;
+  border:1px solid var(--bd);
+  background:var(--s2);
+  transition:color .25s,border-color .25s,background .25s,transform .35s cubic-bezier(.16,1,.3,1);
+  animation:abStackIn .55s cubic-bezier(.16,1,.3,1) backwards;
+  animation-delay:calc(0.04s * var(--di));
+}
+.ab-doss-stack-tag:hover{color:var(--ac);border-color:rgba(79,142,247,.45);background:var(--agl);transform:translateY(-1px)}
+@keyframes abStackIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════════════════════════════════════════════════════════════
+   03B MANIFESTO (replaces 3-card differentiators)
+   ════════════════════════════════════════════════════════════ */
+.ab-mani-sec{padding:80px 0 110px;position:relative;z-index:1}
+.ab-mani-hdr{margin-bottom:64px;display:flex;flex-direction:column;gap:14px;max-width:760px}
+.ab-mani-h{
+  font-family:var(--fd);
+  font-size:clamp(34px,5vw,64px);
+  font-weight:400;line-height:.95;letter-spacing:-.022em;
+  color:var(--w);margin:0;
+}
+.ab-mani-h em{font-style:italic}
+
+.ab-mani-list{display:flex;flex-direction:column}
+.ab-mani-row{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:56px;
+  padding:48px 0;
+  border-top:1px solid var(--bd);
+  position:relative;
+  transition:padding-left .45s cubic-bezier(.16,1,.3,1);
+}
+.ab-mani-row:last-child{border-bottom:1px solid var(--bd)}
+.ab-mani-row::before{
+  content:'';position:absolute;left:0;top:-1px;width:60px;height:2px;
+  background:var(--ag);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .55s cubic-bezier(.16,1,.3,1);
+}
+.ab-mani-row.in::before{transform:scaleX(1)}
+.ab-mani-row:hover{padding-left:12px}
+
+.ab-mani-row-l{display:flex;flex-direction:column;gap:18px;align-self:start;position:sticky;top:96px}
+.ab-mani-num{
+  font-family:var(--fd);font-size:clamp(72px,9vw,128px);font-style:italic;font-weight:400;
+  line-height:.78;letter-spacing:-.03em;
+}
+.ab-mani-axis{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  display:inline-flex;align-items:center;
+}
+.ab-mani-axis::before{content:'';display:inline-block;width:24px;height:1px;background:var(--ac);margin-right:10px}
+
+.ab-mani-row-r{display:flex;flex-direction:column;gap:20px}
+.ab-mani-row-h{
+  font-family:var(--fd);
+  font-size:clamp(26px,3vw,40px);
+  font-weight:400;line-height:1.08;letter-spacing:-.02em;
+  color:var(--w);margin:0;
+}
+.ab-mani-row-h em{font-style:italic;display:block;margin-top:4px}
+.ab-mani-row-p{
+  font-family:var(--fu);font-size:16px;line-height:1.75;color:var(--wd);margin:0;max-width:680px;
+}
+.ab-mani-row-p strong{color:var(--w);font-weight:600}
+.ab-mani-row-p code{
+  font-family:var(--fm);font-size:.88em;
+  color:var(--ac);background:var(--agl);
+  padding:1px 6px;border-radius:4px;
+  border:1px solid rgba(79,142,247,.22);
+}
+.ab-mani-row-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ab-mani-row-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--fm);font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wd);
+  padding:7px 12px;border-radius:999px;
+  border:1px solid var(--bd);
+  background:transparent;
+  transition:color .25s,border-color .25s,background .25s,transform .35s cubic-bezier(.16,1,.3,1);
+}
+.ab-mani-row-pill:hover{color:var(--ac);border-color:rgba(79,142,247,.45);background:var(--agl);transform:translateY(-1px)}
+
+/* Light mode tweaks for new sections */
+html.light .ab-doss-portrait-frame{box-shadow:0 24px 60px rgba(43,91,224,.14), inset 0 1px 0 rgba(0,0,0,.04)}
+html.light .ab-doss-stack-tag{background:var(--s1)}
+
+/* Responsive */
+@media(max-width:1100px){
+  .ab-mani-row{grid-template-columns:180px minmax(0,1fr);gap:40px}
+}
+@media(max-width:900px){
+  .ab-doss-spread{grid-template-columns:1fr;gap:40px}
+  .ab-doss-portrait{
+    position:static;
+    top:auto;
+    align-self:center;
+    width:100%;
+    max-width:min(420px,100%);
+    margin-inline:auto;
+  }
+  .ab-doss-portrait-frame{aspect-ratio:4/5;max-width:100%;width:100%}
+  .ab-doss-mast{margin-bottom:36px}
+  .ab-mani-row{grid-template-columns:1fr;gap:24px;padding:36px 0}
+  .ab-mani-row-l{flex-direction:row;align-items:center;gap:20px;position:static}
+  .ab-mani-num{font-size:64px}
+}
+@media(max-width:720px){
+  .ab-doss-row-line{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .ab-doss-row-tick{
+    margin-left:0;
+    width:100%;
+    max-width:100%;
+    justify-content:flex-start;
+  }
+}
+@media(max-width:640px){
+  .ab-doss-sec{padding:64px 0 48px}
+  .ab-mani-sec{padding:40px 0 80px}
+  .ab-doss-row{
+    grid-template-columns:28px 1fr;
+    gap:12px;
+    padding:18px 0;
+    transition:none;
+  }
+  .ab-doss-row:hover{padding-left:0}
+  .ab-doss-row::before{display:none}
+  .ab-doss-row-num{font-size:20px;padding-top:10px}
+  .ab-doss-row-val{font-size:clamp(28px,9vw,38px)}
+  .ab-doss-row-label{font-size:9px;letter-spacing:.14em}
+  .ab-doss-deck{font-size:14px;padding-left:12px;max-width:100%}
+  .ab-doss-cap{flex-direction:column;align-items:flex-start;gap:8px}
+  .ab-doss-cap-name{font-size:clamp(18px,5vw,22px)}
+  .ab-doss-cap-meta{font-size:8.5px;letter-spacing:.1em}
+  .ab-doss-mast .stamp{letter-spacing:.16em}
+  .ab-doss-mast-meta{font-size:9px}
+  .ab-mani-num{font-size:52px}
+}
+@media(max-width:480px){
+  .ab-doss-sec{padding:56px 0 40px}
+  .ab-doss-spread{gap:32px}
+  .ab-doss-mast{flex-direction:column;align-items:flex-start;gap:12px;padding-bottom:16px}
+  .ab-doss-mast-line{width:100%;flex:0 0 auto;min-width:0}
+  .ab-doss-portrait-tag{font-size:8px;padding:5px 9px;letter-spacing:.12em}
+  .ab-doss-foot{padding-top:24px;gap:14px}
+  .ab-doss-foot-line{font-size:14px}
+  .ab-doss-stack-tag{font-size:9px;padding:5px 8px}
+}
+
+/* ════════════════════════════════════════════════════════════
+   05 BUILD LOG (replaces GSC results section)
+   ════════════════════════════════════════════════════════════ */
+.ab-bl-sec{padding:100px 0 110px;position:relative;z-index:1}
+.ab-bl-hdr{max-width:760px;margin:0 auto 64px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px}
+.ab-bl-hdr .hair{justify-content:center}
+.ab-bl-h{font-family:var(--fd);font-size:clamp(36px,5vw,72px);font-weight:400;line-height:.96;letter-spacing:-.025em;color:var(--w);margin:0}
+.ab-bl-h em{font-style:italic}
+.ab-bl-deck{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:580px}
+
+/* ─── Headline mega-stat ─── */
+.ab-bl-headline{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+  gap:64px;
+  align-items:center;
+  padding:48px 0;
+  border-top:1px solid var(--bd);
+  border-bottom:1px solid var(--bd);
+  margin-bottom:64px;
+}
+.ab-bl-megas{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.ab-bl-mega{display:flex;flex-direction:column;gap:8px}
+.ab-bl-mega-val{
+  font-family:var(--fd);font-size:clamp(96px,16vw,200px);font-weight:400;font-style:italic;
+  line-height:.85;letter-spacing:-.04em;
+  display:inline-block;
+}
+.ab-bl-mega-label{
+  font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--w);
+}
+.ab-bl-mega--small .ab-bl-mega-val{font-size:clamp(56px,9vw,110px)}
+.ab-bl-mega--small .ab-bl-mega-label{font-size:10px;color:var(--wd)}
+.ab-bl-mega-sep{
+  font-family:var(--fd);font-size:clamp(40px,6vw,80px);font-weight:400;font-style:italic;
+  color:var(--ac);opacity:.4;line-height:1;letter-spacing:-.03em;
+  align-self:center;padding-bottom:20px;
+}
+.ab-bl-side{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:18px;border-left:1px solid var(--bd);padding-left:32px}
+.ab-bl-side li{display:flex;flex-direction:column;gap:4px}
+.ab-bl-side-num{font-family:var(--fd);font-size:38px;font-weight:400;font-style:italic;line-height:1;letter-spacing:-.02em}
+.ab-bl-side-l{font-family:var(--fm);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--wm)}
+
+/* ─── Platform split: bars ─── */
+.ab-bl-stack{margin-bottom:72px}
+.ab-bl-stack-row{
+  display:grid;
+  grid-template-columns:minmax(0,260px) minmax(0,1fr);
+  gap:48px;align-items:start;
+}
+.ab-bl-stack-l{display:flex;flex-direction:column;gap:10px;position:sticky;top:96px}
+.ab-bl-stack-tag{
+  display:inline-flex;align-items:center;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+}
+.ab-bl-stack-tag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--ac);margin-right:10px}
+.ab-bl-stack-h{
+  font-family:var(--fd);font-size:clamp(22px,2.4vw,30px);font-weight:400;font-style:italic;
+  color:var(--w);line-height:1.15;letter-spacing:-.018em;
+}
+.ab-bl-stack-bars{display:flex;flex-direction:column;gap:18px}
+.ab-bl-bar{display:flex;flex-direction:column;gap:10px;padding:16px 0;border-bottom:1px dashed var(--bd)}
+.ab-bl-bar:last-child{border-bottom:none}
+.ab-bl-bar-l{display:flex;flex-direction:column;gap:3px}
+.ab-bl-bar-name{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.012em}
+.ab-bl-bar-c{font-family:var(--fm);font-size:10px;letter-spacing:.06em;color:var(--wm)}
+.ab-bl-bar-meter{
+  position:relative;
+  height:8px;
+  background:var(--s2);
+  border-radius:999px;
+  overflow:hidden;
+  display:flex;align-items:center;
+}
+.ab-bl-bar-fill{
+  position:absolute;left:0;top:0;height:100%;width:0;
+  background:linear-gradient(90deg,#4F8EF7 0%,#1A3A8F 100%);
+  background-size:200% 100%;
+  border-radius:999px;
+  transition:width 1.4s cubic-bezier(.16,1,.3,1);
+  animation:bcurGrad 6s linear infinite;
+}
+.ab-bl-bar.in .ab-bl-bar-fill{width:var(--bl-pct)}
+.ab-bl-bar-val{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.06em;color:#fff;
+  text-shadow:0 0 8px rgba(0,0,0,.4);
+  z-index:1;
+}
+
+/* ─── Geography ─── */
+.ab-bl-geo{
+  display:grid;
+  grid-template-columns:minmax(0,260px) minmax(0,1fr);
+  gap:48px;align-items:start;
+  margin-bottom:72px;
+}
+.ab-bl-geo-l{display:flex;flex-direction:column;gap:14px;position:sticky;top:96px}
+.ab-bl-geo-l .ab-bl-stack-h{margin-bottom:6px}
+.ab-bl-geo-p{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.7;margin:0}
+.ab-bl-geo-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;border-left:1px solid var(--bd);padding-left:24px}
+.ab-bl-geo-list li{
+  display:grid;
+  grid-template-columns:42px minmax(0,160px) 1fr 80px;
+  gap:14px;align-items:center;
+  padding-bottom:14px;border-bottom:1px dashed var(--bd);
+}
+.ab-bl-geo-list li:last-child{border-bottom:none;padding-bottom:0}
+.ab-bl-geo-flag{
+  font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.06em;
+  color:var(--ac);
+  background:var(--agl);border:1px solid rgba(79,142,247,.28);border-radius:4px;
+  padding:5px 7px;text-align:center;
+}
+.ab-bl-geo-name{font-family:var(--fu);font-size:14px;font-weight:600;color:var(--w);letter-spacing:-.005em}
+.ab-bl-geo-bar{
+  position:relative;height:3px;background:var(--s3);border-radius:999px;overflow:hidden;display:block;
+}
+.ab-bl-geo-bar::before{
+  content:'';position:absolute;left:0;top:0;height:100%;
+  width:var(--w);
+  background:linear-gradient(90deg,var(--ac),var(--ac2));
+  border-radius:999px;
+  animation:abGeoBar 1.4s cubic-bezier(.16,1,.3,1) backwards;
+}
+@keyframes abGeoBar{from{width:0}}
+.ab-bl-geo-n{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);text-align:right}
+
+/* ─── Deploy log (terminal style) ─── */
+.ab-bl-log{
+  background:#0A0B14;
+  border:1px solid #1A1F2E;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.4);
+}
+.ab-bl-log-bar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;
+  background:#13141F;
+  border-bottom:1px solid #1A1F2E;
+}
+.ab-bl-log-dots{display:flex;gap:5px}
+.ab-bl-log-dots span{width:9px;height:9px;border-radius:50%;background:#3A3F4E}
+.ab-bl-log-dots span:nth-child(1){background:#FF5F56}
+.ab-bl-log-dots span:nth-child(2){background:#FFBD2E}
+.ab-bl-log-dots span:nth-child(3){background:#27C93F}
+.ab-bl-log-title{font-family:var(--fm);font-size:11px;color:#7A819A;flex:1;text-align:center}
+.ab-bl-log-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#22C55E;
+  padding:4px 9px;border-radius:999px;
+  background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.22);
+}
+.ab-bl-log-body{padding:18px 22px;font-family:var(--fm);font-size:12.5px;line-height:1.85;color:#A8B0C8;display:flex;flex-direction:column}
+.ab-bl-log-row{display:flex;gap:14px;align-items:flex-start;padding:5px 0}
+.ab-bl-log-t{color:#5A6178;flex-shrink:0;font-variant-numeric:tabular-nums}
+.ab-bl-log-tag{
+  display:inline-flex;align-items:center;
+  font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:1px 7px;border-radius:3px;
+  border:1px solid;
+  flex-shrink:0;
+  height:18px;line-height:1;
+}
+.ab-bl-log-tag.ok{color:#22C55E;background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.22)}
+.ab-bl-log-tag.info{color:#4F8EF7;background:rgba(79,142,247,.08);border-color:rgba(79,142,247,.22)}
+.ab-bl-log-tag.warn{color:#FFBD2E;background:rgba(255,189,46,.08);border-color:rgba(255,189,46,.22)}
+.ab-bl-log-row--blink{color:#E5E7EE}
+.ab-bl-cur{display:inline-block;width:7px;height:14px;background:#4F8EF7;margin-left:4px;vertical-align:-3px;animation:blCur 1s steps(2) infinite}
+@keyframes blCur{50%{opacity:0}}
+
+/* Light-mode polish */
+html.light .ab-bl-log{background:#0F1018;border-color:#1A1F2E}
+html.light .ab-bl-headline{border-color:var(--bd)}
+
+/* Responsive */
+@media(max-width:900px){
+  .ab-bl-headline{grid-template-columns:1fr;gap:32px}
+  .ab-bl-side{border-left:none;border-top:1px solid var(--bd);padding-left:0;padding-top:24px}
+  .ab-bl-stack-row,.ab-bl-geo{grid-template-columns:1fr;gap:28px}
+  .ab-bl-stack-l,.ab-bl-geo-l{position:static}
+}
+@media(max-width:640px){
+  .ab-bl-sec{padding:64px 0 80px}
+  .ab-bl-mega-val{font-size:96px}
+  .ab-bl-side-num{font-size:30px}
+  .ab-bl-geo-list li{grid-template-columns:38px 1fr 60px;grid-template-rows:auto auto;gap:6px 12px}
+  .ab-bl-geo-bar{grid-column:1 / -1;margin-top:4px}
+  .ab-bl-log-body{padding:14px 16px;font-size:11.5px}
+  .ab-bl-log-t{font-size:10.5px}
+  .ab-bl-log-row{flex-wrap:wrap;gap:8px 10px}
+}
+
+</style>
+
+<script>
+// ── Scroll progress ──
+const prog = document.getElementById('scrollProg');
+window.addEventListener('scroll',()=>{
+  if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}
+},{passive:true});
+
+// ── Cursor ──
+const dot=document.getElementById('curDot');
+const ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot){dot.style.transform=`translate(${mx-4}px,${my-4}px)`}},{passive:true});
+(function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});
+  el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')});
+});
+
+// ── Reveal on scroll ──
+const revEls=document.querySelectorAll('.rv');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+revEls.forEach(el=>ro.observe(el));
+
+// ── Theme toggle handled by Nav.astro globally — do not bind here (caused double-fire) ──
+
+// ── Bento stat counter ──
+const vals=document.querySelectorAll('.ab-sc-n,.ab-rc-val');
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target as HTMLElement;
+      const txt=el.textContent||'';
+      const match=txt.match(/^([\d.]+)/);
+      if(match){
+        const target=parseFloat(match[1]);
+        let start=0;const dur=1200;const step=16;
+        const inc=target/(dur/step);
+        const timer=setInterval(()=>{
+          start=Math.min(start+inc,target);
+          const rest=txt.replace(/^[\d.]+/,target%1===0?Math.round(start).toString():start.toFixed(1));
+          el.textContent=rest;
+          if(start>=target)clearInterval(timer);
+        },step);
+      }
+      co.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+vals.forEach(el=>co.observe(el));
+
+// ── Founder quote word-by-word unblur ──
+const fqText=document.getElementById('fqText');
+const fqAttr=document.getElementById('fqAttr');
+if(fqText){
+  const qWords=fqText.querySelectorAll('.qw');
+  const fqObs=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      qWords.forEach((w,i)=>{
+        setTimeout(()=>{
+          const el=w as HTMLElement;
+          el.style.filter='blur(0)';
+          el.style.opacity='1';
+          el.style.transform='translateY(0)';
+        },i*55);
+      });
+      setTimeout(()=>{fqAttr?.classList.add('visible')},qWords.length*55+300);
+      fqObs.disconnect();
+    }
+  },{threshold:0.3});
+  fqObs.observe(fqText);
+}
+
+// ── Nav scroll behaviour ──
+const nav=document.getElementById('mainNav');
+let last=0,tick=false;
+window.addEventListener('scroll',()=>{
+  if(!tick){
+    requestAnimationFrame(()=>{
+      const sy=window.scrollY;
+      nav?.classList.toggle('sc',sy>40);
+      if(sy>last&&sy>200) nav?.classList.add('hidden');
+      else nav?.classList.remove('hidden');
+      last=sy;tick=false;
+    });
+    tick=true;
+  }
+},{passive:true});
+
+// ── Count-up animation for any [data-target] or [data-bl-target] ──
+(function(){
+  function pickValueEl(el: HTMLElement): HTMLElement | null {
+    return el.querySelector<HTMLElement>('.ab-doss-row-val, .ab-bl-mega-val, .ab-bl-side-num, [data-val]');
+  }
+
+  function getNum(el: HTMLElement, attr: string): number {
+    return parseFloat(el.getAttribute(attr) || '0');
+  }
+  function getStr(el: HTMLElement, attr: string): string {
+    return el.getAttribute(attr) || '';
+  }
+
+  function animateCount(el: HTMLElement, targetAttr: string, suffixAttr: string, prefix = ''){
+    const valueEl = pickValueEl(el);
+    if(!valueEl) return;
+    const valueNode = valueEl;
+    const target = getNum(el, targetAttr);
+    const suffix = getStr(el, suffixAttr);
+    const duration = 1500;
+    const startTime = performance.now();
+    function frame(now: number){
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = target * eased;
+      const formatted = target % 1 === 0 ? Math.round(current).toString() : current.toFixed(1);
+      valueNode.innerHTML = prefix + formatted + suffix;
+      if(t < 1) requestAnimationFrame(frame);
+      else valueNode.innerHTML = prefix + (target % 1 === 0 ? target.toString() : target.toFixed(1)) + suffix;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Observe both old data-target and new data-bl-target
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        const el = e.target as HTMLElement;
+        if(el.hasAttribute('data-target')){
+          animateCount(el, 'data-target', 'data-suffix');
+        } else if(el.hasAttribute('data-bl-target')){
+          // Build-Log: prefix "<" if suffix is "hr"
+          const suff = el.getAttribute('data-bl-suffix') || '';
+          const prefix = suff === 'hr' ? '<' : '';
+          animateCount(el, 'data-bl-target', 'data-bl-suffix', prefix);
+        }
+        obs.unobserve(el);
+      }
+    });
+  }, {threshold: 0.4});
+
+  document.querySelectorAll<HTMLElement>('[data-target], [data-bl-target]').forEach(t => obs.observe(t));
+
+  // Build-Log bars: trigger fill on scroll
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        barObs.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.3});
+  document.querySelectorAll<HTMLElement>('[data-bl-bar]').forEach(b => barObs.observe(b));
+})();
+
+// ── Career timeline: scroll-linked spine, year nav, focus states ──
+(function abTimelineInit(){
+  const root = document.querySelector<HTMLElement>('[data-ab-tl]');
+  const flow = document.querySelector<HTMLElement>('[data-ab-tl-flow]');
+  const fill = document.getElementById('abTlSpineFill');
+    if (!root || !flow || !fill) return;
+
+  const steps = Array.from(flow.querySelectorAll<HTMLElement>('.ab-tl-step'));
+  const navBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('.ab-tl-nav-btn'));
+  if (!steps.length) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let activeIdx = 0;
+  let targetProgress = 0;
+  let currentProgress = 0;
+  let rafId = 0;
+
+  const setActive = (idx: number, scroll = true) => {
+    const clamped = Math.max(0, Math.min(idx, steps.length - 1));
+    activeIdx = clamped;
+    steps.forEach((step, i) => {
+      step.classList.toggle('is-active', i === clamped);
+    });
+    navBtns.forEach((btn, i) => {
+      const on = i === clamped;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-current', on ? 'true' : 'false');
+    });
+    if (scroll) {
+      const target = steps[clamped];
+      const lenis = (window as unknown as { __lenis?: { scrollTo: (t: HTMLElement, o?: { offset?: number }) => void } }).__lenis;
+      if (lenis && typeof lenis.scrollTo === 'function') {
+        lenis.scrollTo(target, { offset: -100 });
+      } else {
+        const top = target.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+      }
+    }
+  };
+
+  navBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.tlIndex || '0', 10);
+      setActive(idx, true);
+    });
+  });
+
+  steps.forEach((step, i) => {
+    step.addEventListener('mouseenter', () => {
+      if (!step.classList.contains('is-active')) step.classList.add('is-hover');
+    });
+    step.addEventListener('mouseleave', () => step.classList.remove('is-hover'));
+    step.addEventListener('click', () => setActive(i, false));
+  });
+
+  const compute = () => {
+    const flowRect = flow.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const startY = vh * 0.72;
+    const endY = vh * 0.28;
+    const span = flowRect.height - (startY - endY);
+    if (span > 0) {
+      const traveled = startY - flowRect.top;
+      targetProgress = Math.max(0, Math.min(1, traveled / span));
+    }
+
+    const markerOffset = window.innerWidth <= 640 ? 36 : 40;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    steps.forEach((step, i) => {
+      const rect = step.getBoundingClientRect();
+      const markerY = rect.top + markerOffset;
+      const lit = markerY < vh * 0.58;
+      step.classList.toggle('is-lit', lit);
+      const dist = Math.abs(markerY - vh * 0.42);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    });
+    if (bestIdx !== activeIdx) setActive(bestIdx, false);
+  };
+
+  const tick = () => {
+    if (!reduced) {
+      currentProgress += (targetProgress - currentProgress) * 0.12;
+      if (Math.abs(targetProgress - currentProgress) < 0.0008) currentProgress = targetProgress;
+    } else {
+      currentProgress = targetProgress;
+    }
+    fill.style.transform = `scaleY(${currentProgress})`;
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const onScroll = () => compute();
+
+  compute();
+  currentProgress = targetProgress;
+  fill.style.transform = `scaleY(${currentProgress})`;
+  rafId = requestAnimationFrame(tick);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+
+  const visObs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      } else if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    });
+  }, { rootMargin: '200px 0px 200px 0px' });
+  visObs.observe(flow);
+
+  setActive(0, false);
+})();
+</script>
+
+</Layout>

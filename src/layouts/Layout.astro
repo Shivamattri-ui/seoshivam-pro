@@ -1,0 +1,263 @@
+---
+import '../styles/global.css';
+import SiteLinkPreview from '../components/SiteLinkPreview.astro';
+import Preloader from '../components/Preloader.astro';
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  schema?: object;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = '/og-image.svg',
+  schema,
+} = Astro.props;
+
+// Resolve OG image to absolute URL (social platforms require it)
+const siteOrigin = 'https://seoshivam.pro';
+const authorName = 'Shivam Attri';
+const publisherName = 'seoshivampro';
+const authorProfileUrl = `${siteOrigin}/about`;
+const publisherId = `${siteOrigin}/#publisher`;
+const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${ogImage.startsWith('/') ? ogImage : '/' + ogImage}`;
+const isOgSvg = ogImageAbsolute.endsWith('.svg');
+
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://seoshivam.pro/#shivam",
+      "name": authorName,
+      "jobTitle": "AEO Specialist, SEO Strategist, AI-Visible Web Designer",
+      "description": "Shivam Attri helps B2B SaaS founders and growing brands get cited by ChatGPT, Perplexity, and Google AI Overviews through AEO strategy, SEO architecture, and AI-visible web design.",
+      "url": authorProfileUrl,
+      "image": "https://seoshivam.pro/shivam-attri.jpg",
+      "sameAs": [
+        "https://www.linkedin.com/in/seoshivampro/",
+        "https://www.instagram.com/seoshivam.pro/",
+        "https://www.threads.com/@seoshivam.pro",
+        "https://substack.com/@seoshivampro",
+        "https://www.reddit.com/r/aiseovisibility/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gurugram",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": [
+        "Answer Engine Optimization",
+        "AI Search Visibility",
+        "Search Engine Optimization",
+        "Google AI Overviews",
+        "ChatGPT Citation Strategy",
+        "Technical SEO",
+        "Programmatic SEO",
+        "Webflow",
+        "Framer",
+        "WordPress",
+        "JSON-LD Schema Markup"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": publisherId,
+      "name": publisherName,
+      "url": siteOrigin
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://seoshivam.pro/#website",
+      "name": "Shivam Attri",
+      "url": "https://seoshivam.pro",
+      "author": { "@id": "https://seoshivam.pro/#shivam" },
+      "publisher": { "@id": publisherId }
+    }
+  ]
+};
+
+const finalSchema = schema || defaultSchema;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    THEME BOOT — single source of truth, FOUC-proof, animation-safe
+    --------------------------------------------------------------
+    1. Inline <style> defines dark + light tokens AND paints html/body
+       background AND text colour using those tokens. Because this CSS
+       is parsed before any rendering, first paint is always correctly
+       themed (no white flash, no light/dark flash).
+    2. Inline <script> runs synchronously BEFORE <body> parses. It only
+       toggles html.light + theme-color meta. It never touches inline
+       styles on <html> or <body> — CSS variables in this same block
+       (and global.css later) handle all colours. This means JS and CSS
+       can never go out of sync.
+    3. .rv reveal animations are NEVER touched here. They keep working
+       through the IntersectionObserver in Nav.astro.
+    4. We attach an early IntersectionObserver right after DOM is ready
+       so above-fold .rv elements reveal smoothly even if Nav.astro's
+       module loads late.
+  -->
+  <meta name="theme-color" content="#080808">
+  <style is:inline id="spm-theme-boot">
+    /* Tokens. Mirrored in global.css; both files use the same values. */
+    html{
+      --spm-bg:#080808;--spm-w:#F5F2EC;
+      background-color:var(--spm-bg);
+      color-scheme:dark;
+    }
+    html.light{
+      --spm-bg:#F7F4EE;--spm-w:#15110D;
+      color-scheme:light;
+    }
+    body{
+      margin:0;
+      background-color:var(--spm-bg);
+      color:var(--spm-w);
+    }
+  </style>
+  <script is:inline>
+    (function () {
+      var K = 'seoshivam.theme';
+      var html = document.documentElement;
+
+      function readTheme() {
+        try {
+          var v = (localStorage.getItem(K) || '').trim().toLowerCase();
+          if (v === 'light') return 'light';
+          if (v.length) {
+            try { localStorage.removeItem(K); } catch (e2) {}
+          }
+        } catch (e) {}
+        return '';
+      }
+
+      function applyTheme() {
+        var light = readTheme() === 'light';
+        html.classList.toggle('light', light);
+        var tc = document.querySelector('meta[name="theme-color"]');
+        if (tc) tc.setAttribute('content', light ? '#F7F4EE' : '#080808');
+      }
+
+      // Synchronous paint — runs before <body> parses, before first paint.
+      applyTheme();
+      // Mark JS available so .rv is hidden + revealed (CSS is gated on .js).
+      html.classList.add('js');
+
+      window.addEventListener('pageshow', applyTheme);
+      window.addEventListener('storage', function (e) {
+        if (e.key === K) applyTheme();
+      });
+      window.__spmApplyTheme = applyTheme;
+
+      /* ---------------------------------------------------------------
+         EARLY .rv REVEAL OBSERVER
+         Attaches as soon as the DOM is parsed so hero / above-fold
+         content does not sit at opacity:0 waiting for Nav.astro to
+         load. Nav.astro has its own observer too — duplicates are
+         harmless because we mark elements .in and unobserve them.
+         --------------------------------------------------------------- */
+      function attachRvObserver() {
+        if (!('IntersectionObserver' in window)) {
+          // Old browsers — just reveal everything.
+          var all = document.querySelectorAll('.rv:not(.in)');
+          for (var j = 0; j < all.length; j++) all[j].classList.add('in');
+          return;
+        }
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              en.target.classList.add('in');
+              obs.unobserve(en.target);
+            }
+          });
+        }, { threshold: 0.10, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.rv:not(.in)').forEach(function (el) {
+          obs.observe(el);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachRvObserver);
+      } else {
+        attachRvObserver();
+      }
+    })();
+  </script>
+
+  <!-- Primary SEO -->
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="author" content={authorName}>
+  <meta name="publisher" content={publisherName}>
+  <meta property="article:author" content={authorName}>
+  <meta property="article:publisher" content={publisherName}>
+  <link rel="author" href={authorProfileUrl}>
+  <link rel="canonical" href={canonical}>
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <!-- AI Bot access — critical for AEO -->
+  <meta name="googlebot" content="index, follow">
+  <meta name="bingbot" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:type" content="website">
+  <meta property="og:image" content={ogImageAbsolute}>
+  <meta property="og:image:secure_url" content={ogImageAbsolute}>
+  <meta property="og:image:type" content={isOgSvg ? 'image/svg+xml' : 'image/jpeg'}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content={title}>
+  <meta property="og:site_name" content="Shivam Attri">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@seoshivam.pro">
+  <meta name="twitter:creator" content="@seoshivam.pro">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImageAbsolute}>
+  <meta name="twitter:image:alt" content={title}>
+
+  <!-- Fonts: preconnect + non-blocking load + swap for fast LCP/FCP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+  <!-- DNS prefetch for Brevo (lead capture latency) -->
+  <link rel="dns-prefetch" href="https://api.brevo.com">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- RSS (Insights blog) -->
+  <link rel="alternate" type="application/rss+xml" title="seoshivam.pro Insights" href={`${siteOrigin}/rss.xml`}>
+
+  <!-- JSON-LD Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
+
+</head>
+
+<body>
+  <Preloader />
+  <SiteLinkPreview />
+  <!-- Page content -->
+  <slot />
+
+</body>
+</html>

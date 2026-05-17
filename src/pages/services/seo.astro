@@ -1,0 +1,601 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import AnalyticsDeck from '../../components/AnalyticsDeck.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Service", "name": "SEO Strategy and Architecture", "provider": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" }, "url": "https://seoshivam.pro/services/seo" },
+    { "@type": "BreadcrumbList", "itemListElement": [{"@type":"ListItem","position":1,"name":"Home","item":"https://seoshivam.pro"},{"@type":"ListItem","position":2,"name":"Services","item":"https://seoshivam.pro/services"},{"@type":"ListItem","position":3,"name":"SEO Strategy","item":"https://seoshivam.pro/services/seo"}] },
+    { "@type": "FAQPage", "mainEntity": [
+      { "@type": "Question", "name": "How long does SEO take to show results?", "acceptedAnswer": { "@type": "Answer", "text": "Most brands see measurable organic traffic growth within 90 to 120 days. A HealthTech SaaS client grew from 63 to 1,010 organic clicks in 30 days. Compound growth builds month over month. Organic typically overtakes paid traffic by month 6 to 9 for clients who commit to consistent content production." } },
+      { "@type": "Question", "name": "What is topical authority and why does it matter for AI search?", "acceptedAnswer": { "@type": "Answer", "text": "Topical authority means covering a subject with enough depth and interconnection that search engines and AI engines treat you as the reference source. Brands that publish 8 interconnected pillar articles with 24 supporting cluster posts dominate a topic surface. AI engines in particular favor topical authority: they pull citations from sites that consistently answer related questions, not from sites with one good article on a topic." } }
+    ]}
+  ]
+};
+
+const faqs = [
+  { q: "How long does SEO take to show results?", a: "It depends on where you are starting from. Sites with existing domain authority and indexed content can see movement in 30 to 60 days. Newer domains or those with technical debt take 90 to 120 days before rankings compound. A HealthTech SaaS client in India went from 63 to 1,010 organic clicks in 30 days, but that was a site with good bones and poor structure, not a brand new domain. The honest answer: 90 days for early signals, 6 to 9 months for organic to reliably replace paid as a primary acquisition channel." },
+  { q: "What is topical authority and why does it matter?", a: "Topical authority means covering a subject with enough depth and interconnection that search engines and AI engines treat you as the reference source. What I consistently find in audits: brands that publish 30 disconnected blog posts rank for scattered long-tail terms. Brands that publish 8 interconnected pillar articles with 24 supporting cluster posts dominate a topic surface. The difference is architecture, not volume. AI engines in particular favor topical authority: they pull citations from sites they have seen consistently answer related questions, not from sites with one good article on a topic." },
+  { q: "Do you handle content production or just strategy?", a: "Both. Strategy-only engagements deliver a content architecture, topic cluster map, and brief queue with enough detail that your internal team or a writer can execute without losing the strategic intent. Full-service retainers include content production, on-page optimization, internal linking, and monthly GSC reporting. Most clients start with a strategy sprint, see the first traffic movement around week 6 to 8, and then bring production onto the retainer." },
+  { q: "What does technical SEO involve for a SaaS product?", a: "More than most SaaS teams expect. The common issues I find in audits: JavaScript-rendered pages that Googlebot cannot crawl, canonical tag confusion across product tiers and pricing pages, thin or duplicate content on feature comparison pages, missing entity schema for the software product itself, and Core Web Vitals failures on the marketing site caused by third-party scripts loaded by the product team. Technical SEO for SaaS is a cross-functional problem. The fix requires coordination between marketing, product, and dev. I document every issue with a priority tier and estimated impact so the roadmap is clear." },
+  { q: "How is SEO progress reported?", a: "Monthly reports built from Google Search Console data: keyword ranking movements, organic click trends, impression growth, new pages indexed, index coverage errors, and Core Web Vitals status. No proprietary dashboards with estimated traffic figures. GSC shows real clicks from real users. If a number is in the report, it came from GSC or GA4, not a third-party tool's model." }
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/services/seo'].title}
+  description={SITE_ROUTE_META['/services/seo'].description}
+  canonical="https://seoshivam.pro/services/seo"
+  schema={schema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="seo-hero">
+      <div class="container">
+        <nav class="pg-bc rv" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>SEO Strategy</span>
+        </nav>
+        <div class="seo-hero-inner">
+          <div class="seo-hero-l">
+            <div class="rv"><span class="label">SEO Strategy</span></div>
+            <h1 class="seo-h1 rv d1">Rankings that<br>compound.<br><em>Leads that follow.</em></h1>
+            <p class="seo-sub rv d2">The channel that keeps working when you stop paying. Technical SEO, <a href="/insights/topical-authority-saas-playbook" class="ilink">topical authority content systems</a>, and entity optimization that builds organic visibility month over month — and feeds <a href="/services/aeo" class="ilink">AI citation</a> at the same time.</p>
+            <div class="seo-btns rv d3">
+              <a href="/contact" class="btn-p">Get SEO audit ↗</a>
+              <a href="/work" class="btn-s">See real results →</a>
+            </div>
+          </div>
+          <!-- Results visual — two key clients side by side -->
+          <div class="seo-hero-r rv d2">
+            <div class="seo-result-pair">
+              <div class="seo-rp-label">HealthTech SaaS · 30 days</div>
+              <div class="seo-rp-compare">
+                <div class="seo-rp-before">
+                  <span class="seo-rp-bef-n">63</span>
+                  <span class="seo-rp-bef-l">clicks/mo</span>
+                </div>
+                <div class="seo-rp-arrow">
+                  <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><path d="M0 6h24M19 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="seo-rp-after">
+                  <span class="seo-rp-aft-n">1,010</span>
+                  <span class="seo-rp-aft-l">clicks/mo</span>
+                </div>
+              </div>
+              <div class="seo-rp-meta">Entity-first content · Zero ad spend increase</div>
+            </div>
+            <div class="seo-result-pair seo-rp2">
+              <div class="seo-rp-label">B2B Services · 90 days</div>
+              <div class="seo-rp-compare">
+                <div class="seo-rp-before">
+                  <span class="seo-rp-bef-n">15</span>
+                  <span class="seo-rp-bef-l">leads/mo</span>
+                </div>
+                <div class="seo-rp-arrow">
+                  <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><path d="M0 6h24M19 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="seo-rp-after">
+                  <span class="seo-rp-aft-n">70+</span>
+                  <span class="seo-rp-aft-l">leads/mo</span>
+                </div>
+              </div>
+              <div class="seo-rp-meta">Topical authority build · Paid dependency down 40%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compound growth explanation -->
+    <section class="seo-compound-sec">
+      <div class="container">
+        <div class="seo-comp-grid">
+          <div class="rv">
+            <span class="label">Why organic compounds</span>
+            <h2 class="sec-h" style="margin-top:14px">Every month builds<br><em>on the last.</em></h2>
+          </div>
+          <div class="seo-comp-body">
+            <p class="seo-comp-p rv d1">Paid ads stop the moment the budget stops. A well-built SEO system does the opposite: it accelerates. Month 3 outperforms month 1. Month 9 outperforms month 3. The content you publish today earns links, rankings, and <a href="/services/aeo" class="ilink">AI citations</a> for years. Read more: <a href="/insights/seo-for-b2b-saas" class="ilink">SEO for B2B SaaS.</a></p>
+            <div class="seo-comp-bars rv d2">
+              {[
+                { label: 'Month 3', w: 15, note: 'First rankings appear' },
+                { label: 'Month 6', w: 38, note: 'Topical authority builds' },
+                { label: 'Month 9', w: 62, note: 'AI citations start' },
+                { label: 'Month 12', w: 88, note: 'Organic overtakes paid' },
+              ].map(b => (
+                <div class="seo-bar-row">
+                  <span class="seo-bar-label">{b.label}</span>
+                  <div class="seo-bar-track">
+                    <div class="seo-bar-fill" style={`--w:${b.w}%`}></div>
+                  </div>
+                  <span class="seo-bar-note">{b.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What is included -->
+    <section class="seo-inc-sec">
+      <div class="container">
+        <div class="seo-inc-hdr rv">
+          <span class="label">Full engagement</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Everything needed<br><em>to dominate organically.</em></h2>
+        </div>
+        <div class="seo-inc-list">
+          {[
+            { n: '01', t: 'Technical SEO Audit', d: 'Core Web Vitals, crawlability, indexation, canonical tags, schema markup, JavaScript rendering, and mobile performance. A complete health report with prioritised fixes.' },
+            { n: '02', t: 'Content Architecture', d: 'A full topic cluster map: the pillar pages, supporting content, and internal linking structure that builds topical authority faster than publishing random articles.' },
+            { n: '03', t: 'Keyword & Entity Mapping', d: 'Not just keywords — entities. The concepts, relationships, and named things your brand needs to be associated with in Google\'s Knowledge Graph and AI engine training data.' },
+            { n: '04', t: 'Content Production', d: 'Long-form, answer-first content built for both Google rankings and AI citations. Every piece serves a strategic position in the topical authority map.' },
+            { n: '05', t: 'On-Page Optimisation', d: 'Title tags, meta descriptions, header hierarchy, internal linking, structured data, and schema markup for every key page. Executed, not just recommended.' },
+            { n: '06', t: 'Monthly GSC Reporting', d: 'Real data from Google Search Console every month: ranking movements, click trends, impression growth, index coverage, and Core Web Vitals status.' },
+          ].map((item, i) => (
+            <div class={`seo-inc-row rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
+              <div class="seo-inc-num">{item.n}</div>
+              <div class="seo-inc-body">
+                <div class="seo-inc-t">{item.t}</div>
+                <p class="seo-inc-d">{item.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Symmetrical analytics deck -->
+    <AnalyticsDeck
+      id="seo-deck"
+      eyebrow="RECEIPTS / SEARCH CONSOLE + GA4"
+      heading="Two views of the same compounding work,"
+      headingEm="side by side."
+      deck="A live Search Console snapshot on the left, the GA4 audience view on the right. Names withheld under NDA. Different lenses, same engagement, real numbers."
+      gsc={{
+        id: 'seo-feat',
+        domain: 'B2B SaaS Platform / Sales Engagement',
+        industry: 'B2B SaaS · Sales Engagement · 3 months',
+        range: 'Last 3 months',
+        clicks: { from: 4200, to: 11000 },
+        impressions: { from: 142000, to: 346000 },
+        ctr: { from: 2.96, to: 3.2 },
+        position: { from: 16.4, to: 11.3 },
+        queries: [
+          { q: 'sales engagement platform', clicks: 1840, pos: 4 },
+          { q: 'multi-channel sales sequence', clicks: 1521, pos: 6 },
+          { q: 'sdr productivity software', clicks: 1287, pos: 8 },
+          { q: 'cold outreach platform comparison', clicks: 1102, pos: 9 },
+          { q: 'sales engagement vs enablement', clicks: 962, pos: 11 },
+          { q: 'sales sequence automation', clicks: 814, pos: 12 },
+        ],
+        insights: ['Entity-first content architecture', 'FAQPage on 14 service pages', '84 programmatic landing pages', 'GPTBot + ClaudeBot allowed'],
+      }}
+      audience={{
+        id: 'seo-audience',
+        property: 'HR Tech SaaS / Global',
+        industry: 'HR Tech · Global',
+        range: 'Last 90 days',
+        activeUsers: 463000,
+        sessions: 552000,
+        views: 747000,
+        newUsers: 463000,
+        realtime: 157,
+        countries: [
+          { name: 'United States', users: 147 },
+          { name: 'Canada', users: 9 },
+          { name: 'Ireland', users: 1 },
+        ],
+      }}
+    />
+
+    <!-- Featured case study (real engagement, full receipts) -->
+    <section class="seo-case-sec">
+      <div class="container">
+        <header class="seo-case-hdr rv">
+          <div class="hair left">FEATURED ENGAGEMENT / 60-DAY OUTCOME</div>
+          <h2 class="seo-case-h">
+            From 10 leads / month to<br>
+            <em class="grad-anim">5+ daily inbound across US, UK, EU.</em>
+          </h2>
+          <p class="seo-case-p">A B2B SaaS website generating inconsistent organic leads, capped at ~10 per month. Limited keyword footprint. No compounding growth. Heavy reliance on a few pages. 60 days later, organic was the primary acquisition engine. Names withheld under NDA.</p>
+        </header>
+
+        <div class="seo-case-grid">
+
+          <!-- LEFT: narrative columns -->
+          <div class="seo-case-narr rv d1">
+            <div class="seo-case-block">
+              <div class="seo-case-eye">CONTEXT</div>
+              <p>A B2B SaaS website generating inconsistent organic leads, capped at ~10 per month. Limited keyword footprint. No compounding growth. Heavy reliance on a few pages.</p>
+            </div>
+            <div class="seo-case-block">
+              <div class="seo-case-eye">WHAT CHANGED</div>
+              <p>Rebuilt the site's search presence from the ground up:</p>
+              <ul class="seo-case-list">
+                <li>Expanded keyword coverage across multiple intent layers</li>
+                <li>Restructured content for broader discovery and AI visibility</li>
+                <li>Strengthened internal linking and indexing signals</li>
+                <li>Shifted from page-level optimization to system-level growth</li>
+              </ul>
+            </div>
+            <div class="seo-case-block">
+              <div class="seo-case-eye">WHAT ACTUALLY HAPPENED</div>
+              <p>The site moved from ranking for a limited set of keywords to appearing across a wide search surface. <strong>More visibility &rarr; more entry points &rarr; more inbound.</strong></p>
+              <p>CTR dropped (5% &rarr; 1.9%) due to expansion into high-volume queries — a normal tradeoff when scaling reach.</p>
+            </div>
+            <div class="seo-case-block">
+              <div class="seo-case-eye">BUSINESS IMPACT</div>
+              <p>From inconsistent inbound to <strong>predictable daily 5+ lead submissions across US, UK, and EU markets.</strong></p>
+              <p>Organic is no longer a support channel. It is now a <strong>primary acquisition engine.</strong></p>
+            </div>
+          </div>
+
+          <!-- RIGHT: outcome scorecard -->
+          <aside class="seo-case-card rv d2">
+            <div class="seo-case-card-eye">OUTCOME &middot; 60 DAYS</div>
+            <div class="seo-case-card-h">The receipts.</div>
+
+            <div class="seo-case-row">
+              <div class="seo-case-row-l">Clicks</div>
+              <div class="seo-case-row-v">
+                <span class="seo-case-from">3.95K</span>
+                <svg width="16" height="10" viewBox="0 0 24 12" fill="none"><path d="M0 6h20M15 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="seo-case-to grad-anim">8.12K</span>
+              </div>
+              <span class="seo-case-delta up">+105%</span>
+            </div>
+
+            <div class="seo-case-row">
+              <div class="seo-case-row-l">Impressions</div>
+              <div class="seo-case-row-v">
+                <span class="seo-case-from">78.2K</span>
+                <svg width="16" height="10" viewBox="0 0 24 12" fill="none"><path d="M0 6h20M15 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="seo-case-to grad-anim">426K</span>
+              </div>
+              <span class="seo-case-delta up">+445%</span>
+            </div>
+
+            <div class="seo-case-row">
+              <div class="seo-case-row-l">Avg position</div>
+              <div class="seo-case-row-v">
+                <span class="seo-case-from">18.6</span>
+                <svg width="16" height="10" viewBox="0 0 24 12" fill="none"><path d="M0 6h20M15 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="seo-case-to grad-anim">15.6</span>
+              </div>
+              <span class="seo-case-delta up">&minus;3.0</span>
+            </div>
+
+            <div class="seo-case-row seo-case-row--hi">
+              <div class="seo-case-row-l">Leads</div>
+              <div class="seo-case-row-v">
+                <span class="seo-case-from">~10/mo</span>
+                <svg width="16" height="10" viewBox="0 0 24 12" fill="none"><path d="M0 6h20M15 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="seo-case-to grad-anim">5+/day</span>
+              </div>
+              <span class="seo-case-delta up">15&times;</span>
+            </div>
+
+            <div class="seo-case-row seo-case-row--hi">
+              <div class="seo-case-row-l">AI citations</div>
+              <div class="seo-case-row-v">
+                <span class="seo-case-from">0</span>
+                <svg width="16" height="10" viewBox="0 0 24 12" fill="none"><path d="M0 6h20M15 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="seo-case-to grad-anim">30+</span>
+              </div>
+              <span class="seo-case-delta up">High-intent queries</span>
+            </div>
+
+            <div class="seo-case-engines">
+              <span class="seo-case-engines-l">Cited across</span>
+              <div class="seo-case-engines-row">
+                <span class="seo-case-engine">ChatGPT</span>
+                <span class="seo-case-engine">Claude</span>
+                <span class="seo-case-engine">Google AIO</span>
+                <span class="seo-case-engine">Perplexity</span>
+                <span class="seo-case-engine">Gemini</span>
+              </div>
+            </div>
+
+            <div class="seo-case-tagline">
+              <span class="seo-case-tagline-eye">IN ONE LINE</span>
+              <p>Not an SEO boost. <em class="grad-anim">A visibility system that compounds.</em></p>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof numbers -->
+    <section class="seo-proof-sec">
+      <div class="container">
+        <div class="seo-proof-hdr rv">
+          <span class="label">GSC verified results</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Three numbers that<br><em>tell the whole story.</em></h2>
+        </div>
+        <div class="seo-proof-trio">
+          <div class="seo-pt rv">
+            <div class="seo-pt-n grad">16×</div>
+            <div class="seo-pt-label">Click growth in 30 days</div>
+            <div class="seo-pt-sub">HealthTech SaaS · India<br>63 → 1,010 clicks/mo · zero ad spend</div>
+          </div>
+          <div class="seo-pt rv d1">
+            <div class="seo-pt-n grad">8.3×</div>
+            <div class="seo-pt-label">Visitor growth in 7 months</div>
+            <div class="seo-pt-sub">Logistics Tech SaaS · USA<br>1,019 → 8,500 organic visitors/mo</div>
+          </div>
+          <div class="seo-pt rv d2">
+            <div class="seo-pt-n grad">9×</div>
+            <div class="seo-pt-label">Click growth in 6 months</div>
+            <div class="seo-pt-sub">Platform SaaS · Australia<br>240 → 2,200 clicks · 4K → 142K impressions</div>
+          </div>
+        </div>
+        <p class="seo-proof-note rv">Client names withheld under NDA. All data from Google Search Console. Screenshots on request. <a href="/work" class="ilink">See full case studies.</a></p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="seo-faq-sec">
+      <div class="container">
+        <div class="rv" style="margin-bottom:48px">
+          <span class="label">Common questions</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">What founders<br><em>ask first.</em></h2>
+        </div>
+        <div class="faq-list" style="max-width:760px">
+          {faqs.map((f, i) => (
+            <div class="faq-item">
+              <button class="faq-btn" aria-expanded="false"><span>{f.q}</span><i class="faq-icon">+</i></button>
+              <div class="faq-ans" hidden>{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <ContactCta
+      id="seo-cta"
+      source="services-seo"
+      eyebrow="START COMPOUNDING / FREE 90-DAY ROADMAP"
+      heading="The best time to start"
+      headingEm="was last year."
+      deck="The second best time is now. Free SEO audit: technical gaps, content opportunities, topical authority gaps, and a 90-day growth roadmap. Replied within 4 hours."
+    />
+
+  </main>
+  <Footer />
+
+  <style>
+  .pg-bc{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
+  .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
+
+  .seo-hero{padding:160px 0 80px}
+  .seo-hero-inner{display:grid;grid-template-columns:1fr 400px;gap:64px;align-items:center}
+  .seo-h1{font-family:'Instrument Serif',serif;font-size:clamp(40px,5.5vw,72px);font-weight:400;line-height:.95;letter-spacing:-.02em;color:var(--w);margin:16px 0 20px}
+  .seo-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .seo-sub{font-family:'Syne',sans-serif;font-size:clamp(14px,1.5vw,16px);color:var(--wd);line-height:1.75;max-width:480px;margin-bottom:28px}
+  .seo-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+  .seo-result-pair{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:24px;margin-bottom:12px}
+  .seo-result-pair:last-child{margin-bottom:0}
+  .seo-rp-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);margin-bottom:16px}
+  .seo-rp-compare{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+  .seo-rp-before,.seo-rp-after{display:flex;flex-direction:column;gap:2px}
+  .seo-rp-bef-n{font-family:'Instrument Serif',serif;font-size:32px;font-weight:400;color:var(--wm);line-height:1}
+  .seo-rp-bef-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+  .seo-rp-arrow{color:var(--bd);flex-shrink:0}
+  .seo-rp-aft-n{font-family:'Instrument Serif',serif;font-size:32px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .seo-rp-aft-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wd)}
+  .seo-rp-meta{font-family:'Syne',sans-serif;font-size:12px;color:var(--wm);line-height:1.5}
+
+  .seo-compound-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .seo-comp-grid{display:grid;grid-template-columns:320px 1fr;gap:80px;align-items:start}
+  .seo-comp-p{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.8;margin-bottom:32px}
+  .seo-comp-bars{display:flex;flex-direction:column;gap:16px}
+  .seo-bar-row{display:grid;grid-template-columns:80px 1fr 160px;gap:12px;align-items:center}
+  .seo-bar-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+  .seo-bar-track{height:6px;background:var(--s3);border-radius:999px;overflow:hidden}
+  .seo-bar-fill{height:100%;background:var(--ag);border-radius:999px;width:var(--w);transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+  .seo-bar-note{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.04em;color:var(--wm)}
+
+  .seo-inc-sec{padding:80px 0}
+  .seo-inc-hdr{margin-bottom:56px}
+  .seo-inc-list{display:flex;flex-direction:column}
+  .seo-inc-row{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
+  .seo-inc-row:first-child{border-top:1px solid var(--bd)}
+  .seo-inc-num{font-family:'JetBrains Mono',monospace;font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
+  .seo-inc-row:hover .seo-inc-num{color:var(--green)}
+  .seo-inc-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
+  .seo-inc-d{font-family:'Syne',sans-serif;font-size:14px;color:var(--wd);line-height:1.75;margin:0}
+
+  /* ─── Live receipts (GSC + GA4) ─── */
+  .seo-recpt-sec{padding:80px 0;position:relative;z-index:1}
+  .seo-recpt-hdr{max-width:780px;margin:0 0 40px;display:flex;flex-direction:column;gap:14px}
+  .seo-recpt-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.4vw,56px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+  .seo-recpt-h em{font-style:italic}
+  .seo-recpt-p{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:660px}
+  .seo-recpt-foot{font-family:'Syne',sans-serif;font-size:13px;color:var(--wm);line-height:1.7;margin:32px 0 0;font-style:italic;max-width:680px}
+
+  /* ─── Featured case study (real engagement) ─── */
+  .seo-case-sec{padding:80px 0;position:relative;z-index:1}
+  .seo-case-hdr{max-width:820px;margin:0 0 48px;display:flex;flex-direction:column;gap:14px}
+  .seo-case-h{font-family:'Instrument Serif',serif;font-size:clamp(34px,4.6vw,60px);font-weight:400;line-height:.98;letter-spacing:-.024em;color:var(--w);margin:0}
+  .seo-case-h em{font-style:italic}
+  .seo-case-p{font-family:'Syne',sans-serif;font-size:15.5px;color:var(--wd);line-height:1.7;margin:0;max-width:680px}
+
+  .seo-case-grid{
+    display:grid;
+    grid-template-columns:minmax(0, 1.2fr) minmax(0, 1fr);
+    gap:48px;
+    align-items:start;
+  }
+  .seo-case-narr{display:flex;flex-direction:column;gap:32px;min-width:0}
+  .seo-case-block{display:flex;flex-direction:column;gap:10px;padding:0 0 28px;border-bottom:1px dashed var(--bd)}
+  .seo-case-block:last-child{border-bottom:none;padding-bottom:0}
+  .seo-case-eye{
+    display:inline-flex;align-items:center;
+    font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ac);
+  }
+  .seo-case-eye::before{content:'';display:inline-block;width:24px;height:1px;background:var(--ac);margin-right:10px}
+  .seo-case-block p{font-family:'Syne',sans-serif;font-size:15.5px;color:var(--wd);line-height:1.8;margin:0}
+  .seo-case-block p strong{color:var(--w);font-weight:600}
+  .seo-case-list{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:10px}
+  .seo-case-list li{
+    position:relative;padding-left:22px;
+    font-family:'Syne',sans-serif;font-size:14.5px;color:var(--wd);line-height:1.7;
+  }
+  .seo-case-list li::before{
+    content:'';position:absolute;left:0;top:.78em;width:12px;height:2px;
+    background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;
+  }
+
+  /* Outcome scorecard (right column) — sticky on desktop so it stays
+     in view while user reads the narrative. */
+  .seo-case-card{
+    position:sticky;top:96px;
+    background:linear-gradient(180deg, var(--s1) 0%, rgba(15,15,15,.6) 100%);
+    border:1px solid var(--bd);
+    border-radius:18px;
+    padding:28px 28px 24px;
+    display:flex;flex-direction:column;gap:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.32);
+  }
+  .seo-case-card-eye{font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ac)}
+  .seo-case-card-h{font-family:'Instrument Serif',serif;font-size:28px;font-style:italic;color:var(--w);letter-spacing:-.018em;margin-bottom:6px}
+  .seo-case-row{
+    display:grid;
+    grid-template-columns:96px 1fr auto;
+    gap:14px;align-items:center;
+    padding:12px 0;
+    border-bottom:1px dashed var(--bd);
+  }
+  .seo-case-row:last-of-type{border-bottom:none}
+  .seo-case-row-l{font-family:'JetBrains Mono', monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--wd)}
+  .seo-case-row-v{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .seo-case-from{font-family:'JetBrains Mono', monospace;font-size:13px;color:var(--wm);font-variant-numeric:tabular-nums}
+  .seo-case-row-v svg{color:var(--wm);flex-shrink:0}
+  .seo-case-to{
+    font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;font-weight:400;
+    line-height:1;letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
+  }
+  .seo-case-delta{
+    font-family:'JetBrains Mono', monospace;font-size:9.5px;font-weight:600;letter-spacing:.06em;
+    color:var(--green);
+    background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.22);
+    border-radius:4px;padding:3px 7px;
+    white-space:nowrap;
+  }
+  .seo-case-delta.up{color:var(--green)}
+  .seo-case-row--hi .seo-case-to{font-size:28px}
+
+  .seo-case-engines{
+    margin-top:6px;padding:14px 0;
+    border-top:1px solid var(--bd);
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .seo-case-engines-l{font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--wm)}
+  .seo-case-engines-row{display:flex;flex-wrap:wrap;gap:5px}
+  .seo-case-engine{
+    font-family:'JetBrains Mono', monospace;font-size:9.5px;font-weight:600;letter-spacing:.08em;
+    color:var(--ac);
+    padding:4px 8px;border-radius:4px;
+    background:var(--agl);border:1px solid rgba(79,142,247,.24);
+  }
+
+  .seo-case-tagline{
+    margin-top:8px;padding-top:18px;
+    border-top:1px solid var(--bd);
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .seo-case-tagline-eye{font-family:'JetBrains Mono', monospace;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--wm)}
+  .seo-case-tagline p{
+    font-family:'Instrument Serif',serif;font-size:22px;line-height:1.25;letter-spacing:-.018em;
+    color:var(--w);margin:0;
+  }
+  .seo-case-tagline em{font-style:italic;display:block;margin-top:2px}
+
+  @media(max-width:1024px){
+    .seo-case-grid{grid-template-columns:1fr;gap:36px}
+    .seo-case-card{position:static}
+  }
+  @media(max-width:640px){
+    .seo-case-sec{padding:60px 0}
+    .seo-case-row{grid-template-columns:1fr;gap:6px}
+    .seo-case-delta{justify-self:start}
+  }
+
+  .seo-proof-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .seo-proof-hdr{margin-bottom:56px}
+  .seo-proof-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:20px;overflow:hidden}
+  .seo-pt{background:var(--bg);padding:48px 40px;display:flex;flex-direction:column;gap:8px}
+  .seo-pt-n{font-family:'Instrument Serif',serif;font-size:clamp(56px,7vw,88px);font-weight:400;line-height:.88;letter-spacing:-.02em}
+  .seo-pt-label{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--w);letter-spacing:-.02em}
+  .seo-pt-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);line-height:1.6}
+  .seo-proof-note{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-top:24px}
+
+  .seo-faq-sec{padding:80px 0}
+  .seo-cta-sec{padding:80px 0 100px;background:var(--s1);border-top:1px solid var(--bd)}
+  .seo-cta-inner{text-align:center;max-width:580px;margin:0 auto}
+  .seo-cta-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,54px);font-weight:400;color:var(--w);line-height:1.05;margin:16px 0 14px}
+  .seo-cta-h em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .seo-cta-sub{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0 auto 32px}
+
+  @media(max-width:960px){
+    .seo-hero-inner,.seo-comp-grid{grid-template-columns:1fr;gap:40px}
+    .seo-proof-trio{grid-template-columns:1fr}
+    .seo-bar-row{grid-template-columns:72px 1fr}
+    .seo-bar-note{display:none}
+  }
+  @media(max-width:640px){
+    .seo-hero{padding:120px 0 60px}
+    .seo-inc-row{grid-template-columns:48px 1fr}
+    .seo-inc-num{font-size:18px}
+    .seo-pt{padding:32px 24px}
+  }
+  </style>
+
+  <script>
+  const prog=document.getElementById('scrollProg');
+  window.addEventListener('scroll',()=>{if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}},{passive:true});
+  const dot=document.getElementById('curDot');const ring=document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot)dot.style.transform=`translate(${mx-4}px,${my-4}px)`},{passive:true});
+  (function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')})});
+  const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+  // Animate bars when visible
+  const barObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){(e.target as HTMLElement).style.width=(e.target as HTMLElement).style.getPropertyValue('--w');barObs.unobserve(e.target)}});
+  },{threshold:.5});
+  document.querySelectorAll('.seo-bar-fill').forEach(b=>{
+    const w=getComputedStyle(b as HTMLElement).getPropertyValue('--w').trim();
+    (b as HTMLElement).style.width='0';
+    barObs.observe(b);
+  });
+
+  document.querySelectorAll('.faq-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const isOpen=btn.getAttribute('aria-expanded')==='true';
+      document.querySelectorAll('.faq-btn').forEach(b=>{b.setAttribute('aria-expanded','false');const a=b.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(a)a.hidden=true});
+      if(!isOpen){btn.setAttribute('aria-expanded','true');const ans=btn.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(ans)ans.hidden=false}
+    });
+  });
+  </script>
+</Layout>

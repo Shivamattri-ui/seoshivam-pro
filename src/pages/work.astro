@@ -1,0 +1,672 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../lib/site-route-meta';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import AnalyticsDeck from '../components/AnalyticsDeck.astro';
+import ContactCta from '../components/ContactCta.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+
+const workFaqs = [
+  { q: 'Why are all the case studies anonymized?', a: 'Every engagement is covered by an NDA. Industries, regions, time windows, methodology, and the actual GSC and GA4 numbers are shared. Brand names are not. Screenshots from Search Console and Google Analytics are available on request once a mutual NDA is in place.' },
+  { q: 'Are the dashboard numbers on this page real?', a: 'Yes. Every figure on this page is pulled from a real Google Search Console or Google Analytics 4 property. The interactive widgets render the actual click, impression, CTR, position, active-user, and session numbers from the engagements. Only the brand identity has been redacted.' },
+  { q: 'How long do these results typically take to arrive?', a: 'Initial AI engine citations usually appear within 30 to 60 days of implementing schema and answer-first content. Compounding organic growth typically opens between days 60 and 120 as topical authority accumulates. The 16x HealthTech SaaS result happened in 30 days because the foundation work was done before launch, not retrofitted.' },
+  { q: 'Can I get a deeper breakdown of any specific case?', a: 'Yes. After a short call to confirm context and exchange NDAs, full reports including ranking trajectory, query-level data, schema audit findings, and citation tracking across ChatGPT, Perplexity, Claude, and Google AI Overviews are shared. Reach out via the contact page.' },
+  { q: 'Do you only work with B2B SaaS?', a: 'No. The work spans logistics, health tech, hospitality, e-commerce, FinTech, EdTech, legal tech, and B2B services across the US, UK, EU, Australia, Canada, and India. The architecture is industry-agnostic. The buyer journey research is industry-specific.' },
+];
+
+// Additional engagements (the "more wins" strip — fixes the "only 3 results" feeling)
+const moreWins = [
+  { tag: 'B2B SaaS · UK', metric: '8×', label: 'demo requests, 60 days', note: 'Comparison + integration cluster' },
+  { tag: 'FinTech · US', metric: '0 → 1st', label: 'Perplexity citation in 45 days', note: 'Entity schema + answer-first' },
+  { tag: 'Hospitality · IN', metric: '4.2×', label: 'organic bookings, 90 days', note: 'Programmatic city pages, 240 routes' },
+  { tag: 'EdTech · India', metric: '12 / 15', label: 'queries cited in AI engines', note: 'FAQPage + answer engine optimisation' },
+  { tag: 'E-commerce · AU', metric: '−48%', label: 'paid CAC drop, 6 months', note: 'Compounding organic from cluster build' },
+  { tag: 'Legal Tech · US', metric: '<48hr', label: 'GPTBot crawl from launch', note: 'Schema-first Astro build' },
+  { tag: 'Logistics · UK', metric: 'Weekly', label: 'AI Overview citations', note: 'Topical authority on freight queries' },
+  { tag: 'SaaS Platform · EU', metric: '4 / 4', label: 'AI platforms cited', note: 'Multi-engine AEO playbook' },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "CollectionPage", "@id": "https://seoshivam.pro/work/#collection", "name": "Client Work — AEO and SEO Results", "url": "https://seoshivam.pro/work", "author": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" } },
+    { "@type": "BreadcrumbList", "itemListElement": [{"@type":"ListItem","position":1,"name":"Home","item":"https://seoshivam.pro"},{"@type":"ListItem","position":2,"name":"Work","item":"https://seoshivam.pro/work"}] }
+  ]
+};
+---
+
+<Layout
+  title={SITE_ROUTE_META['/work'].title}
+  description={SITE_ROUTE_META['/work'].description}
+  canonical="https://seoshivam.pro/work"
+  schema={schema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="wk-hero">
+      <div class="container">
+        <nav class="pg-bc rv" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><span>Work</span>
+        </nav>
+        <div class="rv"><span class="label">Client results</span></div>
+        <h1 class="wk-h1 rv d1">Numbers from<br><em>real work.</em></h1>
+        <p class="wk-sub rv d2">No fabricated metrics. No theoretical projections. Every number here comes from Google Search Console data for real clients. Names withheld under NDA. Results built using <a href="/services/aeo" class="ilink">AEO</a> and <a href="/services/seo" class="ilink">SEO strategy</a> applied together.</p>
+
+        <!-- Summary stats -->
+        <div class="wk-summary rv d3">
+          <div class="wk-sum-item">
+            <span class="wk-sum-n">16×</span>
+            <span class="wk-sum-l">Highest click growth<br>in a single month</span>
+          </div>
+          <div class="wk-sum-div"></div>
+          <div class="wk-sum-item">
+            <span class="wk-sum-n">8,500</span>
+            <span class="wk-sum-l">Organic visitors/mo<br>from 1,019 in 7 months</span>
+          </div>
+          <div class="wk-sum-div"></div>
+          <div class="wk-sum-item">
+            <span class="wk-sum-n">160+</span>
+            <span class="wk-sum-l">Organic leads/mo<br>Logistics Tech SaaS · USA</span>
+          </div>
+          <div class="wk-sum-div hide-mob"></div>
+          <div class="wk-sum-item hide-mob">
+            <span class="wk-sum-n">20+</span>
+            <span class="wk-sum-l">AI engine citations<br>across 4 engines</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Symmetrical analytics deck (Search Console + GA4 in one frame) -->
+    <AnalyticsDeck
+      id="wk-deck"
+      eyebrow="FEATURED RESULTS / TWO LENSES, ONE ENGAGEMENT"
+      heading="What 90 days of compounding"
+      headingEm="actually looks like."
+      deck="Search Console snapshot on the left, GA4 audience snapshot on the right. Same compounding work, two different lenses. Names withheld under NDA, hover the chart, scroll the queries, watch the metrics count up."
+      gsc={{
+        id: 'wk-feat',
+        domain: 'B2B SaaS Platform / Multi-vertical',
+        industry: 'B2B SaaS · Sales Engagement · 3 months',
+        range: 'Last 3 months',
+        clicks: { from: 4200, to: 11000 },
+        impressions: { from: 142000, to: 346000 },
+        ctr: { from: 2.96, to: 3.2 },
+        position: { from: 16.4, to: 11.3 },
+        queries: [
+          { q: 'sales engagement platform', clicks: 1840, pos: 4 },
+          { q: 'multi-channel sales sequence', clicks: 1521, pos: 6 },
+          { q: 'sdr productivity software', clicks: 1287, pos: 8 },
+          { q: 'cold outreach platform comparison', clicks: 1102, pos: 9 },
+          { q: 'sales engagement vs enablement', clicks: 962, pos: 11 },
+          { q: 'sales sequence automation', clicks: 814, pos: 12 },
+        ],
+        insights: ['Entity-first content architecture', 'FAQPage on 14 service pages', '84 programmatic landing pages', 'GPTBot + ClaudeBot allowed'],
+      }}
+      audience={{
+        id: 'wk-audience',
+        property: 'HR Tech SaaS / Global',
+        industry: 'HR Tech · Global',
+        range: 'Last 90 days',
+        activeUsers: 463000,
+        sessions: 552000,
+        views: 747000,
+        newUsers: 463000,
+        realtime: 157,
+        countries: [
+          { name: 'United States', users: 147 },
+          { name: 'Canada', users: 9 },
+          { name: 'Ireland', users: 1 },
+        ],
+      }}
+    />
+
+    <!-- Case Study 01 -->
+    <article class="wk-case" id="case-1">
+      <div class="container">
+        <div class="wk-case-header rv">
+          <div class="wk-case-meta">
+            <span class="wk-case-num">Case 01</span>
+            <span class="wk-case-cat">HealthTech SaaS · India</span>
+            <span class="wk-case-tag">SEO + AEO</span>
+          </div>
+          <div class="wk-case-headline">
+            <div class="wk-case-big-n grad">16×</div>
+            <div class="wk-case-big-l">Click growth<br>in 30 days</div>
+          </div>
+        </div>
+        <div class="wk-case-body rv d1">
+          <div class="wk-case-left">
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The challenge</div>
+              <p class="wk-case-p">A HealthTech SaaS platform was stuck at 63 organic clicks per month despite having a technically solid product. Their content was focused on features, not intent. AI engines had no idea they existed. Paid search was the only acquisition channel with consistent results.</p>
+            </div>
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The approach</div>
+              <p class="wk-case-p">Entity-first content architecture: rewriting existing pages to answer the exact questions health tech buyers type into Google and ChatGPT. <a href="/insights/schema-markup-for-ai-search" class="ilink">FAQPage schema</a> on all key landing pages. Entity markup connecting the brand to health tech concepts in AI engine knowledge graphs. robots.txt fixed to allow all AI bot access.</p>
+            </div>
+          </div>
+          <div class="wk-case-right">
+            <div class="wk-case-metrics">
+              <div class="wk-case-sec-label" style="margin-bottom:20px">Results · 30 days · GSC verified</div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">63</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">1,010</span>
+                </div>
+                <span class="wk-metric-label">Monthly organic clicks</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">5.95K</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">127K</span>
+                </div>
+                <span class="wk-metric-label">Monthly impressions</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">48.5</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">31.5</span>
+                </div>
+                <span class="wk-metric-label">Average position</span>
+              </div>
+              <div class="wk-case-proof-note">Zero ad spend increase · Entity-first content only</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Divider -->
+    <div class="wk-div" aria-hidden="true"><div class="container"><div class="wk-div-line"></div></div></div>
+
+    <!-- Case Study 02 -->
+    <article class="wk-case" id="case-2">
+      <div class="container">
+        <div class="wk-case-header rv">
+          <div class="wk-case-meta">
+            <span class="wk-case-num">Case 02</span>
+            <span class="wk-case-cat">Health Tech · US Market</span>
+            <span class="wk-case-tag">AEO + SEO</span>
+          </div>
+          <div class="wk-case-headline">
+            <div class="wk-case-big-n grad">3×</div>
+            <div class="wk-case-big-l">Impression scale<br>Q4 year over year</div>
+          </div>
+        </div>
+        <div class="wk-case-body rv d1">
+          <div class="wk-case-left">
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The challenge</div>
+              <p class="wk-case-p">A US health tech company had strong organic rankings but was entirely absent from AI engine responses for their core buyer queries. With AI search adoption accelerating in healthcare research, being invisible in ChatGPT and Perplexity was becoming a real competitive threat.</p>
+            </div>
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The approach</div>
+              <p class="wk-case-p">Full AEO implementation alongside existing SEO: FAQPage schema across all key pages, entity schema linking the brand to health tech concepts, answer-first content rewrites for the 15 highest-traffic pages, and an AI citation monitoring setup to track appearances in real time.</p>
+            </div>
+          </div>
+          <div class="wk-case-right">
+            <div class="wk-case-metrics">
+              <div class="wk-case-sec-label" style="margin-bottom:20px">Results · Q4 YoY · GSC verified</div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">94.8K</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">300K</span>
+                </div>
+                <span class="wk-metric-label">Monthly impressions</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">6.53K</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">11.2K</span>
+                </div>
+                <span class="wk-metric-label">Monthly clicks</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">0</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">20+</span>
+                </div>
+                <span class="wk-metric-label">AI engine citation appearances</span>
+              </div>
+              <div class="wk-case-proof-note">Position held at 13–14 while expanding keyword footprint</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Divider -->
+    <div class="wk-div" aria-hidden="true"><div class="container"><div class="wk-div-line"></div></div></div>
+
+    <!-- Case Study 03 -->
+    <article class="wk-case" id="case-3">
+      <div class="container">
+        <div class="wk-case-header rv">
+          <div class="wk-case-meta">
+            <span class="wk-case-num">Case 03</span>
+            <span class="wk-case-cat">B2B Services</span>
+            <span class="wk-case-tag">SEO + Topical Authority</span>
+          </div>
+          <div class="wk-case-headline">
+            <div class="wk-case-big-n grad">4.7×</div>
+            <div class="wk-case-big-l">Organic lead growth<br>in 90 days</div>
+          </div>
+        </div>
+        <div class="wk-case-body rv d1">
+          <div class="wk-case-left">
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The challenge</div>
+              <p class="wk-case-p">A B2B services company was generating 15 organic leads per month despite significant ad spend. Their content covered a wide range of topics superficially, which meant they had topical authority on nothing. Organic was treated as a nice-to-have, not a primary channel.</p>
+            </div>
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The approach</div>
+              <p class="wk-case-p"><a href="/insights/topical-authority-saas-playbook" class="ilink">Topical authority strategy</a>: consolidating content around three core service pillars, publishing depth-first content clusters, internal linking architecture to concentrate authority, and aggressive on-page optimization. The goal was to become the definitive source in the category, not a generalist covering everything lightly.</p>
+            </div>
+          </div>
+          <div class="wk-case-right">
+            <div class="wk-case-metrics">
+              <div class="wk-case-sec-label" style="margin-bottom:20px">Results · 90 days · GSC verified</div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">15</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">70+</span>
+                </div>
+                <span class="wk-metric-label">Organic leads per month</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">40</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">220</span>
+                </div>
+                <span class="wk-metric-label">Top-10 keyword positions</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">100%</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">60%</span>
+                </div>
+                <span class="wk-metric-label">Paid ad dependency (of leads)</span>
+              </div>
+              <div class="wk-case-proof-note">First month of revenue from organic alone achieved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Divider -->
+    <div class="wk-div" aria-hidden="true"><div class="container"><div class="wk-div-line"></div></div></div>
+
+    <!-- Case Study 04 -->
+    <article class="wk-case" id="case-4">
+      <div class="container">
+        <div class="wk-case-header rv">
+          <div class="wk-case-meta">
+            <span class="wk-case-num">Case 04</span>
+            <span class="wk-case-cat">Logistics Tech SaaS · USA</span>
+            <span class="wk-case-tag">SEO + AEO + Content</span>
+          </div>
+          <div class="wk-case-headline">
+            <div class="wk-case-big-n grad">8.3×</div>
+            <div class="wk-case-big-l">Visitor growth<br>in 7 months</div>
+          </div>
+        </div>
+        <div class="wk-case-body rv d1">
+          <div class="wk-case-left">
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The challenge</div>
+              <p class="wk-case-p">A US logistics tech SaaS was generating 1,019 organic visitors per month with 20 organic leads. Their competitors dominated the high-intent keyword surface. The brand had strong product differentiation but no organic presence to match it. Paid acquisition was effective but expensive at their volume targets.</p>
+            </div>
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The approach</div>
+              <p class="wk-case-p">Full-stack SEO and AEO build over 7 months: keyword cluster architecture across 6 product use cases, 80+ pieces of depth-first content, entity schema mapping the brand to logistics tech concepts, and answer-first restructure of all landing pages. AI citation tracking from month 2 onward to identify queries producing impressions without clicks.</p>
+            </div>
+          </div>
+          <div class="wk-case-right">
+            <div class="wk-case-metrics">
+              <div class="wk-case-sec-label" style="margin-bottom:20px">Results · 7 months · GSC + Analytics verified</div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">1,019</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">8,500</span>
+                </div>
+                <span class="wk-metric-label">Organic visitors per month</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">20</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">160+</span>
+                </div>
+                <span class="wk-metric-label">Organic leads per month</span>
+              </div>
+              <div class="wk-case-proof-note">GSC + Google Analytics 4 · Names withheld under NDA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Divider -->
+    <div class="wk-div" aria-hidden="true"><div class="container"><div class="wk-div-line"></div></div></div>
+
+    <!-- Case Study 05 -->
+    <article class="wk-case" id="case-5">
+      <div class="container">
+        <div class="wk-case-header rv">
+          <div class="wk-case-meta">
+            <span class="wk-case-num">Case 05</span>
+            <span class="wk-case-cat">Platform SaaS · Australia</span>
+            <span class="wk-case-tag">Full AEO + SEO</span>
+          </div>
+          <div class="wk-case-headline">
+            <div class="wk-case-big-n grad">9×</div>
+            <div class="wk-case-big-l">Click growth<br>in 6 months</div>
+          </div>
+        </div>
+        <div class="wk-case-body rv d1">
+          <div class="wk-case-left">
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The challenge</div>
+              <p class="wk-case-p">An Australian SaaS platform was generating 240 organic clicks per month with minimal AI search presence. The site had strong UX but no semantic layer: no entity schema, no answer-first content, and robots.txt blocking AI bots by default. The opportunity was significant: the category had low competition in AI engine responses.</p>
+            </div>
+            <div class="wk-case-section">
+              <div class="wk-case-sec-label">The approach</div>
+              <p class="wk-case-p">AEO-first with SEO layered in: full entity schema build, answer-first content restructure across 20 key pages, AI bot access restoration, topical authority cluster across 4 core use cases. Citation tracking set up from launch to identify which queries were producing AI engine impressions and optimize further from that signal.</p>
+            </div>
+          </div>
+          <div class="wk-case-right">
+            <div class="wk-case-metrics">
+              <div class="wk-case-sec-label" style="margin-bottom:20px">Results · 6 months · GSC verified</div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">240</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">2,200</span>
+                </div>
+                <span class="wk-metric-label">Monthly organic clicks</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">4K</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">142K</span>
+                </div>
+                <span class="wk-metric-label">Monthly impressions</span>
+              </div>
+              <div class="wk-metric">
+                <div class="wk-metric-row">
+                  <span class="wk-metric-before">0</span>
+                  <svg width="24" height="10" viewBox="0 0 24 10" fill="none"><path d="M0 5h20M15 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="wk-metric-after">20+</span>
+                </div>
+                <span class="wk-metric-label">AI-cited pages across 50+ queries</span>
+              </div>
+              <div class="wk-case-proof-note">GSC verified · AI citations from ChatGPT, Perplexity, Google AIO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- More engagements: editorial strip (kills the "only 3 results" feeling) -->
+    <section class="wk-more-sec">
+      <div class="container">
+        <header class="wk-more-hdr rv">
+          <div class="hair left">MORE ENGAGEMENTS / NDA SUMMARIES</div>
+          <h2 class="wk-more-h">
+            More wins,<br>
+            <em class="grad-anim">in plain receipts.</em>
+          </h2>
+          <p class="wk-more-p">A short ledger of additional client outcomes. Same playbook, different industries. Names withheld, methods shared on request. The underlying system is documented in the <a href="/insights/what-is-aeo" class="ilink">AEO guide</a> and the <a href="/insights/topical-authority-saas-playbook" class="ilink">topical authority playbook.</a></p>
+        </header>
+
+        <ol class="wk-more-list">
+          {moreWins.map((w,i)=>(
+            <li class={`wk-more-row rv${i<3?' d'+(i+1):''}`}>
+              <span class="wk-more-num">{String(i+1).padStart(2,'0')}</span>
+              <div class="wk-more-body">
+                <span class="wk-more-tag">{w.tag}</span>
+                <div class="wk-more-line">
+                  <span class="wk-more-metric grad-anim">{w.metric}</span>
+                  <span class="wk-more-label">{w.label}</span>
+                </div>
+                <span class="wk-more-note">{w.note}</span>
+              </div>
+              <span class="wk-more-tick">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>
+                Documented
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Page FAQs -->
+    <section class="wk-faq-sec">
+      <div class="container">
+        <FaqBlock
+          id="work-faq"
+          eyebrow="QUESTIONS / BEFORE YOU REACH OUT"
+          heading="Common questions about"
+          headingEm="how this work runs."
+          deck="Direct answers to what founders and ops leads ask before starting an engagement. Everything else is covered on a 20-minute intro call."
+          faqs={workFaqs}
+        />
+      </div>
+    </section>
+
+    <ContactCta
+      id="work-cta"
+      source="work-page"
+      eyebrow="GSC VERIFIED / NDA-PROTECTED RESULTS"
+      heading="Want results like this"
+      headingEm="for your brand?"
+      deck="Every metric on this page is verified by Google Search Console. Client names withheld under NDA, screenshots on request. Tell me about the project and I will reply within 4 hours."
+    />
+
+  </main>
+  <Footer />
+
+  <style>
+  .pg-bc{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
+  .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
+
+  .wk-hero{padding:160px 0 60px}
+  .wk-h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,7vw,92px);font-weight:400;line-height:.94;letter-spacing:-.02em;color:var(--w);margin:16px 0 20px}
+  .wk-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .wk-sub{font-family:'Syne',sans-serif;font-size:clamp(15px,1.6vw,17px);color:var(--wd);line-height:1.7;max-width:560px;margin-bottom:48px}
+  .wk-summary{display:flex;align-items:center;padding:32px 0;border-top:1px solid var(--bd)}
+  .wk-sum-item{padding:0 32px;display:flex;flex-direction:column;gap:4px}
+  .wk-sum-item:first-child{padding-left:0}
+  .wk-sum-div{width:1px;height:36px;background:var(--bd);flex-shrink:0}
+  .wk-sum-n{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .wk-sum-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+
+  .wk-case{padding:72px 0}
+  .wk-case-header{margin-bottom:48px}
+  .wk-case-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .wk-case-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--wm)}
+  .wk-case-cat{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--wd)}
+  .wk-case-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:2px 8px}
+  .wk-case-headline{display:flex;align-items:baseline;gap:20px}
+  .wk-case-big-n{font-family:'Instrument Serif',serif;font-size:clamp(72px,10vw,128px);font-weight:400;line-height:.88;letter-spacing:-.02em}
+  .wk-case-big-l{font-family:'Syne',sans-serif;font-size:clamp(16px,2vw,22px);font-weight:700;color:var(--wd);line-height:1.3;letter-spacing:-.02em;padding-bottom:4px}
+  .wk-case-body{display:grid;grid-template-columns:1fr 400px;gap:64px;align-items:start}
+  /* Case 04 with website mockup spans full width above the body grid */
+  .wk-case-mockup{grid-column:1 / -1;margin-bottom:32px}
+  .wk-mockup-frame{
+    position:relative;
+    background:#0A0B14;
+    border:1px solid #1F2434;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 28px 70px rgba(0,0,0,.42);
+    aspect-ratio:16/10;
+  }
+  .wk-mockup-bar{
+    display:flex;align-items:center;gap:12px;
+    padding:9px 14px;
+    background:#13141F;
+    border-bottom:1px solid #1F2434;
+  }
+  .wk-mockup-dots{display:inline-flex;gap:5px}
+  .wk-mockup-dots span{width:8px;height:8px;border-radius:50%}
+  .wk-mockup-dots span:nth-child(1){background:#FF5F56}
+  .wk-mockup-dots span:nth-child(2){background:#FFBD2E}
+  .wk-mockup-dots span:nth-child(3){background:#27C93F}
+  .wk-mockup-url{
+    flex:1;
+    font-family:'JetBrains Mono', monospace;font-size:11px;
+    color:#7BAEFF;
+    background:rgba(79,142,247,.10);border:1px solid rgba(79,142,247,.22);
+    border-radius:999px;padding:4px 12px;
+    letter-spacing:.04em;
+  }
+  .wk-mockup-img{display:block;width:100%;height:calc(100% - 36px);object-fit:cover;object-position:top center}
+  .wk-mockup-fb{
+    position:absolute;inset:36px 0 0;
+    display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+    background:linear-gradient(135deg,#1A3A8F 0%,#4F8EF7 60%,#7BAEFF 100%);
+    color:#fff;
+  }
+  .wk-mockup-frame.no-img .wk-mockup-fb{display:flex}
+  .wk-mockup-fb-eye{font-family:'JetBrains Mono', monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.7}
+  .wk-mockup-fb-name{font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;letter-spacing:-.02em}
+  .wk-case-section{margin-bottom:32px}
+  .wk-case-sec-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm);margin-bottom:12px}
+  .wk-case-p{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.8;margin:0}
+  .wk-case-metrics{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px}
+  .wk-metric{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bd)}
+  .wk-metric:last-of-type{margin-bottom:0;padding-bottom:0;border-bottom:none}
+  .wk-metric-row{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .wk-metric-before{font-family:'Instrument Serif',serif;font-size:22px;color:var(--wm);line-height:1}
+  .wk-metric-row svg{color:var(--bd);flex-shrink:0}
+  .wk-metric-after{font-family:'Instrument Serif',serif;font-size:22px;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .wk-metric-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+  .wk-case-proof-note{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--wm);margin-top:16px}
+
+  .wk-div{padding:0}
+  .wk-div-line{height:1px;background:var(--bd)}
+
+  .wk-cta-sec{padding:80px 0 100px;background:var(--s1);border-top:1px solid var(--bd)}
+  .wk-cta-inner{max-width:600px}
+  .wk-cta-note{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
+  .wk-cta-note svg{flex-shrink:0;color:var(--green)}
+  .wk-cta-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,54px);font-weight:400;color:var(--w);line-height:1.05;margin:0 0 14px}
+  .wk-cta-h em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .wk-cta-sub{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;max-width:480px;margin-bottom:32px}
+  .wk-cta-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+  @media(max-width:960px){
+    .wk-case-body{grid-template-columns:1fr;gap:40px}
+    .wk-case-big-n{font-size:72px}
+  }
+  @media(max-width:640px){
+    .wk-hero{padding:120px 0 48px}
+    .wk-summary{flex-wrap:wrap;gap:16px}
+    .wk-sum-div{display:none}
+    .wk-sum-item{padding:0}
+    .wk-case-headline{flex-direction:column;gap:8px}
+    .hide-mob{display:none}
+  }
+
+  /* ─── Featured GSC dashboard ─── */
+  .wk-dash-sec{padding:60px 0 40px;position:relative;z-index:1}
+  .wk-dash-hdr{max-width:740px;margin:0 0 36px;display:flex;flex-direction:column;gap:14px}
+  .wk-dash-h{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+  .wk-dash-h em{font-style:italic}
+  .wk-dash-p{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:600px}
+
+  /* ─── More engagements strip ─── */
+  .wk-more-sec{padding:80px 0 40px;position:relative;z-index:1}
+  .wk-more-hdr{max-width:780px;margin:0 0 48px;text-align:left;display:flex;flex-direction:column;gap:14px}
+  .wk-more-h{font-family:var(--fd);font-size:clamp(34px,4.6vw,60px);font-weight:400;line-height:.96;letter-spacing:-.025em;color:var(--w);margin:0}
+  .wk-more-h em{font-style:italic}
+  .wk-more-p{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:600px}
+
+  .wk-more-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;border-top:1px dashed var(--bd)}
+  .wk-more-row{
+    display:grid;
+    grid-template-columns:42px 1fr auto;
+    gap:18px;align-items:center;
+    padding:22px 0;
+    border-bottom:1px dashed var(--bd);
+    position:relative;
+    transition:padding-left .45s cubic-bezier(.16,1,.3,1);
+  }
+  .wk-more-row::before{
+    content:'';position:absolute;left:-12px;right:-12px;top:0;width:0;height:100%;
+    background:linear-gradient(90deg,var(--agl),transparent);
+    border-radius:6px;
+    transition:width .55s cubic-bezier(.16,1,.3,1);
+    pointer-events:none;z-index:-1;
+  }
+  .wk-more-row:hover{padding-left:10px}
+  .wk-more-row:hover::before{width:calc(100% + 24px)}
+  .wk-more-num{
+    font-family:var(--fd);font-size:24px;font-style:italic;font-weight:400;
+    line-height:.85;letter-spacing:-.02em;color:var(--wm);
+    align-self:start;padding-top:8px;
+  }
+  .wk-more-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .wk-more-tag{
+    font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ac);
+  }
+  .wk-more-line{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .wk-more-metric{
+    font-family:var(--fd);font-size:clamp(28px,3.2vw,40px);font-weight:400;font-style:italic;
+    line-height:1;letter-spacing:-.025em;
+  }
+  .wk-more-label{font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--w)}
+  .wk-more-note{font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.6}
+  .wk-more-tick{
+    display:inline-flex;align-items:center;gap:5px;
+    font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--green);
+    padding:5px 9px;border-radius:4px;
+    background:rgba(34,197,94,.06);
+    border:1px solid rgba(34,197,94,.22);
+    flex-shrink:0;
+  }
+  @media(max-width:640px){
+    .wk-more-row{grid-template-columns:32px 1fr;gap:12px}
+    .wk-more-tick{grid-column:2;justify-self:start}
+    .wk-more-metric{font-size:28px}
+  }
+  </style>
+
+  <script>
+  const prog=document.getElementById('scrollProg');
+  window.addEventListener('scroll',()=>{if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}},{passive:true});
+  const dot=document.getElementById('curDot');const ring=document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot)dot.style.transform=`translate(${mx-4}px,${my-4}px)`},{passive:true});
+  (function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')})});
+  const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+  </script>
+</Layout>

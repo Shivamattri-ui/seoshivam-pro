@@ -1,0 +1,526 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import CitationShowcase from '../../components/CitationShowcase.astro';
+import AeoMacbookIllustration from '../../components/AeoMacbookIllustration.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "AEO Strategy for B2B SaaS",
+      "description": "Answer Engine Optimization for B2B SaaS brands. Technical architecture, entity schema, answer-first content, and citation tracking across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot, and Grok.",
+      "provider": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" },
+      "url": "https://seoshivam.pro/services/aeo",
+      "areaServed": ["US", "UK", "AU", "CA", "DE", "IN"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://seoshivam.pro"},
+        {"@type":"ListItem","position":2,"name":"Services","item":"https://seoshivam.pro/services"},
+        {"@type":"ListItem","position":3,"name":"AEO Strategy","item":"https://seoshivam.pro/services/aeo"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does an AEO engagement include?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A full engagement starts with an AI visibility audit across 6 engines for 20 buyer queries. Then: technical fixes (Bing indexation, AI bot access, rendering), entity schema setup, content restructure for answer-first retrieval, and monthly citation tracking. Most clients see first citations within 30 to 90 days. The technical build takes 4 to 6 weeks." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do AI engines decide what to cite?",
+          "acceptedAnswer": { "@type": "Answer", "text": "AI engines cite sources that are technically accessible, semantically clear, entity-consistent, and answer-structured. The direct response needs to appear in the first two sentences. Schema is one signal in a larger system, not the primary one." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I do AEO without rebuilding my website?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The most impactful fixes rarely require a redesign. Common gaps: site not indexed by Bing, AI bots blocked in robots.txt, no entity schema, content that buries the answer in paragraph six. All fixable without touching the design." }
+        }
+      ]
+    }
+  ]
+};
+
+const services = [
+  { n: '01', t: 'AI Visibility Audit', d: 'Start by knowing exactly where you stand. I track your brand across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot, and Grok for your 20 most important buyer queries. Most clients discover they are missing from at least 3 engines despite ranking well on Google.' },
+  { n: '02', t: 'Technical Architecture Fix', d: 'Crawlability before content. AI engines cannot cite what they cannot read. I audit Bing indexation (separate from Google), robots.txt AI bot permissions, rendering issues, and Core Web Vitals. These are fixed before any content work begins.' },
+  { n: '03', t: 'Entity Schema Build', d: 'AI engines need to know who you are before they will cite you. JSON-LD Person and Organization schema establishes your brand identity, product category, expertise areas, and cross-web relationships. This is the foundation everything else runs on.' },
+  { n: '04', t: 'Answer-First Content Restructure', d: 'Content that earns citations is structured differently from content written only for human readers. Each target page is restructured so the direct answer appears in the first two sentences, semantic subtopics are clearly separated, and the page works as a retrieval document.' },
+  { n: '05', t: 'Schema and Authority Layer', d: 'FAQPage markup, HowTo schema, and sameAs signals are applied after the content foundation is correct. Schema on weak content does not produce citations. Schema on answer-first, entity-clear content amplifies existing authority. The sequence matters.' },
+  { n: '06', t: 'Citation Tracking and Reporting', d: 'Monthly tracking of 20 to 30 buyer queries across 6 AI engines, manually verified against live responses. You see which platforms cite your brand, for which queries, how frequency changes over time, and what to adjust next.' },
+];
+
+const faqs = [
+  { q: "What does an AEO engagement include?", a: "A full engagement starts with an AI visibility audit across 6 engines for your 20 most important buyer queries. Then: technical fixes (Bing indexation, AI bot access, rendering issues), entity schema setup, content restructure for answer-first retrieval, and monthly citation tracking. Most clients begin seeing citations within 30 to 90 days depending on domain authority and content quality. The technical build takes 4 to 6 weeks." },
+  { q: "How do AI engines decide what to cite?", a: "The pattern across audits is consistent. AI engines cite sources that are technically accessible (clean rendering, no crawl blocks, fast load), semantically clear (content immediately establishes what the brand does and for whom), entity-consistent (the brand appears in connected, trusted sources across the web), and answer-structured (the direct response is in the first two sentences). Schema is one signal in a larger system." },
+  { q: "Can I do AEO without rebuilding my website?", a: "Yes. The most impactful fixes rarely require a redesign. The most common gaps I find in audits: the site is not indexed by Bing at all (Copilot cannot cite what Bing has not crawled), AI bots are blocked in robots.txt, there is no entity schema connecting the brand to its category, and existing content buries the answer after several paragraphs of background. Every one of these is fixable without touching the design." },
+  { q: "Which AI engines do you optimise for?", a: "Google AI Overviews, ChatGPT, Perplexity, Claude, Microsoft Copilot, and Grok. Each has different citation signals. Google prioritises E-E-A-T and structured data. Perplexity prioritises semantic relevance and concise answers. Copilot runs on Bing, so Bing indexation is mandatory. Citation performance is tracked across all six in monthly reporting." },
+  { q: "How are results measured?", a: "I track 20 to 30 buyer queries per client across all 6 engines, verified manually against live AI responses. Monthly reports show which platforms cite your brand, for which queries, how citation frequency changes over time, and what content adjustments to make next. Secondary effects are also tracked: branded search growth on Google, Bing referral traffic, and lead quality changes as buyers arrive already knowing the brand." }
+];
+
+const results = [
+  {
+    cat: 'HealthTech SaaS · India',
+    service: 'SEO + AEO',
+    n: '16×',
+    label: 'Click growth in 30 days',
+    metrics: [
+      { v: '63 → 1,010', l: 'Monthly clicks' },
+      { v: '30 days', l: 'Timeline' },
+      { v: 'GSC verified', l: 'Source' },
+    ]
+  },
+  {
+    cat: 'Platform SaaS · Australia',
+    service: 'Full AEO + SEO',
+    n: '9×',
+    label: 'Click growth in 6 months',
+    metrics: [
+      { v: '240 → 2,200', l: 'Monthly clicks' },
+      { v: '4K → 142K', l: 'Impressions' },
+      { v: '20+ pages', l: 'AI-cited on 50+ queries' },
+    ]
+  },
+  {
+    cat: 'Logistics Tech SaaS · USA',
+    service: 'SEO + AEO + Content',
+    n: '8.3×',
+    label: 'Visitor growth in 7 months',
+    metrics: [
+      { v: '1,019 → 8,500', l: 'Organic visitors/mo' },
+      { v: '20 → 160+', l: 'Organic leads/mo' },
+      { v: 'GSC + Analytics', l: 'Source' },
+    ]
+  },
+  {
+    cat: 'Local Business · AUS + DE',
+    service: 'AEO + Local SEO',
+    n: '30+',
+    label: 'Organic leads per month',
+    metrics: [
+      { v: '0 → 30+', l: 'Monthly leads' },
+      { v: 'Australia + Germany', l: 'Markets' },
+      { v: 'Client reported', l: 'Source' },
+    ]
+  },
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/services/aeo'].title}
+  description={SITE_ROUTE_META['/services/aeo'].description}
+  canonical="https://seoshivam.pro/services/aeo"
+  schema={schema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="aeo-hero">
+      <div class="container">
+        <nav class="pg-bc rv" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>AEO Strategy</span>
+        </nav>
+        <div class="aeo-hero-grid">
+          <div class="aeo-hero-l">
+            <div class="rv"><span class="label">AEO Strategy</span></div>
+            <h1 class="aeo-h1 rv d1">Get cited by ChatGPT,<br>Perplexity, and<br><em>Google AI Overviews.</em></h1>
+            <p class="aeo-sub rv d2">Most SaaS brands rank well on Google and still miss from AI answers. ChatGPT, Perplexity, and Google AI Overviews pick sources based on entity trust, technical architecture, and content structure. This is the system that changes that.</p>
+            <div class="aeo-hero-btns rv d3">
+              <a href="/contact" class="btn-p">Get AEO audit ↗</a>
+              <a href="#what-included" class="btn-s">What is included →</a>
+            </div>
+          </div>
+          <div class="aeo-hero-r rv d2">
+            <div class="aeo-cite-mock">
+              <div class="acm-query">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                best aeo specialist for b2b saas startups
+              </div>
+              <div class="acm-engine">
+                <div class="acm-bar">
+                  <span class="acm-dot"></span>
+                  <span class="acm-name">AI Overview</span>
+                  <span class="acm-src-ct">3 sources</span>
+                </div>
+                <p class="acm-answer" id="aeoAnswer"></p>
+                <div class="acm-cites">
+                  <span class="acm-cite-chip"><span class="adot" style="width:4px;height:4px"></span>seoshivam.pro</span>
+                  <span class="acm-cite-chip acm-cite-dim">linkedin.com/in/seoshivampro</span>
+                </div>
+              </div>
+              <div class="acm-result">
+                <div class="acm-res-url">seoshivam.pro › services › aeo</div>
+                <div class="acm-res-title">AEO Strategy · Shivam Attri</div>
+                <div class="acm-res-snip">Answer Engine Optimization that gets your brand cited by ChatGPT, Perplexity...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aeo-stats rv d4">
+          <div class="aeo-stat"><span class="aeo-sn">20+</span><span class="aeo-sl">AI citations tracked<br>for one client</span></div>
+          <div class="aeo-stat-div"></div>
+          <div class="aeo-stat"><span class="aeo-sn">30–90</span><span class="aeo-sl">Days to first<br>AI citations</span></div>
+          <div class="aeo-stat-div"></div>
+          <div class="aeo-stat"><span class="aeo-sn">6</span><span class="aeo-sl">AI engines<br>tracked monthly</span></div>
+          <div class="aeo-stat-div hide-mob"></div>
+          <div class="aeo-stat hide-mob"><span class="aeo-sn">70+</span><span class="aeo-sl">Organic leads/mo<br>Platform SaaS · AU</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Shift -->
+    <section class="aeo-what-sec" id="what-included">
+      <div class="container">
+        <div class="aeo-what-grid">
+          <div class="aeo-what-l rv">
+            <span class="label">The shift</span>
+            <h2 class="sec-h" style="margin-top:14px">Search changed.<br><em class="grad-anim">The strategy must too.</em></h2>
+            <p class="aeo-what-p">When a B2B founder searches "what is the best AEO tool for SaaS," they are not getting ten blue links. They are getting one answer, with one or two sources cited. That is the moment your brand either exists or it does not.</p>
+            <p class="aeo-what-p">Every day, buyers in your market ask AI engines which vendor to trust. The answer is not the brand with the best product. It is the brand with the clearest technical architecture, the most entity-consistent content, and the fastest answer to the exact question being asked. <a href="/insights/what-is-aeo" class="ilink">AEO is the discipline of becoming that brand.</a></p>
+            <p class="aeo-what-p">It runs in parallel with <a href="/services/seo" class="ilink">SEO</a>, not instead of it. The same content cluster that earns Google rankings earns ChatGPT citations, when the technical layer connects both surfaces correctly.</p>
+          </div>
+          <div class="aeo-what-r rv d1">
+            <div class="aeo-engine-list">
+              {[
+                { name: 'Google AI Overviews', note: '47% of informational queries now trigger an overview', color: '#4285F4' },
+                { name: 'ChatGPT Search', note: '200M+ weekly users asking vendor questions', color: '#10A37F' },
+                { name: 'Perplexity AI', note: 'Semantic relevance and source citation model', color: '#8B5CF6' },
+                { name: 'Claude (Anthropic)', note: 'Brave Search indexing and entity signals', color: '#D97706' },
+                { name: 'Microsoft Copilot', note: 'Bing index and LinkedIn authority signals', color: '#0078D4' },
+                { name: 'Grok (xAI)', note: 'Real-time web and X platform signals', color: '#1DA1F2' },
+              ].map(e => (
+                <div class="aeo-eng-row">
+                  <span class="aeo-eng-dot" style={`background:${e.color}`}></span>
+                  <div class="aeo-eng-info">
+                    <span class="aeo-eng-nm">{e.name}</span>
+                    <span class="aeo-eng-nt">{e.note}</span>
+                  </div>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How I get brands cited -->
+    <section class="aeo-how-sec">
+      <div class="container">
+        <div class="aeo-how-hdr">
+          <div class="hair left">PROCESS / HOW IT WORKS</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">How I get your brand<br><em class="grad-anim">cited across 6 AI engines.</em></h2>
+          <p class="aeo-how-intro rv d2">Most brands are invisible in AI search not because of bad content, but because the technical layer is broken. AI engines cannot cite what they cannot read, trust, or connect to a known entity. This is the system I build. You can check your own AI visibility with the <a href="/tools/ai-visibility-score" class="ilink">AI Visibility Score tool.</a></p>
+        </div>
+        <div class="aeo-how-steps">
+          <div class="aeo-how-step rv">
+            <div class="aeo-how-num">01</div>
+            <div class="aeo-how-body">
+              <div class="aeo-how-t">Establish your entity</div>
+              <p class="aeo-how-d">Before any content work, I make sure AI engines know who you are. Entity schema (Person, Organization, WebSite) with sameAs signals across LinkedIn, GitHub, and social profiles. A brand that AI systems cannot confidently identify is a brand they will not cite, regardless of content quality.</p>
+            </div>
+          </div>
+          <div class="aeo-how-step rv d1">
+            <div class="aeo-how-num">02</div>
+            <div class="aeo-how-body">
+              <div class="aeo-how-t">Make your content machine-readable</div>
+              <p class="aeo-how-d">Content that earns citations is answer-first, semantically structured, and technically accessible. I audit every target page: does Bing index it, does it load in under 3 seconds, is the rendering clean, does the answer appear in the first two sentences. Most SaaS pages fail at least two of these checks. These are the fixes that move the needle fastest.</p>
+            </div>
+          </div>
+          <div class="aeo-how-step rv d2">
+            <div class="aeo-how-num">03</div>
+            <div class="aeo-how-body">
+              <div class="aeo-how-t">Build topical trust at the right scale</div>
+              <p class="aeo-how-d">AI engines do not cite brands they have only seen once. Topical authority means your brand appears consistently, across connected content, for the same category. Not 100 thin articles. A coherent cluster of specific, expert-level content that signals you are the reliable source in your niche. One strong page with real information gain outperforms 50 shallow articles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <AeoMacbookIllustration />
+
+    <!-- AEO vs SEO -->
+    <section class="aeo-vs-sec">
+      <div class="container">
+        <div class="aeo-vs-hdr rv">
+          <div class="hair left">AEO VS SEO</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Two surfaces.<br><em class="grad-anim">One architecture.</em></h2>
+          <p class="aeo-vs-intro rv d2">Most agencies pick a side. I run both from one system. The same content cluster that earns Google rankings earns ChatGPT citations. The same technical foundation that powers structured data for Google powers AI retrieval for Perplexity. You do not choose between them.</p>
+        </div>
+        <div class="aeo-vs-table rv d1">
+          <div class="aeo-vs-row aeo-vs-head">
+            <div class="aeo-vs-col aeo-vs-label-h"></div>
+            <div class="aeo-vs-col aeo-vs-seo-h">SEO Only</div>
+            <div class="aeo-vs-col aeo-vs-aeo-h">SEO + AEO</div>
+          </div>
+          {[
+            { label: 'Search surfaces covered', seo: 'Google only', aeo: 'Google + 6 AI engines' },
+            { label: 'Where your brand appears', seo: 'Ranked pages', aeo: 'Ranked pages + AI-generated answers' },
+            { label: 'What you measure', seo: 'Clicks, rankings, impressions', aeo: '+ Citation appearances across 6 engines' },
+            { label: 'Buyer journey impact', seo: 'Top of funnel to decision', aeo: 'Also captures mid-funnel AI research queries' },
+            { label: 'Technical foundation', seo: 'Crawlability, indexation, speed', aeo: 'Same, extended to Bing and AI bots' },
+            { label: 'Content structure', seo: 'Keyword-anchored clusters', aeo: 'Same clusters, answer-first retrieval format' },
+          ].map(row => (
+            <div class="aeo-vs-row">
+              <div class="aeo-vs-col aeo-vs-label">{row.label}</div>
+              <div class="aeo-vs-col aeo-vs-seo">{row.seo}</div>
+              <div class="aeo-vs-col aeo-vs-aeo">{row.aeo}</div>
+            </div>
+          ))}
+        </div>
+        <p class="aeo-vs-note rv d2">For B2B SaaS founders, buyers doing AI-assisted research are often further along in the buying cycle. They are comparing vendors, not just browsing. Missing from that moment is expensive. Running <a href="/services/seo" class="ilink">SEO</a> without AEO means leaving the highest-intent surface unserved. Read the full breakdown: <a href="/insights/aeo-vs-seo-difference" class="ilink">AEO vs SEO.</a></p>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="aeo-del-sec">
+      <div class="container">
+        <div class="aeo-del-hdr rv">
+          <span class="label">What is included</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Six services.<br><em class="grad-anim">One compounding system.</em></h2>
+        </div>
+        <div class="aeo-del-list" id="what-included-list">
+          {services.map((s, i) => (
+            <div class={`aeo-del-row rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
+              <div class="aeo-del-num">{s.n}</div>
+              <div class="aeo-del-body">
+                <div class="aeo-del-t">{s.t}</div>
+                <p class="aeo-del-d">{s.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- AI citation showcase -->
+    <CitationShowcase />
+
+    <!-- Results grid -->
+    <section class="aeo-results-sec">
+      <div class="container">
+        <div class="aeo-results-hdr rv">
+          <div class="hair left">VERIFIED RESULTS / GSC + ANALYTICS</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Real outcomes<br><em class="grad-anim">across 8+ countries.</em></h2>
+        </div>
+        <div class="aeo-results-grid">
+          {results.map((r, i) => (
+            <div class={`aeo-result-card rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
+              <div class="arc-head">
+                <span class="arc-cat">{r.cat}</span>
+                <span class="arc-service">{r.service}</span>
+              </div>
+              <div class="arc-n grad">{r.n}</div>
+              <div class="arc-label">{r.label}</div>
+              <div class="arc-metrics">
+                {r.metrics.map(m => (
+                  <div class="arc-met">
+                    <span class="arc-met-v">{m.v}</span>
+                    <span class="arc-met-l">{m.l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="aeo-results-note rv">All client names withheld under NDA. Data sourced from Google Search Console and Google Analytics 4. Screenshots available on request. <a href="/work" class="ilink">See full case studies.</a></p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="aeo-faq-sec">
+      <div class="container">
+        <div class="rv" style="margin-bottom:48px">
+          <span class="label">Questions about AEO</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">What people ask<br><em class="grad-anim">before starting.</em></h2>
+        </div>
+        <div class="faq-list" style="max-width:760px">
+          {faqs.map((f) => (
+            <div class="faq-item">
+              <button class="faq-btn" aria-expanded="false"><span>{f.q}</span><i class="faq-icon">+</i></button>
+              <div class="faq-ans" hidden>{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <ContactCta
+      id="aeo-cta"
+      source="services-aeo"
+      eyebrow="START WITH A FREE AEO AUDIT"
+      heading="Find out where you stand"
+      headingEm="with AI engines today."
+      deck="The audit covers your current AI citation gaps, Bing indexation, AI bot access, entity schema, and a prioritised fix list. Free, no commitment, replied within 4 hours."
+    />
+
+  </main>
+  <Footer />
+
+  <style>
+  .pg-bc{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
+  .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
+
+  .aeo-hero{padding:160px 0 0}
+  .aeo-hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center}
+  .aeo-h1{font-family:var(--fd);font-size:clamp(36px,5vw,68px);font-weight:400;line-height:.96;letter-spacing:-.02em;color:var(--w);margin:16px 0 20px}
+  .aeo-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .aeo-sub{font-family:var(--fu);font-size:clamp(14px,1.5vw,16px);color:var(--wd);line-height:1.75;max-width:460px;margin-bottom:28px}
+  .aeo-hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .aeo-stats{display:flex;align-items:center;padding:32px 0;border-top:1px solid var(--bd);margin-top:48px}
+  .aeo-stat{padding:0 28px;display:flex;flex-direction:column;gap:4px}
+  .aeo-stat:first-child{padding-left:0}
+  .aeo-stat-div{width:1px;height:32px;background:var(--bd);flex-shrink:0}
+  .aeo-sn{font-family:var(--fd);font-size:24px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .aeo-sl{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+
+  .aeo-cite-mock{background:var(--s1);border:1px solid var(--bd);border-radius:20px;overflow:hidden}
+  .acm-query{display:flex;align-items:center;gap:8px;padding:12px 16px;font-family:var(--fu);font-size:12px;color:var(--wd);border-bottom:1px solid var(--bd);background:var(--s2)}
+  .acm-engine{padding:14px 16px;border-bottom:1px solid var(--bd)}
+  .acm-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .acm-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0}
+  .acm-name{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+  .acm-src-ct{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-left:auto}
+  .acm-answer{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.65;margin-bottom:12px;min-height:64px}
+  .acm-cites{display:flex;gap:6px;flex-wrap:wrap}
+  .acm-cite-chip{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--ac);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:3px 8px;display:inline-flex;align-items:center;gap:5px}
+  .acm-cite-dim{color:var(--wm);background:var(--s3);border-color:var(--bd)}
+  .acm-result{padding:12px 16px}
+  .acm-res-url{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--green);margin-bottom:3px}
+  .acm-res-title{font-family:var(--fu);font-size:13px;font-weight:700;color:var(--ac);margin-bottom:3px}
+  .acm-res-snip{font-family:var(--fu);font-size:11px;color:var(--wm);line-height:1.5}
+
+  .aeo-what-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .aeo-what-grid{display:grid;grid-template-columns:1fr 380px;gap:80px;align-items:start}
+  .aeo-what-p{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.8;margin:0 0 16px}
+  .aeo-engine-list{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+  .aeo-eng-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bd);background:var(--s1);transition:background .2s}
+  .aeo-eng-row:last-child{border-bottom:none}
+  .aeo-eng-row:hover{background:var(--s2)}
+  .aeo-eng-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .aeo-eng-info{flex:1}
+  .aeo-eng-nm{display:block;font-family:var(--fu);font-size:13px;font-weight:700;color:var(--w);letter-spacing:-.01em}
+  .aeo-eng-nt{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.04em;color:var(--wm)}
+  .aeo-eng-row svg{color:var(--green);flex-shrink:0}
+
+  .aeo-how-sec{padding:80px 0}
+  .aeo-how-hdr{margin-bottom:48px}
+  .aeo-how-intro{font-family:var(--fu);font-size:16px;color:var(--wd);line-height:1.75;max-width:680px;margin-top:16px}
+  .aeo-how-steps{display:flex;flex-direction:column}
+  .aeo-how-step{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
+  .aeo-how-step:first-child{border-top:1px solid var(--bd)}
+  .aeo-how-num{font-family:var(--fm);font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
+  .aeo-how-step:hover .aeo-how-num{color:var(--ac)}
+  .aeo-how-t{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
+  .aeo-how-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.75;margin:0}
+
+  .aeo-vs-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .aeo-vs-hdr{margin-bottom:48px}
+  .aeo-vs-intro{font-family:var(--fu);font-size:16px;color:var(--wd);line-height:1.75;max-width:680px;margin-top:16px}
+  .aeo-vs-table{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+  .aeo-vs-row{display:grid;grid-template-columns:220px 1fr 1fr;border-bottom:1px solid var(--bd)}
+  .aeo-vs-row:last-child{border-bottom:none}
+  .aeo-vs-head{background:var(--s2)}
+  .aeo-vs-col{padding:14px 20px;font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.5}
+  .aeo-vs-label{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);display:flex;align-items:center}
+  .aeo-vs-label-h{padding:14px 20px}
+  .aeo-vs-seo-h,.aeo-vs-aeo-h{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;padding:14px 20px;display:flex;align-items:center}
+  .aeo-vs-seo-h{color:var(--wm)}
+  .aeo-vs-aeo-h{color:var(--ac)}
+  .aeo-vs-seo{color:var(--wd)}
+  .aeo-vs-aeo{color:var(--w);font-weight:500}
+  .aeo-vs-note{font-family:var(--fu);font-size:14px;color:var(--wm);line-height:1.7;max-width:680px;margin-top:32px}
+
+  .aeo-del-sec{padding:80px 0}
+  .aeo-del-hdr{margin-bottom:56px}
+  .aeo-del-list{display:flex;flex-direction:column}
+  .aeo-del-row{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
+  .aeo-del-row:first-child{border-top:1px solid var(--bd)}
+  .aeo-del-num{font-family:var(--fm);font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
+  .aeo-del-row:hover .aeo-del-num{color:var(--ac)}
+  .aeo-del-t{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
+  .aeo-del-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.75;margin:0}
+
+  .aeo-results-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .aeo-results-hdr{margin-bottom:48px}
+  .aeo-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+  .aeo-result-card{background:var(--s1);padding:28px 24px;display:flex;flex-direction:column;gap:8px;transition:background .2s}
+  .aeo-result-card:hover{background:var(--s2)}
+  .arc-head{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+  .arc-cat{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+  .arc-service{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm)}
+  .arc-n{font-family:var(--fd);font-size:clamp(40px,4vw,60px);font-weight:400;line-height:.9;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .arc-label{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.4;margin-bottom:12px}
+  .arc-metrics{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--bd)}
+  .arc-met{display:flex;flex-direction:column;gap:2px}
+  .arc-met-v{font-family:var(--fu);font-size:12px;font-weight:700;color:var(--w)}
+  .arc-met-l{font-family:var(--fm);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+  .aeo-results-note{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--wm);margin-top:24px}
+
+  .aeo-faq-sec{padding:80px 0}
+
+  @media(max-width:1100px){.aeo-results-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:960px){
+    .aeo-hero-grid,.aeo-what-grid{grid-template-columns:1fr;gap:40px}
+    .aeo-vs-row{grid-template-columns:160px 1fr 1fr}
+  }
+  @media(max-width:720px){
+    .aeo-vs-row{grid-template-columns:1fr}
+    .aeo-vs-head{display:none}
+    .aeo-results-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:640px){
+    .aeo-hero{padding:120px 0 0}
+    .aeo-del-row,.aeo-how-step{grid-template-columns:48px 1fr}
+    .aeo-del-num,.aeo-how-num{font-size:18px}
+    .aeo-stats{flex-wrap:wrap;gap:16px}
+    .aeo-stat-div{display:none}
+    .aeo-stat{padding:0}
+    .hide-mob{display:none}
+    .aeo-results-grid{grid-template-columns:1fr}
+  }
+  </style>
+
+  <script>
+  const prog=document.getElementById('scrollProg');
+  window.addEventListener('scroll',()=>{if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}},{passive:true});
+  const dot=document.getElementById('curDot');const ring=document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot)dot.style.transform=`translate(${mx-4}px,${my-4}px)`},{passive:true});
+  (function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')})});
+  const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+  const answerEl=document.getElementById('aeoAnswer');
+  const text='Shivam Attri is a specialist in AEO for B2B SaaS. He builds technical architecture and content systems that get brands cited by ChatGPT, Perplexity, and Google AI Overviews. Working with US, UK, EU, and AU clients.';
+  let i=0;
+  function typeAnswer(){if(!answerEl)return;if(i<text.length){answerEl.textContent+=text[i];i++;setTimeout(typeAnswer,20)}}
+  const aObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){typeAnswer();aObs.unobserve(e.target)}})},{threshold:.5});
+  if(answerEl)aObs.observe(answerEl);
+
+  document.querySelectorAll('.faq-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const isOpen=btn.getAttribute('aria-expanded')==='true';
+      document.querySelectorAll('.faq-btn').forEach(b=>{b.setAttribute('aria-expanded','false');const a=b.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(a)a.hidden=true});
+      if(!isOpen){btn.setAttribute('aria-expanded','true');const ans=btn.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(ans)ans.hidden=false}
+    });
+  });
+  </script>
+</Layout>

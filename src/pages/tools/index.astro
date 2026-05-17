@@ -1,0 +1,642 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const toolFaqs = [
+  { q: 'How accurate is the AI Visibility Score quiz?', a: 'The quiz scores 10 dimensions known to influence AI engine citation: bot access, entity schema, FAQPage markup, answer-first content, content freshness, E-E-A-T signals, internal linking, citation-friendly statistics, semantic HTML, and Core Web Vitals. The score is a strong directional indicator. The full audit a paid engagement provides goes deeper into query-specific gaps and actual citation tracking.' },
+  { q: 'Is the robots.txt checker safe to run on any domain?', a: 'Yes. The checker reads the public /robots.txt file via a CORS proxy. No login, no scraping behind authentication, no data stored. It only fetches what any AI crawler would already see. Works on any publicly accessible domain.' },
+  { q: 'How is the generator different from the checker?', a: 'The checker reads what your site already serves and reports which AI bots are allowed or blocked. The generator builds a fresh robots.txt for you to deploy. Most teams use both: check first to spot the gap, generate to fix it, then re-check on the live URL after deploy to confirm every crawler reads it correctly.' },
+  { q: 'Why do AI bots get blocked so often by accident?', a: 'Most platforms (Webflow, Shopify, WordPress with default plugins) ship with conservative robots.txt rules that disallow crawler categories AI bots fall into. The site owner often does not realize GPTBot, ClaudeBot, and PerplexityBot are blocked until they run a check. The fix is usually three lines of robots.txt config.' },
+  { q: 'Are the tools limited to one check per day?', a: 'No. All three tools are unlimited and free. Run them on as many sites as you want. The only data we keep is the email address you optionally provide to receive the full report, and you can opt out any time.' },
+  { q: 'Can I embed these tools on my own site?', a: 'Not currently as embeds, but the methodology is open and documented in the relevant blog posts. If you want to build something similar for an internal team or client deliverable, the linked Insights articles cover the scoring rubric and the bot-access logic.' },
+];
+
+const pipeline = [
+  { k: '01', t: 'Signal', d: 'What humans see in the market: gaps, risk, urgency.' },
+  { k: '02', t: 'Parse', d: 'What machines read: rules, schema, crawl contracts.' },
+  { k: '03', t: 'Ship', d: 'What you change next: one prioritized fix list.' },
+];
+
+const tools = [
+  {
+    href: '/tools/ai-visibility-score',
+    eyebrow: 'Roughly five minutes',
+    title: 'AI Visibility Score',
+    deck: 'A short quiz maps how close you are to citation-ready pages. You leave with a number, the gaps that matter, and a clear order of fixes for your team.',
+    bring: 'Honest answers across ten visibility signals',
+    get: 'Score out of 100 and a ranked action list',
+    time: '~5 min',
+    cursor: 'Open visibility quiz',
+    icon: 'clock',
+    accent: 'blue',
+  },
+  {
+    href: '/tools/robots-txt-checker',
+    eyebrow: 'Under a minute',
+    title: 'AI Bot Access Checker',
+    deck: 'Paste a public URL and see how major crawlers read your robots.txt. Useful before you blame content when the real issue is access.',
+    bring: 'Any site with a reachable robots.txt',
+    get: 'Allow or block per bot, with the rule path called out',
+    time: '~30 s',
+    cursor: 'Open robots checker',
+    icon: 'shield',
+    accent: 'green',
+  },
+  {
+    href: '/tools/robots-txt-generator',
+    eyebrow: 'Live preview as you toggle',
+    title: 'AI Robots.txt Generator',
+    deck: 'Build a robots.txt that fifteen AI crawlers respect. Toggle each engine, set sitemap and restricted paths, copy or download the file. Same config I deploy on every audit.',
+    bring: 'Five minutes and a clear stance on AI access',
+    get: 'A clean RFC-compliant robots.txt, ready to ship',
+    time: '~3 min',
+    cursor: 'Open generator',
+    icon: 'spark',
+    accent: 'amber',
+  },
+];
+---
+
+<Layout
+  title={SITE_ROUTE_META['/tools'].title}
+  description={SITE_ROUTE_META['/tools'].description}
+  canonical="https://seoshivam.pro/tools"
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <div class="ray" style={`--i:${i}`} />)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+
+  <main class="tl-page">
+    <section class="tl-hero">
+      <div class="container">
+        <div class="tl-mast rv">
+          <span class="tl-mast-stamp">Build / operator toolkit</span>
+          <span class="tl-mast-line" aria-hidden="true"></span>
+          <span class="tl-mast-meta">Live · No login · Rev 2026</span>
+        </div>
+        <div class="rv"><span class="label">Tools</span></div>
+        <h1 class="sec-h tl-h1 rv d1">
+          Engineering checks<br /><em class="grad-anim">with a GTM spine.</em>
+        </h1>
+        <p class="tl-lede rv d2">
+          Two utilities I use on audits before I touch <a href="/insights/schema-markup-for-ai-search" class="ilink">schema</a> or copy: one scores how AI-ready the surface is, the other proves whether bots are even allowed
+          to read you. Same stack I ship for US and EU founders: precise inputs, plain-language outputs. Want the full picture? See <a href="/services/aeo" class="ilink">AEO strategy</a> and <a href="/resources" class="ilink">free resources.</a>
+        </p>
+        <ul class="tl-hero-pills rv d3" aria-label="What these tools combine">
+          <li>Marketing clarity</li>
+          <li>Crawl contracts</li>
+          <li>Ship-ready fixes</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tl-pipe-sec" aria-labelledby="tl-pipe-h">
+      <div class="container">
+        <h2 id="tl-pipe-h" class="visually-hidden">How the toolkit maps work</h2>
+        <div class="tl-pipe">
+          {pipeline.map((p, i) => (
+            <div class={`tl-pipe-step rv${i > 0 ? ' d' + Math.min(i, 3) : ''}`}>
+              <span class="tl-pipe-k">{p.k}</span>
+              <div class="tl-pipe-body">
+                <span class="tl-pipe-t">{p.t}</span>
+                <p class="tl-pipe-d">{p.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="tl-mods-sec">
+      <div class="container">
+        <header class="tl-mods-hdr rv">
+          <span class="hair left">Toolkit</span>
+          <h2 class="sec-h" style="margin-top: 10px">
+            Three editorials<br /><em class="grad-anim">you can run today.</em>
+          </h2>
+        </header>
+
+        <div class="tl-mods">
+          {tools.map((t, i) => (
+            <div class:list={['tl-mod-glare', `tl-mod-glare--${t.accent}`, `rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`]}>
+              <a href={t.href} class="tl-mod" data-cursor={t.cursor}>
+                <div class="tl-mod-top">
+                  <span class="tl-mod-eyebrow">{t.eyebrow}</span>
+                  <div class:list={['tl-mod-icon', `tl-mod-icon--${t.accent}`]} aria-hidden="true">
+                    {t.icon === 'clock' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                      </svg>
+                    )}
+                    {t.icon === 'shield' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    )}
+                    {t.icon === 'spark' && (
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v3M12 18v3M5.64 5.64l2.12 2.12M16.24 16.24l2.12 2.12M3 12h3M18 12h3M5.64 18.36l2.12-2.12M16.24 7.76l2.12-2.12"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <h3 class="tl-mod-title">{t.title}</h3>
+                <p class="tl-mod-deck">{t.deck}</p>
+                <dl class="tl-mod-spec">
+                  <div>
+                    <dt>You bring</dt>
+                    <dd>{t.bring}</dd>
+                  </div>
+                  <div>
+                    <dt>You get</dt>
+                    <dd>{t.get}</dd>
+                  </div>
+                  <div>
+                    <dt>Time</dt>
+                    <dd>{t.time}</dd>
+                  </div>
+                </dl>
+                <span class="tl-mod-cta">
+                  <span>Open tool</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10" /></svg>
+                </span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="tl-faq-sec">
+      <div class="container">
+        <FaqBlock
+          id="tools-faq"
+          eyebrow="QUESTIONS / ABOUT THESE TOOLS"
+          heading="Common questions about"
+          headingEm="how these tools work."
+          deck="Privacy, accuracy, limits, and what to do with the score once you have it."
+          faqs={toolFaqs}
+        />
+      </div>
+    </section>
+
+    <ContactCta
+      id="tools-cta"
+      source="tools-hub"
+      eyebrow="WANT THE FULL AUDIT?"
+      heading="The tools cover the basics."
+      headingEm="The audit goes deeper."
+      deck="The free tools score the surface. A full engagement maps every gap, fixes the architecture, and tracks citations across all four major AI engines. Tell me about the project, replied within 4 hours."
+    />
+  </main>
+  <Footer />
+
+  <style>
+    .tl-page {
+      position: relative;
+      z-index: 1;
+      overflow-x: clip;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .tl-hero {
+      padding: clamp(88px, 11vw, 124px) 0 clamp(24px, 3.5vw, 40px);
+    }
+    .tl-mast {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--bd);
+    }
+    .tl-mast-stamp {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ac);
+      padding: 5px 10px;
+      border: 1px solid rgba(79, 142, 247, 0.28);
+      border-radius: 4px;
+      background: var(--agl);
+    }
+    .tl-mast-line {
+      flex: 1 1 80px;
+      height: 1px;
+      background: var(--bd);
+      min-width: 24px;
+    }
+    .tl-mast-meta {
+      font-family: var(--fm), monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--wm);
+    }
+
+    .tl-hero .label {
+      margin-bottom: 14px;
+    }
+    .tl-h1 {
+      margin: 0 0 14px;
+      max-width: 18ch;
+    }
+    .tl-lede {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(15px, 1.45vw, 18px);
+      color: var(--wd);
+      line-height: 1.72;
+      max-width: 54ch;
+      margin: 0 0 16px;
+    }
+    .tl-hero-pills {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tl-hero-pills li {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--bd);
+      background: var(--s1);
+    }
+    html.light .tl-hero-pills li {
+      background: var(--s2);
+    }
+
+    .tl-pipe-sec {
+      padding: 0 0 clamp(24px, 3.8vw, 44px);
+    }
+    .tl-pipe {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border: 1px solid var(--bd);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bd);
+    }
+    .tl-pipe-step {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      background: var(--s1);
+      position: relative;
+    }
+    .tl-pipe-k {
+      font-family: var(--fd), serif;
+      font-size: clamp(36px, 4.5vw, 52px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+      padding: 22px 16px 22px 20px;
+      background: var(--bg);
+      color: var(--wm);
+      border-right: 1px solid var(--bd);
+      min-width: 72px;
+      text-align: center;
+    }
+    .tl-pipe-body {
+      padding: 20px 20px 22px;
+      flex: 1;
+      min-width: 0;
+    }
+    .tl-pipe-t {
+      font-family: var(--fm), monospace;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ac);
+    }
+    .tl-pipe-d {
+      font-family: var(--fu), sans-serif;
+      font-size: 13.5px;
+      color: var(--wd);
+      line-height: 1.6;
+      margin: 8px 0 0;
+    }
+
+    .tl-mods-sec {
+      padding: 0 0 clamp(36px, 5vw, 64px);
+    }
+    .tl-mods-hdr {
+      margin-bottom: clamp(18px, 2.8vw, 26px);
+      max-width: 42rem;
+    }
+    .tl-mods {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(18px, 2.5vw, 24px);
+    }
+
+    /* Animated gradient frame (editorial, not spec-sheet) */
+    .tl-mod-glare {
+      border-radius: 22px;
+      padding: 1px;
+      background: linear-gradient(125deg, var(--ac), var(--ac2), #7baeff, var(--ac2), var(--ac));
+      background-size: 280% 280%;
+      animation: tlBorderShift 9s linear infinite;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 100%;
+    }
+    .tl-mod-glare--green {
+      background: linear-gradient(
+        125deg,
+        rgba(34, 197, 94, 0.95),
+        var(--ac2),
+        #7baeff,
+        var(--ac),
+        rgba(34, 197, 94, 0.75)
+      );
+      background-size: 280% 280%;
+      animation: tlBorderShift 9s linear infinite;
+    }
+    .tl-mod-glare--amber {
+      background: linear-gradient(
+        125deg,
+        rgba(245, 158, 11, 0.95),
+        var(--ac2),
+        #7baeff,
+        var(--ac),
+        rgba(217, 119, 6, 0.85)
+      );
+      background-size: 280% 280%;
+      animation: tlBorderShift 9s linear infinite;
+    }
+    html.light .tl-mod-glare {
+      background: linear-gradient(125deg, var(--ac), var(--ac2), #5a9fff, var(--ac2), var(--ac));
+      background-size: 280% 280%;
+    }
+    html.light .tl-mod-glare--green {
+      background: linear-gradient(125deg, #22c55e, var(--ac2), #5a9fff, var(--ac), #16a34a);
+      background-size: 280% 280%;
+    }
+    html.light .tl-mod-glare--amber {
+      background: linear-gradient(125deg, #d97706, var(--ac2), #5a9fff, var(--ac), #b45309);
+      background-size: 280% 280%;
+    }
+    @keyframes tlBorderShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+    .tl-mod-glare:hover {
+      transform: translateY(-4px);
+    }
+
+    .tl-mod {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: 100%;
+      min-height: 100%;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 21px;
+      background: var(--s1);
+      padding: clamp(24px, 3.2vw, 32px);
+      box-sizing: border-box;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+      transition: box-shadow 0.35s ease;
+      min-width: 0;
+    }
+    html.light .tl-mod {
+      box-shadow: 0 12px 36px rgba(26, 23, 20, 0.06);
+    }
+    .tl-mod-glare:hover .tl-mod {
+      box-shadow: 0 28px 64px rgba(0, 0, 0, 0.22);
+    }
+    html.light .tl-mod-glare:hover .tl-mod {
+      box-shadow: 0 18px 48px rgba(26, 23, 20, 0.1);
+    }
+
+    .tl-mod-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .tl-mod-eyebrow {
+      font-family: var(--fd), serif;
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--wd);
+      letter-spacing: 0.01em;
+    }
+    .tl-mod-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ac);
+      background: rgba(79, 142, 247, 0.1);
+      border: 1px solid rgba(79, 142, 247, 0.22);
+    }
+    .tl-mod-icon--green {
+      color: var(--green);
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.25);
+    }
+    .tl-mod-icon--amber {
+      color: #F59E0B;
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.28);
+    }
+    html.light .tl-mod-icon--amber {
+      color: #B45309;
+      background: rgba(180, 83, 9, 0.08);
+      border-color: rgba(180, 83, 9, 0.22);
+    }
+
+    .tl-mod-title {
+      font-family: var(--fd), serif;
+      font-size: clamp(24px, 2.6vw, 32px);
+      font-weight: 400;
+      color: var(--w);
+      margin: 0;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .tl-mod-deck {
+      font-family: var(--fu), sans-serif;
+      font-size: clamp(14px, 1.25vw, 16px);
+      color: var(--wd);
+      line-height: 1.72;
+      margin: 0;
+      flex: 1;
+    }
+
+    .tl-mod-spec {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px 16px;
+      margin: 6px 0 0;
+      padding: 18px 0 0;
+      border-top: 1px solid var(--bd);
+    }
+    .tl-mod-spec dt {
+      font-family: var(--fu), sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--wm);
+      margin: 0 0 6px;
+      text-transform: none;
+    }
+    .tl-mod-spec dd {
+      font-family: var(--fu), sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--w);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .tl-mod-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      font-family: var(--fu), sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ac);
+    }
+    .tl-mod-cta svg {
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tl-mod:hover .tl-mod-cta svg {
+      transform: translate(4px, -4px);
+    }
+
+    .tl-faq-sec {
+      padding: 0 0 56px;
+    }
+
+    @media (max-width: 1100px) {
+      .tl-mods {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .tl-mods .tl-mod-glare:nth-child(3) {
+        grid-column: 1 / -1;
+        max-width: calc(50% - clamp(9px, 1.25vw, 12px));
+        margin: 0 auto;
+      }
+    }
+    @media (max-width: 900px) {
+      .tl-pipe {
+        grid-template-columns: 1fr;
+      }
+      .tl-pipe-step {
+        border-bottom: 1px solid var(--bd);
+      }
+      .tl-pipe-step:last-child {
+        border-bottom: none;
+      }
+      .tl-pipe-k {
+        writing-mode: horizontal-tb;
+        transform: none;
+        min-width: 0;
+        text-align: left;
+        padding: 16px 18px;
+        border-right: none;
+        border-bottom: 1px solid var(--bd);
+      }
+      .tl-mods {
+        grid-template-columns: 1fr;
+      }
+      .tl-mods .tl-mod-glare:nth-child(3) {
+        grid-column: auto;
+        max-width: none;
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .tl-mod-spec {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .tl-mod-top {
+        flex-wrap: wrap;
+      }
+      .tl-mod-eyebrow {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tl-mod-glare {
+        animation: none;
+        background: linear-gradient(135deg, var(--ac), var(--ac2));
+        background-size: 100% 100%;
+      }
+      .tl-mod-glare--green {
+        background: linear-gradient(135deg, var(--green), var(--ac2));
+        background-size: 100% 100%;
+      }
+      .tl-mod-glare--amber {
+        background: linear-gradient(135deg, #F59E0B, var(--ac2));
+        background-size: 100% 100%;
+      }
+      .tl-mod-glare:hover {
+        transform: none;
+      }
+      .tl-mod:hover .tl-mod-cta svg {
+        transform: none;
+      }
+    }
+  </style>
+
+  <script>
+    const prog = document.getElementById('scrollProg');
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (prog) {
+          const s = document.documentElement;
+          prog.style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100 + '%';
+        }
+      },
+      { passive: true },
+    );
+  </script>
+</Layout>

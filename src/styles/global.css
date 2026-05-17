@@ -1,0 +1,843 @@
+/* ============================================================
+   SEOSHIVAM.PRO — Global Styles v2
+   Mobile-first · Dark/Light mode · Full design system
+   ============================================================ */
+
+@import 'lenis/dist/lenis.css';
+
+:root {
+  --bg:#080808; --s1:#0F0F0F; --s2:#161616; --s3:#1E1E1E; --s4:#252525;
+  --bd:#2A2A2A; --bds:#1A1A1A;
+  --w:#F5F2EC; --wd:#A8A49C; --wm:#5C5954;
+  --ac:#4F8EF7; --ac2:#1A3A8F;
+  --ag:linear-gradient(135deg,#4F8EF7 0%,#1A3A8F 100%);
+  --agl:rgba(79,142,247,0.10);
+  --green:#22C55E; --glow:rgba(34,197,94,0.45);
+  --red:#EF4444;
+  --grid-color:rgba(255,255,255,0.028);
+  --ray-color:rgba(79,142,247,0.04);
+  --grain-op:0.022;
+  --fd:'Instrument Serif',Georgia,serif;
+  --fu:'Syne',system-ui,sans-serif;
+  --fm:'JetBrains Mono',monospace;
+  --r-sm:4px; --r-md:8px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --max-w:1160px;
+  --t-fast:0.15s ease; --t-med:0.25s ease; --t-slow:0.45s cubic-bezier(0.16,1,0.3,1);
+}
+
+html {
+  color-scheme: dark;
+}
+
+/* Theme switch: smooth root crossfade when View Transitions API runs (Nav toggle) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.38s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01s;
+  }
+}
+
+html.light {
+  color-scheme: light;
+  /* Cream-paper palette — slightly warmer + better step contrast for editorial feel */
+  --bg:#F7F4EE; --s1:#FFFFFF; --s2:#F1ECE3; --s3:#E5DFD3; --s4:#D9D2C4;
+  --bd:#D8D2C7; --bds:#E8E2D6;
+  --w:#15110D; --wd:#54504A; --wm:#9F9A92;
+  --ac:#2554D6; --ac2:#173389;
+  --ag:linear-gradient(135deg,#2554D6 0%,#173389 100%);
+  --agl:rgba(37,84,214,0.08);
+  --green:#0E7A3E; --glow:rgba(14,122,62,0.22);
+  --grid-color:rgba(20,16,12,0.045);
+  --ray-color:rgba(37,84,214,0.022);
+  --grain-op:0.010;
+}
+
+/* Light mode — cursor: remove difference blend (inverts weirdly on cream) */
+html.light .cur-dot{mix-blend-mode:normal;background:var(--ac)}
+html.light .cur-ring{border-color:rgba(37,84,214,.30)}
+
+/* Light mode — keep terminal panel always dark */
+html.light .term{background:#0D0D14!important;border-color:#1E1E2E!important}
+html.light .term-bar{background:#13131C!important;border-color:#1E1E2E!important}
+
+/* ============================================================
+   LIGHT-MODE COMPONENT POLISH
+   The console-style widgets (GscDashboard, AudienceWidget,
+   deploy log on /about, browser mockups in PortfolioGallery)
+   stay dark in light mode — terminals are a known convention
+   and the deliberate contrast is part of the aesthetic.
+   What we tune here is HOW that dark sits on the cream page:
+   softer outer shadow, brand-blue border tint, subtle outer ring.
+   ============================================================ */
+html.light .gsc,
+html.light .aud,
+html.light .ab-bl-log,
+html.light .pgal-frame{
+  box-shadow:
+    0 24px 56px rgba(20,16,12,.10),
+    0 4px 12px rgba(37,84,214,.08),
+    0 0 0 1px rgba(37,84,214,.18);
+  border-color:rgba(37,84,214,.20);
+}
+
+/* Light-mode editorial covers — soften the deep blue-on-cream contrast */
+html.light .ic-cover{
+  box-shadow:
+    0 28px 56px rgba(20,16,12,.12),
+    0 4px 14px rgba(37,84,214,.10),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(37,84,214,.22);
+}
+
+/* Cards on cream: lift them with refined shadow recipes */
+html.light .ccta-card{
+  box-shadow:
+    0 24px 56px rgba(20,16,12,.08),
+    0 2px 8px rgba(37,84,214,.06),
+    0 0 0 1px rgba(37,84,214,.10);
+}
+
+/* Form inputs on cream: warm white background + refined focus ring */
+html.light .ccta-input{
+  background:#FFFFFF;
+  border-color:#E0DAD0;
+}
+html.light .ccta-input:focus{
+  background:#FFFFFF;
+  border-color:var(--ac);
+  box-shadow:0 0 0 3px rgba(37,84,214,.10);
+}
+
+/* Service-page FAQ open state — softer brand-tint on cream */
+html.light .faq-list .faq-item:has(.faq-btn[aria-expanded="true"]){
+  background:rgba(37,84,214,.05);
+  border-color:rgba(37,84,214,.32);
+}
+html.light .faq-list .faq-item{background:#FFFFFF}
+
+/* Tools / service cards: tone down the glow on cream so it reads as warmth, not noise */
+html.light .svc-other,
+html.light .mytools-link{
+  box-shadow:
+    0 12px 32px rgba(20,16,12,.06),
+    0 2px 6px rgba(37,84,214,.04);
+}
+html.light .svc-other:hover,
+html.light .mytools-link:hover{
+  box-shadow:
+    0 18px 48px rgba(20,16,12,.10),
+    0 4px 12px rgba(37,84,214,.14);
+}
+
+/* Pills, chips, eyebrows: deeper blue on cream for legibility */
+html.light .label,
+html.light .hair,
+html.light .eyebrow,
+html.light .stamp{color:var(--ac)}
+
+/* Underlined article links on cream */
+html.light .art-prose a:not(.no-style){
+  text-decoration-color:rgba(37,84,214,.32);
+}
+html.light .art-prose a:not(.no-style):hover{
+  color:var(--ac2);
+  text-decoration-color:var(--ac);
+}
+
+/* Code blocks: warm cream background instead of pure light gray */
+html.light .art-prose pre,
+html.light .art-prose code{
+  background:#F1ECE3;
+  border-color:#E0DAD0;
+}
+html.light .art-prose pre code{background:transparent}
+
+/* Drop cap on light articles: deeper blue gradient for letterpress feel */
+html.light .art-prose > p:first-of-type::first-letter{
+  background:linear-gradient(140deg, var(--ac) 0%, #5A85E8 50%, var(--ac2) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* Reduce ray rotation visibility on cream — they read too strong */
+html.light .ray{opacity:.45}
+
+/* Green status pills on cream: deeper green for contrast */
+html.light .adot{box-shadow:0 0 8px rgba(14,122,62,.45)}
+
+/* Light-mode footer + nav refinements */
+html.light .nav-pill{
+  box-shadow:0 1px 0 rgba(20,16,12,.04), 0 8px 28px rgba(20,16,12,.06);
+}
+html.light .nav-wrap.sc .nav-pill{
+  box-shadow:0 1px 0 rgba(20,16,12,.06), 0 12px 36px rgba(20,16,12,.10);
+}
+
+/* ============================================================
+   GLOBAL SCROLL + ENTRANCE ANIMATIONS — visible by default
+   ============================================================ */
+
+/* Page-load entrance: fade-only.
+   IMPORTANT: never put transform/filter/perspective on <body> or any
+   ancestor of position:fixed elements (nav, custom cursor, scroll
+   progress) — it would break the fixed-to-viewport positioning. */
+@keyframes pageEnter{
+  from{opacity:0}
+  to{opacity:1}
+}
+body{animation:pageEnter .55s ease-out both}
+
+/* Strong .rv reveal — every section element with .rv slides up 24px
+   and fades in over 700ms. Gated behind html.js so content is ALWAYS
+   visible if JS is delayed or fails (no more invisible-hero on slow
+   load). The IntersectionObserver in Nav.astro adds .in when the
+   element scrolls into view. */
+html.js .rv{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
+  will-change:opacity, transform;
+}
+html.js .rv.in{opacity:1;transform:translateY(0)}
+/* Stagger delays — .rv.d1 .. d4 cascade after the parent reveal */
+.rv.d1{transition-delay:.10s}
+.rv.d2{transition-delay:.20s}
+.rv.d3{transition-delay:.30s}
+.rv.d4{transition-delay:.40s}
+.rv.d5{transition-delay:.50s}
+
+/* Honour reduced motion ONLY for non-essential effects (NOT .rv reveal,
+   which would otherwise leave content invisible forever). */
+@media(prefers-reduced-motion:reduce){
+  body{animation:none}
+  .rv{transition-duration:.01s}
+  .rv,.rv.in{opacity:1;transform:none}
+}
+html.light .term .co{color:#22C55E!important}
+html.light .term .cd{color:#2E2E3A!important}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+
+body{
+  background:var(--bg);color:var(--w);
+  font-family:var(--fu);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+  /* Do not transition background: it caused a visible cream flash when bundled CSS hydrated. */
+  transition:color 0.35s ease;
+}
+
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
+  opacity:var(--grain-op);
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 40%,black 30%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 90% at 50% 40%,black 30%,transparent 100%);
+}
+
+.rays-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+
+.ray{
+  position:absolute;top:50%;left:50%;
+  width:1px;height:55vh;
+  background:linear-gradient(to bottom,var(--ray-color),transparent);
+  transform-origin:top center;
+  transform:rotate(calc(var(--i)*30deg)) translateX(-50%);
+  animation:rayRot 80s linear infinite;
+  animation-delay:calc(var(--i)*-6.5s);
+  will-change:transform;
+}
+@keyframes rayRot{to{transform:rotate(calc(var(--i)*30deg + 360deg)) translateX(-50%)}}
+
+.scroll-prog{position:fixed;top:0;left:0;height:2px;background:var(--ag);width:0%;z-index:9999;border-radius:0 2px 2px 0;pointer-events:none}
+
+/* ─── OLD cursor system: HIDDEN, replaced by .bcur ─── */
+.cur-dot,.cur-ring{display:none !important}
+
+/* ─── NEW BRAND CURSOR ─── */
+/* Single element. Always centered on actual mouse via translate(-50%,-50%).
+   Default: 10px dot. On data-cursor hover: morphs into a brand-gradient pill with label. */
+.bcur{
+  position:fixed;
+  top:0;left:0;
+  width:10px;height:10px;
+  border-radius:999px;
+  background:var(--ac);
+  pointer-events:none;
+  z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  transform:translate(-50%,-50%);
+  transition:
+    width .35s cubic-bezier(.16,1,.3,1),
+    height .35s cubic-bezier(.16,1,.3,1),
+    background .3s,
+    box-shadow .3s,
+    padding .3s cubic-bezier(.16,1,.3,1);
+  will-change:left,top;
+  white-space:nowrap;
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(79,142,247,.0), 0 4px 14px rgba(79,142,247,.0);
+}
+.bcur-lbl{
+  font-family:var(--fm);font-size:10px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;
+  opacity:0;
+  width:0;
+  transition:opacity .2s ease,width .35s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+}
+/* Soft hover state (any clickable a/button) */
+.bcur.hov{
+  width:38px;height:38px;
+  background:transparent;
+  box-shadow:0 0 0 1px rgba(79,142,247,.55), 0 6px 18px rgba(79,142,247,.18);
+}
+/* Labeled hover state: pill grows with text inside */
+.bcur.lbl{
+  width:auto;height:34px;
+  padding:0 18px;
+  background:linear-gradient(135deg,#4F8EF7 0%,#1A3A8F 100%);
+  background-size:220% 100%;
+  animation:bcurGrad 6s linear infinite;
+  box-shadow:0 0 0 1px rgba(79,142,247,.0), 0 10px 28px rgba(79,142,247,.45);
+}
+.bcur.lbl .bcur-lbl{opacity:1;width:auto}
+/* Hide custom cursor over social icon buttons (brand hover only) */
+.bcur.soc-off{
+  opacity:0;
+  width:10px;height:10px;
+  box-shadow:none;
+  transition:opacity .12s ease,width .12s ease,box-shadow .12s ease;
+}
+@keyframes bcurGrad{0%{background-position:0% 50%}100%{background-position:220% 50%}}
+@media(hover:none){.bcur{display:none}}
+
+/* ════════════════════════════════════════════════════════════
+   EDITORIAL COVER PRIMITIVE — used on homepage, /insights, /insights/[slug]
+   Defined globally so it renders on every page.
+   ════════════════════════════════════════════════════════════ */
+.ic-cover{
+  position:relative;
+  aspect-ratio:21/9;
+  min-height:340px;
+  border-radius:18px;
+  overflow:hidden;
+  padding:40px 48px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:24px;
+  background:
+    radial-gradient(ellipse 120% 80% at 90% 10%, rgba(79,142,247,.32) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 10% 100%, rgba(26,58,143,.55) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,142,247,.10) 0%, transparent 70%),
+    linear-gradient(135deg, #0A0B14 0%, #050608 100%);
+  box-shadow:
+    0 32px 80px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(79,142,247,.12);
+  isolation:isolate;
+}
+html.light .ic-cover{
+  box-shadow:
+    0 32px 60px rgba(43,91,224,.18),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(79,142,247,.18);
+}
+.ic-cover-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 90%);
+}
+.ic-cover-grain{
+  position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+.ic-cover-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:relative;z-index:1}
+.ic-cover-logo{font-family:var(--fu);font-size:14px;font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.86);display:inline-flex;align-items:baseline}
+.iccl-1{color:rgba(255,255,255,.86)}
+.iccl-2{
+  font-family:var(--fd);font-style:italic;font-weight:400;font-size:18px;
+  background:linear-gradient(110deg,#4F8EF7 0%,#7BAEFF 50%,#1A3A8F 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:gradShift 8s linear infinite;
+  margin:0 1px;
+}
+.iccl-3{color:rgba(255,255,255,.6);font-size:13px}
+.ic-cover-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:9px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+  padding:6px 12px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.25);backdrop-filter:blur(8px);
+}
+.ic-cover-tag-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--agl);animation:opcPulse 1.6s ease-in-out infinite}
+@keyframes opcPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.85)}}
+@keyframes gradShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.ic-cover-title{
+  font-family:var(--fd);
+  font-size:clamp(28px,4.5vw,56px);
+  font-weight:400;font-style:italic;
+  line-height:1.02;letter-spacing:-.025em;
+  background:linear-gradient(110deg,#4F8EF7 0%,#A8C8FF 25%,#7BAEFF 50%,#A8C8FF 75%,#4F8EF7 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:gradShift 10s linear infinite;
+  position:relative;z-index:1;
+  max-width:560px;margin:0;
+}
+.ic-cover-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;position:relative;z-index:1;flex-wrap:wrap}
+.ic-cover-meta{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ic-cover-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);display:inline-block}
+.ic-cover-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fu);font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.92);
+  padding:10px 16px;border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);
+  transition:background .35s,border-color .35s,transform .35s;
+}
+.ic-cover-cta svg{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+
+/* Editorial cover — mobile: drop ultra-wide ratio + constrain width (prevents horizontal overflow / clipped titles) */
+@media(max-width:768px){
+  .ic-cover{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    aspect-ratio:4/3;
+    min-height:0;
+    padding:22px 18px;
+    gap:16px;
+    border-radius:16px;
+  }
+  .ic-cover-title{
+    max-width:100%;
+    font-size:clamp(22px,6.2vw,34px);
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
+  .ic-cover-top{flex-wrap:wrap;gap:12px}
+  .ic-cover-bottom{align-items:flex-start}
+}
+@media(max-width:480px){
+  .ic-cover{
+    aspect-ratio:3/4;
+    padding:18px 14px;
+    border-radius:14px;
+  }
+  .ic-cover-meta{font-size:9px;letter-spacing:.12em}
+}
+
+.container{max-width:var(--max-w);margin:0 auto;padding:0 40px}
+@media(max-width:768px){.container{padding:0 20px}}
+
+section{padding:110px 0;position:relative;z-index:1}
+@media(max-width:768px){section{padding:72px 0}}
+
+/* ── Universal section H2 (USED EVERYWHERE — consistency baked in) ──
+   Recipe: line 1 = white serif, line 2 = italic animated-gradient serif.
+   Apply via class .sec-h2, OR by class names ending in -h that inherit. */
+.sec-h,.sec-h2{
+  font-family:var(--fd);
+  font-size:clamp(34px,5.2vw,68px);
+  font-weight:400;letter-spacing:-.022em;line-height:.96;color:var(--w);
+}
+.sec-h em,.sec-h2 em,.display em{
+  font-style:italic;
+  background:linear-gradient(110deg,var(--ac) 0%,#7BAEFF 25%,var(--ac2) 50%,#7BAEFF 75%,var(--ac) 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gradShift 8s linear infinite;
+  will-change:background-position;
+}
+html.light .sec-h em,html.light .sec-h2 em,html.light .display em{
+  background:linear-gradient(110deg,var(--ac) 0%,#5A8AE8 25%,var(--ac2) 50%,#5A8AE8 75%,var(--ac) 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+@media(prefers-reduced-motion:reduce){
+  .sec-h em,.sec-h2 em,.display em{animation:none;background-position:0% 50%}
+}
+.display{font-family:var(--fd);font-size:clamp(44px,6.8vw,80px);font-weight:400;letter-spacing:-.01em;line-height:.95;color:var(--w)}
+
+/* ── Unified eyebrow: same look for .label and .hair (consistency baked in) ──
+   Animated gradient bar marker. Hover extends the bar. Premium + interactive. */
+.label, .hair, .eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--fm);font-size:10px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  position:relative;line-height:1;
+  transition:color .35s;
+}
+.label::before, .hair::before, .eyebrow::before{
+  content:'';display:inline-block;
+  width:28px;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--ac) 100%);
+  flex-shrink:0;
+  transition:width .45s cubic-bezier(.16,1,.3,1),background .35s;
+}
+.label:hover::before, .hair:hover::before, .eyebrow:hover::before{
+  width:48px;
+  background:linear-gradient(90deg,transparent 0%,var(--ac) 60%,#7BAEFF 100%);
+}
+/* Override .hair's old double-line treatment (right-side line removed for consistency) */
+.hair::after{display:none}
+.hair.left{justify-content:flex-start}
+.hair{margin:0}
+
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--ac);color:#fff;font-family:var(--fu);font-size:14px;font-weight:700;padding:13px 28px;border-radius:var(--r-pill);transition:opacity .18s,transform .18s,box-shadow .25s;position:relative;overflow:hidden;letter-spacing:-.01em;white-space:nowrap;border:none;cursor:pointer}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,transparent 60%);pointer-events:none}
+.btn-p:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 32px var(--agl)}
+
+.btn-s{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--w);font-family:var(--fu);font-size:14px;font-weight:600;padding:12px 28px;border-radius:var(--r-pill);border:1px solid var(--bd);transition:border-color .2s,background .2s,color .2s;white-space:nowrap;cursor:pointer;text-decoration:none}
+.btn-s:hover{border-color:var(--ac);background:var(--agl)}
+
+html.js .rv{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+html.js .rv.in{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}.rv.d5{transition-delay:.4s}
+
+.grad{background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.adot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--glow);animation:pg 2s ease-in-out infinite;flex-shrink:0;display:inline-block}
+@keyframes pg{0%,100%{opacity:1;box-shadow:0 0 8px var(--glow)}50%{opacity:.7;box-shadow:0 0 18px var(--glow)}}
+
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none}}
+
+a{text-decoration:none;color:inherit}
+img,video{max-width:100%;display:block}
+ul,ol{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+.hide-mob{display:block}
+@media(max-width:900px){.hide-mob{display:none!important}}
+
+/* ============================================================
+   OPERATOR'S EDITORIAL — utility kit
+   Engineer's working desk × Editorial authority
+   ============================================================ */
+
+/* ── Animated gradient text (slow, hypnotic shift on accent words) ── */
+.grad-anim{
+  display:inline-block;
+  line-height:1.12;
+  padding:.06em .14em .1em .02em;
+  overflow:visible;
+  vertical-align:baseline;
+  background:linear-gradient(110deg,var(--ac) 0%,#7BAEFF 25%,var(--ac2) 50%,#7BAEFF 75%,var(--ac) 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gradShift 8s linear infinite;
+}
+@keyframes gradShift{0%{background-position:0% 50%}100%{background-position:-300% 50%}}
+@media(prefers-reduced-motion:reduce){.grad-anim{animation:none;background-position:0% 50%}}
+html.light .grad-anim{background:linear-gradient(110deg,var(--ac) 0%,#5A8AE8 25%,var(--ac2) 50%,#5A8AE8 75%,var(--ac) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ── Classification stamp / file label (monospace operator chrome) ── */
+.stamp{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--wm);padding:5px 10px;border:1px solid var(--bd);border-radius:3px;
+  background:linear-gradient(180deg,rgba(255,255,255,.012),transparent);
+}
+.stamp::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px var(--agl)}
+.stamp.dim{color:var(--wm);border-color:var(--bds)}
+.stamp.dim::before{background:var(--wm);box-shadow:none}
+
+/* ── Hairline horizontal rule with file annotation ── */
+.hair{display:flex;align-items:center;gap:14px;font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm);margin:24px 0}
+.hair::before,.hair::after{content:'';flex:1;height:1px;background:var(--bd)}
+.hair.left::before{display:none}
+.hair.left{justify-content:flex-start}
+
+/* ── Marginalia (italic serif notes in left margin, like a published essay) ── */
+.marg{
+  font-family:var(--fd);font-style:italic;font-size:14px;line-height:1.45;
+  color:var(--wd);max-width:200px;
+  border-left:1px solid var(--ac);padding-left:14px;
+  position:relative;
+}
+.marg::before{
+  content:'';position:absolute;left:-3px;top:6px;width:5px;height:5px;border-radius:50%;
+  background:var(--ac);box-shadow:0 0 8px var(--agl);
+}
+
+/* ── Drop cap (editorial first-letter for long-form posts) ── */
+.dropcap::first-letter{
+  font-family:var(--fd);font-size:5.2em;line-height:.85;font-weight:400;
+  float:left;padding:6px 12px 0 0;color:var(--w);
+  background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ── File-number column display (case 001, etc) ── */
+.filenum{
+  font-family:var(--fd);font-size:clamp(54px,9vw,128px);font-weight:400;
+  line-height:.82;letter-spacing:-.04em;color:var(--bd);user-select:none;
+  transition:color .35s cubic-bezier(.16,1,.3,1);
+}
+.filenum.lit{color:transparent;background:var(--ag);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ── Magnetic button (subtle attraction on hover) ── */
+.mag{transition:transform .25s cubic-bezier(.16,1,.3,1)}
+
+/* ── Letter-stagger reveal helper (split-text animation hook) ── */
+.split-stag>span{display:inline-block;opacity:0;transform:translateY(.4em);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
+.split-stag.in>span{opacity:1;transform:translateY(0)}
+
+/* ── Editorial blockquote / pull-quote ── */
+.pullq{
+  font-family:var(--fd);font-size:clamp(20px,2.4vw,30px);font-weight:400;line-height:1.25;letter-spacing:-.012em;
+  color:var(--w);font-style:italic;
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  padding:24px 0;margin:32px 0;position:relative;
+}
+.pullq::before{content:'\201C';position:absolute;left:-8px;top:18px;font-size:54px;color:var(--ac);opacity:.55;line-height:1}
+
+/* ── Subtle hover lift used on cards ── */
+.lift{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s,background .25s}
+.lift:hover{transform:translateY(-3px);border-color:var(--ac)}
+
+/* ── Operator scanline overlay (use sparingly on terminals) ── */
+.scan{position:relative;overflow:hidden}
+.scan::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(79,142,247,.02) 3px,rgba(79,142,247,.02) 4px);mix-blend-mode:overlay}
+
+/* ── Live ticker dot ── */
+.tick{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm)}
+.tick::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--glow);animation:pg 1.6s ease-in-out infinite}
+
+/* ── Reveal helper extras (longer chains for orchestrated entrances) ── */
+.rv.d6{transition-delay:.48s}.rv.d7{transition-delay:.56s}.rv.d8{transition-delay:.64s}
+
+/* ── Mobile motion guard (cap heavy animations on small screens) ── */
+@media(max-width:640px){
+  .grad-anim{animation-duration:14s}
+  .ray{display:none} /* drop ray work on mobile to save paint */
+  body::after{opacity:calc(var(--grain-op) * .6)}
+}
+
+/* ════════════════════════════════════════════════════════════
+   PILL — premium interactive badge (used everywhere consistently)
+   Hover: capsule fills with animated gradient, text shimmers.
+   ════════════════════════════════════════════════════════════ */
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:10px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ac);
+  padding:9px 18px;border-radius:999px;
+  border:1px solid rgba(79,142,247,.22);
+  background:transparent;
+  position:relative;overflow:hidden;isolation:isolate;
+  transition:border-color .35s,transform .35s cubic-bezier(.16,1,.3,1),color .35s;
+  cursor:default;line-height:1;
+}
+html.light .pill{border-color:rgba(43,91,224,.22)}
+
+/* Animated gradient capsule fill on hover */
+.pill::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(110deg,rgba(79,142,247,.18) 0%,rgba(123,174,255,.32) 25%,rgba(26,58,143,.18) 50%,rgba(123,174,255,.32) 75%,rgba(79,142,247,.18) 100%);
+  background-size:300% 100%;
+  background-position:0% 50%;
+  opacity:0;
+  transition:opacity .35s;
+  z-index:-1;
+}
+.pill:hover{
+  border-color:var(--ac);
+  transform:translateY(-1px);
+  color:var(--w);
+}
+.pill:hover::before{
+  opacity:1;
+  animation:pillSweep 6s linear infinite;
+}
+@keyframes pillSweep{0%{background-position:0% 50%}100%{background-position:-300% 50%}}
+@media(prefers-reduced-motion:reduce){.pill:hover::before{animation:none}}
+
+/* Pill icon: subtle rotate on hover */
+.pill svg{transition:transform .35s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+.pill:hover svg{transform:rotate(15deg) scale(1.1)}
+
+/* Sizes */
+.pill.pill-sm{font-size:9px;padding:6px 12px;gap:6px}
+.pill.pill-lg{font-size:11px;padding:11px 22px}
+
+/* ============================================================
+   SERVICE-PAGE FAQ ACCORDION
+   Scoped strictly to ".faq-list .faq-item" — used ONLY on
+   /services, /services/aeo, /services/seo, /services/web-design.
+   Homepage uses .faq-stage > .faq-item with its own scoped styles
+   and is INTENTIONALLY excluded from this block.
+   ============================================================ */
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-list .faq-item{
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:12px;
+  overflow:hidden;
+  transition:border-color .25s, background .25s;
+}
+.faq-list .faq-item:hover{border-color:rgba(79,142,247,.35)}
+.faq-list .faq-item:has(.faq-btn[aria-expanded="true"]){
+  border-color:rgba(79,142,247,.45);
+  background:var(--agl);
+}
+.faq-list .faq-btn{
+  appearance:none;-webkit-appearance:none;
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:18px 22px;
+  background:transparent;
+  border:none;
+  text-align:left;
+  cursor:pointer;
+  font-family:var(--fu);font-size:15.5px;font-weight:600;
+  color:var(--w);
+  letter-spacing:-.012em;
+  line-height:1.4;
+  transition:color .2s;
+}
+.faq-list .faq-btn:hover{color:var(--ac)}
+.faq-list .faq-btn span{flex:1;min-width:0}
+.faq-list .faq-btn[aria-expanded="true"]{color:var(--ac)}
+.faq-list .faq-icon{
+  flex-shrink:0;
+  width:30px;height:30px;
+  border-radius:999px;
+  background:var(--s3);
+  border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-size:18px;font-style:normal;font-weight:400;
+  color:var(--ac);
+  line-height:1;
+  transition:transform .35s cubic-bezier(.16,1,.3,1), background .25s, border-color .25s, color .25s;
+}
+.faq-list .faq-btn[aria-expanded="true"] .faq-icon{
+  transform:rotate(45deg);
+  background:var(--ac);
+  border-color:var(--ac);
+  color:#fff;
+}
+.faq-list .faq-ans{
+  padding:0 22px 20px;
+  margin-top:-4px;
+  font-family:var(--fu);font-size:14.5px;
+  color:var(--wd);
+  line-height:1.75;
+  border-top:1px solid var(--bd);
+  padding-top:18px;
+}
+.faq-list .faq-ans[hidden]{display:none}
+@media(max-width:680px){
+  .faq-list .faq-btn{padding:16px 18px;font-size:14.5px;gap:12px}
+  .faq-list .faq-icon{width:26px;height:26px;font-size:16px}
+  .faq-list .faq-ans{padding:18px 18px 18px}
+}
+
+/* ── Content-only internal link preview card (no global link underlines) ── */
+#artProse a.content-int,
+.art-prose a.content-int,
+.avs-steps-note a.content-int{
+  color:#7BAEFF;
+  font-weight:600;
+  text-decoration:underline;
+  text-decoration-thickness:2px;
+  text-underline-offset:4px;
+  text-decoration-color:rgba(123,190,255,.55);
+}
+#artProse a.content-int:hover,
+.art-prose a.content-int:hover,
+.avs-steps-note a.content-int:hover{
+  color:#B8D4FF;
+  text-decoration-color:rgba(184,212,255,.85);
+}
+html.light #artProse a.content-int,
+html.light .art-prose a.content-int,
+html.light .avs-steps-note a.content-int{
+  color:var(--ac);
+  text-decoration-color:rgba(37,84,214,.42);
+}
+
+/* ── Site-wide inline internal links (preview-enabled on all pages) ── */
+a.ilink{
+  color:#7BAEFF;
+  font-weight:600;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-decoration-color:rgba(123,190,255,.5);
+  transition:color .18s,text-decoration-color .18s;
+}
+a.ilink:hover{
+  color:#B8D4FF;
+  text-decoration-color:rgba(184,212,255,.85);
+}
+html.light a.ilink{
+  color:var(--ac);
+  text-decoration-color:rgba(37,84,214,.4);
+}
+html.light a.ilink:hover{
+  color:var(--ac2);
+  text-decoration-color:rgba(26,58,143,.6);
+}
+a.ilink-muted{
+  color:inherit;
+  font-weight:inherit;
+  text-decoration:underline dotted;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-decoration-color:rgba(123,190,255,.4);
+  transition:text-decoration-color .18s;
+}
+a.ilink-muted:hover{
+  text-decoration-color:rgba(123,190,255,.8);
+}
+html.light a.ilink-muted{text-decoration-color:rgba(37,84,214,.35)}
+html.light a.ilink-muted:hover{text-decoration-color:rgba(26,58,143,.6)}
+.site-link-tip{
+  position:fixed;
+  z-index:480;
+  max-width:min(320px,calc(100vw - 32px));
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid var(--bd);
+  background:var(--s1);
+  box-shadow:0 24px 56px rgba(0,0,0,.45), 0 0 0 1px rgba(79,142,247,.15);
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .18s ease, visibility .18s ease;
+}
+.site-link-tip.is-on{opacity:1;visibility:visible}
+.site-link-tip-k{font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);margin-bottom:8px}
+.site-link-tip-t{font-family:var(--fu);font-size:14px;font-weight:700;color:var(--w);line-height:1.35;margin:0 0 6px;letter-spacing:-.02em}
+.site-link-tip-d{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.site-link-tip-u{font-family:var(--fm);font-size:10px;color:var(--wm);margin-top:10px;word-break:break-all;opacity:.85}
+html.light .site-link-tip{background:var(--s1);border-color:rgba(37,84,214,.22)}
+

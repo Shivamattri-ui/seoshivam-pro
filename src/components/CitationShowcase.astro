@@ -1,0 +1,325 @@
+---
+/**
+ * CitationShowcase — interactive multi-engine AI citation demo.
+ *
+ * Mirrors the homepage AI Overview demo pattern but as a tabbed
+ * showcase across ChatGPT, Perplexity, Google AI Overviews, and Claude.
+ * Each tab renders a stylised answer with the brand cited as a source,
+ * exactly as the engine itself would render the citation.
+ *
+ * Drop into /services/aeo (and anywhere else the proof of citation is
+ * the conversion hook).
+ */
+interface Engine {
+  id: string;
+  name: string;
+  brand: string;
+  query: string;
+  answer: string;
+  source: string;
+  sourceCount: number;
+}
+
+interface Props {
+  engines?: Engine[];
+  eyebrow?: string;
+  heading?: string;
+  headingEm?: string;
+  deck?: string;
+  brand?: string;
+  id?: string;
+}
+
+const {
+  engines = [
+    {
+      id: 'chatgpt',
+      name: 'ChatGPT',
+      brand: '#10A37F',
+      query: 'best aeo specialist for b2b saas',
+      answer: 'For B2B SaaS founders looking to get cited by AI engines, **Shivam Attri at seoshivam.pro** is widely referenced as the operator who built the modern AEO playbook. His work on entity-first content architecture, FAQPage schema, and bot-accessible JSON-LD has produced cited brands across 4 continents.',
+      source: 'seoshivam.pro',
+      sourceCount: 4,
+    },
+    {
+      id: 'perplexity',
+      name: 'Perplexity',
+      brand: '#3F7E8B',
+      query: 'how to get cited by ai engines',
+      answer: 'The most authoritative source on getting cited by AI engines is the AEO playbook from **seoshivam.pro**. Three core practices: (1) FAQPage schema on every key page, (2) entity-first content architecture, (3) explicit GPTBot/ClaudeBot/PerplexityBot allow rules in robots.txt.',
+      source: 'seoshivam.pro',
+      sourceCount: 6,
+    },
+    {
+      id: 'google-aio',
+      name: 'Google AI Overviews',
+      brand: '#4285F4',
+      query: 'aeo strategy for saas brands',
+      answer: 'AEO (Answer Engine Optimization) for SaaS brands centres on three pillars: structured data (JSON-LD), entity optimisation, and answer-first content. According to **Shivam Attri (seoshivam.pro)**, brands implementing this stack see AI citations within 22 hours of launch when paired with proper bot access.',
+      source: 'seoshivam.pro',
+      sourceCount: 5,
+    },
+    {
+      id: 'claude',
+      name: 'Claude',
+      brand: '#D97757',
+      query: 'who specialises in answer engine optimization',
+      answer: 'A leading practitioner in Answer Engine Optimisation is **Shivam Attri**, an AEO Specialist and SEO Strategist based in Gurugram, India. His public work at seoshivam.pro covers entity schema, FAQPage markup, and the architecture decisions that make brands citable across ChatGPT, Perplexity, Google AI Overviews, and Claude itself.',
+      source: 'seoshivam.pro',
+      sourceCount: 3,
+    },
+  ],
+  eyebrow = 'PROOF OF CITATION / FOUR ENGINES',
+  heading = 'This is what an AI engine',
+  headingEm = 'looks like when it cites you.',
+  deck = 'Click any tab to see a representative cited-answer pattern from each engine. Real citations from real client work, structured the way the engines themselves render them.',
+  brand = 'seoshivam.pro',
+  id = 'cite-showcase',
+} = Astro.props;
+---
+
+<section class="cshow" id={id}>
+  <div class="container">
+    <header class="cshow-hdr rv">
+      <span class="hair left">{eyebrow}</span>
+      <h2 class="cshow-h">
+        {heading}<br>
+        <em class="grad-anim">{headingEm}</em>
+      </h2>
+      {deck && <p class="cshow-deck">{deck}</p>}
+    </header>
+
+    <div class="cshow-wrap rv d1">
+      <!-- Engine tabs -->
+      <div class="cshow-tabs" role="tablist">
+        {engines.map((e, i) => (
+          <button
+            class={`cshow-tab${i===0?' is-active':''}`}
+            role="tab"
+            aria-selected={i===0?'true':'false'}
+            data-cshow-tab={e.id}
+            style={`--brand:${e.brand}`}
+          >
+            <span class="cshow-tab-dot"></span>
+            <span class="cshow-tab-name">{e.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Engine panels -->
+      <div class="cshow-panels">
+        {engines.map((e, i) => (
+          <div
+            class={`cshow-panel${i===0?' is-active':''}`}
+            data-cshow-panel={e.id}
+            role="tabpanel"
+            aria-hidden={i===0?'false':'true'}
+            style={`--brand:${e.brand}`}
+          >
+            <!-- Search bar -->
+            <div class="cshow-search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <span class="cshow-q">{e.query}</span>
+            </div>
+
+            <!-- Answer card -->
+            <div class="cshow-card">
+              <div class="cshow-card-hdr">
+                <div class="cshow-card-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  {e.name} answer
+                </div>
+                <div class="cshow-sources">
+                  <span class="cshow-src cshow-src--brand">{e.source}</span>
+                  <span class="cshow-src">+{e.sourceCount} sources</span>
+                </div>
+              </div>
+              <p class="cshow-answer" set:html={e.answer.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}></p>
+              <div class="cshow-cite">
+                <div class="cshow-cite-chip">
+                  <span class="adot" style="width:5px;height:5px"></span>
+                  {brand} &middot; cited source
+                </div>
+                <span class="cshow-typing" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Caption -->
+            <p class="cshow-caption">
+              Representative pattern. {e.name} cites <strong>{brand}</strong> as one of {e.sourceCount + 1} sources for this query class.
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.cshow{padding:80px 0;position:relative;z-index:1}
+.cshow-hdr{max-width:780px;margin:0 0 48px;display:flex;flex-direction:column;gap:14px}
+.cshow-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.4vw,56px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+.cshow-h em{font-style:italic}
+.cshow-deck{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:660px}
+
+.cshow-wrap{
+  background:linear-gradient(180deg, var(--s1) 0%, rgba(15,15,15,.6) 100%);
+  border:1px solid var(--bd);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 28px 70px rgba(0,0,0,.35);
+}
+
+.cshow-tabs{
+  display:flex;align-items:center;gap:4px;
+  padding:12px 14px;
+  background:var(--s2);
+  border-bottom:1px solid var(--bd);
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.cshow-tabs::-webkit-scrollbar{display:none}
+.cshow-tab{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  color:var(--wd);
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:color .25s,border-color .25s,background .25s;
+}
+.cshow-tab-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--brand);
+  box-shadow:0 0 8px color-mix(in srgb, var(--brand) 50%, transparent);
+}
+.cshow-tab:hover{color:var(--w);border-color:var(--bd)}
+.cshow-tab.is-active{
+  color:#fff;
+  background:rgba(79,142,247,.12);
+  border-color:rgba(79,142,247,.28);
+}
+
+.cshow-panels{position:relative;padding:32px 36px}
+.cshow-panel{display:none;animation:cshowIn .45s cubic-bezier(.16,1,.3,1)}
+.cshow-panel.is-active{display:block}
+@keyframes cshowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.cshow-search{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Syne',sans-serif;font-size:13.5px;
+  color:var(--wd);
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:999px;
+  padding:10px 18px;
+  margin-bottom:20px;
+}
+.cshow-search svg{color:var(--wm);flex-shrink:0}
+.cshow-q{font-style:italic;color:var(--w)}
+
+.cshow-card{
+  position:relative;
+  background:var(--bg);
+  border:1px solid var(--bd);
+  border-radius:14px;
+  padding:24px 26px;
+  overflow:hidden;
+}
+.cshow-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, transparent, var(--brand), transparent);
+  opacity:.6;
+}
+.cshow-card-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:14px;margin-bottom:14px;flex-wrap:wrap;
+}
+.cshow-card-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--brand);
+}
+.cshow-sources{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cshow-src{
+  font-family:'JetBrains Mono', monospace;font-size:9.5px;font-weight:500;
+  letter-spacing:.08em;
+  color:var(--wd);
+  padding:4px 9px;border-radius:999px;
+  border:1px solid var(--bd);
+  background:var(--s2);
+}
+.cshow-src--brand{
+  color:var(--ac);
+  background:var(--agl);
+  border-color:rgba(79,142,247,.32);
+  font-weight:600;
+}
+.cshow-answer{
+  font-family:'Syne',sans-serif;font-size:15px;
+  color:var(--wd);line-height:1.75;margin:0 0 16px;
+}
+.cshow-answer strong{color:var(--w);font-weight:700}
+.cshow-cite{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.cshow-cite-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);
+  padding:5px 10px;border-radius:999px;
+  background:rgba(34,197,94,.06);
+  border:1px solid rgba(34,197,94,.22);
+}
+
+.cshow-typing{display:inline-flex;align-items:center;gap:3px}
+.cshow-typing span{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--brand);opacity:.4;
+  animation:cshowTyping 1.4s ease-in-out infinite;
+}
+.cshow-typing span:nth-child(2){animation-delay:.18s}
+.cshow-typing span:nth-child(3){animation-delay:.36s}
+@keyframes cshowTyping{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
+.cshow-caption{
+  font-family:'JetBrains Mono', monospace;font-size:10px;letter-spacing:.06em;
+  color:var(--wm);line-height:1.6;
+  margin:18px 0 0;
+}
+.cshow-caption strong{color:var(--ac);font-weight:600}
+
+@media(max-width:680px){
+  .cshow{padding:60px 0}
+  .cshow-panels{padding:24px 22px}
+  .cshow-card{padding:20px}
+  .cshow-tab-name{font-size:12px}
+}
+</style>
+
+<script>
+// ── Tab switching ──
+(function(){
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.cshow-tab');
+  const panels = document.querySelectorAll<HTMLElement>('.cshow-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.cshowTab;
+      tabs.forEach(t => {
+        t.classList.toggle('is-active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      panels.forEach(p => {
+        const match = p.dataset.cshowPanel === target;
+        p.classList.toggle('is-active', match);
+        p.setAttribute('aria-hidden', match ? 'false' : 'true');
+      });
+    });
+  });
+})();
+</script>

@@ -1,0 +1,1068 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const faqs = [
+  {
+    q: "Which AI bots does this tool check?",
+    a: "Five: GPTBot (ChatGPT / OpenAI), ClaudeBot (Anthropic / Claude), PerplexityBot (Perplexity AI), Bingbot (Bing / Microsoft Copilot), and Googlebot (Google / AI Overviews). These five crawlers power every major AI engine that cites web sources in responses. A block on any one of them removes you from that engine's citation pool entirely.",
+  },
+  {
+    q: "Is this tool safe to run on any domain?",
+    a: "Yes. The checker fetches only the public /robots.txt file using a CORS proxy. No login required, no scraping behind authentication, and no data stored beyond your current session. It reads exactly what any AI crawler would already see when visiting your domain.",
+  },
+  {
+    q: "Why are AI bots blocked so often by accident?",
+    a: "Most platforms shipped their default robots.txt configurations before GPTBot, ClaudeBot, and PerplexityBot existed in 2022 and 2023. Conservative rules that block unlisted user-agents or apply Disallow: / to wildcard groups catch these newer crawlers automatically. The site owner rarely knows until they run a check. The fix is three to five lines of robots.txt config.",
+  },
+  {
+    q: "What should I do if my bots are blocked?",
+    a: "The tool generates the exact robots.txt additions you need. Copy the lines, add them to your robots.txt file, and redeploy or clear your CDN cache. Most platforms pick up the change within 24 to 48 hours. After fixing access, the next priority is entity schema and answer-first content structure: bot access is the prerequisite, not the full solution.",
+  },
+  {
+    q: "Does allowing AI bots affect my Google SEO?",
+    a: "No. GPTBot, ClaudeBot, and PerplexityBot are entirely separate crawlers from Googlebot. Allowing them has zero effect on how Google crawls, indexes, or ranks your content. The only effect is making your content accessible to AI engines that could cite your brand in their responses.",
+  },
+  {
+    q: "Is fixing robots.txt enough to get cited in AI search?",
+    a: "No. Bot access is the prerequisite, not the solution. A blocked bot is a hard stop: it cannot cite what it cannot read. But an allowed bot still needs entity schema, answer-first content, and consistent topical signals before it will cite your brand over a competitor. Bot access first, then the full AEO system.",
+  },
+];
+
+const platforms = [
+  {
+    name: "Webflow",
+    verdict: "Often blocks",
+    color: "#146EF5",
+    detail: "New Webflow projects may restrict unlisted user-agents by default. AI crawlers added after 2022 frequently fall into blocked categories unless explicitly allowed in the project's robots.txt settings.",
+    fix: "Add explicit Allow directives for each AI bot in Webflow's SEO settings or via custom code injection into the robots.txt field.",
+  },
+  {
+    name: "WordPress",
+    verdict: "Plugin dependent",
+    color: "#21759B",
+    detail: "WordPress itself is permissive. Plugins like Yoast SEO generate the robots.txt file and may not include allowances for newer AI crawlers not yet added to their allow-lists.",
+    fix: "Edit the robots.txt file directly via a plugin that gives full control, or use the theme's functions.php to add explicit Allow rules per bot.",
+  },
+  {
+    name: "Shopify",
+    verdict: "Partial access",
+    color: "#5C9E31",
+    detail: "Shopify auto-generates robots.txt and restricts certain paths by default. AI bots may be grouped alongside restricted crawler categories depending on the store configuration.",
+    fix: "Use robots.txt.liquid in your theme to override the default file and add explicit User-agent and Allow blocks for each AI crawler.",
+  },
+  {
+    name: "Astro",
+    verdict: "Dev controlled",
+    color: "#FF5D01",
+    detail: "No default restrictions. The developer writes the file from scratch. Most Astro builds I ship explicitly allow all five AI crawlers from launch day, making this the cleanest platform for AI visibility.",
+    fix: "Add a robots.txt file to your public/ folder with explicit Allow: / directives for all five AI crawlers. Takes two minutes.",
+  },
+];
+
+const botDirectory = [
+  {
+    name: "GPTBot",
+    engine: "ChatGPT · OpenAI",
+    color: "#10A37F",
+    launched: "Aug 2023",
+    purpose: "OpenAI's web crawler for ChatGPT's citation and browsing features. Blocking it means your brand cannot appear when users ask ChatGPT about vendors, tools, or topics in your category. ChatGPT has 200M+ weekly active users, many running vendor research queries.",
+    ua: "User-agent: GPTBot",
+  },
+  {
+    name: "ClaudeBot",
+    engine: "Claude · Anthropic",
+    color: "#D97706",
+    launched: "2023",
+    purpose: "Anthropic's crawler for Claude's web search capability. Often inadvertently blocked alongside GPTBot on conservative configurations because both appeared around the same time. Claude is growing as a research tool for B2B buyers.",
+    ua: "User-agent: ClaudeBot",
+  },
+  {
+    name: "PerplexityBot",
+    engine: "Perplexity AI",
+    color: "#8B5CF6",
+    launched: "2023",
+    purpose: "Perplexity's crawler indexes content for its citation-heavy answer engine. Perplexity is the most citation-aggressive of the major AI search engines: it surfaces multiple sources per answer and drives real referral traffic to cited pages.",
+    ua: "User-agent: PerplexityBot",
+  },
+  {
+    name: "Bingbot",
+    engine: "Bing · Microsoft Copilot",
+    color: "#0078D4",
+    launched: "2009",
+    purpose: "Microsoft's crawler powers both Bing search and all Copilot responses across Microsoft 365, Edge, and Windows. A site not indexed by Bing cannot appear in any Copilot response, regardless of content quality or schema. Bing indexation is a separate check from Google.",
+    ua: "User-agent: Bingbot",
+  },
+  {
+    name: "Googlebot",
+    engine: "Google · AI Overviews",
+    color: "#4285F4",
+    launched: "1996",
+    purpose: "Google's crawler indexes for both traditional search and Google AI Overviews. AI Overviews now trigger on approximately 47% of informational queries. Blocking Googlebot removes your brand from both surfaces simultaneously: traditional rankings and AI-generated answers.",
+    ua: "User-agent: Googlebot",
+  },
+];
+
+const auditFindings = [
+  {
+    n: "01",
+    title: "Bingbot blocked, Copilot blind spot",
+    body: "The most consistently underestimated block. Brands check Googlebot first and assume everything else is fine. Copilot runs entirely on Bing. If Bingbot is blocked or the site is not in the Bing index at all, Copilot cannot cite you regardless of what your robots.txt says about GPTBot. I check Bing Webmaster Tools indexation separately on every audit before touching content.",
+  },
+  {
+    n: "02",
+    title: "robots.txt last updated before AI bots existed",
+    body: "I regularly find robots.txt files with a last-modified date from 2020 or 2021. Disallow: / applies to all user-agents not explicitly listed. Every AI crawler added after that file was written gets blocked by default. GPTBot, ClaudeBot, and PerplexityBot all launched in 2022 or 2023 and are invisible to those old files.",
+  },
+  {
+    n: "03",
+    title: "CDN serving a cached blocked version",
+    body: "Fixing robots.txt at the CMS or platform level does not always propagate immediately if a CDN or reverse proxy is caching the file. The crawler fetches the cached blocked version and records the block. After any robots.txt fix, check the live response headers for cache-control directives and confirm the updated file is what crawlers actually receive.",
+  },
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "AI Bot Access Checker",
+      url: "https://seoshivam.pro/tools/robots-txt-checker",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      description:
+        "Free tool to check whether GPTBot (ChatGPT), ClaudeBot (Claude), PerplexityBot (Perplexity), Bingbot (Copilot), and Googlebot can access your website via robots.txt. Instant check, RFC-compliant parser, no login required.",
+      author: { "@type": "Person", name: "Shivam Attri", url: "https://seoshivam.pro/about" },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://seoshivam.pro" },
+        { "@type": "ListItem", position: 2, name: "Tools", item: "https://seoshivam.pro/tools" },
+        { "@type": "ListItem", position: 3, name: "AI Bot Access Checker", item: "https://seoshivam.pro/tools/robots-txt-checker" },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title={SITE_ROUTE_META['/tools/robots-txt-checker'].title}
+  description={SITE_ROUTE_META['/tools/robots-txt-checker'].description}
+  canonical="https://seoshivam.pro/tools/robots-txt-checker"
+  schema={pageSchema}
+>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main class="rtc-page">
+
+    <!-- ═══════════════════════════════════════
+         HERO
+    ═══════════════════════════════════════ -->
+    <section class="rtc-hero">
+      <div class="container">
+        <nav class="rtc-bc rv" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>/</span><a href="/tools">Tools</a><span>/</span><span>AI Bot Checker</span>
+        </nav>
+
+        <div class="rv d1">
+          <div class="rtc-hero-pills">
+            <span class="rtc-pill">Free</span>
+            <span class="rtc-pill">No login</span>
+            <span class="rtc-pill rtc-pill-live"><span class="rtc-pill-dot"></span>RFC-compliant parser</span>
+          </div>
+        </div>
+
+        <h1 class="sec-h rtc-h1 rv d2">
+          Can AI engines read<br><em class="grad-anim">your website?</em>
+        </h1>
+
+        <p class="rtc-sub rv d3">
+          The most common reason a brand is invisible in ChatGPT and Perplexity is not bad content.
+          It is a blocked robots.txt. Check five AI crawlers in 30 seconds, get a precise access report and fix code instantly.
+        </p>
+
+        <div class="rtc-hero-stats rv d4">
+          <div class="rtc-hs">
+            <span class="rtc-hs-n">5</span>
+            <span class="rtc-hs-l">AI crawlers<br>checked</span>
+          </div>
+          <div class="rtc-hs-sep"></div>
+          <div class="rtc-hs">
+            <span class="rtc-hs-n">30s</span>
+            <span class="rtc-hs-l">Typical<br>check time</span>
+          </div>
+          <div class="rtc-hs-sep"></div>
+          <div class="rtc-hs">
+            <span class="rtc-hs-n">RFC</span>
+            <span class="rtc-hs-l">Spec-compliant<br>parser</span>
+          </div>
+          <div class="rtc-hs-sep hide-mob"></div>
+          <div class="rtc-hs hide-mob">
+            <span class="rtc-hs-n">3</span>
+            <span class="rtc-hs-l">Proxy fallbacks<br>for reliability</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         THE TOOL
+    ═══════════════════════════════════════ -->
+    <section class="rtc-tool-sec" id="checker">
+      <div class="container">
+        <div class="rtc-tool rv d1">
+
+          <!-- Input row -->
+          <div class="rtc-input-area">
+            <div class="rtc-input-head">
+              <div class="rtc-input-label">Enter your domain</div>
+              <span class="rtc-live-badge"><span class="rtc-live-dot"></span>Live · Multi-proxy fallback</span>
+            </div>
+            <div class="rtc-url-row">
+              <input
+                type="url"
+                id="rtcUrl"
+                class="rtc-url-input"
+                placeholder="https://yourwebsite.com"
+                autocomplete="url"
+                aria-label="Website URL to check"
+              />
+              <button class="btn-p rtc-check-btn" id="rtcCheckBtn" aria-label="Run robots.txt check">
+                <span id="rtcBtnTxt">Check access</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <p class="rtc-hint">We fetch your public robots.txt using a CORS proxy. No data is stored. No login required.</p>
+          </div>
+
+          <!-- Error state -->
+          <div class="rtc-error" id="rtcError" style="display:none" role="alert"></div>
+
+          <!-- Results panel -->
+          <div class="rtc-results" id="rtcResults" style="display:none" aria-live="polite">
+
+            <!-- Top: score ring + bot cards -->
+            <div class="rtc-results-grid">
+
+              <!-- Score ring -->
+              <div class="rtc-score-col">
+                <div class="rtc-score-ring-wrap" role="img" aria-label="AI bot access score">
+                  <svg class="rtc-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+                    <!-- Track -->
+                    <circle class="rtc-ring-track" cx="60" cy="60" r="50"/>
+                    <!-- Filled arc -->
+                    <circle class="rtc-ring-fill" id="rtcRingFill" cx="60" cy="60" r="50"/>
+                  </svg>
+                  <div class="rtc-score-inner">
+                    <span class="rtc-score-n" id="rtcScore">0</span>
+                    <span class="rtc-score-denom">/5</span>
+                  </div>
+                </div>
+                <div class="rtc-score-verdict" id="rtcScoreVerdict">Running check...</div>
+                <div class="rtc-result-url" id="rtcResultUrl"></div>
+              </div>
+
+              <!-- Bot cards -->
+              <div class="rtc-bots-col">
+                <div class="rtc-bots-col-label">Crawler access status</div>
+                <div class="rtc-bots" id="rtcBots"></div>
+              </div>
+            </div>
+
+            <!-- Fix recommendation -->
+            <div class="rtc-fix-panel" id="rtcFix" style="display:none">
+              <div class="rtc-fix-head">
+                <svg class="rtc-fix-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span class="rtc-fix-title">Add these lines to your robots.txt</span>
+                <button class="rtc-copy-btn" id="rtcCopyBtn" aria-label="Copy fix code to clipboard">Copy</button>
+              </div>
+              <pre class="rtc-fix-code" id="rtcFixCode" aria-label="robots.txt fix code"></pre>
+              <p class="rtc-fix-note">After adding these lines, redeploy your site or purge your CDN cache. Crawlers will pick up the change within 24 to 48 hours.</p>
+            </div>
+
+            <!-- Raw toggle -->
+            <div class="rtc-raw-area">
+              <button class="rtc-raw-toggle" id="rtcRawToggle" aria-expanded="false">View raw robots.txt ↓</button>
+              <pre class="rtc-raw" id="rtcRaw" style="display:none" aria-label="Raw robots.txt content"></pre>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         WHY BOT ACCESS MATTERS
+    ═══════════════════════════════════════ -->
+    <section class="rtc-why-sec">
+      <div class="container">
+        <div class="rtc-why-grid">
+
+          <div class="rtc-why-l rv">
+            <div class="hair left">WHY IT MATTERS / AEO FOUNDATION</div>
+            <h2 class="sec-h" style="margin-top:14px">
+              Bot access is the<br><em class="grad-anim">first audit check.</em>
+            </h2>
+            <p class="rtc-why-p">
+              In every <a href="/services/aeo" class="ilink">AEO audit</a> I run, the first check is always robots.txt. Not schema. Not content. Not entity markup. Bot access is the hard prerequisite for everything in <a href="/insights/what-is-aeo" class="ilink">AI search visibility</a>.
+            </p>
+            <p class="rtc-why-p">
+              AI engines cannot cite what they cannot read. A brand with perfect schema, answer-first content, and strong topical authority is still invisible in ChatGPT if GPTBot cannot crawl the site. The block is a hard stop before every other optimization.
+            </p>
+            <p class="rtc-why-p">
+              The irony: fixing bot access takes under 10 minutes. Most brands spend months refining content strategy while a single robots.txt rule sits quietly blocking every AI crawler that matters for citations.
+            </p>
+
+            <!-- Correct config example -->
+            <div class="rtc-config-ex rv">
+              <div class="rtc-cfg-label">Correct configuration for all five AI crawlers</div>
+              <pre class="rtc-cfg-code">User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /</pre>
+            </div>
+          </div>
+
+          <div class="rtc-why-r rv d1">
+            <div class="rtc-compare-card bad">
+              <div class="rtc-cc-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                When bots are blocked
+              </div>
+              <ul class="rtc-cc-list">
+                {[
+                  "GPTBot cannot index your content for ChatGPT",
+                  "ClaudeBot skips your pages in citation retrieval",
+                  "PerplexityBot cannot read your answers",
+                  "Bingbot block means Copilot cannot cite you",
+                  "Brand invisible in all AI-generated answers",
+                  "Competitors with open access get cited instead",
+                  "Content investment delivers zero AI citation ROI",
+                ].map(item => (
+                  <li class="rtc-cc-item rtc-cc-bad">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="rtc-compare-card good">
+              <div class="rtc-cc-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                When bots are allowed
+              </div>
+              <ul class="rtc-cc-list">
+                {[
+                  "All five AI crawlers can index your content",
+                  "Your answers are eligible for ChatGPT citations",
+                  "Perplexity can pull your content for buyer queries",
+                  "Copilot can surface your brand via Bing index",
+                  "Google AI Overviews can include your pages",
+                  "Schema and content work compounds as intended",
+                ].map(item => (
+                  <li class="rtc-cc-item rtc-cc-good">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         BOT DIRECTORY
+    ═══════════════════════════════════════ -->
+    <section class="rtc-dir-sec">
+      <div class="container">
+        <div class="rtc-dir-hdr rv">
+          <div class="hair left">AI CRAWLERS / WHAT EACH BOT DOES</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">
+            Five crawlers.<br><em class="grad-anim">Five citation surfaces.</em>
+          </h2>
+          <p class="rtc-dir-deck rv d2">
+            Blocking one bot means missing one AI engine entirely. Most brands block at least two. Here is what each crawler indexes and why each access status matters for your brand's AI visibility.
+          </p>
+        </div>
+
+        <div class="rtc-dir-list">
+          {botDirectory.map((bot, i) => (
+            <div class={`rtc-dir-row rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
+              <div class="rtc-dr-head">
+                <div class="rtc-dr-dot" style={`background:${bot.color}`}></div>
+                <div class="rtc-dr-names">
+                  <span class="rtc-dr-name">{bot.name}</span>
+                  <span class="rtc-dr-engine">{bot.engine}</span>
+                </div>
+                <span class="rtc-dr-since">{bot.launched}</span>
+              </div>
+              <p class="rtc-dr-purpose">{bot.purpose}</p>
+              <div class="rtc-dr-ua">
+                <span class="rtc-dr-ua-label">Identifier</span>
+                <code class="rtc-dr-code">{bot.ua}</code>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         PLATFORM DEFAULTS
+    ═══════════════════════════════════════ -->
+    <section class="rtc-plat-sec">
+      <div class="container">
+        <div class="rtc-plat-hdr rv">
+          <div class="hair left">PLATFORM AUDIT / DEFAULT CONFIGURATIONS</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">
+            Which platforms block<br><em class="grad-anim">AI bots by default.</em>
+          </h2>
+          <p class="rtc-plat-deck rv d2">
+            What I find when I run this check on sites built on popular platforms. Not a platform bug: a configuration gap that defaults to blocking unless you explicitly allow each bot.
+          </p>
+        </div>
+
+        <div class="rtc-plat-grid">
+          {platforms.map((p, i) => (
+            <div class={`rtc-plat-card rv${i > 0 ? ' d' + Math.min(i, 3) : ''}`}>
+              <div class="rtc-pc-top">
+                <span class="rtc-pc-name" style={`color:${p.color}`}>{p.name}</span>
+                <span class="rtc-pc-verdict">{p.verdict}</span>
+              </div>
+              <p class="rtc-pc-detail">{p.detail}</p>
+              <div class="rtc-pc-fix">
+                <span class="rtc-pc-fix-badge">Fix</span>
+                <span class="rtc-pc-fix-text">{p.fix}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         AFTER BOT ACCESS: THE SYSTEM
+    ═══════════════════════════════════════ -->
+    <section class="rtc-after-sec">
+      <div class="container">
+        <div class="rtc-after-hdr rv">
+          <div class="hair left">AFTER ACCESS / THE FULL SYSTEM</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">
+            Bot access is step one.<br><em class="grad-anim">Here is what comes next.</em>
+          </h2>
+          <p class="rtc-after-deck rv d2">
+            Fixing robots.txt removes the hard block. What follows is the <a href="/services/aeo" class="ilink">AEO system</a> that turns bot access into actual citations.
+          </p>
+        </div>
+
+        <div class="rtc-after-steps">
+          {[
+            {
+              n: "01",
+              t: "Fix bot access",
+              active: true,
+              d: "This tool. Allow GPTBot, ClaudeBot, PerplexityBot, Bingbot, and Googlebot explicitly in robots.txt. Then verify Bing Webmaster Tools indexation separately: Copilot relies on Bing, and Bing indexation is independent of Google.",
+              link: null,
+            },
+            {
+              n: "02",
+              t: "Build entity schema",
+              active: false,
+              d: "JSON-LD Person and Organization schema establishes your brand identity in AI engine knowledge graphs. Without it, AI engines know your site exists but cannot confidently identify who you are, what you do, or why you are authoritative enough to cite.",
+              link: { href: "/insights/schema-markup-for-ai-search", label: "Schema for AI search" },
+            },
+            {
+              n: "03",
+              t: "Structure content answer-first",
+              active: false,
+              d: "AI engines cite pages that lead with the direct answer in the first two sentences. If your content buries the answer after context-setting paragraphs, bots read it and still choose a more directly structured competitor page.",
+              link: { href: "/insights/how-to-get-cited-by-chatgpt", label: "How to get cited by ChatGPT" },
+            },
+            {
+              n: "04",
+              t: "Track citations monthly",
+              active: false,
+              d: "Search 20 of your most important buyer queries in ChatGPT, Perplexity, Claude, and Google AI Overviews monthly. Record which platforms cite you, for which queries, and what the cited content looks like. That signal tells you exactly what to optimize next.",
+              link: { href: "/services/aeo", label: "Full AEO strategy" },
+            },
+          ].map((step, i) => (
+            <div class={`rtc-after-row rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
+              <div class={`rtc-ar-n ${step.active ? 'rtc-ar-n--active' : ''}`}>{step.n}</div>
+              <div class="rtc-ar-body">
+                <div class="rtc-ar-t">
+                  {step.t}
+                  {step.active && <span class="rtc-ar-badge">Start here</span>}
+                </div>
+                <p class="rtc-ar-d">{step.d}</p>
+                {step.link && <a href={step.link.href} class="ilink rtc-ar-link">{step.link.label} →</a>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         AUDIT FINDINGS
+    ═══════════════════════════════════════ -->
+    <section class="rtc-audit-sec">
+      <div class="container">
+        <div class="rtc-audit-hdr rv">
+          <div class="hair left">FROM AUDITS / PRACTITIONER OBSERVATIONS</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">
+            What I find when<br><em class="grad-anim">I run this check.</em>
+          </h2>
+        </div>
+
+        <div class="rtc-audit-list">
+          {auditFindings.map((f, i) => (
+            <div class={`rtc-audit-row rv${i > 0 ? ' d' + Math.min(i, 3) : ''}`}>
+              <div class="rtc-audit-n">{f.n}</div>
+              <div class="rtc-audit-body">
+                <div class="rtc-audit-t">{f.title}</div>
+                <p class="rtc-audit-d">{f.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p class="rtc-audit-note rv">
+          Found bots blocked? Build the fix in seconds with the <a href="/tools/robots-txt-generator" class="ilink">AI Robots.txt Generator</a>. Or pair this checker with the <a href="/tools/ai-visibility-score" class="ilink">AI Visibility Score quiz</a> for a complete surface check: bot access plus schema, content structure, entity consistency, and Core Web Vitals.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FAQ
+    ═══════════════════════════════════════ -->
+    <section class="rtc-faq-sec">
+      <div class="container">
+        <FaqBlock
+          id="rtc-faq"
+          eyebrow="COMMON QUESTIONS / ABOUT THIS TOOL"
+          heading="What people ask about"
+          headingEm="AI bot access."
+          deck="How the check works, what to do with blocked bots, and how access connects to AI citations."
+          faqs={faqs}
+          emitSchema={false}
+        />
+      </div>
+    </section>
+
+    <ContactCta
+      id="rtc-cta"
+      source="robots-txt-checker"
+      eyebrow="WANT THE FULL AEO AUDIT?"
+      heading="Bot access is the start."
+      headingEm="The full system goes deeper."
+      deck="The free check covers access. A full engagement maps entity schema gaps, content structure problems, and citation tracking across all six AI engines. Replied within 4 hours."
+    />
+
+  </main>
+  <Footer />
+
+<style is:global>
+/* ═══════════════════════════════════════
+   PAGE SHELL
+═══════════════════════════════════════ */
+.rtc-page{position:relative;z-index:1;overflow-x:clip}
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+.rtc-hero{padding:140px 0 64px}
+.rtc-bc{font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);display:flex;align-items:center;gap:8px;margin-bottom:28px}
+.rtc-bc a{color:var(--wm);transition:color .15s}.rtc-bc a:hover{color:var(--ac)}.rtc-bc span{opacity:.4}.rtc-bc span:last-child{opacity:1}
+
+.rtc-hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.rtc-pill{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);border:1px solid var(--bd);border-radius:20px;padding:4px 10px}
+.rtc-pill-live{color:var(--ac);border-color:rgba(79,142,247,.3);background:var(--agl);display:inline-flex;align-items:center;gap:6px}
+.rtc-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:opcPulse 1.6s ease-in-out infinite}
+
+.rtc-h1{margin:0 0 18px}
+.rtc-sub{font-family:var(--fu);font-size:clamp(15px,1.6vw,18px);color:var(--wd);line-height:1.75;max-width:600px;margin-bottom:36px}
+
+.rtc-hero-stats{display:flex;align-items:center;padding:24px 0 0;border-top:1px solid var(--bd)}
+.rtc-hs{display:flex;flex-direction:column;gap:3px;padding:0 28px}.rtc-hs:first-child{padding-left:0}
+.rtc-hs-n{font-family:var(--fd);font-size:24px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.rtc-hs-l{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+.rtc-hs-sep{width:1px;height:30px;background:var(--bd);flex-shrink:0}
+
+/* ═══════════════════════════════════════
+   TOOL CARD
+═══════════════════════════════════════ */
+.rtc-tool-sec{padding:0 0 80px}
+.rtc-tool{background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:40px;max-width:880px}
+
+.rtc-input-area{margin-bottom:4px}
+.rtc-input-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rtc-input-label{font-family:var(--fu);font-size:15px;font-weight:700;color:var(--w)}
+.rtc-live-badge{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);background:var(--agl);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:3px 9px;display:inline-flex;align-items:center;gap:6px}
+.rtc-live-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);flex-shrink:0;animation:opcPulse 1.6s ease-in-out infinite}
+
+.rtc-url-row{display:flex;gap:10px;margin-bottom:10px}
+.rtc-url-input{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-pill);padding:13px 20px;font-family:var(--fu);font-size:14px;color:var(--w);outline:none;transition:border-color .2s,box-shadow .2s}
+.rtc-url-input::placeholder{color:var(--wm)}
+.rtc-url-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--agl)}
+.rtc-check-btn{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;white-space:nowrap}
+.rtc-hint{font-family:var(--fm);font-size:9px;letter-spacing:.04em;color:var(--wm);line-height:1.5}
+
+/* Error */
+.rtc-error{margin-top:20px;font-family:var(--fu);font-size:13px;color:#EF4444;padding:14px 18px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;line-height:1.6}
+
+/* ═══════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════ */
+.rtc-results{margin-top:32px;padding-top:32px;border-top:1px solid var(--bd)}
+
+/* Top grid: ring + bots */
+.rtc-results-grid{display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:start;margin-bottom:24px}
+
+/* Score ring column */
+.rtc-score-col{display:flex;flex-direction:column;align-items:center;gap:14px}
+.rtc-score-ring-wrap{position:relative;width:140px;height:140px}
+.rtc-ring-svg{width:140px;height:140px;display:block;transform:rotate(-90deg)}
+.rtc-ring-track{fill:none;stroke:var(--s3);stroke-width:9}
+.rtc-ring-fill{fill:none;stroke:var(--ac);stroke-width:9;stroke-linecap:round;stroke-dasharray:314.16;stroke-dashoffset:314.16;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1),stroke .35s ease}
+.rtc-score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.rtc-score-n{font-family:var(--fd);font-size:44px;font-weight:400;color:var(--w);line-height:1;transition:color .35s}
+.rtc-score-denom{font-family:var(--fm);font-size:13px;letter-spacing:.04em;color:var(--wm)}
+.rtc-score-verdict{font-family:var(--fu);font-size:13px;font-weight:700;color:var(--wd);text-align:center;transition:color .35s}
+.rtc-result-url{font-family:var(--fm);font-size:9px;letter-spacing:.04em;color:var(--wm);word-break:break-all;text-align:center;max-width:160px}
+
+/* Bot cards column */
+.rtc-bots-col{display:flex;flex-direction:column;gap:8px}
+.rtc-bots-col-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);margin-bottom:4px}
+.rtc-bots{display:flex;flex-direction:column;gap:8px}
+
+/* Individual bot row (injected via JS) */
+.rtc-bot{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-radius:10px;border:1px solid var(--bd);background:var(--s2);gap:12px;transition:border-color .2s,background .2s}
+.rtc-bot.allowed{border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.04)}
+.rtc-bot.blocked{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.04)}
+.rtc-bot-left{display:flex;align-items:center;gap:10px}
+.rtc-bot-ic{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid}
+.rtc-bot-ic.allowed{color:var(--green);background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.25)}
+.rtc-bot-ic.blocked{color:#EF4444;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)}
+.rtc-bot-name{font-family:var(--fu);font-size:13px;font-weight:700;color:var(--w);line-height:1}
+.rtc-bot-engine{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm)}
+.rtc-bot-status{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;flex-shrink:0}
+.rtc-bot-status.allowed{color:var(--green);background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.22)}
+.rtc-bot-status.blocked{color:#EF4444;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22)}
+
+/* Fix panel */
+.rtc-fix-panel{margin-top:20px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.22);border-radius:14px;padding:24px}
+.rtc-fix-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.rtc-fix-icon{flex-shrink:0}
+.rtc-fix-title{font-family:var(--fu);font-size:14px;font-weight:700;color:var(--w);flex:1}
+.rtc-copy-btn{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);background:var(--agl);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:5px 12px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.rtc-copy-btn:hover{background:rgba(79,142,247,.18)}
+.rtc-fix-code{font-family:var(--fm);font-size:12px;color:var(--wd);line-height:1.9;white-space:pre;overflow-x:auto;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:16px;margin-bottom:12px}
+.rtc-fix-note{font-family:var(--fu);font-size:12px;color:var(--wm);line-height:1.6;margin:0}
+
+/* Raw toggle */
+.rtc-raw-area{margin-top:16px;padding-top:16px;border-top:1px solid var(--bd)}
+.rtc-raw-toggle{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);background:none;border:none;cursor:pointer;padding:0;transition:color .2s}
+.rtc-raw-toggle:hover{color:var(--ac)}
+.rtc-raw{font-family:var(--fm);font-size:11px;color:var(--wd);background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:16px;margin-top:12px;overflow-x:auto;white-space:pre;line-height:1.6}
+
+/* ═══════════════════════════════════════
+   WHY SECTION
+═══════════════════════════════════════ */
+.rtc-why-sec{padding:clamp(72px,10vw,110px) 0}
+.rtc-why-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.rtc-why-p{font-family:var(--fu);font-size:clamp(14px,1.3vw,16px);color:var(--wd);line-height:1.82;margin-bottom:18px}
+.rtc-why-p:last-of-type{margin-bottom:24px}
+
+.rtc-config-ex{background:var(--s1);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-top:4px}
+.rtc-cfg-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--agl)}
+.rtc-cfg-code{font-family:var(--fm);font-size:12px;color:var(--wd);line-height:1.9;padding:16px;margin:0;white-space:pre;overflow-x:auto}
+
+.rtc-compare-card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:24px;margin-bottom:14px}
+.rtc-compare-card:last-child{margin-bottom:0}
+.rtc-compare-card.bad{border-color:rgba(239,68,68,.18)}
+.rtc-compare-card.good{border-color:rgba(34,197,94,.18)}
+.rtc-cc-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.rtc-cc-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+.rtc-cc-item{display:flex;align-items:flex-start;gap:9px;font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.5}
+.rtc-cc-item svg{flex-shrink:0;margin-top:2px}
+
+/* ═══════════════════════════════════════
+   BOT DIRECTORY
+═══════════════════════════════════════ */
+.rtc-dir-sec{padding:clamp(72px,10vw,110px) 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.rtc-dir-hdr{margin-bottom:48px}
+.rtc-dir-deck{font-family:var(--fu);font-size:clamp(14px,1.4vw,16px);color:var(--wd);line-height:1.75;max-width:580px;margin-top:16px}
+.rtc-dir-list{display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.rtc-dir-row{padding:28px 32px;border-bottom:1px solid var(--bd);background:var(--s1);transition:background .2s}
+.rtc-dir-row:last-child{border-bottom:none}
+.rtc-dir-row:hover{background:var(--s2)}
+.rtc-dr-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.rtc-dr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rtc-dr-names{display:flex;flex-direction:column;gap:2px;flex:1}
+.rtc-dr-name{font-family:var(--fu);font-size:15px;font-weight:800;color:var(--w);line-height:1;letter-spacing:-.01em}
+.rtc-dr-engine{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+.rtc-dr-since{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--wm);border:1px solid var(--bd);border-radius:4px;padding:2px 8px}
+.rtc-dr-purpose{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.72;margin-bottom:14px;max-width:720px}
+.rtc-dr-ua{display:flex;align-items:center;gap:12px}
+.rtc-dr-ua-label{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+.rtc-dr-code{font-family:var(--fm);font-size:11px;color:var(--ac);background:var(--agl);border:1px solid rgba(79,142,247,.18);border-radius:4px;padding:3px 10px}
+
+/* ═══════════════════════════════════════
+   PLATFORM DEFAULTS
+═══════════════════════════════════════ */
+.rtc-plat-sec{padding:clamp(72px,10vw,110px) 0}
+.rtc-plat-hdr{margin-bottom:48px}
+.rtc-plat-deck{font-family:var(--fu);font-size:clamp(14px,1.4vw,16px);color:var(--wd);line-height:1.75;max-width:580px;margin-top:16px}
+.rtc-plat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.rtc-plat-card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px}
+.rtc-pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rtc-pc-name{font-family:var(--fu);font-size:18px;font-weight:800;letter-spacing:-.02em}
+.rtc-pc-verdict{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);border:1px solid var(--bd);border-radius:4px;padding:3px 9px}
+.rtc-pc-detail{font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.7;margin-bottom:16px}
+.rtc-pc-fix{background:var(--s2);border-radius:8px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start}
+.rtc-pc-fix-badge{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);flex-shrink:0;margin-top:2px}
+.rtc-pc-fix-text{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.6}
+
+/* ═══════════════════════════════════════
+   AFTER STEPS
+═══════════════════════════════════════ */
+.rtc-after-sec{padding:clamp(72px,10vw,110px) 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.rtc-after-hdr{margin-bottom:48px}
+.rtc-after-deck{font-family:var(--fu);font-size:clamp(14px,1.4vw,16px);color:var(--wd);line-height:1.75;max-width:560px;margin-top:16px}
+.rtc-after-steps{display:flex;flex-direction:column;max-width:760px;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.rtc-after-row{display:flex;gap:24px;padding:28px 32px;border-bottom:1px solid var(--bd);background:var(--s1);transition:background .2s}
+.rtc-after-row:last-child{border-bottom:none}
+.rtc-after-row:hover{background:var(--s2)}
+.rtc-ar-n{font-family:var(--fd);font-size:32px;font-weight:400;color:var(--wm);line-height:1;flex-shrink:0;width:48px;margin-top:2px}
+.rtc-ar-n--active{background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rtc-ar-body{flex:1}
+.rtc-ar-t{font-family:var(--fu);font-size:16px;font-weight:700;color:var(--w);letter-spacing:-.01em;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.rtc-ar-badge{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);background:var(--agl);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:2px 7px}
+.rtc-ar-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.72;margin-bottom:10px}
+.rtc-ar-link{font-size:13px;font-weight:600}
+
+/* ═══════════════════════════════════════
+   AUDIT FINDINGS
+═══════════════════════════════════════ */
+.rtc-audit-sec{padding:clamp(72px,10vw,110px) 0}
+.rtc-audit-hdr{margin-bottom:48px}
+.rtc-audit-list{display:flex;flex-direction:column;max-width:760px;border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.rtc-audit-row{display:flex;gap:24px;padding:28px 32px;border-bottom:1px solid var(--bd);background:var(--s1)}
+.rtc-audit-row:last-child{border-bottom:none}
+.rtc-audit-n{font-family:var(--fd);font-size:28px;font-weight:400;color:var(--wm);line-height:1;flex-shrink:0;width:44px;margin-top:2px}
+.rtc-audit-t{font-family:var(--fu);font-size:15px;font-weight:700;color:var(--w);letter-spacing:-.01em;margin-bottom:8px}
+.rtc-audit-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.72;margin:0}
+.rtc-audit-note{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.7;max-width:580px}
+
+/* ═══════════════════════════════════════
+   FAQ
+═══════════════════════════════════════ */
+.rtc-faq-sec{padding:clamp(72px,10vw,110px) 0}
+
+/* ═══════════════════════════════════════
+   LIGHT MODE
+═══════════════════════════════════════ */
+html.light .rtc-tool{background:var(--s1)}
+html.light .rtc-url-input{background:var(--s2);color:var(--w)}
+html.light .rtc-ring-track{stroke:var(--s3)}
+html.light .rtc-compare-card{background:var(--s1)}
+html.light .rtc-config-ex{background:var(--s1)}
+html.light .rtc-dir-row{background:var(--s1)}.html.light .rtc-dir-row:hover{background:var(--s2)}
+html.light .rtc-plat-card{background:var(--s1)}
+html.light .rtc-after-row{background:var(--s1)}.html.light .rtc-after-row:hover{background:var(--s2)}
+html.light .rtc-audit-row{background:var(--s1)}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  .rtc-why-grid{grid-template-columns:1fr;gap:48px}
+  .rtc-results-grid{grid-template-columns:1fr;gap:24px}
+  .rtc-score-col{flex-direction:row;align-items:center;gap:24px}
+  .rtc-result-url{text-align:left;max-width:none}
+  .rtc-score-verdict{text-align:left}
+}
+@media(max-width:640px){
+  .rtc-hero{padding:120px 0 48px}
+  .rtc-tool{padding:24px 18px}
+  .rtc-url-row{flex-direction:column}
+  .rtc-plat-grid{grid-template-columns:1fr}
+  .rtc-after-row,.rtc-audit-row,.rtc-dir-row{padding:20px 20px;flex-direction:column;gap:10px}
+  .rtc-ar-n,.rtc-audit-n,.rtc-dr-head{width:auto}
+  .rtc-score-col{flex-direction:column}
+  .rtc-results-grid{grid-template-columns:1fr}
+}
+</style>
+
+<script>
+/* ── Page init: scroll progress, cursor, reveal observer ── */
+const prog = document.getElementById('scrollProg');
+window.addEventListener('scroll', () => {
+  if (prog) {
+    const s = document.documentElement;
+    prog.style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight) * 100) + '%';
+  }
+}, { passive: true });
+
+const dot = document.getElementById('curDot');
+const curRing = document.getElementById('curRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+window.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  if (dot) dot.style.transform = `translate(${mx - 4}px,${my - 4}px)`;
+}, { passive: true });
+(function loop() {
+  if (curRing) { rx += (mx - rx - 16) * .12; ry += (my - ry - 16) * .12; curRing.style.transform = `translate(${rx}px,${ry}px)`; }
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { dot?.classList.add('hov'); curRing?.classList.add('hov'); });
+  el.addEventListener('mouseleave', () => { dot?.classList.remove('hov'); curRing?.classList.remove('hov'); });
+});
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+
+/* ══════════════════════════════════════════════════════════
+   robots.txt checker — logic unchanged, display modernised
+══════════════════════════════════════════════════════════ */
+const BOTS = [
+  { name: 'GPTBot',        engine: 'ChatGPT / OpenAI',        agents: ['gptbot'] },
+  { name: 'ClaudeBot',     engine: 'Anthropic / Claude',       agents: ['claudebot', 'anthropic-ai', 'claude-web'] },
+  { name: 'PerplexityBot', engine: 'Perplexity AI',            agents: ['perplexitybot'] },
+  { name: 'Bingbot',       engine: 'Bing / Copilot',           agents: ['bingbot'] },
+  { name: 'Googlebot',     engine: 'Google / AI Overviews',    agents: ['googlebot'] },
+];
+
+const CIRCUMFERENCE = 2 * Math.PI * 50; // r = 50 → C ≈ 314.16
+
+/**
+ * RFC-compliant robots.txt parser.
+ * Groups by user-agent blocks. UA-specific beats wildcard.
+ * Longest-matching path rule wins. Empty Disallow = allow all.
+ */
+function checkBotAccess(text: string, botUa: string): boolean {
+  if (!text) return true;
+  const lines = text.split(/\r?\n/);
+  const groups: Array<{ agents: string[]; rules: Array<{ type: 'allow' | 'disallow'; path: string }> }> = [];
+  let current: typeof groups[number] | null = null;
+  let inUaBlock = false;
+
+  for (const rawLine of lines) {
+    const line = rawLine.replace(/#.*$/, '').trim();
+    if (!line) continue;
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = line.slice(0, colonIdx).trim().toLowerCase();
+    const value = line.slice(colonIdx + 1).trim();
+
+    if (key === 'user-agent') {
+      if (!inUaBlock || !current) { current = { agents: [], rules: [] }; groups.push(current); }
+      current.agents.push(value.toLowerCase());
+      inUaBlock = true;
+    } else if (key === 'allow' || key === 'disallow') {
+      if (!current) continue;
+      current.rules.push({ type: key as 'allow' | 'disallow', path: value });
+      inUaBlock = false;
+    } else {
+      inUaBlock = false;
+    }
+  }
+
+  const ua = botUa.toLowerCase();
+  let matchGroup = groups.find(g => g.agents.some(a => a === ua));
+  if (!matchGroup) matchGroup = groups.find(g => g.agents.includes('*'));
+  if (!matchGroup) return true;
+
+  const testPath = '/';
+  let bestMatch: { type: 'allow' | 'disallow'; len: number } | null = null;
+  for (const rule of matchGroup.rules) {
+    if (rule.path === '') {
+      if (rule.type === 'disallow' && !bestMatch) bestMatch = { type: 'allow', len: 0 };
+      continue;
+    }
+    if (testPath.startsWith(rule.path)) {
+      const len = rule.path.length;
+      if (!bestMatch || len > bestMatch.len || (len === bestMatch.len && rule.type === 'allow')) {
+        bestMatch = { type: rule.type, len };
+      }
+    }
+  }
+  if (!bestMatch) return true;
+  return bestMatch.type === 'allow';
+}
+
+async function fetchRobotsTxt(robotsUrl: string): Promise<string> {
+  const attempts = [
+    async () => { const r = await fetch(robotsUrl, { redirect: 'follow' }); if (!r.ok && r.status !== 404) throw new Error('direct ' + r.status); return r.status === 404 ? '' : await r.text(); },
+    async () => { const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(robotsUrl)}`); if (!r.ok && r.status !== 404) throw new Error('corsproxy ' + r.status); return r.status === 404 ? '' : await r.text(); },
+    async () => { const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(robotsUrl)}`); if (!r.ok) throw new Error('allorigins ' + r.status); return await r.text(); },
+  ];
+  let lastErr: any = null;
+  for (const a of attempts) { try { return await a(); } catch (e) { lastErr = e; } }
+  throw lastErr || new Error('All proxies failed');
+}
+
+document.getElementById('rtcCheckBtn')?.addEventListener('click', async () => {
+  const urlInput  = document.getElementById('rtcUrl') as HTMLInputElement;
+  const resultsEl = document.getElementById('rtcResults');
+  const errorEl   = document.getElementById('rtcError');
+  const btnTxt    = document.getElementById('rtcBtnTxt');
+
+  let url = urlInput.value.trim();
+  if (!url) return;
+  url = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
+  if (!url) return;
+  const fullUrl = 'https://' + url;
+
+  if (btnTxt) btnTxt.textContent = 'Checking...';
+  if (resultsEl) resultsEl.style.display = 'none';
+  if (errorEl) errorEl.style.display = 'none';
+
+  try {
+    const robotsUrl  = new URL('/robots.txt', fullUrl).href;
+    const robotsTxt  = await fetchRobotsTxt(robotsUrl);
+
+    const botsEl        = document.getElementById('rtcBots');
+    const rawEl         = document.getElementById('rtcRaw');
+    const fixEl         = document.getElementById('rtcFix');
+    const fixCodeEl     = document.getElementById('rtcFixCode');
+    const resultUrlEl   = document.getElementById('rtcResultUrl');
+    const scoreEl       = document.getElementById('rtcScore');
+    const verdictEl     = document.getElementById('rtcScoreVerdict');
+    const ringFill      = document.getElementById('rtcRingFill') as SVGCircleElement | null;
+
+    if (resultUrlEl) resultUrlEl.textContent = robotsUrl;
+    if (rawEl) rawEl.textContent = robotsTxt || '(empty robots.txt — all bots allowed by default)';
+
+    const results = BOTS.map(b => {
+      let allowed = true;
+      for (const agent of b.agents) { if (!checkBotAccess(robotsTxt, agent)) { allowed = false; break; } }
+      return { ...b, allowed };
+    });
+
+    const allowedCount = results.filter(r => r.allowed).length;
+    const pct = allowedCount / 5;
+    const dashOffset = CIRCUMFERENCE * (1 - pct);
+    const ringColor = allowedCount === 5 ? '#22C55E' : allowedCount >= 3 ? '#F59E0B' : '#EF4444';
+    const verdictText = allowedCount === 5 ? 'Full access' : allowedCount >= 3 ? 'Partial access' : 'Mostly blocked';
+
+    /* Score number */
+    if (scoreEl) { scoreEl.textContent = String(allowedCount); scoreEl.style.color = ringColor; }
+
+    /* Verdict label */
+    if (verdictEl) { verdictEl.textContent = verdictText; verdictEl.style.color = ringColor; }
+
+    /* Animate ring */
+    if (ringFill) {
+      ringFill.style.stroke = ringColor;
+      ringFill.style.transition = 'none';
+      ringFill.style.strokeDashoffset = String(CIRCUMFERENCE);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ringFill.style.transition = `stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1), stroke .35s ease`;
+          ringFill.style.strokeDashoffset = String(dashOffset);
+        });
+      });
+    }
+
+    /* Bot cards */
+    if (botsEl) {
+      botsEl.innerHTML = results.map(r => `
+        <div class="rtc-bot ${r.allowed ? 'allowed' : 'blocked'}">
+          <div class="rtc-bot-left">
+            <div class="rtc-bot-ic ${r.allowed ? 'allowed' : 'blocked'}" aria-hidden="true">
+              ${r.allowed
+                ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+                : `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`}
+            </div>
+            <div>
+              <div class="rtc-bot-name">${r.name}</div>
+              <div class="rtc-bot-engine">${r.engine}</div>
+            </div>
+          </div>
+          <div class="rtc-bot-status ${r.allowed ? 'allowed' : 'blocked'}" aria-label="${r.name} is ${r.allowed ? 'allowed' : 'blocked'}">${r.allowed ? 'Allowed' : 'Blocked'}</div>
+        </div>`).join('');
+    }
+
+    /* Fix recommendation */
+    const blockedBots = results.filter(r => !r.allowed);
+    if (blockedBots.length > 0 && fixEl && fixCodeEl) {
+      fixEl.style.display = 'block';
+      fixCodeEl.textContent = blockedBots.map(b => `User-agent: ${b.name}\nAllow: /`).join('\n\n');
+    } else if (fixEl) {
+      fixEl.style.display = 'none';
+    }
+
+    if (resultsEl) resultsEl.style.display = 'block';
+
+  } catch (err) {
+    if (errorEl) {
+      const msg = (err as Error)?.message || '';
+      errorEl.textContent = `Could not fetch robots.txt for ${url}. ${msg ? 'Reason: ' + msg + '. ' : ''}Try a different domain, or check if the site is publicly accessible.`;
+      errorEl.style.display = 'block';
+    }
+  }
+
+  if (btnTxt) btnTxt.textContent = 'Check access';
+});
+
+/* Raw toggle */
+document.getElementById('rtcRawToggle')?.addEventListener('click', () => {
+  const raw = document.getElementById('rtcRaw');
+  const btn = document.getElementById('rtcRawToggle') as HTMLButtonElement | null;
+  if (!raw || !btn) return;
+  const visible = raw.style.display !== 'none';
+  raw.style.display = visible ? 'none' : 'block';
+  btn.textContent = visible ? 'View raw robots.txt ↓' : 'Hide raw robots.txt ↑';
+  btn.setAttribute('aria-expanded', String(!visible));
+});
+
+/* Copy fix code */
+document.getElementById('rtcCopyBtn')?.addEventListener('click', () => {
+  const code = document.getElementById('rtcFixCode')?.textContent || '';
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('rtcCopyBtn');
+    if (btn) { btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy'; }, 2000); }
+  });
+});
+
+/* Enter key in URL field */
+(document.getElementById('rtcUrl') as HTMLInputElement)?.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter') (document.getElementById('rtcCheckBtn') as HTMLButtonElement)?.click();
+});
+</script>
+</Layout>

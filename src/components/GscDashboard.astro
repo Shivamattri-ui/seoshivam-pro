@@ -1,0 +1,449 @@
+---
+/**
+ * GscDashboard — interactive Search Console-style analytics widget.
+ *
+ * Used on /work and /services/web-design as a richer alternative to
+ * dropping raw screenshots. Numbers come from props so each instance
+ * can represent a different client.
+ *
+ * Features (no real GSC fetch — these are documented client outcomes
+ * rendered in a familiar dashboard chrome):
+ *   - URL bar + range selector (28d default)
+ *   - 4 metric tiles with animated count-up (Clicks, Impressions, CTR, Position)
+ *   - SVG sparkline chart for clicks-vs-impressions
+ *   - Top queries table with bar fills
+ *   - "Insights" pill row (entity-first, FAQ schema, programmatic)
+ *
+ * Props are ALL optional — sensible defaults represent the
+ * Logistics SaaS client (the 16x case).
+ */
+interface Query { q: string; clicks: number; pos: number }
+
+interface Props {
+  /** Anonymized label (e.g. "[private] · Logistics SaaS"). Never use a real domain. */
+  domain?: string;
+  industry?: string;
+  range?: string;
+  clicks?: { from: number; to: number };
+  impressions?: { from: number; to: number };
+  ctr?: { from: number; to: number };  // numbers like 1.06 for 1.06%
+  position?: { from: number; to: number };
+  queries?: Query[];
+  insights?: string[];
+  /** unique id so multiple instances don't collide on the same page */
+  id?: string;
+}
+
+const {
+  domain = '[private] / under-nda',
+  industry = 'Industry · Region',
+  range = 'Last 90 days',
+  clicks = { from: 0, to: 0 },
+  impressions = { from: 0, to: 0 },
+  ctr = { from: 0, to: 0 },
+  position = { from: 0, to: 0 },
+  queries = [],
+  insights = [],
+  id = 'gsc-default',
+} = Astro.props;
+
+const fmt = (n: number) => n >= 1000 ? `${(n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'')}K` : `${n}`;
+const pct = (a: number, b: number) => Math.round(((b - a) / a) * 100);
+const clicksGrowth = pct(clicks.from, clicks.to);
+const imprGrowth = pct(impressions.from, impressions.to);
+const posDelta = (position.from - position.to).toFixed(1); // positive = improved
+const ctrDelta = (ctr.to - ctr.from).toFixed(2);
+
+// Build a deterministic but realistic-looking sparkline path (28 days)
+function spark(start: number, end: number, n = 28, jitter = 0.18){
+  const pts: number[] = [];
+  for(let i=0;i<n;i++){
+    const t = i/(n-1);
+    const eased = Math.pow(t, 1.7);
+    const base = start + (end - start) * eased;
+    // pseudo-random based on index so it stays stable across renders
+    const wobble = Math.sin(i * 1.3 + 2.1) * (end - start) * jitter * 0.18;
+    pts.push(base + wobble);
+  }
+  return pts;
+}
+
+const clicksSeries = spark(clicks.from, clicks.to);
+const imprSeries   = spark(impressions.from, impressions.to);
+
+// Convert series to SVG polyline points within a 600x140 viewbox with padding
+function toPath(series: number[], min: number, max: number, w = 600, h = 140, pad = 8){
+  const range = max - min || 1;
+  const innerW = w - pad*2;
+  const innerH = h - pad*2;
+  return series.map((v,i) => {
+    const x = pad + (i/(series.length-1)) * innerW;
+    const y = pad + innerH - ((v - min) / range) * innerH;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+
+const cMin = Math.min(...clicksSeries);
+const cMax = Math.max(...clicksSeries);
+const iMin = Math.min(...imprSeries);
+const iMax = Math.max(...imprSeries);
+
+const clicksPoints = toPath(clicksSeries, cMin, cMax);
+const imprPoints = toPath(imprSeries, iMin, iMax);
+
+const maxQueryClicks = Math.max(...queries.map(q => q.clicks));
+---
+
+<div class="gsc" data-gsc-id={id}>
+  <!-- Browser-like chrome -->
+  <div class="gsc-bar">
+    <div class="gsc-dots"><span></span><span></span><span></span></div>
+    <div class="gsc-url">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      search.google.com / search-console / performance / <strong class="gsc-redacted">{domain}</strong>
+    </div>
+    <span class="gsc-live"><span class="adot" style="width:5px;height:5px"></span>NDA</span>
+  </div>
+
+  <!-- Toolbar: industry + range -->
+  <div class="gsc-tools">
+    <span class="gsc-industry">{industry}</span>
+    <span class="gsc-spacer"></span>
+    <button class="gsc-range" type="button" disabled>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      {range}
+    </button>
+  </div>
+
+  <!-- Metric tiles -->
+  <div class="gsc-tiles">
+
+    <div class="gsc-tile">
+      <span class="gsc-tile-l">Total clicks</span>
+      <div class="gsc-tile-v">
+        <span class="gsc-num" data-gsc-target={clicks.to} data-gsc-suffix="">{fmt(clicks.to)}</span>
+        <span class={`gsc-delta ${clicksGrowth>=0?'up':'down'}`}>{clicksGrowth>=0?'+':''}{clicksGrowth}%</span>
+      </div>
+      <div class="gsc-tile-c">from {fmt(clicks.from)}</div>
+    </div>
+
+    <div class="gsc-tile">
+      <span class="gsc-tile-l">Impressions</span>
+      <div class="gsc-tile-v">
+        <span class="gsc-num" data-gsc-target={impressions.to}>{fmt(impressions.to)}</span>
+        <span class={`gsc-delta ${imprGrowth>=0?'up':'down'}`}>{imprGrowth>=0?'+':''}{imprGrowth}%</span>
+      </div>
+      <div class="gsc-tile-c">from {fmt(impressions.from)}</div>
+    </div>
+
+    <div class="gsc-tile">
+      <span class="gsc-tile-l">Average CTR</span>
+      <div class="gsc-tile-v">
+        <span class="gsc-num" data-gsc-target={ctr.to} data-gsc-suffix="%">{ctr.to}%</span>
+        <span class={`gsc-delta ${parseFloat(ctrDelta)>=0?'up':'down'}`}>{parseFloat(ctrDelta)>=0?'+':''}{ctrDelta}pp</span>
+      </div>
+      <div class="gsc-tile-c">from {ctr.from}%</div>
+    </div>
+
+    <div class="gsc-tile">
+      <span class="gsc-tile-l">Avg position</span>
+      <div class="gsc-tile-v">
+        <span class="gsc-num" data-gsc-target={position.to}>{position.to}</span>
+        <span class={`gsc-delta up`}>&minus;{posDelta}</span>
+      </div>
+      <div class="gsc-tile-c">from {position.from}</div>
+    </div>
+
+  </div>
+
+  <!-- Chart -->
+  <div class="gsc-chart" data-gsc-chart>
+    <div class="gsc-chart-legend">
+      <span><span class="gsc-leg-dot" style="background:var(--ac)"></span>Clicks</span>
+      <span><span class="gsc-leg-dot" style="background:rgba(79,142,247,.35)"></span>Impressions</span>
+    </div>
+    <svg viewBox="0 0 600 140" preserveAspectRatio="none" class="gsc-chart-svg" aria-hidden="true">
+      <defs>
+        <linearGradient id={`gsc-grad-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4F8EF7" stop-opacity="0.32"/>
+          <stop offset="100%" stop-color="#4F8EF7" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Subtle horizontal gridlines -->
+      <line x1="0" y1="35" x2="600" y2="35" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+      <line x1="0" y1="70" x2="600" y2="70" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+      <line x1="0" y1="105" x2="600" y2="105" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+
+      <!-- Impressions area + line -->
+      <polyline points={`0,140 ${imprPoints} 600,140`} fill={`url(#gsc-grad-${id})`} class="gsc-area-i" opacity="0.5"/>
+      <polyline points={imprPoints} fill="none" stroke="rgba(79,142,247,0.35)" stroke-width="1.5" class="gsc-line-i"/>
+
+      <!-- Clicks line on top -->
+      <polyline points={clicksPoints} fill="none" stroke="#4F8EF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="gsc-line-c"/>
+    </svg>
+    <div class="gsc-chart-x">
+      <span>Day 1</span><span>Day 7</span><span>Day 14</span><span>Day 21</span><span>Day 28</span>
+    </div>
+  </div>
+
+  <!-- Top queries -->
+  <div class="gsc-queries">
+    <div class="gsc-q-head">
+      <span>Top queries</span>
+      <span>Clicks</span>
+      <span>Position</span>
+    </div>
+    {queries.map((q) => (
+      <div class="gsc-q-row">
+        <div class="gsc-q-q">
+          <div class="gsc-q-bar"><div class="gsc-q-bar-fill" style={`--qf:${(q.clicks/maxQueryClicks)*100}%`}></div></div>
+          <span class="gsc-q-text">{q.q}</span>
+        </div>
+        <span class="gsc-q-c">{q.clicks}</span>
+        <span class="gsc-q-p">#{q.pos}</span>
+      </div>
+    ))}
+  </div>
+
+  <!-- Insight pills -->
+  <div class="gsc-insights">
+    <span class="gsc-ins-eye">METHOD</span>
+    {insights.map(ins => (
+      <span class="gsc-ins"><span class="adot" style="width:4px;height:4px"></span>{ins}</span>
+    ))}
+  </div>
+</div>
+
+<style is:global>
+.gsc{
+  background:#0A0B14;
+  border:1px solid #1A1F2E;
+  border-radius:14px;
+  overflow:hidden;
+  font-family:var(--fu);
+  color:#A8B0C8;
+  box-shadow:0 28px 70px rgba(0,0,0,.42);
+  position:relative;
+}
+.gsc::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 80% at 100% 0%, rgba(79,142,247,.06) 0%, transparent 60%);
+}
+
+.gsc-bar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;
+  background:#13141F;
+  border-bottom:1px solid #1A1F2E;
+  position:relative;
+}
+.gsc-dots{display:flex;gap:5px}
+.gsc-dots span{width:9px;height:9px;border-radius:50%}
+.gsc-dots span:nth-child(1){background:#FF5F56}
+.gsc-dots span:nth-child(2){background:#FFBD2E}
+.gsc-dots span:nth-child(3){background:#27C93F}
+.gsc-url{
+  flex:1;display:flex;align-items:center;gap:7px;
+  font-family:var(--fm);font-size:11px;color:#7A819A;
+  background:#0E1019;
+  border:1px solid #1A1F2E;
+  border-radius:999px;
+  padding:5px 14px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.gsc-url strong{color:#E5E7EE;font-weight:600}
+.gsc-redacted{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:2px 8px;border-radius:4px;
+  background:rgba(79,142,247,.1);
+  border:1px solid rgba(79,142,247,.22);
+  color:#7BAEFF;
+  font-family:'JetBrains Mono', monospace;
+  letter-spacing:.04em;
+}
+.gsc-live{
+  cursor:help;
+}
+.gsc-url svg{flex-shrink:0;color:#5A6178}
+.gsc-live{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#22C55E;
+  padding:4px 9px;border-radius:999px;
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);
+  flex-shrink:0;
+}
+
+.gsc-tools{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 22px;
+  border-bottom:1px solid #1A1F2E;
+  background:rgba(13,14,25,.4);
+}
+.gsc-industry{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#4F8EF7;
+  background:rgba(79,142,247,.08);
+  border:1px solid rgba(79,142,247,.22);
+  border-radius:4px;padding:5px 10px;
+}
+.gsc-spacer{flex:1 1 auto}
+.gsc-range{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:.06em;
+  color:#7A819A;
+  background:#0E1019;
+  border:1px solid #1A1F2E;
+  border-radius:6px;padding:6px 12px;
+  cursor:default;
+}
+
+.gsc-tiles{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  border-bottom:1px solid #1A1F2E;
+}
+.gsc-tile{
+  padding:18px 22px;
+  border-right:1px solid #1A1F2E;
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;
+}
+.gsc-tile:last-child{border-right:none}
+.gsc-tile-l{font-family:var(--fm);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#5A6178}
+.gsc-tile-v{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gsc-num{
+  font-family:var(--fd);
+  font-size:clamp(28px,3vw,38px);
+  font-weight:400;font-style:italic;
+  color:#E5E7EE;
+  line-height:1;letter-spacing:-.025em;
+  font-variant-numeric:tabular-nums;
+}
+.gsc-delta{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.06em;
+  padding:2px 7px;border-radius:3px;border:1px solid;
+}
+.gsc-delta.up{color:#22C55E;background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.22)}
+.gsc-delta.down{color:#EF4444;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22)}
+.gsc-tile-c{font-family:var(--fm);font-size:10px;color:#5A6178;letter-spacing:.04em}
+
+.gsc-chart{padding:18px 22px 12px;border-bottom:1px solid #1A1F2E;color:#A8B0C8}
+.gsc-chart-legend{display:flex;gap:18px;font-family:var(--fm);font-size:10px;color:#7A819A;margin-bottom:10px;letter-spacing:.06em}
+.gsc-chart-legend span{display:inline-flex;align-items:center;gap:6px}
+.gsc-leg-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.gsc-chart-svg{display:block;width:100%;height:140px}
+.gsc-line-c{stroke-dasharray:1500;stroke-dashoffset:1500;animation:gscDraw 2s cubic-bezier(.16,1,.3,1) .15s forwards}
+.gsc-line-i{stroke-dasharray:1500;stroke-dashoffset:1500;animation:gscDraw 2.4s cubic-bezier(.16,1,.3,1) forwards}
+.gsc-area-i{opacity:0;animation:gscFade 1.2s ease .8s forwards}
+@keyframes gscDraw{to{stroke-dashoffset:0}}
+@keyframes gscFade{to{opacity:.5}}
+.gsc-chart-x{display:flex;justify-content:space-between;font-family:var(--fm);font-size:9px;color:#5A6178;letter-spacing:.08em;margin-top:6px}
+
+.gsc-queries{padding:18px 22px;border-bottom:1px solid #1A1F2E}
+.gsc-q-head{
+  display:grid;
+  grid-template-columns:1fr 70px 70px;
+  gap:14px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#5A6178;
+  padding-bottom:10px;
+  border-bottom:1px solid #1A1F2E;
+}
+.gsc-q-row{
+  display:grid;
+  grid-template-columns:1fr 70px 70px;
+  gap:14px;align-items:center;
+  padding:10px 0;
+  border-bottom:1px dashed #1A1F2E;
+  font-family:var(--fu);font-size:13px;
+}
+.gsc-q-row:last-child{border-bottom:none}
+.gsc-q-q{display:flex;flex-direction:column;gap:6px;min-width:0}
+.gsc-q-bar{height:3px;background:#1A1F2E;border-radius:999px;overflow:hidden;width:100%;order:2}
+.gsc-q-bar-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,#4F8EF7,#1A3A8F);
+  border-radius:999px;
+  animation:gscBar 1.2s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes gscBar{to{width:var(--qf)}}
+.gsc-q-text{order:1;color:#E5E7EE;font-weight:500;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsc-q-c{font-family:var(--fm);font-size:12px;color:#E5E7EE;font-variant-numeric:tabular-nums;text-align:right}
+.gsc-q-p{font-family:var(--fm);font-size:12px;color:#22C55E;text-align:right}
+
+.gsc-insights{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:14px 22px;
+  background:rgba(13,14,25,.5);
+}
+.gsc-ins-eye{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A6178;margin-right:6px}
+.gsc-ins{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.08em;
+  color:#A8B0C8;
+  padding:5px 10px;border-radius:999px;
+  background:#13141F;
+  border:1px solid #1A1F2E;
+}
+
+@media(max-width:780px){
+  .gsc-tiles{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .gsc-tile{border-bottom:1px solid #1A1F2E}
+  .gsc-tile:nth-child(odd){border-right:1px solid #1A1F2E}
+  .gsc-tile:nth-child(even){border-right:none}
+  .gsc-tile:nth-last-child(-n+2){border-bottom:none}
+  .gsc-num{font-size:28px}
+}
+@media(max-width:520px){
+  .gsc-bar{padding:8px 12px}
+  .gsc-url{font-size:10px;padding:4px 10px}
+  .gsc-tools{padding:12px 14px}
+  .gsc-tile{padding:14px 16px}
+  .gsc-q-head,.gsc-q-row{grid-template-columns:1fr 50px 50px;gap:10px;font-size:12px}
+  .gsc-insights{padding:12px 16px}
+}
+</style>
+
+<script>
+// ── Count-up + chart reveal for GSC dashboard widgets ──
+// Hoisted by Astro: runs once per page even with multiple <GscDashboard /> instances.
+(function(){
+  function fmt(n: number, decimals: number, suffix: string){
+    let val: string;
+    if(decimals > 0) val = n.toFixed(decimals);
+    else if(n >= 1000) val = (n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'') + 'K';
+    else val = Math.round(n).toString();
+    return val + suffix;
+  }
+
+  function animate(el: HTMLElement){
+    const target = parseFloat(el.getAttribute('data-gsc-target') || '0');
+    const suffix = el.getAttribute('data-gsc-suffix') || '';
+    const decimals = (target % 1 !== 0) ? (target.toString().split('.')[1]?.length || 0) : 0;
+    const duration = 1600;
+    const startTime = performance.now();
+
+    function frame(now: number){
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = target * eased;
+      el.textContent = fmt(current, decimals, suffix);
+      if(t < 1) requestAnimationFrame(frame);
+      else el.textContent = fmt(target, decimals, suffix);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        animate(e.target as HTMLElement);
+        obs.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.4});
+
+  document.querySelectorAll<HTMLElement>('[data-gsc-target]').forEach(el => obs.observe(el));
+})();
+</script>

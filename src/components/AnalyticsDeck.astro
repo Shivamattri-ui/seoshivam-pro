@@ -1,0 +1,126 @@
+---
+/**
+ * AnalyticsDeck — symmetrical 2-column layout that puts the
+ * GSC dashboard and the GA4 audience widget side by side in a
+ * single editorial frame.
+ *
+ * Replaces the prior pattern of stacking the two widgets vertically
+ * (which read as "non-symmetrical, looks bloated"). Single section,
+ * one heading, two synchronized panes. On mobile the panes stack
+ * with a clear divider.
+ *
+ * Both panes accept the SAME prop shape as <GscDashboard /> and
+ * <AudienceWidget /> respectively, so this is a pure layout component
+ * around the existing widgets.
+ */
+import GscDashboard from './GscDashboard.astro';
+import AudienceWidget from './AudienceWidget.astro';
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  headingEm?: string;
+  deck?: string;
+  /** Props forwarded to <GscDashboard /> */
+  gsc: Record<string, any>;
+  /** Props forwarded to <AudienceWidget /> */
+  audience: Record<string, any>;
+  id?: string;
+}
+
+const {
+  eyebrow = 'RECEIPTS / SEARCH CONSOLE + GA4',
+  heading = 'Two views of the same compounding work,',
+  headingEm = 'side by side.',
+  deck = 'Search Console snapshot on the left. GA4 audience snapshot on the right. Different lenses, same engagement, names withheld under NDA, data verifiable on request.',
+  gsc,
+  audience,
+  id = 'analytics-deck',
+} = Astro.props;
+---
+
+<section class="adeck" id={id}>
+  <div class="container">
+    <header class="adeck-hdr rv">
+      <span class="hair left">{eyebrow}</span>
+      <h2 class="adeck-h">
+        {heading}<br>
+        <em class="grad-anim">{headingEm}</em>
+      </h2>
+      {deck && <p class="adeck-deck">{deck}</p>}
+    </header>
+
+    <div class="adeck-grid">
+      <div class="adeck-pane rv d1">
+        <div class="adeck-tag">
+          <span class="adeck-tag-num">01</span>
+          <span class="adeck-tag-label">Search Console</span>
+        </div>
+        <GscDashboard {...gsc} />
+      </div>
+      <div class="adeck-pane rv d2">
+        <div class="adeck-tag">
+          <span class="adeck-tag-num">02</span>
+          <span class="adeck-tag-label">GA4 Audience</span>
+        </div>
+        <AudienceWidget {...audience} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.adeck{padding:80px 0;position:relative;z-index:1}
+.adeck-hdr{max-width:780px;margin:0 0 40px;display:flex;flex-direction:column;gap:14px}
+.adeck-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.4vw,56px);font-weight:400;line-height:.98;letter-spacing:-.022em;color:var(--w);margin:0}
+.adeck-h em{font-style:italic}
+.adeck-deck{font-family:'Syne',sans-serif;font-size:15px;color:var(--wd);line-height:1.7;margin:0;max-width:660px}
+
+/* Symmetrical 2-column at 1100px+, stacked below.
+   Panes are top-aligned (align-items:start) AND sticky to the
+   viewport (top:96px), so when one pane is taller, the shorter
+   one stays in view as you scroll past the section instead of
+   leaving a dirty empty column. Both unstick at the same point —
+   when the grid container's bottom passes the sticky offset. */
+.adeck-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  align-items:start;
+}
+.adeck-pane{
+  display:flex;flex-direction:column;gap:14px;min-width:0;
+  position:sticky;
+  top:96px;
+  align-self:start;
+}
+.adeck-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  align-self:flex-start;
+}
+.adeck-tag-num{
+  font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;font-weight:400;
+  line-height:1;letter-spacing:-.02em;
+  background:var(--ag);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.adeck-tag-label{
+  font-family:'JetBrains Mono', monospace;font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  padding:5px 10px;border-radius:4px;
+  background:var(--agl);
+  border:1px solid rgba(79,142,247,.24);
+}
+
+@media(max-width:1100px){
+  .adeck-grid{grid-template-columns:1fr;gap:32px}
+  /* Stacked: drop sticky so panes flow normally, add divider */
+  .adeck-pane{position:static;top:auto}
+  .adeck-pane + .adeck-pane{padding-top:32px;border-top:1px dashed var(--bd)}
+}
+@media(max-width:640px){
+  .adeck{padding:60px 0}
+  .adeck-hdr{margin-bottom:32px}
+}
+</style>

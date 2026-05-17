@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content';
+import { buildLinkPreviewMap } from '../lib/link-preview-map';
+
+const posts = await getCollection('blog');
+const linkPreviewMap = buildLinkPreviewMap(posts);
+---
+
+<script type="application/json" id="site-link-preview-data" set:html={JSON.stringify(linkPreviewMap)} />

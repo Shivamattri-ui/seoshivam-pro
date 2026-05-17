@@ -1,0 +1,341 @@
+---
+/**
+ * AudienceWidget — GA4-style audience analytics widget.
+ *
+ * Companion to <GscDashboard /> for showing top-of-funnel audience data
+ * (active users, sessions, views) where the GSC clicks/impressions chart
+ * isn't the right surface.
+ *
+ * All client identifiers are stripped — props default to "[private]"
+ * and the widget chrome shows an "NDA" badge so nothing is ever
+ * accidentally exposed.
+ */
+interface Country { name: string; users: number }
+
+interface Props {
+  property?: string;        // anonymized label
+  industry?: string;
+  range?: string;
+  activeUsers?: number;
+  sessions?: number;
+  views?: number;
+  newUsers?: number;
+  realtime?: number;
+  countries?: Country[];
+  id?: string;
+}
+
+const {
+  property = '[private] / nda-protected',
+  industry = 'Industry · Region',
+  range = 'Last 90 days',
+  activeUsers = 0,
+  sessions = 0,
+  views = 0,
+  newUsers = 0,
+  realtime = 0,
+  countries = [],
+  id = 'aud-default',
+} = Astro.props;
+
+const fmt = (n: number) => n >= 1000 ? `${(n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'')}K` : `${n}`;
+
+// Build a deterministic 90-day series that climbs from a small base to
+// the current views figure, with realistic wobble.
+function buildSeries(target: number, n = 90, opening = 0.18): number[] {
+  const start = target * opening;
+  const out: number[] = [];
+  for(let i=0;i<n;i++){
+    const t = i/(n-1);
+    // S-curve (gentle climb at start, steeper mid, plateau near top)
+    const eased = t < 0.2 ? t*0.8 : t < 0.85 ? 0.16 + (t-0.2)*1.18 : 0.93 + (t-0.85)*0.4;
+    const base = start + (target - start) * eased;
+    const wobble = Math.sin(i*1.7 + 0.3) * (target - start) * 0.04;
+    out.push(Math.max(0, base + wobble));
+  }
+  return out;
+}
+
+const series = buildSeries(views || activeUsers || 1000);
+const sMin = Math.min(...series);
+const sMax = Math.max(...series);
+
+function toPath(s: number[], min: number, max: number, w = 600, h = 140, pad = 8){
+  const range = max - min || 1;
+  const innerW = w - pad*2;
+  const innerH = h - pad*2;
+  return s.map((v,i) => {
+    const x = pad + (i/(s.length-1)) * innerW;
+    const y = pad + innerH - ((v - min) / range) * innerH;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+const pathPts = toPath(series, sMin, sMax);
+const maxCountry = countries.length ? Math.max(...countries.map(c => c.users)) : 1;
+
+// Build 30 mini histogram bars for "active users per minute" feel
+const rtBars = Array.from({length:30}, (_,i) => {
+  const phase = Math.sin(i*0.42 + 1.1) * 0.35 + Math.cos(i*0.31) * 0.18;
+  return Math.max(0.32, 0.62 + phase);
+});
+---
+
+<div class="aud" data-aud-id={id}>
+  <!-- Browser-like chrome -->
+  <div class="aud-bar">
+    <div class="aud-dots"><span></span><span></span><span></span></div>
+    <div class="aud-url">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      analytics.google.com / reports / overview / <strong class="aud-redacted">{property}</strong>
+    </div>
+    <span class="aud-live"><span class="adot" style="width:5px;height:5px"></span>NDA</span>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="aud-tools">
+    <span class="aud-industry">{industry}</span>
+    <span class="aud-spacer"></span>
+    <span class="aud-range">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      {range}
+    </span>
+  </div>
+
+  <!-- Two-pane: tiles + chart on left, realtime card on right -->
+  <div class="aud-grid">
+
+    <div class="aud-main">
+      <!-- Metric tiles -->
+      <div class="aud-tiles">
+        <div class="aud-tile aud-tile--blue">
+          <span class="aud-tile-l">Active users</span>
+          <span class="aud-num" data-aud-target={activeUsers}>{fmt(activeUsers)}</span>
+        </div>
+        <div class="aud-tile">
+          <span class="aud-tile-l">Sessions</span>
+          <span class="aud-num" data-aud-target={sessions}>{fmt(sessions)}</span>
+        </div>
+        <div class="aud-tile aud-tile--accent">
+          <span class="aud-tile-l">Views</span>
+          <span class="aud-num" data-aud-target={views}>{fmt(views)}</span>
+        </div>
+        <div class="aud-tile">
+          <span class="aud-tile-l">New users</span>
+          <span class="aud-num" data-aud-target={newUsers}>{fmt(newUsers)}</span>
+        </div>
+      </div>
+
+      <!-- Trend chart -->
+      <div class="aud-chart">
+        <svg viewBox="0 0 600 140" preserveAspectRatio="none" class="aud-chart-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id={`aud-grad-${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4F8EF7" stop-opacity="0.40"/>
+              <stop offset="100%" stop-color="#4F8EF7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="35" x2="600" y2="35" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+          <line x1="0" y1="70" x2="600" y2="70" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+          <line x1="0" y1="105" x2="600" y2="105" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="2 4"/>
+          <polyline points={`0,140 ${pathPts} 600,140`} fill={`url(#aud-grad-${id})`} class="aud-area" opacity="0.5"/>
+          <polyline points={pathPts} fill="none" stroke="#4F8EF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aud-line"/>
+        </svg>
+        <div class="aud-chart-x">
+          <span>Day 1</span><span>Day 30</span><span>Day 60</span><span>Day 90</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Realtime card -->
+    <aside class="aud-rt">
+      <div class="aud-rt-hdr">
+        <span class="aud-rt-eye">ACTIVE USERS &middot; LAST 30 MIN</span>
+      </div>
+      <div class="aud-rt-num" data-aud-target={realtime}>{realtime}</div>
+      <div class="aud-rt-sub">Active users per minute</div>
+      <div class="aud-rt-bars" aria-hidden="true">
+        {rtBars.map((h,i)=>(
+          <span class="aud-rt-bar" style={`--bh:${(h*100).toFixed(0)}%;--bd:${i*0.04}s`}></span>
+        ))}
+      </div>
+      <div class="aud-rt-divider"></div>
+      <div class="aud-rt-cn">
+        <span class="aud-rt-cn-h">Country</span>
+        <span class="aud-rt-cn-h aud-rt-cn-h--r">Users</span>
+      </div>
+      {countries.map((c)=>(
+        <div class="aud-rt-row">
+          <span class="aud-rt-name">{c.name}</span>
+          <span class="aud-rt-bar2"><span style={`--w:${(c.users/maxCountry)*100}%`}></span></span>
+          <span class="aud-rt-c">{c.users}</span>
+        </div>
+      ))}
+    </aside>
+
+  </div>
+</div>
+
+<style is:global>
+.aud{
+  background:#0A0B14;
+  border:1px solid #1A1F2E;
+  border-radius:14px;
+  overflow:hidden;
+  font-family:var(--fu);
+  color:#A8B0C8;
+  box-shadow:0 28px 70px rgba(0,0,0,.42);
+  position:relative;
+}
+
+/* Reuse the GSC chrome styles by mirroring */
+.aud-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#13141F;border-bottom:1px solid #1A1F2E}
+.aud-dots{display:flex;gap:5px}
+.aud-dots span{width:9px;height:9px;border-radius:50%}
+.aud-dots span:nth-child(1){background:#FF5F56}
+.aud-dots span:nth-child(2){background:#FFBD2E}
+.aud-dots span:nth-child(3){background:#27C93F}
+.aud-url{flex:1;display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:11px;color:#7A819A;background:#0E1019;border:1px solid #1A1F2E;border-radius:999px;padding:5px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aud-url svg{flex-shrink:0;color:#5A6178}
+.aud-redacted{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:2px 8px;border-radius:4px;
+  background:rgba(79,142,247,.1);
+  border:1px solid rgba(79,142,247,.22);
+  color:#7BAEFF;
+  font-family:'JetBrains Mono', monospace;
+  letter-spacing:.04em;
+}
+.aud-live{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#22C55E;padding:4px 9px;border-radius:999px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);flex-shrink:0}
+
+.aud-tools{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid #1A1F2E;background:rgba(13,14,25,.4)}
+.aud-industry{font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#4F8EF7;background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.22);border-radius:4px;padding:5px 10px}
+.aud-spacer{flex:1 1 auto}
+.aud-range{display:inline-flex;align-items:center;gap:7px;font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:.06em;color:#7A819A;background:#0E1019;border:1px solid #1A1F2E;border-radius:6px;padding:6px 12px}
+
+/* Layout */
+.aud-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+}
+.aud-main{border-right:1px solid #1A1F2E}
+.aud-tiles{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  border-bottom:1px solid #1A1F2E;
+}
+.aud-tile{
+  padding:18px 20px;
+  border-right:1px solid #1A1F2E;
+  display:flex;flex-direction:column;gap:10px;
+  position:relative;
+}
+.aud-tile:last-child{border-right:none}
+.aud-tile-l{font-family:var(--fm);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#5A6178}
+.aud-tile--accent .aud-tile-l{color:#7BAEFF}
+.aud-tile--accent::after{content:'';position:absolute;left:0;top:0;width:100%;height:2px;background:linear-gradient(90deg,#4F8EF7,#1A3A8F)}
+.aud-num{
+  font-family:var(--fd);font-size:clamp(28px,3.2vw,40px);font-weight:400;font-style:italic;
+  color:#E5E7EE;line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums;
+}
+
+.aud-chart{padding:18px 22px 14px;color:#A8B0C8}
+.aud-chart-svg{display:block;width:100%;height:140px}
+.aud-line{stroke-dasharray:1500;stroke-dashoffset:1500;animation:audDraw 2.4s cubic-bezier(.16,1,.3,1) .15s forwards}
+.aud-area{opacity:0;animation:audFade 1.2s ease 1s forwards}
+@keyframes audDraw{to{stroke-dashoffset:0}}
+@keyframes audFade{to{opacity:.5}}
+.aud-chart-x{display:flex;justify-content:space-between;font-family:var(--fm);font-size:9px;color:#5A6178;letter-spacing:.08em;margin-top:6px}
+
+/* Realtime card */
+.aud-rt{padding:20px 22px;background:rgba(13,14,25,.5);display:flex;flex-direction:column;gap:6px}
+.aud-rt-hdr{display:flex;align-items:center;justify-content:space-between}
+.aud-rt-eye{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A6178}
+.aud-rt-num{font-family:var(--fd);font-size:48px;font-style:italic;font-weight:400;color:#E5E7EE;line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.aud-rt-sub{font-family:var(--fm);font-size:10px;letter-spacing:.06em;color:#5A6178;margin-bottom:6px}
+.aud-rt-bars{display:flex;align-items:flex-end;gap:2px;height:40px;margin-bottom:14px}
+.aud-rt-bar{
+  flex:1;
+  height:var(--bh);
+  background:linear-gradient(180deg,#4F8EF7,#1A3A8F);
+  border-radius:1px;
+  opacity:0;
+  animation:audRtIn .35s cubic-bezier(.16,1,.3,1) forwards, audRtPulse 3s ease-in-out infinite;
+  animation-delay:var(--bd), calc(var(--bd) + .8s);
+}
+@keyframes audRtIn{from{opacity:0;height:8%}to{opacity:1;height:var(--bh)}}
+@keyframes audRtPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.18)}}
+
+.aud-rt-divider{height:1px;background:#1A1F2E;margin:4px 0 10px}
+.aud-rt-cn{display:grid;grid-template-columns:1fr 60px;gap:10px;padding-bottom:8px;border-bottom:1px solid #1A1F2E}
+.aud-rt-cn-h{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5A6178}
+.aud-rt-cn-h--r{text-align:right}
+.aud-rt-row{
+  display:grid;
+  grid-template-columns:1fr 60px;
+  gap:10px;align-items:center;
+  padding:8px 0;
+  border-bottom:1px dashed #1A1F2E;
+  font-family:var(--fu);font-size:13px;
+  position:relative;
+}
+.aud-rt-row:last-child{border-bottom:none}
+.aud-rt-name{color:#E5E7EE;font-weight:500;letter-spacing:-.005em;display:flex;flex-direction:column;gap:6px;min-width:0}
+.aud-rt-bar2{
+  grid-column:1;display:block;
+  height:2px;background:#1A1F2E;border-radius:999px;overflow:hidden;
+  margin-top:4px;
+}
+.aud-rt-bar2 span{
+  display:block;height:100%;width:var(--w);
+  background:linear-gradient(90deg,#4F8EF7,#1A3A8F);
+  animation:audCb 1.4s cubic-bezier(.16,1,.3,1);
+}
+@keyframes audCb{from{width:0}}
+.aud-rt-c{font-family:var(--fm);font-size:12px;color:#E5E7EE;font-variant-numeric:tabular-nums;text-align:right}
+
+@media(max-width:880px){
+  .aud-grid{grid-template-columns:1fr}
+  .aud-main{border-right:none;border-bottom:1px solid #1A1F2E}
+}
+@media(max-width:520px){
+  .aud-tiles{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .aud-tile{border-bottom:1px solid #1A1F2E}
+  .aud-tile:nth-child(odd){border-right:1px solid #1A1F2E}
+  .aud-tile:nth-child(even){border-right:none}
+  .aud-tile:nth-last-child(-n+2){border-bottom:none}
+  .aud-num{font-size:28px}
+  .aud-rt-num{font-size:38px}
+}
+</style>
+
+<script>
+// ── Count-up for [data-aud-target] elements ──
+(function(){
+  function fmt(n: number, suffix: string){
+    let val: string;
+    if(n >= 1000) val = (n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'') + 'K';
+    else val = Math.round(n).toString();
+    return val + suffix;
+  }
+  function animate(el: HTMLElement){
+    const target = parseFloat(el.getAttribute('data-aud-target') || '0');
+    const suffix = el.getAttribute('data-aud-suffix') || '';
+    const duration = 1600;
+    const startTime = performance.now();
+    function frame(now: number){
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmt(target * eased, suffix);
+      if(t < 1) requestAnimationFrame(frame);
+      else el.textContent = fmt(target, suffix);
+    }
+    requestAnimationFrame(frame);
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ animate(e.target as HTMLElement); obs.unobserve(e.target); }
+    });
+  }, {threshold: 0.4});
+  document.querySelectorAll<HTMLElement>('[data-aud-target]').forEach(el => obs.observe(el));
+})();
+</script>

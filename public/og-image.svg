@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0B14"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="90%" cy="10%" r="60%">
+      <stop offset="0%" stop-color="#4F8EF7" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#4F8EF7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="10%" cy="100%" r="55%">
+      <stop offset="0%" stop-color="#1A3A8F" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#1A3A8F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="title" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F8EF7"/>
+      <stop offset="50%" stop-color="#A8C8FF"/>
+      <stop offset="100%" stop-color="#4F8EF7"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Top strip -->
+  <g font-family="'JetBrains Mono', monospace" font-size="14" font-weight="600" letter-spacing="3" fill="rgba(255,255,255,0.55)">
+    <text x="80" y="80">FILE / 001 &#183; SEOSHIVAM.PRO</text>
+    <text x="1120" y="80" text-anchor="end" fill="#4F8EF7">AEO &#183; SEO &#183; AI-VISIBLE WEB DESIGN</text>
+  </g>
+  <line x1="80" y1="100" x2="1120" y2="100" stroke="rgba(79,142,247,0.35)" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="80" y="280" font-family="Georgia, 'Instrument Serif', serif" font-size="84" font-weight="400" fill="#F5F2EC" letter-spacing="-2">Shivam Attri</text>
+  <text x="80" y="385" font-family="Georgia, 'Instrument Serif', serif" font-style="italic" font-size="92" font-weight="400" fill="url(#title)" letter-spacing="-3">Get cited by AI.</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="445" font-family="'Syne', sans-serif" font-size="24" fill="rgba(245,242,236,0.75)" letter-spacing="-0.4">
+    AEO strategy, SEO architecture, AI-visible web design.
+  </text>
+  <text x="80" y="478" font-family="'Syne', sans-serif" font-size="24" fill="rgba(245,242,236,0.75)" letter-spacing="-0.4">
+    For B2B SaaS founders done playing yesterday's game.
+  </text>
+
+  <!-- Bottom strip with stats -->
+  <line x1="80" y1="540" x2="1120" y2="540" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+  <g font-family="'JetBrains Mono', monospace" font-size="13" font-weight="500" letter-spacing="2.4" fill="rgba(245,242,236,0.55)">
+    <text x="80" y="580">7+ YEARS</text>
+    <text x="220" y="580">&#183;</text>
+    <text x="245" y="580">150+ SITES</text>
+    <text x="395" y="580">&#183;</text>
+    <text x="420" y="580">30+ BRANDS</text>
+    <text x="570" y="580">&#183;</text>
+    <text x="595" y="580">4 CONTINENTS</text>
+    <text x="1120" y="580" text-anchor="end" fill="#4F8EF7">SEOSHIVAM.PRO</text>
+  </g>
+</svg>
