@@ -1,0 +1,491 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Request received · Shivam Attri"
+  description="Your inquiry has been received. Shivam Attri will reply within 4 hours."
+  canonical="https://seoshivam.pro/thank-you"
+>
+<Nav />
+
+<main id="main-content" class="ty-root">
+
+  <!-- Canvas layer: particles -->
+  <canvas id="tyCanvas" class="ty-canvas" aria-hidden="true"></canvas>
+
+  <!-- Hero block -->
+  <section class="ty-hero">
+
+    <!-- Animated check ring -->
+    <div class="ty-check-wrap" aria-hidden="true">
+      <svg class="ty-ring" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ty-ring-track" cx="60" cy="60" r="54" stroke-width="3"/>
+        <circle class="ty-ring-fill" cx="60" cy="60" r="54" stroke-width="3"/>
+      </svg>
+      <svg class="ty-check" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline class="ty-check-mark" points="8,22 18,33 36,12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="ty-pulse" aria-hidden="true"></div>
+    </div>
+
+    <!-- Eyebrow stamp -->
+    <div class="ty-stamp rv d2">FILE/RECEIVED &middot; LEAD CAPTURED</div>
+
+    <!-- Heading — personalised via JS -->
+    <h1 class="ty-h rv d3">
+      <span class="ty-h-static">Request received</span><span class="ty-h-comma">,</span><br>
+      <em class="grad-anim ty-h-name" id="tyName">you're in.</em>
+    </h1>
+
+    <!-- Subtext -->
+    <p class="ty-sub rv d4">
+      Your inquiry landed in Shivam's inbox. Expect a reply within 4 hours on business days.
+      In the meantime, here's exactly what happens next.
+    </p>
+
+    <!-- Timeline: what happens next -->
+    <ol class="ty-timeline rv d5" aria-label="What happens next">
+      <li class="ty-step">
+        <span class="ty-step-num">01</span>
+        <div class="ty-step-body">
+          <strong class="ty-step-title">Inbox review</strong>
+          <span class="ty-step-desc">Shivam reads your brief, checks fit, and drafts a personalised reply.</span>
+        </div>
+        <span class="ty-step-eta">· 4 hrs</span>
+      </li>
+      <li class="ty-step">
+        <span class="ty-step-num">02</span>
+        <div class="ty-step-body">
+          <strong class="ty-step-title">Scoping call booked</strong>
+          <span class="ty-step-desc">30-minute call to align on goals, timeline, and what a first win looks like.</span>
+        </div>
+        <span class="ty-step-eta">· 48 hrs</span>
+      </li>
+      <li class="ty-step">
+        <span class="ty-step-num">03</span>
+        <div class="ty-step-body">
+          <strong class="ty-step-title">Audit delivered</strong>
+          <span class="ty-step-desc">A prioritised action list lands in your inbox before the first invoice.</span>
+        </div>
+        <span class="ty-step-eta">· Week 1</span>
+      </li>
+    </ol>
+
+  </section>
+
+  <!-- While you wait: resource + reading strip -->
+  <section class="ty-while">
+    <p class="ty-while-label">While you wait</p>
+    <div class="ty-cards">
+
+      <a href="/resources" class="ty-card rv" data-cursor="Free downloads">
+        <span class="ty-card-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10m0 0l-3-3m3 3l3-3M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4"/></svg>
+        </span>
+        <div class="ty-card-body">
+          <strong class="ty-card-title">Free AEO audit (80 points)</strong>
+          <span class="ty-card-desc">The exact checklist used before every engagement. No sign-up barrier.</span>
+        </div>
+        <span class="ty-card-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+
+      <a href="/insights" class="ty-card rv d1" data-cursor="Read insights">
+        <span class="ty-card-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </span>
+        <div class="ty-card-body">
+          <strong class="ty-card-title">AEO field notes</strong>
+          <span class="ty-card-desc">Practitioner articles: how AI engines actually decide what to cite.</span>
+        </div>
+        <span class="ty-card-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+
+      <a href="/tools/ai-visibility-score" class="ty-card rv d2" data-cursor="Run the tool">
+        <span class="ty-card-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </span>
+        <div class="ty-card-body">
+          <strong class="ty-card-title">AI Visibility Score quiz</strong>
+          <span class="ty-card-desc">10 weighted signals, 60 seconds. See where your brand stands right now.</span>
+        </div>
+        <span class="ty-card-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Social proof strip -->
+  <section class="ty-proof rv">
+    <div class="ty-proof-inner">
+      <div class="ty-stat"><span class="ty-stat-n">16×</span><span class="ty-stat-l">Click growth · 30 days</span></div>
+      <div class="ty-div" aria-hidden="true"></div>
+      <div class="ty-stat"><span class="ty-stat-n">20+</span><span class="ty-stat-l">AI citations tracked</span></div>
+      <div class="ty-div" aria-hidden="true"></div>
+      <div class="ty-stat"><span class="ty-stat-n">463K</span><span class="ty-stat-l">Active users · 90 days</span></div>
+      <div class="ty-div" aria-hidden="true"></div>
+      <div class="ty-stat"><span class="ty-stat-n">&lt;22h</span><span class="ty-stat-l">Article-to-rank record</span></div>
+    </div>
+  </section>
+
+</main>
+
+<Footer />
+
+<style is:global>
+/* ═══════════ THANK YOU PAGE ═══════════ */
+.ty-root{
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Particle canvas */
+.ty-canvas{
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.55;
+}
+
+/* ─── Hero ─── */
+.ty-hero{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  padding:120px 24px 80px;
+  max-width:800px;
+  margin:0 auto;
+  gap:28px;
+}
+
+/* Check ring */
+.ty-check-wrap{
+  position:relative;
+  width:120px;height:120px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ty-ring{
+  position:absolute;inset:0;
+  transform:rotate(-90deg);
+}
+.ty-ring-track{
+  stroke:var(--bd);
+  stroke-dasharray:339.29;
+  stroke-dashoffset:0;
+}
+.ty-ring-fill{
+  stroke:url(#tyGrad);
+  stroke-dasharray:339.29;
+  stroke-dashoffset:339.29;
+  stroke-linecap:round;
+  animation:tyRingDraw 1s cubic-bezier(.16,1,.3,1) .3s forwards;
+}
+@keyframes tyRingDraw{
+  to{stroke-dashoffset:0}
+}
+.ty-check{
+  position:absolute;
+  width:44px;height:44px;
+}
+.ty-check-mark{
+  stroke:var(--ac);
+  stroke-dasharray:60;
+  stroke-dashoffset:60;
+  animation:tyCheckDraw .5s cubic-bezier(.16,1,.3,1) 1.1s forwards;
+}
+@keyframes tyCheckDraw{
+  to{stroke-dashoffset:0}
+}
+.ty-pulse{
+  position:absolute;inset:-12px;
+  border-radius:50%;
+  border:1px solid var(--ac);
+  opacity:0;
+  animation:tyPulse 2s ease-out 1.4s infinite;
+}
+@keyframes tyPulse{
+  0%{transform:scale(.9);opacity:.6}
+  100%{transform:scale(1.3);opacity:0}
+}
+
+/* Stamp */
+.ty-stamp{
+  font-family:var(--fm);font-size:10px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.ty-stamp::before{
+  content:'';display:inline-block;
+  width:28px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--ac));
+}
+
+/* Heading */
+.ty-h{
+  font-family:var(--fd);
+  font-size:clamp(40px,6vw,80px);
+  font-weight:400;line-height:.96;letter-spacing:-.022em;
+  color:var(--w);margin:0;
+}
+.ty-h-static,.ty-h-comma{color:var(--w)}
+.ty-h-name{font-style:italic}
+
+/* Sub */
+.ty-sub{
+  font-family:var(--fu);font-size:16px;color:var(--wd);
+  line-height:1.75;max-width:540px;margin:0;
+}
+
+/* ─── Timeline ─── */
+.ty-timeline{
+  list-style:none;padding:0;margin:8px 0 0;
+  display:flex;flex-direction:column;gap:0;
+  width:100%;max-width:600px;
+  text-align:left;
+}
+.ty-step{
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  gap:16px;
+  align-items:center;
+  padding:20px 0;
+  border-bottom:1px solid var(--bd);
+  position:relative;
+}
+.ty-step:last-child{border-bottom:none}
+.ty-step-num{
+  font-family:var(--fd);font-size:24px;font-style:italic;font-weight:400;
+  line-height:1;letter-spacing:-.02em;
+  color:var(--ac);
+  background:var(--agl);
+  border:1px solid rgba(79,142,247,.24);
+  border-radius:8px;
+  padding:8px 0;
+  text-align:center;
+  flex-shrink:0;
+}
+.ty-step-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ty-step-title{
+  font-family:var(--fu);font-size:15px;font-weight:700;
+  color:var(--w);letter-spacing:-.012em;
+}
+.ty-step-desc{
+  font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.6;
+}
+.ty-step-eta{
+  font-family:var(--fm);font-size:9px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ac);white-space:nowrap;
+  padding:5px 10px;border-radius:999px;
+  background:var(--agl);border:1px solid rgba(79,142,247,.22);
+  flex-shrink:0;align-self:flex-start;margin-top:2px;
+}
+
+/* ─── While you wait ─── */
+.ty-while{
+  position:relative;z-index:1;
+  max-width:900px;margin:0 auto;
+  padding:0 24px 80px;
+  width:100%;
+}
+.ty-while-label{
+  font-family:var(--fm);font-size:10px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ac);margin:0 0 20px;
+  display:flex;align-items:center;gap:10px;
+}
+.ty-while-label::before{
+  content:'';display:inline-block;
+  width:28px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--ac));
+}
+.ty-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.ty-card{
+  display:grid;
+  grid-template-columns:36px 1fr 20px;
+  gap:14px;
+  align-items:center;
+  padding:22px 20px;
+  background:var(--s1);
+  border:1px solid var(--bd);
+  border-radius:16px;
+  text-decoration:none;
+  transition:border-color .25s,background .25s,transform .25s,box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+.ty-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 80% at 0% 100%, rgba(79,142,247,.06) 0%, transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.ty-card:hover{
+  border-color:rgba(79,142,247,.4);
+  transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(0,0,0,.28);
+}
+.ty-card:hover::before{opacity:1}
+.ty-card-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--agl);border:1px solid rgba(79,142,247,.22);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ac);flex-shrink:0;
+}
+.ty-card-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ty-card-title{
+  font-family:var(--fu);font-size:13px;font-weight:700;
+  color:var(--w);letter-spacing:-.01em;line-height:1.3;
+}
+.ty-card-desc{
+  font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.6;
+}
+.ty-card-arrow{
+  font-size:16px;color:var(--ac);
+  opacity:0;transform:translateX(-4px);
+  transition:opacity .2s,transform .2s;
+}
+.ty-card:hover .ty-card-arrow{opacity:1;transform:translateX(0)}
+
+/* ─── Proof strip ─── */
+.ty-proof{
+  position:relative;z-index:1;
+  padding:40px 24px 80px;
+}
+.ty-proof-inner{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;flex-wrap:wrap;
+  max-width:900px;margin:0 auto;
+  background:var(--s1);border:1px solid var(--bd);border-radius:20px;
+  padding:32px;
+}
+.ty-stat{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 36px}
+.ty-stat-n{
+  font-family:var(--fd);font-size:clamp(26px,3vw,36px);font-weight:400;
+  letter-spacing:-.02em;line-height:1;
+  color:var(--w);
+}
+.ty-stat-l{
+  font-family:var(--fm);font-size:9px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wd);text-align:center;
+}
+.ty-div{width:1px;height:44px;background:var(--bd)}
+
+/* ─── Responsive ─── */
+@media(max-width:860px){
+  .ty-cards{grid-template-columns:1fr}
+  .ty-proof-inner{flex-direction:column;gap:24px}
+  .ty-div{width:80px;height:1px}
+  .ty-stat{padding:0}
+}
+@media(max-width:600px){
+  .ty-hero{padding:100px 20px 60px;gap:20px}
+  .ty-step{grid-template-columns:36px 1fr;gap:12px}
+  .ty-step-eta{display:none}
+  .ty-h{font-size:clamp(34px,10vw,56px)}
+}
+</style>
+
+<script is:inline>
+(function(){
+  /* ── Personalised heading ── */
+  var name = '';
+  try { name = sessionStorage.getItem('ccta-lead-name') || ''; } catch(e){}
+  if(name){
+    var el = document.getElementById('tyName');
+    if(el) el.textContent = name + '.';
+  }
+  /* clear after first render so refreshing the page still works */
+  try { sessionStorage.removeItem('ccta-lead-name'); } catch(e){}
+
+  /* ── SVG gradient def for ring ── */
+  var svg = document.querySelector('.ty-ring');
+  if(svg){
+    var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+    defs.innerHTML = '<linearGradient id="tyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4F8EF7"/><stop offset="100%" stop-color="#1A3A8F"/></linearGradient>';
+    svg.prepend(defs);
+  }
+
+  /* ── Floating particle canvas ── */
+  var canvas = document.getElementById('tyCanvas');
+  if(!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+
+  var W, H, particles = [], RAF;
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, {passive:true});
+
+  /* Spawn particles */
+  var COUNT = Math.min(55, Math.round(window.innerWidth / 22));
+  for(var i = 0; i < COUNT; i++){
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.6 + 0.4,
+      vx: (Math.random() - .5) * 0.28,
+      vy: (Math.random() - .5) * 0.28,
+      alpha: Math.random() * 0.45 + 0.08,
+      hue: Math.random() > 0.7 ? 215 : 220,
+    });
+  }
+
+  /* Connection lines */
+  function drawLines(){
+    for(var a = 0; a < particles.length; a++){
+      for(var b = a + 1; b < particles.length; b++){
+        var dx = particles[a].x - particles[b].x;
+        var dy = particles[a].y - particles[b].y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 130){
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(79,142,247,' + (0.07 * (1 - dist/130)).toFixed(3) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function tick(){
+    ctx.clearRect(0, 0, W, H);
+    drawLines();
+    for(var k = 0; k < particles.length; k++){
+      var p = particles[k];
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0) p.x = W;
+      if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H;
+      if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'hsla(' + p.hue + ',80%,70%,' + p.alpha + ')';
+      ctx.fill();
+    }
+    RAF = requestAnimationFrame(tick);
+  }
+  tick();
+
+  /* Pause when tab hidden */
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ cancelAnimationFrame(RAF); } else { tick(); }
+  });
+})();
+</script>
+</Layout>

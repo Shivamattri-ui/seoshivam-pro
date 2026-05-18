@@ -454,13 +454,18 @@ const dialCodes = [
 
         if(res.ok && data.ok){
           try { sessionStorage.setItem(RATE_KEY, String(Date.now())); } catch {}
-          setStatus(data.message || 'Got it. Replying within 4 hours.', 'ok');
           if(submitTxt) submitTxt.textContent = 'Sent ✓';
-          form.reset();
           if (typeof gtag === 'function') {
             gtag('event', 'qualify_lead', { event_category: 'contact', event_label: 'contact_form' });
             gtag('event', 'close_convert_lead', { event_category: 'contact', event_label: 'contact_form' });
           }
+          // Store first name for personalised thank-you page greeting
+          try {
+            const firstName = name.split(' ')[0] || '';
+            if(firstName) sessionStorage.setItem('ccta-lead-name', firstName);
+          } catch {}
+          // Redirect to thank-you page after a brief flash so the user sees confirmation
+          setTimeout(() => { window.location.href = '/thank-you'; }, 400);
         } else {
           throw new Error(data.error || `Server returned ${res.status}`);
         }
