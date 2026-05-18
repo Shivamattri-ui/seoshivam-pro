@@ -281,7 +281,7 @@ const schema = {
 
             <!-- 1) FAQs first — directly after the article body for AI/SEO citation -->
             {postFaqs.length > 0 && (
-              <section class="art-faq rv" id="faq" itemscope itemtype="https://schema.org/FAQPage">
+              <section class="art-faq rv" id="faq">
                 <header class="art-faq-hdr">
                   <span class="hair left">FREQUENTLY ASKED / AI-CITABLE Q&amp;A</span>
                   <h2 class="art-faq-h">
@@ -295,16 +295,16 @@ const schema = {
                 </header>
                 <div class="art-faq-list">
                   {postFaqs.map((f, i) => (
-                    <details class={`art-faq-item${i===0?' is-open':''}`} open={i===0} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <details class={`art-faq-item${i===0?' is-open':''}`} open={i===0}>
                       <summary class="art-faq-q">
                         <span class="art-faq-num">{String(i+1).padStart(2,'0')}</span>
-                        <span itemprop="name">{f.q}</span>
+                        <span>{f.q}</span>
                         <span class="art-faq-icon" aria-hidden="true">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         </span>
                       </summary>
-                      <div class="art-faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                        <p itemprop="text">{f.a}</p>
+                      <div class="art-faq-a">
+                        <p>{f.a}</p>
                       </div>
                     </details>
                   ))}

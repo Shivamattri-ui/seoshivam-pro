@@ -27,22 +27,11 @@ const clients = [
   'SaaS Platform · EU','Marketing Tech · CA','Industrial Services · IN',
 ];
  
-const faqSchema = {
-  "@context":"https://schema.org",
-  "@graph":[
-    {"@type":"Person","@id":"https://seoshivam.pro/#shivam","name":"Shivam Attri","jobTitle":"AEO Specialist, SEO Strategist, AI-Visible Web Designer","url":"https://seoshivam.pro","sameAs":["https://linkedin.com/in/shivamattri","https://substack.com/@shivamattri","https://threads.net/@shivattri"],"address":{"@type":"PostalAddress","addressLocality":"India","addressCountry":"IN"},"knowsAbout":["Answer Engine Optimization","AI Search Visibility","SEO","Technical SEO","Webflow","Framer","Astro","WordPress"]},
-    {"@type":"FAQPage","mainEntity":[
-      {"@type":"Question","name":"What is AEO and how does it differ from SEO?","acceptedAnswer":{"@type":"Answer","text":"AEO stands for Answer Engine Optimization — structuring content so AI engines like ChatGPT, Perplexity, Google AI Overviews, and Claude cite your brand when answering buyer questions. Traditional SEO gets you to page one. AEO gets you into the answer itself. Research shows structured content with direct answers and authoritative citations receives up to 40% more AI citations."}},
-      {"@type":"Question","name":"How long does SEO take to show results?","acceptedAnswer":{"@type":"Answer","text":"Most brands see measurable organic traffic growth within 90 to 120 days. A HealthTech SaaS client grew from 63 to 1,010 organic clicks in 30 days without additional ad spend. AI search visibility typically improves within 30 to 60 days of implementing proper schema markup and answer-first content."}},
-      {"@type":"Question","name":"Do you work with international clients?","acceptedAnswer":{"@type":"Answer","text":"Yes. Shivam works with clients across the US, UK, EU, Canada, and Australia remotely. All engagements are in English and optimized for international search markets."}},
-      {"@type":"Question","name":"Which AI engines do you optimize for?","acceptedAnswer":{"@type":"Answer","text":"Optimization covers Google AI Overviews, ChatGPT, Perplexity, Claude, Microsoft Copilot, and Grok. Each has different citation signals. Google prioritizes E-E-A-T and structured data, ChatGPT prioritizes domain authority and freshness, Perplexity prioritizes semantic relevance, Claude uses Brave Search indexing."}},
-      {"@type":"Question","name":"What web design platforms do you build on?","acceptedAnswer":{"@type":"Answer","text":"Webflow, Framer, Astro, and WordPress. Every site includes JSON-LD schema, AI bot crawlability for GPTBot, ClaudeBot, PerplexityBot, and Core Web Vitals above 90."}}
-    ]}
-  ]
-};
+// No custom schema: let Layout emit the correct defaultSchema (Person + Organization + WebSite).
+// FAQPage is emitted as a standalone script co-located with the visible FAQ section below.
 ---
  
-<Layout title={SITE_ROUTE_META['/'].title} description={SITE_ROUTE_META['/'].description} schema={faqSchema}>
+<Layout title={SITE_ROUTE_META['/'].title} description={SITE_ROUTE_META['/'].description}>
  
 <Nav />
  
@@ -1036,7 +1025,20 @@ const faqSchema = {
     </div>
   </div>
 </section>
- 
+
+<!-- FAQPage JSON-LD: standalone, co-located with visible FAQ. Text mirrors the accordion above exactly. -->
+<script type="application/ld+json" is:inline>{JSON.stringify({
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is AEO and how does it differ from SEO?","acceptedAnswer":{"@type":"Answer","text":"AEO stands for Answer Engine Optimization, structuring content so AI engines like ChatGPT, Perplexity, Google AI Overviews, and Claude cite your brand when answering buyer questions. Traditional SEO gets you to page one. AEO gets you into the answer itself. Research from Princeton University shows structured content with direct answers, statistics, and authoritative citations receives up to 40% more AI citations than unstructured content."}},
+    {"@type":"Question","name":"How long does SEO take to show real results?","acceptedAnswer":{"@type":"Answer","text":"Most brands see measurable organic traffic growth within 90 to 120 days. A logistics SaaS client grew from 63 to 1,010 organic clicks in 30 days, 16x growth, without additional ad spend. AI search visibility typically improves within 30 to 60 days of implementing proper schema markup and answer-first content restructuring."}},
+    {"@type":"Question","name":"Do you work with international clients?","acceptedAnswer":{"@type":"Answer","text":"Yes. I work with clients across the US, UK, EU, Canada, and Australia fully remotely. All engagements are in English and optimized for international search markets. I work async and am comfortable across US, UK, and EU time zones."}},
+    {"@type":"Question","name":"Which AI engines do you optimize content for?","acceptedAnswer":{"@type":"Answer","text":"I optimize for citation across Google AI Overviews, ChatGPT, Perplexity, Claude, Microsoft Copilot, and Grok. Each platform has different citation signals: Google prioritizes E-E-A-T and structured data, ChatGPT prioritizes branded domain authority and freshness, Perplexity prioritizes semantic relevance, and Claude uses Brave Search indexing as its primary source."}},
+    {"@type":"Question","name":"What web design platforms do you build on?","acceptedAnswer":{"@type":"Answer","text":"Webflow, Framer, Astro, and WordPress. Every site includes proper semantic HTML, JSON-LD schema markup, explicit AI bot crawlability for GPTBot, ClaudeBot, and PerplexityBot, and Core Web Vitals above 90. The result is a website that both search engines and AI engines can read and cite from day one."}}
+  ]
+})}</script>
+
 <!-- ═══════════ 11 LEAD CAPTURE ═══════════ -->
 <section class="lead-sec" id="lead">
   <div class="container">
