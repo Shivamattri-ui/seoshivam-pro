@@ -1106,8 +1106,8 @@ const faqSchema = {
 .mq-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--wd);text-align:center;margin-bottom:14px}
 .mq-track{display:flex;gap:56px;width:max-content;animation:mq 30s linear infinite}
 .mq-track:hover{animation-play-state:paused}
-.mq-i{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm);white-space:nowrap;opacity:.4;transition:opacity .2s}
-.mq-i:hover{opacity:.9}
+.mq-i{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--wd);white-space:nowrap;opacity:.75;transition:opacity .2s}
+.mq-i:hover{opacity:1}
  
 /* ═══ PROBLEM ═══ */
 .prob-sec{background:var(--s1)}
@@ -1183,7 +1183,7 @@ const faqSchema = {
 /* Platform demo */
 .platform-demo{background:var(--s1);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
 .pd-tabs{display:flex;border-bottom:1px solid var(--bd)}
-.pd-tab{flex:1;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);padding:10px;border-right:1px solid var(--bd);background:none;transition:background .2s,color .2s;cursor:pointer}
+.pd-tab{flex:1;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wd);padding:10px;border-right:1px solid var(--bd);background:none;transition:background .2s,color .2s;cursor:pointer}
 .pd-tab:last-child{border-right:none}
 .pd-tab.act,.pd-tab:hover{background:var(--s2);color:var(--ac)}
 .pd-screen{padding:16px}
@@ -1194,7 +1194,7 @@ const faqSchema = {
 .pd-bdots span:nth-child(1){background:#FF5F57}
 .pd-bdots span:nth-child(2){background:#FFBD2E}
 .pd-bdots span:nth-child(3){background:#28C840}
-.pd-burl{flex:1;background:var(--s4);border-radius:4px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--wm);text-align:center;transition:all .3s}
+.pd-burl{flex:1;background:var(--s4);border-radius:4px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--wd);text-align:center;transition:all .3s}
 .pd-bcanvas{padding:14px;display:flex;flex-direction:column;gap:8px;min-height:120px}
 .pd-nav-ph{height:8px;border-radius:4px;background:var(--s4);width:100%;animation:shimmer 2s ease-in-out infinite}
 .pd-hero-ph{height:36px;border-radius:6px;background:linear-gradient(135deg,rgba(79,142,247,.15),transparent);border:1px dashed rgba(79,142,247,.2)}
@@ -1227,7 +1227,7 @@ html.light .gads-tab.act{border-color:rgba(43,91,224,.32);background:rgba(43,91,
 .gads-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .gads-m{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:11px 12px;display:flex;flex-direction:column;gap:4px}
 html.light .gads-m{background:var(--s1)}
-.gads-mk{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+.gads-mk{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--wd)}
 .gads-mv{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--w);letter-spacing:-.02em;font-feature-settings:"tnum"}
 .gads-bars{display:flex;align-items:flex-end;gap:4px;height:68px;padding:10px 8px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;position:relative}
 html.light .gads-bars{background:var(--s1)}
@@ -1287,7 +1287,7 @@ html.light .n8n-chrome{background:var(--s2)}
 .n8n-chrome-dots span:nth-child(2){background:#FEBC2E}
 .n8n-chrome-dots span:nth-child(3){background:#28C840}
 .n8n-chrome-path{
-  flex:1;min-width:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.02em;color:var(--wm);
+  flex:1;min-width:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.02em;color:var(--wd);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .n8n-chrome-run{
@@ -1307,7 +1307,7 @@ html.light .n8n-chrome{background:var(--s2)}
   transition:border-color .25s,box-shadow .25s,background .25s,transform .25s;
 }
 html.light .n8n-node{background:var(--s1)}
-.n8n-node-k{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--wm)}
+.n8n-node-k{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--wd)}
 .n8n-node-t{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:-.02em;color:var(--w);line-height:1.2}
 .n8n-node.act{
   border-color:rgba(79,142,247,.5);
@@ -1332,8 +1332,8 @@ html.light .n8n-node.act{background:rgba(43,91,224,.07);box-shadow:0 0 0 1px rgb
 }
 html.light .n8n-inspector{background:var(--s1)}
 .n8n-inspector-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.n8n-inspector-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--wm)}
-.n8n-inspector-live{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--wm);display:inline-flex;align-items:center;gap:6px}
+.n8n-inspector-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--wd)}
+.n8n-inspector-live{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--wd);display:inline-flex;align-items:center;gap:6px}
 .n8n-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
 .n8n-detail{
   font-family:'Syne',sans-serif;font-size:13px;color:var(--wd);line-height:1.68;margin:0 0 12px;
@@ -2867,18 +2867,8 @@ document.addEventListener('mouseout',(e)=>{
   if((e.target as Element).closest('a,button,[data-hover]')){dot?.classList.remove('hov');ring?.classList.remove('hov');}
 });
  
-// ── Page load animation (GSAP) ──
+// Logo scramble on load
 document.addEventListener('DOMContentLoaded',()=>{
-  const tl = gsap.timeline({defaults:{ease:'power3.out'}});
-  tl.from('#heroEye',{opacity:0,y:20,duration:0.5,delay:0.15})
-    .from('.h-line',{opacity:0,y:30,duration:0.6,stagger:0.08},'-=0.2')
-    .from('.hero-cycle',{opacity:0,y:16,duration:0.5},'-=0.3')
-    .from('.hero-sub',{opacity:0,y:16,duration:0.5},'-=0.3')
-    .from('.hero-btns',{opacity:0,y:16,duration:0.5},'-=0.3')
-    .from('.hero-stats',{opacity:0,y:16,duration:0.5},'-=0.3')
-    .from('#heroR',{opacity:0,x:30,duration:0.7},'-=0.6');
- 
-  // Logo scramble on load
   const logoEl=document.querySelector('.logo-s') as HTMLElement;
   if(logoEl) scrambleText(logoEl,'Shivam');
   logoEl?.parentElement?.addEventListener('mouseenter',()=>scrambleText(logoEl,'Shivam'));

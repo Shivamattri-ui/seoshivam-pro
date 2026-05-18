@@ -569,11 +569,6 @@ html.light .grad-anim{background:linear-gradient(110deg,var(--ac) 0%,#5A8AE8 25%
 .stamp.dim{color:var(--wm);border-color:var(--bds)}
 .stamp.dim::before{background:var(--wm);box-shadow:none}
 
-/* ── Hairline horizontal rule with file annotation ── */
-.hair{display:flex;align-items:center;gap:14px;font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--wm);margin:24px 0}
-.hair::before,.hair::after{content:'';flex:1;height:1px;background:var(--bd)}
-.hair.left::before{display:none}
-.hair.left{justify-content:flex-start}
 
 /* ── Marginalia (italic serif notes in left margin, like a published essay) ── */
 .marg{
