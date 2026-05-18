@@ -251,14 +251,6 @@ const finalSchema = schema || defaultSchema;
   <!-- JSON-LD Schema -->
   <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S9ZE17XVF3" is:inline></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-S9ZE17XVF3', { send_page_view: true });
-  </script>
 
 </head>
 
@@ -267,6 +259,15 @@ const finalSchema = schema || defaultSchema;
   <SiteLinkPreview />
   <!-- Page content -->
   <slot />
+
+  <!-- Google Analytics 4 — deferred to end of body to avoid blocking FCP/LCP -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S9ZE17XVF3" is:inline></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S9ZE17XVF3', { send_page_view: true });
+  </script>
 
 </body>
 </html>
