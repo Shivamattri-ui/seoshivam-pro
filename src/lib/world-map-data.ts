@@ -75,7 +75,7 @@ export const COVERAGE_MARKETS: CoverageMarket[] = [
     "label": "India",
     "lon": 77.03,
     "lat": 28.46,
-    "tip": "AEO & SEO Expert in India · Shivam Attri · Gurugram HQ",
+    "tip": "AEO & SEO Expert in India · Shivam Attri · India HQ",
     "hub": true,
     "x": 705.41,
     "y": 174.11

@@ -76,7 +76,6 @@ Here is the live Person schema this site (seoshivam.pro) ships in production. St
   ],
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Gurugram",
     "addressCountry": "IN"
   },
   "knowsAbout": [

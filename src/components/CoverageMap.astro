@@ -18,7 +18,7 @@ const hub = COVERAGE_MARKETS.find((m) => m.hub)!;
         Clients across<br /><em class="grad-anim">nine time zones.</em>
       </h2>
       <p class="cov-deck">
-        Based in Gurugram, India. Engagements run async across the US, UK, EU, Germany, Ireland, Canada, Singapore, and Australia. Hover a dot for regional coverage.
+        Based in India. Engagements run async across the US, UK, EU, Germany, Ireland, Canada, Singapore, and Australia. Hover a dot for regional coverage.
       </p>
     </header>
 
@@ -116,14 +116,14 @@ const hub = COVERAGE_MARKETS.find((m) => m.hub)!;
               data-x={((m.x / MAP_WIDTH) * 100).toFixed(2)}
               data-y={((m.y / MAP_HEIGHT) * 100).toFixed(2)}
             >
-              <span class="cov-tip-k">{m.hub ? 'HQ · Gurugram' : m.label}</span>
+              <span class="cov-tip-k">{m.hub ? 'HQ · India' : m.label}</span>
               <p class="cov-tip-t">{m.tip}</p>
             </div>
           ))}
         </div>
 
         <div class="cov-legend" aria-hidden="true">
-          <span class="cov-leg"><span class="cov-leg-dot is-hub"></span> HQ · Gurugram</span>
+          <span class="cov-leg"><span class="cov-leg-dot is-hub"></span> HQ · India</span>
           <span class="cov-leg"><span class="cov-leg-dot"></span> Hover a dot for coverage</span>
         </div>
       </div>

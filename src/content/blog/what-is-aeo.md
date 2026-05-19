@@ -114,4 +114,4 @@ The brands that will dominate AI search visibility in 2026 are the ones building
 
 ---
 
-Shivam Attri is an AEO Specialist and SEO Strategist based in Gurugram, India, working with B2B SaaS founders globally to build AI search visibility. [Work with Shivam](/contact).
+Shivam Attri is an AEO Specialist and SEO Strategist based in India, working with B2B SaaS founders globally to build AI search visibility. [Work with Shivam](/contact).
