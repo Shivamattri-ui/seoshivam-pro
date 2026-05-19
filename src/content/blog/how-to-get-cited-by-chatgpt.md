@@ -169,7 +169,7 @@ You cannot improve what you do not measure. Track your AI citation status monthl
 - Screenshot and date-stamp all positive citations
 
 ### Tools
-- <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> has a built-in citation tracker in Perplexity Pro
+- Perplexity has a built-in citation tracker in Perplexity Pro
 - Track your brand mentions via <a href="https://www.google.com/alerts" rel="nofollow noreferrer" target="_blank">Google Alerts</a> (captures when AI-cited content references you)
 - Use <a href="https://www.semrush.com" rel="nofollow noreferrer" target="_blank">Semrush</a> or <a href="https://ahrefs.com" rel="nofollow noreferrer" target="_blank">Ahrefs</a> to track which pages are earning links from AI-adjacent content
 - The [AI Visibility Score quiz](/tools/ai-visibility-score) gives a structured audit of your current citation readiness

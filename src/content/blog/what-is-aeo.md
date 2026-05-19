@@ -21,7 +21,7 @@ I have been building this for brands across 4 continents since 2022, working as 
 
 The shift happened faster than most marketing teams noticed.
 
-In 2024, <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> processed over 500 million queries. <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> crossed 100 million daily active users. Google rolled out [AI Overviews](/insights/google-ai-overviews-optimization) to over 1 billion searches per month. These are not experiments. They are the primary interface through which a growing share of research-mode buyers now discover solutions.
+In 2024, Perplexity processed over 500 million queries. ChatGPT crossed 100 million daily active users. Google rolled out [AI Overviews](/insights/google-ai-overviews-optimization) to over 1 billion searches per month. These are not experiments. They are the primary interface through which a growing share of research-mode buyers now discover solutions.
 
 The behavioral shift is the critical part: traditional search gives buyers a list. They compare, click, decide. AI search gives buyers a synthesized answer with cited sources. The buyer reads the answer, trusts the cited brand, and often arrives at that site already partially convinced. The comparison stage happens inside the AI engine, invisible to everyone who is not cited.
 
@@ -177,7 +177,7 @@ The full cluster playbook, including how to sequence publication, build internal
 
 ### Pillar 5: Freshness and consistency signals
 
-AI engines update on cycles. <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> crawls continuously. <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT's</a> training data refreshes on a schedule. Google's Gemini model reads fresh content. Brands that publish once and wait lose citation presence as the content ages and competitors build newer, more specific content.
+AI engines update on cycles. Perplexity crawls continuously. ChatGPT's training data refreshes on a schedule. Google's Gemini model reads fresh content. Brands that publish once and wait lose citation presence as the content ages and competitors build newer, more specific content.
 
 The minimum viable freshness cadence:
 - Update key pages quarterly with new statistics or examples
@@ -241,7 +241,7 @@ The implementation varies by industry and starting point. The pillar sequence do
 
 **Mistake 5: Entity inconsistency.** Name spelled differently across LinkedIn, the website, and press mentions. Job title varies. Location data inconsistent. AI engines pick up these inconsistencies and reduce entity confidence scores. Consistency across every crawlable touchpoint matters more than most teams realize.
 
-**Mistake 6: Only optimizing for one AI engine.** <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a>, <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a>, Google AI Overviews, Claude, and Microsoft Copilot each have different citation patterns and knowledge update cycles. A complete AEO implementation addresses all five, not just the one with the highest market share at this moment.
+**Mistake 6: Only optimizing for one AI engine.** ChatGPT, Perplexity, Google AI Overviews, Claude, and Microsoft Copilot each have different citation patterns and knowledge update cycles. A complete AEO implementation addresses all five, not just the one with the highest market share at this moment.
 
 ## How to check your AEO standing right now
 

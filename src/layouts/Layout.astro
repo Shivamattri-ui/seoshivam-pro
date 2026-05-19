@@ -84,7 +84,7 @@ const finalSchema = schema || defaultSchema;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#080808;color-scheme:dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -143,6 +143,9 @@ const finalSchema = schema || defaultSchema;
       function applyTheme() {
         var light = readTheme() === 'light';
         html.classList.toggle('light', light);
+        // Set inline style directly — highest specificity, paints before CSS cascade.
+        html.style.backgroundColor = light ? '#F7F4EE' : '#080808';
+        html.style.colorScheme = light ? 'light' : 'dark';
         var tc = document.querySelector('meta[name="theme-color"]');
         if (tc) tc.setAttribute('content', light ? '#F7F4EE' : '#080808');
       }

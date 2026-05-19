@@ -108,6 +108,12 @@ html.light .nav-pill{background:rgba(248,246,242,.88);border-color:#D4CFC6}
 html.light .theme-toggle .icon-dark{display:none}
 html.light .theme-toggle .icon-light{display:block}
 html.light .theme-toggle{color:var(--wm)}
+.theme-toggle.theme-switching{pointer-events:none;animation:themeToggleSpin 0.42s cubic-bezier(0.4,0,0.6,1) forwards}
+@keyframes themeToggleSpin{
+  0%{transform:rotate(0deg) scale(1)}
+  45%{transform:rotate(180deg) scale(0.72)}
+  100%{transform:rotate(360deg) scale(1)}
+}
  
 .nav-cta{font-size:13px;padding:10px 20px}
  
@@ -233,15 +239,52 @@ window.addEventListener('storage', (e) => {
 if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   themeBtn.dataset.spmThemeBound = '1';
   themeBtn.addEventListener('click', () => {
-    const nextLight = !document.documentElement.classList.contains('light');
-    document.documentElement.classList.toggle('light', nextLight);
+    // Ignore rapid double-clicks while animation is running.
+    if (themeBtn.classList.contains('theme-switching')) return;
+
+    const isCurrentlyLight = document.documentElement.classList.contains('light');
+    const goLight = !isCurrentlyLight;
+
+    // ── Overlay: paint the OLD background over the whole viewport so the
+    //    theme switch happens invisibly underneath, then fade it out.
+    const overlay = document.createElement('div');
+    overlay.style.cssText =
+      'position:fixed;inset:0;z-index:99998;pointer-events:none;' +
+      'will-change:opacity;opacity:1;' +
+      'background-color:' + (isCurrentlyLight ? '#F7F4EE' : '#080808');
+    document.body.appendChild(overlay);
+
+    // Spin the toggle button for tactile feedback.
+    themeBtn.classList.add('theme-switching');
+
+    // Force browser to commit opacity:1 paint before we start the transition.
+    void overlay.getBoundingClientRect();
+
+    // Switch theme under the opaque overlay.
+    document.documentElement.classList.toggle('light', goLight);
+    // Also update inline style — ensures next pageshow lands on correct color.
+    document.documentElement.style.backgroundColor = goLight ? '#F7F4EE' : '#080808';
+    document.documentElement.style.colorScheme    = goLight ? 'light'   : 'dark';
     try {
-      if (nextLight) localStorage.setItem(THEME_KEY, 'light');
-      else localStorage.removeItem(THEME_KEY);
+      if (goLight) localStorage.setItem(THEME_KEY, 'light');
+      else         localStorage.removeItem(THEME_KEY);
     } catch (_e) {}
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', nextLight ? '#F7F4EE' : '#080808');
+    if (meta) meta.setAttribute('content', goLight ? '#F7F4EE' : '#080808');
     syncThemeUi();
+
+    // Fade out overlay — reveals new theme. 400ms feels instant but not jarring.
+    requestAnimationFrame(() => {
+      overlay.style.transition = 'opacity 0.40s cubic-bezier(0.4,0,0.2,1)';
+      overlay.style.opacity    = '0';
+      const cleanup = () => {
+        overlay.remove();
+        themeBtn.classList.remove('theme-switching');
+      };
+      overlay.addEventListener('transitionend', cleanup, { once: true });
+      // Safety fallback in case transitionend misfires.
+      setTimeout(cleanup, 500);
+    });
   });
 }
 

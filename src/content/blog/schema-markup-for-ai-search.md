@@ -272,7 +272,7 @@ Common errors to check for:
 
 The most common schema mistake I see: implementing schema but not updating robots.txt to allow AI crawlers.
 
-No matter how perfect your JSON-LD is, if `User-agent: GPTBot` has `Disallow: /`, <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> cannot crawl your pages and cannot discover your schema. Schema and bot access must both be correct.
+No matter how perfect your JSON-LD is, if `User-agent: GPTBot` has `Disallow: /`, ChatGPT cannot crawl your pages and cannot discover your schema. Schema and bot access must both be correct.
 
 Check `yourwebsite.com/robots.txt` using the [robots.txt checker](/tools/robots-txt-checker) and ensure all major AI crawlers are explicitly allowed. This single change, combined with correct FAQPage schema, is often all that is needed to begin appearing in AI citations. The full process for combining schema with a citation strategy is in [how to get cited by ChatGPT and Perplexity](/insights/how-to-get-cited-by-chatgpt).
 
