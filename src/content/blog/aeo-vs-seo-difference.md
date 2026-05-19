@@ -9,7 +9,7 @@ featured: false
 
 In almost every new client conversation, the same question appears early: "should we do SEO or AEO?" The framing assumes they are alternatives. In my experience across 30+ brands in the US, UK, EU, and Australia, the brands that treat them as separate decisions consistently underperform the brands that build one system for both surfaces.
 
-AEO (Answer Engine Optimization) and SEO (Search Engine Optimization) are not competing strategies. They are complementary disciplines targeting different parts of the same buyer journey. The choice is not which one to do. It is understanding the difference well enough to sequence them correctly.
+[AEO (Answer Engine Optimization)](/insights/what-is-aeo) and SEO (Search Engine Optimization) are not competing strategies. They are complementary disciplines targeting different parts of the same buyer journey. The choice is not which one to do. It is understanding the difference well enough to sequence them correctly. As an [AEO and SEO specialist](/), I build both from a single architecture.
 
 ## The core difference in one sentence
 
@@ -17,7 +17,7 @@ SEO gets you ranked in Google's list of ten blue links. AEO gets you cited in th
 
 ## What SEO targets
 
-Traditional SEO optimizes for Google's PageRank algorithm. The key variables:
+Traditional SEO optimizes for <a href="https://developers.google.com/search/docs/fundamentals/how-search-works" rel="nofollow noreferrer" target="_blank">Google's ranking algorithm</a>. The key variables:
 
 - **Backlinks**: External sites linking to yours, weighted by their own authority
 - **On-page relevance**: Correct use of target keywords in title, headers, and body
@@ -34,7 +34,7 @@ The weakness of SEO: the "click" stage. You are one option in a list. Users comp
 AEO optimizes for AI engines' synthesis algorithms. The key variables:
 
 - **Entity recognition**: Your brand is a defined entity in the AI knowledge graph
-- **Structured data**: JSON-LD schema markup that makes your content machine-readable
+- **Structured data**: [JSON-LD schema markup](/insights/schema-markup-for-ai-search) that makes your content machine-readable
 - **Answer format**: Content written as direct answers, not narrative paragraphs
 - **Topical authority**: Deep coverage of a specific niche, not broad general content
 
@@ -70,7 +70,7 @@ A well-built page does both: structured data that generates rich snippets in tra
 
 Yes. Here is why.
 
-The search landscape in 2025 is split. A significant portion of lower-funnel research queries now happen in AI engines before Google. "What is the best X for Y" queries increasingly start in ChatGPT or Perplexity. But "how to do X" and "X vs Y" queries still heavily favor traditional search.
+The search landscape in 2025 is split. A significant portion of lower-funnel research queries now happen in AI engines before Google. "What is the best X for Y" queries increasingly start in <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> or <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a>. But "how to do X" and "X vs Y" queries still heavily favor traditional search.
 
 A brand visible only in AI engines misses the significant search traffic still flowing through Google. A brand visible only in Google misses the growing pool of buyers whose first research touchpoint is an AI engine.
 
@@ -84,8 +84,8 @@ The technical foundations largely overlap: crawlable site, correct indexation, f
 Then:
 
 1. Implement entity schema (serves AEO primarily)
-2. Fix any robots.txt issues blocking AI bots (serves AEO)
-3. Build your first topical content cluster (serves both)
+2. Fix any robots.txt issues blocking AI bots (serves AEO) — use the [robots.txt checker](/tools/robots-txt-checker) to audit in seconds
+3. Build your first [topical content cluster](/insights/topical-authority-saas-playbook) (serves both)
 4. Add FAQPage schema to service and product pages (serves AEO primarily)
 5. Build backlinks through content outreach (serves SEO primarily)
 

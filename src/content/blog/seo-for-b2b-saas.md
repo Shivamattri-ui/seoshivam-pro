@@ -9,7 +9,7 @@ featured: true
 
 B2B SaaS SEO is different from ecommerce SEO, content site SEO, or local business SEO. The buying cycle is longer. The decision-maker has more questions. The competition for high-intent keywords is intense. And the payoff when the system works is a compounding organic channel that reduces CAC by 30 to 50%.
 
-This is the complete architecture guide.
+This is the complete architecture guide. I build these systems as part of an integrated [SEO and AEO practice](/) for B2B SaaS brands across the US, UK, EU, and Australia.
 
 ## Why most B2B SaaS SEO strategies fail
 
@@ -42,13 +42,13 @@ Content for this stage: direct comparison pages, case studies, pricing pages. Lo
 
 ## The topical authority cluster model
 
-Rather than targeting individual keywords, build topical authority around your product's core use cases.
+Rather than targeting individual keywords, build [topical authority](/insights/topical-authority-saas-playbook) around your product's core use cases.
 
 ### Cluster structure for a sales-engagement SaaS
 *Pillar page*: "Complete Guide to Sales Engagement Software" (comprehensive, 4,000+ words)
 
 *Cluster posts*:
-- "How to build a multi-channl sales sequence that converts"
+- "How to build a multi-channel sales sequence that converts"
 - "Sales engagement vs sales enablement: what is the difference"
 - "How to reduce SDR ramp time with playbook automation"
 - "Email deliverability for cold outreach: domain warm-up checklist"
@@ -100,10 +100,10 @@ SaaS marketing sites built on Webflow or Framer typically perform well here out 
 Every page should have a self-referencing canonical tag. Pagination, filter, and sort URLs should canonical to the main page or use noindex. Duplicate content from www vs non-www, HTTP vs HTTPS, or trailing slash issues should be resolved.
 
 ### Internal link architecture
-Every important page should be reachable within 3 clicks from the homepage. Orphan pages (pages with no internal links pointing to them) do not rank well. A crawl with Screaming Frog identifies these quickly.
+Every important page should be reachable within 3 clicks from the homepage. Orphan pages (pages with no internal links pointing to them) do not rank well. A crawl with <a href="https://www.screamingfrog.co.uk/seo-spider/" rel="nofollow noreferrer" target="_blank">Screaming Frog</a> identifies these quickly.
 
 ### Indexation
-Check Google Search Console's Coverage report. Pages with "Discovered, currently not indexed" status are pages Google has found but not yet crawled. Common causes: too many pages, slow crawl budget, or low perceived quality signals.
+Check <a href="https://search.google.com/search-console/" rel="nofollow noreferrer" target="_blank">Google Search Console</a>'s Coverage report. Pages with "Discovered, currently not indexed" status are pages Google has found but not yet crawled. Common causes: too many pages, slow crawl budget, or low perceived quality signals.
 
 ## Content production system for B2B SaaS
 
@@ -134,11 +134,11 @@ One B2B services client went from 15 organic leads per month to 70+ per month in
 
 ## Where AEO fits into this picture
 
-B2B SaaS buyers increasingly use AI engines for the early stages of their research. A VP of Sales in 2026 is as likely to open ChatGPT and type "best sales engagement platform for a 12-person SDR team" as they are to type the same query into Google. The same is true for a Head of People comparing HR platforms, a Director of Engineering scoping observability tools, or a CFO evaluating AP automation.
+B2B SaaS buyers increasingly use AI engines for the early stages of their research. A VP of Sales in 2026 is as likely to open <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> and type "best sales engagement platform for a 12-person SDR team" as they are to type the same query into Google. The same is true for a Head of People comparing HR platforms, a Director of Engineering scoping observability tools, or a CFO evaluating AP automation.
 
-A complete B2B SaaS visibility strategy addresses both. Traditional SEO architecture for Google. AEO implementation for AI engines. One content system serving both surfaces.
+A complete B2B SaaS visibility strategy addresses both. Traditional SEO architecture for Google. [AEO implementation](/insights/what-is-aeo) for AI engines. One content system serving both surfaces.
 
-The content cluster approach described here naturally supports both: deep topical coverage earns both Google rankings and AI engine citations. The difference is in the schema markup layer: FAQPage schema and entity optimization specifically for AEO, technical SEO signals specifically for Google.
+The content cluster approach described here naturally supports both: deep topical coverage earns both Google rankings and AI engine citations. The difference is in the schema markup layer: [FAQPage schema and entity optimization](/insights/schema-markup-for-ai-search) specifically for AEO, technical SEO signals specifically for Google.
 
 ---
 
@@ -151,4 +151,4 @@ The content cluster approach described here naturally supports both: deep topica
 
 ---
 
-Ready to build a B2B SaaS SEO architecture that compounds? [Start with an audit](/contact).
+Shivam Attri is an [SEO strategist and AEO specialist](/) who builds compounding organic channels for B2B SaaS brands. See the [SEO service](/services/seo) or [start with an audit](/contact).

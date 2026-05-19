@@ -7,7 +7,7 @@ readTime: "11 min"
 featured: true
 ---
 
-Getting cited by ChatGPT or Perplexity is not random. It is the result of specific, deliberate choices about how your website is structured, how your content is written, and whether AI bots can even crawl your site in the first place.
+Getting cited by <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> or <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> is not random. It is the result of specific, deliberate choices about how your website is structured, how your content is written, and whether AI bots can even crawl your site in the first place.
 
 This is a practical guide. Not theory. Steps you can implement.
 
@@ -15,7 +15,7 @@ This is a practical guide. Not theory. Steps you can implement.
 
 Before any content or schema work, check whether AI engines can crawl you at all.
 
-Visit `yourwebsite.com/robots.txt`. Look for these entries:
+Visit `yourwebsite.com/robots.txt` or use the [robots.txt checker tool](/tools/robots-txt-checker) to audit without manual parsing. Look for these entries:
 
 ```
 User-agent: GPTBot
@@ -149,7 +149,7 @@ Apply this format to:
 
 ## Step 5: Build topical authority depth
 
-Isolated content does not get cited. A website with 10 excellent articles about one topic gets cited more reliably than a website with 100 articles scattered across 20 topics.
+Isolated content does not get cited. A website with 10 excellent articles about one topic gets cited more reliably than a website with 100 articles scattered across 20 topics. The full system for building this is in the [topical authority cluster playbook](/insights/topical-authority-saas-playbook).
 
 Topical authority means publishing a cluster of content that answers every meaningful question in your niche. The cluster structure:
 
@@ -169,9 +169,10 @@ You cannot improve what you do not measure. Track your AI citation status monthl
 - Screenshot and date-stamp all positive citations
 
 ### Tools
-- Perplexity has a built-in citation tracker in Perplexity Pro
-- Track your brand mentions via Google Alerts (captures when AI-cited content references you)
-- Use Semrush or Ahrefs to track which pages are earning links from AI-adjacent content
+- <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> has a built-in citation tracker in Perplexity Pro
+- Track your brand mentions via <a href="https://www.google.com/alerts" rel="nofollow noreferrer" target="_blank">Google Alerts</a> (captures when AI-cited content references you)
+- Use <a href="https://www.semrush.com" rel="nofollow noreferrer" target="_blank">Semrush</a> or <a href="https://ahrefs.com" rel="nofollow noreferrer" target="_blank">Ahrefs</a> to track which pages are earning links from AI-adjacent content
+- The [AI Visibility Score quiz](/tools/ai-visibility-score) gives a structured audit of your current citation readiness
 
 ### What to do with the data
 - Pages that get cited: expand them, add more schema, add more answer-first content
@@ -210,4 +211,4 @@ All three, in parallel, is what produces consistent AI citation at scale.
 
 ---
 
-Shivam Attri is an AEO Specialist helping B2B SaaS brands get cited by ChatGPT, Perplexity, and Google AI Overviews. [Book an AEO audit](/contact).
+Shivam Attri is an [AEO specialist](/) helping B2B SaaS brands get cited by ChatGPT, Perplexity, and Google AI Overviews. See the full [AEO service](/services/aeo) or [book an audit](/contact).

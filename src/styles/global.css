@@ -779,6 +779,29 @@ html.light .avs-steps-note a.content-int{
   text-decoration-color:rgba(37,84,214,.42);
 }
 
+/* ── External links in blog prose (preview-enabled, opens in new tab) ── */
+#artProse a.content-ext,
+.art-prose a.content-ext{
+  color:#7BAEFF;
+  font-weight:500;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:4px;
+  text-decoration-style:dashed;
+  text-decoration-color:rgba(123,190,255,.45);
+}
+#artProse a.content-ext:hover,
+.art-prose a.content-ext:hover{
+  color:#B8D4FF;
+  text-decoration-color:rgba(184,212,255,.8);
+  text-decoration-style:solid;
+}
+html.light #artProse a.content-ext,
+html.light .art-prose a.content-ext{
+  color:var(--ac);
+  text-decoration-color:rgba(37,84,214,.38);
+}
+
 /* ── Site-wide inline internal links (preview-enabled on all pages) ── */
 a.ilink{
   color:#7BAEFF;
@@ -831,6 +854,7 @@ html.light a.ilink-muted:hover{text-decoration-color:rgba(26,58,143,.6)}
 }
 .site-link-tip.is-on{opacity:1;visibility:visible}
 .site-link-tip-k{font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);margin-bottom:8px}
+.site-link-tip-k.is-ext{color:var(--green)}
 .site-link-tip-t{font-family:var(--fu);font-size:14px;font-weight:700;color:var(--w);line-height:1.35;margin:0 0 6px;letter-spacing:-.02em}
 .site-link-tip-d{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .site-link-tip-u{font-family:var(--fm);font-size:10px;color:var(--wm);margin-top:10px;word-break:break-all;opacity:.85}

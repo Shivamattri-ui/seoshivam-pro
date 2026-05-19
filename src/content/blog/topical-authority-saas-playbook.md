@@ -24,9 +24,9 @@ A site with 25 deeply interconnected articles about sales engagement software ha
 
 That is counterintuitive if you are thinking about traffic volume. It makes perfect sense if you are thinking about how Google and AI engines evaluate trust.
 
-**Google's Helpful Content system** asks: does this site demonstrate genuine expertise in the topic it covers? A sparse cluster signals an opportunistic publisher. A complete cluster signals a domain expert.
+<a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" rel="nofollow noreferrer" target="_blank">Google's Helpful Content system</a> asks: does this site demonstrate genuine expertise in the topic it covers? A sparse cluster signals an opportunistic publisher. A complete cluster signals a domain expert.
 
-**AI engines** ask: which source should I cite to give this user the most authoritative, comprehensive answer? A site that has answered every adjacent question is a more trustworthy citation than a site that happened to publish one related article.
+**AI engines** ask: which source should I cite to give this user the most authoritative, comprehensive answer? A site that has answered every adjacent question is a more trustworthy citation than a site that happened to publish one related article. Understanding [what AEO requires](/insights/what-is-aeo) makes the cluster model's value clear.
 
 Both evaluation models reward the same thing. Build the thing they are rewarding.
 
@@ -165,9 +165,9 @@ The growth is not linear. Each post added to a mature cluster produces more reac
 
 ## Topical authority plus AEO: the integrated system
 
-Every cluster post in this model should carry full AEO implementation:
+Every cluster post in this model should carry full [AEO implementation](/insights/what-is-aeo):
 
-- **FAQPage schema** covering the three to five most common questions related to the post's topic
+- **[FAQPage schema](/insights/schema-markup-for-ai-search)** covering the three to five most common questions related to the post's topic
 - **Answer-first opening paragraph** that states the direct answer in sentence one
 - **Article schema** with current `dateModified` and linked author entity (`@id` pointing to your Person schema)
 - **Internal links** using descriptive anchor text, not generic phrases
@@ -188,7 +188,7 @@ This is not extra work layered onto the content process. It is the content proce
 
 For domains with existing authority, some of these timelines compress. For new domains, add two to three months across the board.
 
-The consistent variable across every implementation: the brands that commit to 20 to 30 interconnected posts consistently outperform brands that publish a pillar and five cluster posts and stop. Depth matters more than any individual piece.
+The consistent variable across every implementation: the brands that commit to 20 to 30 interconnected posts consistently outperform brands that publish a pillar and five cluster posts and stop. Depth matters more than any individual piece. The B2B SaaS-specific version of this system, including the full technical SEO layer, is in [SEO for B2B SaaS: The Complete Architecture Guide](/insights/seo-for-b2b-saas).
 
 ---
 
@@ -201,4 +201,4 @@ The consistent variable across every implementation: the brands that commit to 2
 
 ---
 
-*Ready to build a topical authority cluster that earns Google rankings and AI engine citations from one content system? [Start with an audit](/contact).*
+Ready to build a topical authority cluster that earns Google rankings and AI engine citations from one content system? As an [AEO and SEO specialist](/), I build these architectures for B2B SaaS brands globally. [Start with an audit](/contact).

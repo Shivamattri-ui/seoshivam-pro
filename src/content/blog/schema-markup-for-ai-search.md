@@ -7,9 +7,9 @@ readTime: "13 min"
 featured: false
 ---
 
-The most common schema mistake I see in audits: implementing JSON-LD on one or two pages and calling it done. Schema without content quality is noise. Schema without crawlable structure goes unread. And the most technically perfect schema on a site that blocks GPTBot in robots.txt produces zero AI citations. Schema is one layer of a system, not the system itself.
+The most common schema mistake I see in audits: implementing JSON-LD on one or two pages and calling it done. Schema without content quality is noise. Schema without crawlable structure goes unread. And the most technically perfect schema on a site that blocks GPTBot in robots.txt produces zero AI citations. Schema is one layer of a system, not the system itself. Check your bot access first with the [robots.txt checker](/tools/robots-txt-checker).
 
-That context given: schema markup is still the clearest direct signal you can send to AI engines. When you implement JSON-LD structured data correctly, you are telling ChatGPT, Perplexity, Google AI Overviews, and Bing Copilot exactly who you are, what your content is about, and why you are a reliable source for specific answers. Here is every schema type that matters for AI search, with real implementation examples.
+That context given: schema markup is still the clearest direct signal you can send to AI engines. When you implement JSON-LD structured data correctly, you are telling <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a>, <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a>, [Google AI Overviews](/insights/google-ai-overviews-optimization), and Bing Copilot exactly who you are, what your content is about, and why you are a reliable source for specific answers. Here is every schema type that matters for AI search, with real implementation examples.
 
 ## What schema markup actually does
 
@@ -259,8 +259,8 @@ The way to combine schemas in a single JSON-LD block is to use `@graph`:
 
 Before deploying, validate with:
 
-1. **Google's Rich Results Test**: [search.google.com/test/rich-results](https://search.google.com/test/rich-results), tests for schema types eligible for Google rich snippets
-2. **Schema.org Validator**: [validator.schema.org](https://validator.schema.org), comprehensive validation against the full schema.org spec
+1. **Google's Rich Results Test**: <a href="https://search.google.com/test/rich-results" rel="nofollow noreferrer" target="_blank">search.google.com/test/rich-results</a> — tests schema types eligible for Google rich snippets
+2. **Schema.org Validator**: <a href="https://validator.schema.org" rel="nofollow noreferrer" target="_blank">validator.schema.org</a> — comprehensive validation against the full schema.org spec
 
 Common errors to check for:
 - Required fields missing (e.g., Article without `datePublished`)
@@ -272,9 +272,9 @@ Common errors to check for:
 
 The most common schema mistake I see: implementing schema but not updating robots.txt to allow AI crawlers.
 
-No matter how perfect your JSON-LD is, if `User-agent: GPTBot` has `Disallow: /`, ChatGPT cannot crawl your pages and cannot discover your schema. Schema and bot access must both be correct.
+No matter how perfect your JSON-LD is, if `User-agent: GPTBot` has `Disallow: /`, <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> cannot crawl your pages and cannot discover your schema. Schema and bot access must both be correct.
 
-Check `yourwebsite.com/robots.txt` and ensure all major AI crawlers are explicitly allowed. This single change, combined with correct FAQPage schema, is often all that is needed to begin appearing in AI citations.
+Check `yourwebsite.com/robots.txt` using the [robots.txt checker](/tools/robots-txt-checker) and ensure all major AI crawlers are explicitly allowed. This single change, combined with correct FAQPage schema, is often all that is needed to begin appearing in AI citations. The full process for combining schema with a citation strategy is in [how to get cited by ChatGPT and Perplexity](/insights/how-to-get-cited-by-chatgpt).
 
 ---
 
@@ -287,4 +287,4 @@ Check `yourwebsite.com/robots.txt` and ensure all major AI crawlers are explicit
 
 ---
 
-Need a full schema audit for your site? [Start with a free review](/contact).
+Shivam Attri is an [AEO specialist](/) who builds schema and entity architecture for B2B SaaS brands. See the [AEO service](/services/aeo) or [start with a free schema review](/contact).

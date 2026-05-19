@@ -7,7 +7,7 @@ readTime: "10 min"
 featured: false
 ---
 
-What I find when I look at which sites Google AI Overviews actually cite: it is rarely the site with the highest domain authority or the most backlinks. It is the site that answered the question most directly, in the first paragraph, with a specific enough claim that Google's Gemini model could extract and synthesize it without ambiguity. That is a content architecture decision, not an SEO metric.
+What I find when I look at which sites <a href="https://blog.google/products/search/generative-ai-search/" rel="nofollow noreferrer" target="_blank">Google AI Overviews</a> actually cite: it is rarely the site with the highest domain authority or the most backlinks. It is the site that answered the question most directly, in the first paragraph, with a specific enough claim that Google's Gemini model could extract and synthesize it without ambiguity. That is a content architecture decision, not an SEO metric. It is the same principle behind [AEO more broadly](/insights/what-is-aeo).
 
 Google AI Overviews appear at the top of search results for hundreds of millions of queries. They synthesize information from multiple sources into a single AI-generated response, citing the sources used. Getting cited in an AI Overview puts your brand in front of users before they ever see traditional organic results. Here is exactly how the inclusion signal works and what to change on your site to appear there.
 
@@ -58,7 +58,7 @@ A B2B SaaS-focused blog with 40 well-structured posts about SaaS marketing will 
 
 ### 3. Correct schema markup
 
-AI Overviews pull heavily from structured data. FAQPage schema, Article schema with proper authorship, and HowTo schema are the most directly applicable.
+AI Overviews pull heavily from structured data. [FAQPage schema](/insights/schema-markup-for-ai-search), Article schema with proper authorship, and HowTo schema are the most directly applicable.
 
 FAQPage schema is particularly powerful. Google can directly extract your question-answer pairs and synthesize them into AI Overview responses. This is the fastest path to AI Overview inclusion for informational queries.
 
@@ -78,7 +78,7 @@ AI Overviews favor recent content for queries where freshness matters. The date 
 ## Step-by-step optimization process
 
 ### Step 1: Identify your target queries
-Use Google Search Console to find queries where you are ranking in positions 4 through 15. These are pages with enough authority to be considered for AI Overviews but not yet ranking in the top positions. They are your highest-priority optimization targets.
+Use <a href="https://search.google.com/search-console/" rel="nofollow noreferrer" target="_blank">Google Search Console</a> to find queries where you are ranking in positions 4 through 15. These are pages with enough authority to be considered for AI Overviews but not yet ranking in the top positions. They are your highest-priority optimization targets.
 
 ### Step 2: Check whether those queries trigger AI Overviews
 Search each query in Google (logged out, in incognito mode). Note whether an AI Overview appears. If it does, study the sources cited. What format do they use? How specific are their answers? How long are the cited excerpts?
@@ -113,8 +113,9 @@ Change the last-modified date in your Article schema to today. If you have a "La
 Google Search Console does not yet provide specific AI Overview reporting. Current tracking options:
 
 - **Manual monitoring**: Weekly search of your 20 most important target queries in incognito mode
-- **SERP monitoring tools**: Semrush and Ahrefs are adding AI Overview tracking features
-- **Branded monitoring**: Use Google Alerts for your brand name to catch when AI-cited content mentions you
+- **SERP monitoring tools**: <a href="https://www.semrush.com" rel="nofollow noreferrer" target="_blank">Semrush</a> and <a href="https://ahrefs.com" rel="nofollow noreferrer" target="_blank">Ahrefs</a> are adding AI Overview tracking features
+- **Branded monitoring**: Use <a href="https://www.google.com/alerts" rel="nofollow noreferrer" target="_blank">Google Alerts</a> for your brand name to catch when AI-cited content mentions you
+- **Self-audit**: The [AI Visibility Score tool](/tools/ai-visibility-score) runs a structured readiness check across the key citation factors
 
 The measurement gap is real. But building toward AI Overview inclusion even without perfect attribution tracking is the right strategy, because the buyer behavior shift toward AI search is not reversing.
 
@@ -129,4 +130,4 @@ The measurement gap is real. But building toward AI Overview inclusion even with
 
 ---
 
-Need help structuring your content and schema for Google AI Overviews? [Start with an audit](/contact).
+Shivam Attri is an [AEO and SEO specialist](/) who builds AI visibility systems for B2B SaaS brands. See the full [AEO service](/services/aeo) or [start with an audit](/contact).

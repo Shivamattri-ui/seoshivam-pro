@@ -722,18 +722,34 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   tip.className = 'site-link-tip';
   tip.innerHTML = '<div class="site-link-tip-k">On this site</div><p class="site-link-tip-t"></p><p class="site-link-tip-d"></p><div class="site-link-tip-u"></div>';
   document.body.appendChild(tip);
+  const tipBadge = tip.querySelector<HTMLElement>('.site-link-tip-k');
   const tipTitle = tip.querySelector('.site-link-tip-t');
   const tipDesc = tip.querySelector('.site-link-tip-d');
   const tipUrl = tip.querySelector('.site-link-tip-u');
   let hideTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
-  function showTip(x: number, y: number, href: string) {
+  function showTip(x: number, y: number, href: string, anchor?: HTMLAnchorElement) {
+    if (!tipTitle || !tipDesc || !tipUrl || !tipBadge) return;
     const key = pathKey(href);
-    if (!key || !tipTitle || !tipDesc || !tipUrl) return;
-    const meta = map[key] || fallbackMeta(key);
-    tipTitle.textContent = meta.t;
-    tipDesc.textContent = meta.d;
-    tipUrl.textContent = href.startsWith('http') ? href : ORIGIN + href;
+    if (key) {
+      // Internal link
+      const meta = map[key] || fallbackMeta(key);
+      tipBadge.textContent = 'On this site';
+      tipBadge.className = 'site-link-tip-k';
+      tipTitle.textContent = meta.t;
+      tipDesc.textContent = meta.d;
+      tipUrl.textContent = ORIGIN + (href.startsWith('http') ? key : href);
+    } else {
+      // External link
+      try {
+        const u = new URL(href);
+        tipBadge.textContent = 'External resource';
+        tipBadge.className = 'site-link-tip-k is-ext';
+        tipTitle.textContent = anchor?.textContent?.trim() || u.hostname.replace(/^www\./, '');
+        tipDesc.textContent = u.hostname.replace(/^www\./, '');
+        tipUrl.textContent = href;
+      } catch { return; }
+    }
     const pad = 16;
     let left = x + pad;
     let top = y + pad;
@@ -754,21 +770,25 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
     const href = a.getAttribute('href') || '';
     if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
     if (!a.matches(CONTENT_LINK_SELECTOR)) return;
-    if (!pathKey(a.href)) return;
 
+    const isInternal = !!pathKey(a.href);
     a.dataset.spmLinkBound = '1';
-    a.classList.add('content-int');
+    if (isInternal) {
+      a.classList.add('content-int');
+    } else {
+      a.classList.add('content-ext');
+    }
     a.addEventListener('pointerenter', (ev) => {
       if (matchMedia('(hover:none)').matches) return;
       clearTimeout(hideTimer);
-      showTip(ev.clientX, ev.clientY, a.href);
+      showTip(ev.clientX, ev.clientY, a.href, a);
     });
     a.addEventListener('pointerleave', () => {
       hideTimer = setTimeout(hideTip, 120);
     });
     a.addEventListener('focus', () => {
       const r = a.getBoundingClientRect();
-      showTip(r.left, r.bottom + 6, a.href);
+      showTip(r.left, r.bottom + 6, a.href, a);
     });
     a.addEventListener('blur', hideTip);
   }
