@@ -1,0 +1,26 @@
+name: IndexNow Submit
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  submit:
+    name: Submit sitemap URLs to IndexNow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Wait for Vercel deploy
+        # Give Vercel ~90 seconds to finish building and deploying before
+        # we fetch the live sitemap. Adjust up if you see 422/404 errors.
+        run: sleep 90
+
+      - name: Submit to IndexNow
+        run: node scripts/submit-indexnow.mjs
