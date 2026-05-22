@@ -3478,8 +3478,10 @@ document.addEventListener('keydown',(e)=>{
 
 buildDialDropdown();
 
-// Auto-detect country via IP geolocation
-(async()=>{
+// Auto-detect country via IP geolocation — deferred so it never blocks
+// FCP/LCP. The phone dial-code preset is a nice-to-have; 2s delay is
+// imperceptible to the user but removes ipapi.co from the critical path.
+const runGeoDetect=async()=>{
   try{
     const ctrl=new AbortController();
     const t=setTimeout(()=>ctrl.abort(),3500);
@@ -3498,7 +3500,12 @@ buildDialDropdown();
       el.classList.toggle('sel',(el as HTMLElement).dataset.cc===cc);
     });
   }catch{}
-})();
+};
+if('requestIdleCallback' in window){
+  requestIdleCallback(()=>runGeoDetect(),{timeout:4000});
+}else{
+  setTimeout(runGeoDetect,2000);
+}
 
 // ── Sanitize — strip any HTML/script chars ──
 function cfSanitize(s:string):string{

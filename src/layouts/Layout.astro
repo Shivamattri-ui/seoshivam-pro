@@ -262,13 +262,28 @@ const finalSchema = schema || defaultSchema;
   <!-- Page content -->
   <slot />
 
-  <!-- Google Analytics 4 — deferred to end of body to avoid blocking FCP/LCP -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S9ZE17XVF3" is:inline></script>
+  <!-- Google Analytics 4 — loaded after page is fully interactive so it
+       never blocks FCP, LCP, or TBT. requestIdleCallback fires once the
+       browser has spare cycles; setTimeout(,4000) is the Safari fallback. -->
   <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-S9ZE17XVF3', { send_page_view: true });
+    (function(){
+      function loadGA(){
+        window.dataLayer=window.dataLayer||[];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag=gtag;
+        gtag('js',new Date());
+        gtag('config','G-S9ZE17XVF3',{send_page_view:true});
+        var s=document.createElement('script');
+        s.async=true;
+        s.src='https://www.googletagmanager.com/gtag/js?id=G-S9ZE17XVF3';
+        document.head.appendChild(s);
+      }
+      if('requestIdleCallback' in window){
+        requestIdleCallback(loadGA,{timeout:5000});
+      }else{
+        setTimeout(loadGA,4000);
+      }
+    })();
   </script>
 
 </body>
