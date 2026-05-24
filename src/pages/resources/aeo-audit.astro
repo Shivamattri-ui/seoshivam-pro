@@ -341,7 +341,7 @@ const sections = [
       <div class="aa-gate-right">
         <p class="aa-gate-kicker">GET THE FREE PDF</p>
         <h2 class="aa-gate-h2">Download the 80-Point AEO Audit</h2>
-        <p class="aa-gate-desc">Enter your email and the PDF opens immediately. You also get a delivery email so you have the link for later.</p>
+        <p class="aa-gate-desc">Enter your email and the download link lands in your inbox. Check Primary — it comes from hello@seoshivam.pro.</p>
 
         <form class="aa-gate-form" id="aeo-audit-gate" data-resource-id="aeo-audit-80" data-resource-title="80-Point AEO Audit" data-mounted-at="" novalidate>
           <div class="aa-honey" aria-hidden="true">
@@ -777,22 +777,6 @@ html.light .aa-sec, html.light .aa-for-item, html.light .aa-rel-card { backgroun
         if (msgEl) {
           msgEl.textContent = typeof data.message === 'string' ? data.message : 'Check your inbox.';
           msgEl.className = 'aa-gate-msg ok';
-        }
-        // Show direct download button immediately
-        if (typeof data.downloadUrl === 'string' && data.downloadUrl) {
-          const existing = form.querySelector('.aa-dl-btn');
-          if (!existing) {
-            const dlBtn = document.createElement('a');
-            dlBtn.href = data.downloadUrl;
-            dlBtn.target = '_blank';
-            dlBtn.rel = 'noopener';
-            dlBtn.textContent = 'Open PDF now →';
-            dlBtn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:11px 22px;background:linear-gradient(135deg,#4F8EF7,#1A3A8F);color:#fff;font-family:var(--fu);font-size:14px;font-weight:700;letter-spacing:.03em;border-radius:8px;text-decoration:none;transition:opacity .2s';
-            dlBtn.className = 'aa-dl-btn';
-            dlBtn.onmouseover = () => { dlBtn.style.opacity = '0.88'; };
-            dlBtn.onmouseout  = () => { dlBtn.style.opacity = '1'; };
-            msgEl?.after(dlBtn);
-          }
         }
         if (btnTxt) btnTxt.textContent = 'Done';
         if (emailInput) emailInput.value = '';

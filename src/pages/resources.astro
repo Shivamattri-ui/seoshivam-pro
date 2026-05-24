@@ -1020,19 +1020,6 @@ const nlStackLogos = [
               msgEl.textContent = typeof data.message === 'string' ? data.message : 'Check your inbox.';
               msgEl.className = 'res-form-msg ok';
             }
-            // If the API returned a direct download URL, show a download button immediately
-            if (typeof data.downloadUrl === 'string' && data.downloadUrl) {
-              const dlBtn = document.createElement('a');
-              dlBtn.href = data.downloadUrl;
-              dlBtn.target = '_blank';
-              dlBtn.rel = 'noopener';
-              dlBtn.textContent = 'Open PDF now →';
-              dlBtn.className = 'res-dl-btn';
-              dlBtn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#4F8EF7,#1A3A8F);color:#fff;font-family:var(--fu);font-size:13px;font-weight:700;letter-spacing:.04em;border-radius:8px;text-decoration:none;transition:opacity .2s';
-              dlBtn.onmouseover = () => { dlBtn.style.opacity = '0.88'; };
-              dlBtn.onmouseout  = () => { dlBtn.style.opacity = '1'; };
-              msgEl?.after(dlBtn);
-            }
             if (btnTxt) btnTxt.textContent = 'Sent';
             if (emailInput instanceof HTMLInputElement) emailInput.value = '';
             f.dataset.mountedAt = '';
