@@ -1,14 +1,27 @@
 /**
- * POST /api/subscribe — blog sidebar email capture only.
- * Server-side Brevo (never expose API key to the browser).
+ * POST /api/subscribe — lightweight email capture, server-side Brevo.
+ *
+ * Routes to different Brevo lists by leadSource:
+ *   blog-sidebar    → List 4  (newsletter — blog post sidebar form)
+ *   blog-newsletter → List 3  (resource — homepage "AEO Visibility Playbook. Free.")
+ *   ai-score-tool   → List 3  (resource — homepage AI score capture)
+ *   (anything else) → List 3  (default resource list)
+ *
+ * Contact form leads go through /api/contact, not this endpoint.
  */
 import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-const LIST_ID = Number(import.meta.env.BREVO_LIST_ID) || 3;
-const MIN_FILL_MS = 1200;
+/** Maps leadSource to Brevo list IDs. */
+const LIST_ROUTING: Record<string, number> = {
+  'blog-sidebar':    4,   // newsletter
+  'blog-newsletter': 3,   // AEO Visibility Playbook (homepage lead magnet)
+  'ai-score-tool':   3,   // AI score capture (homepage tool)
+};
+const DEFAULT_LIST = 3;
 
+const MIN_FILL_MS = 1200;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function clean(raw: unknown, max: number): string {
@@ -50,11 +63,13 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: 'Invalid JSON body.' }, 400);
   }
 
+  // Honeypot
   const honey = clean(body.website, 100);
   if (honey) {
     return json({ ok: true, message: 'ok' });
   }
 
+  // Time-trap
   const mountedAt = Number(body.mountedAt) || 0;
   const elapsed = Date.now() - mountedAt;
   if (mountedAt && elapsed < MIN_FILL_MS) {
@@ -66,9 +81,10 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: 'Enter a valid email.' }, 400);
   }
 
-  const allowedSources = new Set(['blog-sidebar', 'blog-newsletter', 'ai-score-tool']);
+  const allowedSources = new Set(Object.keys(LIST_ROUTING));
   const sourceRaw = clean(body.leadSource, 40);
   const leadSource = allowedSources.has(sourceRaw) ? sourceRaw : 'blog-newsletter';
+  const listId = LIST_ROUTING[leadSource] ?? DEFAULT_LIST;
 
   const local = email.split('@')[0] || 'subscriber';
   const attributes: Record<string, string> = {
@@ -91,7 +107,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers,
       body: JSON.stringify({
         email,
-        listIds: [LIST_ID],
+        listIds: [listId],
         attributes,
         updateEnabled: true,
       }),

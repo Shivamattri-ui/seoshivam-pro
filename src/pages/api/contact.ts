@@ -30,9 +30,15 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false; // Force this route to run as a function
 
-const NOTIFY_TO = 'hello@seoshivam.pro';
+/** Both addresses receive every lead notification. */
+const NOTIFY_TO = [
+  { email: 'hello@seoshivam.pro',    name: 'Shivam Attri' },
+  { email: 'shivamattri27@gmail.com', name: 'Shivam Attri' },
+];
 const NOTIFY_FROM_EMAIL = 'hello@seoshivam.pro';
 const NOTIFY_FROM_NAME = 'seoshivam.pro form';
+/** All contact-form leads go to List 2 (leads). */
+const CONTACT_LIST_ID = 2;
 const MIN_FILL_MS = 2500;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -110,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
   const sourceField = clean(body.source_field, 40);
   const message     = clean(body.message, 1500);
   const leadSrc     = clean(body.lead_source, 60) || 'unknown';
-  const listId      = Number(body.list_id) || 3;
+  const listId      = CONTACT_LIST_ID; // always List 2 — leads
 
   if (!NAME_RE.test(name))   return json({ ok: false, error: 'Enter a real name.' }, 400);
   if (!EMAIL_RE.test(email)) return json({ ok: false, error: 'Enter a valid email.' }, 400);
@@ -173,7 +179,7 @@ export const POST: APIRoute = async ({ request }) => {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      to: [{ email: NOTIFY_TO, name: 'Shivam Attri' }],
+      to: NOTIFY_TO,
       replyTo: { email, name },
       sender: { email: NOTIFY_FROM_EMAIL, name: NOTIFY_FROM_NAME },
       subject: `New lead: ${name} · ${service}`,
