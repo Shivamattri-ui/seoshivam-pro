@@ -122,13 +122,13 @@ export const POST: APIRoute = async ({ request }) => {
         return json({ ok: true, message: 'You are already on the list. Check your inbox or spam for the file.' });
       }
       return json(
-        { ok: false, error: 'Could not save your request. Email shivamattri27@gmail.com with the resource name.', detail: text.slice(0, 200) },
+        { ok: false, error: 'Could not save your request. Email hello@seoshivam.pro with the resource name.', detail: text.slice(0, 200) },
         502,
       );
     }
 
     return json(
-      { ok: false, error: 'Could not process. Email shivamattri27@gmail.com with the resource name.', detail: text.slice(0, 200) },
+      { ok: false, error: 'Could not process. Email hello@seoshivam.pro with the resource name.', detail: text.slice(0, 200) },
       502,
     );
   } catch {

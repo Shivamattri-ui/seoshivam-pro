@@ -106,7 +106,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!ok) {
       let errMsg = 'Could not subscribe. Try again in a moment.';
-      if (res.status === 401) errMsg = 'Subscription service is not configured. Email shivamattri27@gmail.com.';
+      if (res.status === 401) errMsg = 'Subscription service is not configured. Email hello@seoshivam.pro.';
       else if (res.status === 400) errMsg = 'Enter a valid email address.';
       return json(
         { ok: false, error: errMsg, detail: text.slice(0, 160) },

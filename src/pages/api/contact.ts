@@ -207,12 +207,12 @@ export const POST: APIRoute = async ({ request }) => {
         detail = (contactRes.reason as Error)?.message || 'Network error';
       }
     } catch {}
-    return json({ ok: false, error: 'Could not deliver. Email shivamattri27@gmail.com directly.', detail }, 502);
+    return json({ ok: false, error: 'Could not deliver. Email hello@seoshivam.pro directly.', detail }, 502);
   }
 
   return json({
     ok: true,
-    message: 'Got it. Replying within 4 hours from shivamattri27@gmail.com.',
+    message: 'Got it. Replying within 4 hours from hello@seoshivam.pro.',
     delivery: { contact: contactOk, email: notifyOk },
   });
 };
