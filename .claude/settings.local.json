@@ -5,7 +5,11 @@
       "Bash(powershell -Command \"Get-Content 'src/content/blog/aeo-vs-seo-difference.md' | Select-Object -Last 20\")",
       "Bash(powershell -Command \"Get-Content 'src/content/blog/how-to-get-cited-by-chatgpt.md' | Select-Object -Last 20\")",
       "Bash(powershell -Command \"Get-Content 'src/content/blog/google-ai-overviews-optimization.md' | Select-Object -Last 20\")",
-      "Bash(powershell -Command \"Get-Content 'src/content/blog/seo-for-b2b-saas.md' | Select-Object -Last 20\")"
+      "Bash(powershell -Command \"Get-Content 'src/content/blog/seo-for-b2b-saas.md' | Select-Object -Last 20\")",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }

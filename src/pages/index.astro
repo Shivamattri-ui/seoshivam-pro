@@ -581,6 +581,77 @@ const clients = [
   </div>
 </section>
 
+<!-- ═══════════ 05B SEO vs AEO COMPARISON ═══════════ -->
+<section class="cmp-sec" id="seo-vs-aeo" aria-label="SEO vs AEO comparison">
+  <div class="container">
+
+    <header class="cmp-hdr rv">
+      <div class="hair left">THE DIFFERENCE / WHY BOTH MATTER</div>
+      <h2 class="sec-h">Traditional SEO<br><em class="grad-anim">vs AI visibility.</em></h2>
+      <p class="cmp-deck rv d2">Two surfaces. One content architecture. Brands that build both compound twice as fast.</p>
+    </header>
+
+    <!-- Tab toggle -->
+    <div class="cmp-tabs rv d3" role="tablist" aria-label="Comparison view">
+      <button class="cmp-tab cmp-tab-active" data-tab="both" role="tab" aria-selected="true">Both</button>
+      <button class="cmp-tab" data-tab="seo" role="tab" aria-selected="false">SEO only</button>
+      <button class="cmp-tab" data-tab="aeo" role="tab" aria-selected="false">AEO only</button>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="cmp-table-wrap rv d4">
+      <table class="cmp-table" role="table">
+        <thead>
+          <tr>
+            <th class="cmp-th cmp-th-label">Signal</th>
+            <th class="cmp-th cmp-th-seo" data-col="seo">
+              <span class="cmp-col-badge cmp-badge-seo">SEO</span>
+              Traditional Search
+            </th>
+            <th class="cmp-th cmp-th-aeo" data-col="aeo">
+              <span class="cmp-col-badge cmp-badge-aeo">AEO</span>
+              AI Engine Visibility
+            </th>
+            <th class="cmp-th cmp-th-adv">Advantage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            {signal:'Visibility surface',seo:'10 blue links in Google SERP',aeo:'AI citations, featured answers, zero-click',adv:'aeo'},
+            {signal:'Time to first result',seo:'3–6 months minimum',aeo:'30–60 days with schema + answer-first',adv:'aeo'},
+            {signal:'Content structure',seo:'Keyword density + headings',aeo:'Intent + entity + direct answer in para 1',adv:'aeo'},
+            {signal:'Citation mechanic',seo:'User clicks through to your page',aeo:'AI cites your brand in its answer',adv:'aeo'},
+            {signal:'Trust signals',seo:'Backlinks + domain authority',aeo:'E-E-A-T + schema + content freshness',adv:'both'},
+            {signal:'Compounding speed',seo:'Slow: 6–18 months to plateau',aeo:'Fast: citations multiply as authority grows',adv:'aeo'},
+            {signal:'Works for Google',seo:'Yes — this is its primary target',aeo:'Yes — same architecture wins both',adv:'both'},
+            {signal:'Works for AI engines',seo:'Partial — organic rank helps but is not enough',aeo:'Full — structured content is required',adv:'aeo'},
+          ].map((row,i) => (
+            <tr class={`cmp-row cmp-row-${i % 2 === 0 ? 'even' : 'odd'}`}>
+              <td class="cmp-td cmp-td-label">{row.signal}</td>
+              <td class="cmp-td cmp-td-seo" data-col="seo">{row.seo}</td>
+              <td class="cmp-td cmp-td-aeo" data-col="aeo">{row.aeo}</td>
+              <td class="cmp-td cmp-td-adv">
+                {row.adv === 'aeo' && <span class="cmp-pill cmp-pill-aeo">AEO wins</span>}
+                {row.adv === 'both' && <span class="cmp-pill cmp-pill-both">Both</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bottom CTA row -->
+    <div class="cmp-foot rv d5">
+      <p class="cmp-foot-note">
+        <span class="adot"></span>
+        One content system. One schema layer. Two compounding channels.
+      </p>
+      <a href="/services/aeo" class="btn-s mag" data-cursor="See AEO service">Start with AEO &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
 <!-- ═══════════ 06 ABOUT TEASER — editorial portrait spread ═══════════ -->
 <section class="about-sec" id="about">
   <div class="container">
@@ -1361,6 +1432,70 @@ html.light .n8n-step{background:var(--s3)}
   .n8n-node{flex:1 1 calc(50% - 4px)}
 }
  
+/* ═══ SEO vs AEO COMPARISON ═══ */
+.cmp-sec{padding:100px 0;background:var(--bg);border-top:1px solid var(--bd)}
+.cmp-hdr{margin-bottom:40px;max-width:640px}
+.cmp-deck{font-family:var(--fu);font-size:16px;color:var(--wd);line-height:1.7;margin-top:18px;max-width:480px}
+
+/* Tab toggle */
+.cmp-tabs{display:flex;gap:6px;margin-bottom:36px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:5px;width:fit-content}
+.cmp-tab{font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:10px 20px;border-radius:8px;border:none;background:transparent;color:var(--wm);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap}
+.cmp-tab-active{background:var(--s3);color:var(--w)}
+.cmp-tab:hover:not(.cmp-tab-active){color:var(--wd)}
+
+/* Table */
+.cmp-table-wrap{overflow-x:auto;border-radius:20px;border:1px solid var(--bd);-webkit-overflow-scrolling:touch}
+.cmp-table{width:100%;border-collapse:collapse;font-family:var(--fu)}
+.cmp-th{padding:18px 20px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);background:var(--s1);border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap;transition:background .3s,color .3s}
+.cmp-th-label{min-width:160px}
+.cmp-th-seo,.cmp-th-aeo{min-width:220px}
+.cmp-th-adv{min-width:110px}
+.cmp-col-badge{display:inline-block;font-size:8px;font-family:var(--fm);letter-spacing:.18em;padding:3px 8px;border-radius:4px;margin-right:8px;font-weight:600}
+.cmp-badge-seo{background:rgba(92,92,92,.18);color:var(--wm);border:1px solid rgba(255,255,255,.1)}
+.cmp-badge-aeo{background:var(--agl);color:var(--ac);border:1px solid rgba(79,142,247,.24)}
+.cmp-row-even{background:var(--bg)}
+.cmp-row-odd{background:var(--s1)}
+.cmp-td{padding:16px 20px;font-size:14px;line-height:1.55;color:var(--wd);border-bottom:1px solid var(--bds);vertical-align:top;transition:background .3s,opacity .3s}
+.cmp-td-label{font-family:var(--fu);font-size:13px;font-weight:600;color:var(--w);white-space:nowrap}
+.cmp-td-seo{color:var(--wm)}
+.cmp-td-aeo{color:var(--w)}
+.cmp-row:last-child .cmp-td{border-bottom:none}
+.cmp-pill{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:4px;white-space:nowrap}
+.cmp-pill-aeo{background:var(--agl);color:var(--ac);border:1px solid rgba(79,142,247,.24)}
+.cmp-pill-both{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.24)}
+
+/* Active column highlight */
+.cmp-table[data-active="seo"] .cmp-th-seo,
+.cmp-table[data-active="seo"] .cmp-td-seo{background:rgba(255,255,255,.04);color:var(--w)}
+.cmp-table[data-active="seo"] .cmp-th-aeo,
+.cmp-table[data-active="seo"] .cmp-td-aeo{opacity:.35}
+.cmp-table[data-active="aeo"] .cmp-th-aeo,
+.cmp-table[data-active="aeo"] .cmp-td-aeo{background:rgba(79,142,247,.06);color:var(--w)}
+.cmp-table[data-active="aeo"] .cmp-th-seo,
+.cmp-table[data-active="aeo"] .cmp-td-seo{opacity:.35}
+
+/* Footer */
+.cmp-foot{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:32px;flex-wrap:wrap}
+.cmp-foot-note{font-family:var(--fm);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);display:flex;align-items:center;gap:10px}
+.cmp-foot-note .adot{flex-shrink:0}
+
+/* Light mode */
+html.light .cmp-sec{background:var(--bg)}
+html.light .cmp-tabs{background:var(--s2);border-color:var(--bd)}
+html.light .cmp-tab-active{background:var(--s1)}
+html.light .cmp-table-wrap{border-color:var(--bd)}
+html.light .cmp-th{background:var(--s2)}
+html.light .cmp-row-even{background:var(--bg)}
+html.light .cmp-row-odd{background:var(--s2)}
+
+/* Responsive */
+@media(max-width:768px){
+  .cmp-sec{padding:72px 0}
+  .cmp-tabs{width:100%}
+  .cmp-tab{flex:1;text-align:center}
+  .cmp-th-adv,.cmp-td-adv{display:none}
+}
+
 /* ═══ PROCESS ═══ */
 .proc-sec{background:var(--s1)}
 .proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -3650,6 +3785,22 @@ document.querySelectorAll('.tn').forEach(node=>{
     if(ic) ic.style.transform='scale(1)';
   });
 });
+
+// ── SEO vs AEO comparison tab toggle ──
+(function(){
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.cmp-tab');
+  const table = document.querySelector<HTMLTableElement>('.cmp-table');
+  if(!tabs.length || !table) return;
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('cmp-tab-active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('cmp-tab-active');
+      tab.setAttribute('aria-selected','true');
+      const mode = tab.dataset.tab || 'both';
+      table.dataset.active = mode === 'both' ? '' : mode;
+    });
+  });
+})();
 
 // ── Live indexing terminal (Operator's Editorial hero) ──
 const opTermBody = document.getElementById('opTermBody');

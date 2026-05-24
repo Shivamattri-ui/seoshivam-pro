@@ -6,6 +6,10 @@ category: "ai-search"
 readTime: "9 min"
 featured: false
 tldr: "Copilot is powered by Bing, not OpenAI's training data. It performs a live Bing search for every query. Getting cited requires Bing indexation (separate from Google), LinkedIn authority signals (LinkedIn is owned by Microsoft), and content structured for the specific query formats enterprise buyers use inside Microsoft 365. It is the most undercontested AI citation channel in B2B SaaS right now."
+recap:
+  - "Microsoft Copilot runs a live Bing search for every query — getting cited requires Bing indexation and optimization, which is entirely separate from Google."
+  - "LinkedIn authority signals carry significant weight for Copilot citations: publishing on LinkedIn accelerates enterprise citation eligibility faster than any other channel."
+  - "With 380 million Microsoft 365 seats and almost no brands actively optimizing for it, Copilot is the least contested AI citation channel in B2B right now."
 faqs:
   - q: "Is Microsoft Copilot citation optimization different from ChatGPT optimization?"
     a: "Yes. ChatGPT citations depend on training data and OpenAI's crawl patterns. Copilot performs a live Bing search for every query, which means Bing indexation is mandatory and freshness signals matter more. LinkedIn signals also carry more weight for Copilot because LinkedIn is a Microsoft property. The schema and content structure requirements are similar, but the distribution channel mechanics are fundamentally different."

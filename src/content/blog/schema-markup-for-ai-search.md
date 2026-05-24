@@ -5,6 +5,10 @@ pubDate: 2025-04-21
 category: "web-design"
 readTime: "13 min"
 featured: false
+recap:
+  - "JSON-LD schema is the language AI engines use to understand your entity, expertise, and trust signals before they decide to cite you."
+  - "FAQPage and HowTo schema give AI engines pre-formatted extractable answers — brands with these are cited at significantly higher rates."
+  - "Schema validation must pass both Google Rich Results Test and Schema.org validator before you consider the implementation done."
 ---
 
 The most common schema mistake I see in audits: implementing JSON-LD on one or two pages and calling it done. Schema without content quality is noise. Schema without crawlable structure goes unread. And the most technically perfect schema on a site that blocks GPTBot in robots.txt produces zero AI citations. Schema is one layer of a system, not the system itself. Check your bot access first with the [robots.txt checker](/tools/robots-txt-checker).

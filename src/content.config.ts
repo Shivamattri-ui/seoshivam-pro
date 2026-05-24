@@ -19,6 +19,9 @@ const blog = defineCollection({
     featured: z.boolean().default(false),
     ogImage: z.string().optional(),
     tldr: z.string().optional(),
+    // Quick Recap: 3 tight bullets displayed before the article body.
+    // Drives AI citability (structured takeaways) + skimmability.
+    recap: z.array(z.string()).max(3).optional(),
     tags: z.array(z.string()).optional(),
     faqs: z.array(z.object({
       q: z.string(),

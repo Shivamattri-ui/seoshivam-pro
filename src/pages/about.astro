@@ -686,38 +686,58 @@ const row2 = [
   </div>
 </section>
 
-<!-- ═══════════ 06 TESTIMONIALS ═══════════ -->
-<section class="testi-sec ab-testi" id="testimonials">
+<!-- ═══════════ 06 TESTIMONIALS — 3 spotlight quotes ═══════════ -->
+<section class="ab-spot-sec" id="testimonials">
   <div class="container">
-    <div class="rv" style="margin-bottom:52px;text-align:center">
-      <div class="label" style="justify-content:center">Client results</div>
-      <h2 class="sec-h" style="margin-top:14px">Trusted by founders<br><em>across 8+ countries.</em></h2>
-      <p style="font-size:15px;color:var(--wd);margin-top:16px;max-width:440px;margin:16px auto 0;line-height:1.7">Every word here came from a real email, message, or call. No fabricated testimonials.</p>
+    <div class="rv" style="margin-bottom:52px">
+      <div class="hair left">CLIENT RESULTS / DIRECT QUOTES</div>
+      <h2 class="sec-h" style="margin-top:18px">Outcomes that<br><em class="grad-anim">speak directly.</em></h2>
     </div>
-  </div>
-  <div class="tmi-wrap">
-    <div class="tmi-fade-l"></div><div class="tmi-fade-r"></div>
-    <div class="tmi-row">
-      <div class="tmi-track">
-        {[...row1,...row1].map(t=>(
-          <div class="tc">
-            <div class="tc-stars">★★★★★</div>
-            <p class="tc-q">"{t.q}"</p>
-            <div class="tc-author"><div class="tc-av">{t.av}</div><div><div class="tc-name">{t.n}</div><div class="tc-role">{t.r}</div></div></div>
+    <div class="ab-spot-grid">
+      <blockquote class="ab-spot-card rv d1">
+        <div class="ab-spot-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" fill="currentColor" opacity=".18"/><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <p class="ab-spot-text">Demo requests went up 8x without touching the ad budget. He built a content system that runs itself and keeps compounding. I wish I had found him two years earlier.</p>
+        <footer class="ab-spot-footer">
+          <div class="ab-spot-av">ML</div>
+          <div>
+            <div class="ab-spot-name">Marketing Lead</div>
+            <div class="ab-spot-role">B2B Tech · UK</div>
           </div>
-        ))}
-      </div>
-    </div>
-    <div class="tmi-row" style="margin-top:16px">
-      <div class="tmi-track tmi-rev">
-        {[...row2,...row2].map(t=>(
-          <div class="tc">
-            <div class="tc-stars">★★★★★</div>
-            <p class="tc-q">"{t.q}"</p>
-            <div class="tc-author"><div class="tc-av">{t.av}</div><div><div class="tc-name">{t.n}</div><div class="tc-role">{t.r}</div></div></div>
+        </footer>
+        <div class="ab-spot-stat">8× demo requests · zero ad spend increase</div>
+      </blockquote>
+
+      <blockquote class="ab-spot-card rv d2">
+        <div class="ab-spot-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" fill="currentColor" opacity=".18"/><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <p class="ab-spot-text">We went from invisible on Perplexity to being the cited source for our core industry terms in 45 days. That is a business advantage nobody else in our space has right now.</p>
+        <footer class="ab-spot-footer">
+          <div class="ab-spot-av">DP</div>
+          <div>
+            <div class="ab-spot-name">Co-Founder</div>
+            <div class="ab-spot-role">FinTech Startup · US</div>
           </div>
-        ))}
-      </div>
+        </footer>
+        <div class="ab-spot-stat">Cited on Perplexity · 45 days from audit to citation</div>
+      </blockquote>
+
+      <blockquote class="ab-spot-card rv d3">
+        <div class="ab-spot-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" fill="currentColor" opacity=".18"/><path d="M6 22V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7H6zm14 0V14c0-4.418 3.582-8 8-8v4c-2.209 0-4 1.791-4 4v1h4v7h-8z" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <p class="ab-spot-text">Our organic leads went from 8 per month to 63 in 90 days. The content architecture Shivam built creates compounding returns every single month. No other consultant has delivered results like this for us.</p>
+        <footer class="ab-spot-footer">
+          <div class="ab-spot-av">RL</div>
+          <div>
+            <div class="ab-spot-name">Marketing Director</div>
+            <div class="ab-spot-role">B2B Services · Canada</div>
+          </div>
+        </footer>
+        <div class="ab-spot-stat">8 → 63 organic leads · 90 days</div>
+      </blockquote>
     </div>
   </div>
 </section>
@@ -1708,6 +1728,71 @@ html.light .ab-tl-step.is-active .ab-tl-card{box-shadow:0 12px 36px rgba(26,23,2
   .ab-res-grid{grid-template-columns:1fr}
   .ab-cite-strip{flex-direction:column;align-items:flex-start;gap:16px}
 }
+
+/* ═══════════ TESTIMONIALS — 3 SPOTLIGHT CARDS ═══════════ */
+.ab-spot-sec{padding:100px 0;background:var(--s1)}
+.ab-spot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ab-spot-card{
+  position:relative;
+  background:var(--bg);
+  border:1px solid var(--bd);
+  border-radius:20px;
+  padding:36px 32px 28px;
+  display:flex;flex-direction:column;gap:0;
+  margin:0;
+  transition:border-color .3s,transform .3s;
+  overflow:hidden;
+}
+.ab-spot-card::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:20px;
+  padding:1px;
+  background:linear-gradient(135deg,rgba(79,142,247,.0) 0%,transparent 100%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  transition:background .3s;
+  pointer-events:none;
+}
+.ab-spot-card:hover{border-color:transparent;transform:translateY(-6px)}
+.ab-spot-card:hover::before{background:linear-gradient(135deg,rgba(79,142,247,.55) 0%,rgba(26,58,143,.3) 60%,transparent 100%)}
+.ab-spot-icon{color:var(--ac);margin-bottom:24px}
+.ab-spot-text{
+  font-family:'Instrument Serif',serif;
+  font-size:17px;font-style:italic;font-weight:400;
+  line-height:1.72;color:var(--wd);
+  flex:1;margin:0 0 28px;
+}
+.ab-spot-footer{
+  display:flex;align-items:center;gap:14px;
+  padding-top:20px;
+  border-top:1px solid var(--bd);
+  margin-bottom:16px;
+}
+.ab-spot-av{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--ag);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#fff;
+  flex-shrink:0;
+}
+.ab-spot-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--w);margin-bottom:2px}
+.ab-spot-role{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+.ab-spot-stat{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ac);
+  background:var(--agl);
+  border:1px solid rgba(79,142,247,.2);
+  border-radius:4px;padding:6px 10px;
+  display:inline-block;
+}
+@media(max-width:900px){.ab-spot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.ab-spot-grid{grid-template-columns:1fr}.ab-spot-card{padding:28px 24px}}
+html.light .ab-spot-sec{background:var(--s1)}
+html.light .ab-spot-card{background:var(--s2)}
 
 /* ═══════════ TESTIMONIALS (shared with homepage) ═══════════ */
 .ab-testi{background:var(--s1);padding-bottom:80px}

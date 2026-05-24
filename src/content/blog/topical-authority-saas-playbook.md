@@ -6,6 +6,10 @@ category: aeo
 readTime: "13 min"
 featured: true
 tldr: "Topical authority is not about publishing a lot. It is about covering one topic completely. A site with 25 interconnected posts on a single topic outranks a site with 250 scattered posts every time. The same cluster architecture that earns Google rankings earns AI engine citations. One system, two channels, compounding returns."
+recap:
+  - "Topical authority means covering every sub-question in your niche with structured, interlinked content — both Google and AI engines reward breadth paired with depth."
+  - "A pillar-cluster architecture maps one primary page to 8-12 supporting posts, each answering a specific buyer question across the full purchase journey."
+  - "Each new post in a cluster amplifies all existing posts: citations, rankings, and internal link equity compound as the cluster grows."
 ---
 
 Most B2B SaaS companies make the same content mistake. They publish articles targeting different keywords in the same general niche and call it a content strategy.

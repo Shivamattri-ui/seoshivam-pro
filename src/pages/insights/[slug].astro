@@ -245,6 +245,28 @@ const schema = {
 
         </header>
 
+        <!-- ──────── QUICK RECAP ──────── -->
+        {post.data.recap && post.data.recap.length > 0 && (
+          <div class="art-recap rv">
+            <div class="art-recap-glow" aria-hidden="true"></div>
+            <div class="art-recap-head">
+              <span class="art-recap-eyebrow">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                QUICK RECAP
+              </span>
+              <span class="art-recap-sub">3 things you'll take away</span>
+            </div>
+            <ol class="art-recap-list" aria-label="Quick recap">
+              {post.data.recap.map((item: string, i: number) => (
+                <li class="art-recap-item">
+                  <span class="art-recap-num">0{i + 1}</span>
+                  <span class="art-recap-text">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
         <!-- ──────── 3-COLUMN LAYOUT ──────── -->
         <div class="art-layout">
 
@@ -498,6 +520,96 @@ const schema = {
      ARTICLE READING PROGRESS BAR
      ════════════════════════════════════════════════════════════ */
   .art-prog{position:fixed;top:0;left:0;height:3px;width:0;background:var(--ag);z-index:90;transition:width .12s linear;box-shadow:0 0 12px rgba(79,142,247,.45)}
+
+  /* ════════════════════════════════════════════════════════════
+     QUICK RECAP BLOCK
+     ════════════════════════════════════════════════════════════ */
+  .art-recap{
+    position:relative;
+    max-width:880px;
+    margin:0 auto 52px;
+    padding:36px 40px;
+    border-radius:20px;
+    background:var(--s1);
+    border:1px solid var(--bd);
+    overflow:hidden;
+  }
+  .art-recap::before{
+    content:'';
+    position:absolute;
+    inset:-1px;
+    border-radius:20px;
+    padding:1px;
+    background:linear-gradient(135deg,rgba(79,142,247,.5) 0%,rgba(26,58,143,.25) 50%,transparent 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+  }
+  .art-recap-glow{
+    position:absolute;
+    top:-60px;left:-60px;
+    width:260px;height:260px;
+    background:radial-gradient(ellipse,rgba(79,142,247,.08) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .art-recap-head{
+    display:flex;align-items:center;gap:16px;
+    margin-bottom:28px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--bd);
+  }
+  .art-recap-eyebrow{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--fm);font-size:9px;font-weight:600;
+    letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ac);
+    background:var(--agl);
+    border:1px solid rgba(79,142,247,.24);
+    border-radius:4px;padding:6px 12px;
+    flex-shrink:0;
+  }
+  .art-recap-eyebrow svg{flex-shrink:0}
+  .art-recap-sub{
+    font-family:var(--fm);font-size:10px;
+    letter-spacing:.06em;text-transform:uppercase;
+    color:var(--wm);
+  }
+  .art-recap-list{
+    list-style:none;
+    display:flex;flex-direction:column;gap:0;
+    margin:0;padding:0;
+  }
+  .art-recap-item{
+    display:grid;
+    grid-template-columns:48px 1fr;
+    gap:0 20px;
+    align-items:start;
+    padding:18px 0;
+    border-bottom:1px solid var(--bds);
+    position:relative;
+  }
+  .art-recap-item:last-child{border-bottom:none;padding-bottom:0}
+  .art-recap-item:first-child{padding-top:0}
+  .art-recap-num{
+    font-family:var(--fm);font-size:11px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ac);
+    padding-top:2px;
+  }
+  .art-recap-text{
+    font-family:var(--fu);font-size:15px;font-weight:500;
+    line-height:1.65;letter-spacing:-.005em;
+    color:var(--w);
+  }
+  /* Light mode overrides */
+  html.light .art-recap{background:var(--s2);border-color:var(--bd)}
+  html.light .art-recap::before{background:linear-gradient(135deg,rgba(43,91,224,.4) 0%,rgba(26,58,143,.2) 50%,transparent 100%)}
+  @media(max-width:640px){
+    .art-recap{padding:24px 20px}
+    .art-recap-head{flex-direction:column;align-items:flex-start;gap:10px}
+    .art-recap-item{grid-template-columns:36px 1fr;gap:0 12px}
+  }
 
   /* ════════════════════════════════════════════════════════════
      HEADER

@@ -5,6 +5,10 @@ pubDate: 2025-04-07
 category: "aeo"
 readTime: "11 min"
 featured: true
+recap:
+  - "ChatGPT cites sources with clear entity schema, FAQPage markup, and GPTBot access in robots.txt — all three are required, none is optional."
+  - "Answer-first structure is the highest-leverage change: lead every section with the direct answer, then expand. AI engines extract the first sentence."
+  - "Most brands missing from ChatGPT have no technical barrier — just missing schema and bot access, fixable in under a week."
 ---
 
 Getting cited by <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> or <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> is not random. It is the result of specific, deliberate choices about how your website is structured, how your content is written, and whether AI bots can even crawl your site in the first place.

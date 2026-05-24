@@ -5,6 +5,10 @@ pubDate: 2025-04-14
 category: "ai-search"
 readTime: "10 min"
 featured: false
+recap:
+  - "Google AI Overviews pull from pages with strong E-E-A-T signals, FAQPage schema, and an answer-first first paragraph — not from the highest-ranking pages."
+  - "Pages ranking in positions 1-5 are not guaranteed AIO inclusion. Schema and content structure are evaluated separately from ranking position."
+  - "Optimizing for AI Overviews does not require separate content: the same answer-first rewrites that win AIO citations improve organic CTR simultaneously."
 ---
 
 What I find when I look at which sites <a href="https://blog.google/products/search/generative-ai-search/" rel="nofollow noreferrer" target="_blank">Google AI Overviews</a> actually cite: it is rarely the site with the highest domain authority or the most backlinks. It is the site that answered the question most directly, in the first paragraph, with a specific enough claim that Google's Gemini model could extract and synthesize it without ambiguity. That is a content architecture decision, not an SEO metric. It is the same principle behind [AEO more broadly](/insights/what-is-aeo).

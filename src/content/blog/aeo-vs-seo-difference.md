@@ -5,6 +5,10 @@ pubDate: 2025-04-10
 category: "aeo"
 readTime: "8 min"
 featured: false
+recap:
+  - "SEO targets the click. AEO targets the answer — AI engines cite your content without the user needing to click at all."
+  - "The two disciplines share the same foundation: structured content, semantic HTML, topical authority. One build, two visibility surfaces."
+  - "Brands running both SEO and AEO from one architecture compound faster than brands optimizing for either surface in isolation."
 ---
 
 In almost every new client conversation, the same question appears early: "should we do SEO or AEO?" The framing assumes they are alternatives. In my experience across 30+ brands in the US, UK, EU, and Australia, the brands that treat them as separate decisions consistently underperform the brands that build one system for both surfaces.
