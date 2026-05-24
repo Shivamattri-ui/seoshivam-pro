@@ -55,13 +55,6 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
       '80-point AEO audit, Notion content brief, and Claude Skills PDF. Free email-gated resources for AI-search optimized content systems. Download instantly.',
   },
 
-  // ─── Resource: 80-Point AEO Audit ────────────────────────────────────────────
-  '/resources/aeo-audit': {
-    title: '80-Point AEO Audit Checklist — Free PDF | Shivam Attri',
-    description:
-      'Free 80-point AEO audit: bot access, entity schema, content architecture, Bing and Brave indexation, E-E-A-T, and citation monitoring. Download the PDF instantly.',
-  },
-
   // ─── Tools hub ───────────────────────────────────────────────────────────────
   '/tools': {
     title: 'Free AEO Tools: AI Visibility Score & Bot Checker | Shivam Attri',

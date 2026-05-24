@@ -10,7 +10,7 @@
  *      (triggers any welcome automation set up in Brevo dashboard)
  *
  *   2. POST /v3/smtp/email        → sends a notification email to
- *      shivamattri27@gmail.com so Shivam sees the lead in his inbox
+ *      hello@seoshivam.pro so Shivam sees the lead in his inbox
  *
  * Both calls fire in parallel via Promise.allSettled. As long as the
  * notification email goes through, the request returns success — even
@@ -30,8 +30,8 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false; // Force this route to run as a function
 
-const NOTIFY_TO = 'shivamattri27@gmail.com';
-const NOTIFY_FROM_EMAIL = 'shivamattri27@gmail.com';
+const NOTIFY_TO = 'hello@seoshivam.pro';
+const NOTIFY_FROM_EMAIL = 'hello@seoshivam.pro';
 const NOTIFY_FROM_NAME = 'seoshivam.pro form';
 const MIN_FILL_MS = 2500;
 

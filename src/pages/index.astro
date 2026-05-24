@@ -3667,10 +3667,10 @@ function cfSetState(el:Element|null,state:'invalid'|'valid'|'none'){
 }
 
 // ── Notification email via FormSubmit.co (no domain verification needed) ──
-// First submission triggers a one-time activation email to shivamattri27@gmail.com — click Activate, then all future submissions land directly in inbox.
+// First submission triggers a one-time activation email to hello@seoshivam.pro — click Activate, then all future submissions land directly in inbox.
 async function sendNotifEmail(data:{name:string;email:string;phone:string;service:string}){
   try{
-    await fetch('https://formsubmit.co/ajax/shivamattri27@gmail.com',{
+    await fetch('https://formsubmit.co/ajax/hello@seoshivam.pro',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
