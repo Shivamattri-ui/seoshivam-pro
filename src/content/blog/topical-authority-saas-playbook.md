@@ -192,16 +192,16 @@ This is not extra work layered onto the content process. It is the content proce
 
 For domains with existing authority, some of these timelines compress. For new domains, add two to three months across the board.
 
-The consistent variable across every implementation: the brands that commit to 20 to 30 interconnected posts consistently outperform brands that publish a pillar and five cluster posts and stop. Depth matters more than any individual piece. The B2B SaaS-specific version of this system, including the full technical SEO layer, is in [SEO for B2B SaaS: The Complete Architecture Guide](/insights/seo-for-b2b-saas).
+The consistent variable across every implementation: the brands that commit to 20 to 30 interconnected posts consistently outperform brands that publish a pillar and five cluster posts and stop. Depth matters more than any individual piece. The B2B SaaS-specific version of this system, including the full technical SEO layer, is in [SEO for B2B SaaS](/insights/seo-for-b2b-saas).
 
 ---
 
 ## Related reading
 
-- [SEO for B2B SaaS: The Complete Architecture Guide](/insights/seo-for-b2b-saas) — how topical authority fits into the full B2B SaaS SEO system
-- [Schema Markup for AI Search](/insights/schema-markup-for-ai-search) — the technical layer that makes your cluster content AI-citable
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — how one cluster system serves both Google and AI search surfaces
-- [AEO Strategy and Services](/services/aeo) — full topical authority and AEO implementation for B2B SaaS
+- [SEO for B2B SaaS](/insights/seo-for-b2b-saas) — how topical authority fits into the full B2B SaaS SEO system
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the technical layer that makes cluster content AI-citable
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how one cluster system serves both Google and AI search surfaces
+- [AEO strategy](/services/aeo) — full topical authority and AEO implementation for B2B SaaS
 
 ---
 

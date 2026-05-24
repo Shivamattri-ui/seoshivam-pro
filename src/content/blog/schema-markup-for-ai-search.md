@@ -284,10 +284,10 @@ Check `yourwebsite.com/robots.txt` using the [robots.txt checker](/tools/robots-
 
 ## Related reading
 
-- [How to Get Your Brand Cited by ChatGPT](/insights/how-to-get-cited-by-chatgpt) — schema in context of a complete AI citation strategy
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — where schema fits in the broader visibility system
-- [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook) — the content depth that makes schema markup actually produce citations
-- [AEO Strategy and Services](/services/aeo) — schema implementation as part of a full AEO engagement
+- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) — schema in context of a complete AI citation strategy
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — where schema fits in the broader visibility system
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that makes schema markup produce citations
+- [AEO strategy](/services/aeo) — schema implementation as part of a full AEO engagement
 
 ---
 

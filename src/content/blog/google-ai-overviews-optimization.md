@@ -127,10 +127,10 @@ The measurement gap is real. But building toward AI Overview inclusion even with
 
 ## Related reading
 
-- [Schema Markup for AI Search: The Complete JSON-LD Guide](/insights/schema-markup-for-ai-search) — the full structured data implementation behind AI Overview inclusion
-- [How to Get Your Brand Cited by ChatGPT](/insights/how-to-get-cited-by-chatgpt) — the same principles applied across all AI engines, not just Google
-- [What is AEO?](/insights/what-is-aeo) — the full explanation of how AI engine optimization works across platforms
-- [AEO Strategy and Services](/services/aeo) — full AI visibility implementation, including Google AI Overviews
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the structured data foundation behind AI Overview inclusion
+- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) — the same principles across all AI engines, not just Google
+- [what is AEO](/insights/what-is-aeo) — how AI engine optimization works across platforms
+- [AEO strategy](/services/aeo) — full AI visibility implementation including Google AI Overviews
 
 ---
 

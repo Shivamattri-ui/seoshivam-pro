@@ -105,10 +105,10 @@ The question is not whether to do both. The question is in what order and at wha
 
 ## Related reading
 
-- [What is AEO?](/insights/what-is-aeo) — the full explanation of Answer Engine Optimization and how it works
-- [How to Get Your Brand Cited by ChatGPT](/insights/how-to-get-cited-by-chatgpt) — the practical steps for building AI citations
-- [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook) — the content system that serves both SEO and AEO simultaneously
-- [AEO Strategy and Services](/services/aeo) — how Shivam builds integrated AEO and SEO systems for B2B SaaS
+- [what is AEO](/insights/what-is-aeo) — the full explanation of how AI citation mechanics work
+- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) — the practical steps for building AI citations
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content system that serves both SEO and AEO simultaneously
+- [AEO strategy](/services/aeo) — how I build integrated AEO and SEO systems for B2B SaaS
 
 ---
 

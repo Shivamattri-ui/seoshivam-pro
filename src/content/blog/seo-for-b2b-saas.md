@@ -148,10 +148,10 @@ The content cluster approach described here naturally supports both: deep topica
 
 ## Related reading
 
-- [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook) — the content architecture that makes B2B SaaS SEO compound
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — how to build one system that serves both Google and AI engines
-- [Schema Markup for AI Search](/insights/schema-markup-for-ai-search) — the technical layer that enables AI citations alongside Google rankings
-- [SEO Strategy and Services](/services/seo) — how Shivam builds compounding organic channels for B2B SaaS
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content architecture that makes B2B SaaS SEO compound
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how to build one system that serves both Google and AI engines
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the technical layer that enables AI citations alongside Google rankings
+- [SEO strategy](/services/seo) — how I build compounding organic channels for B2B SaaS
 
 ---
 

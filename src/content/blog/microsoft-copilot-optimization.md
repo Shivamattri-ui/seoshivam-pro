@@ -147,10 +147,10 @@ Use the [AI Visibility Score tool](/tools/ai-visibility-score) to benchmark your
 
 ## Related reading
 
-- [Schema Markup for AI Search: The Complete JSON-LD Guide](/insights/schema-markup-for-ai-search) — the JSON-LD foundation that Copilot reads via Bing indexing
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — how Copilot optimization fits into a multi-channel visibility strategy
-- [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook) — the content depth that earns consistent Copilot citations
-- [AEO Strategy and Services](/services/aeo) — full multi-engine AEO implementation including Microsoft Copilot and Bing AI
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the JSON-LD foundation Copilot reads via Bing indexing
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how Copilot optimization fits into a multi-channel visibility strategy
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that earns consistent Copilot citations
+- [AEO strategy](/services/aeo) — full multi-engine AEO including Microsoft Copilot and Bing AI
 
 ---
 

@@ -1,136 +1,135 @@
 ---
 title: "What to Ask Before Hiring an AEO Strategist: 7 Questions That Filter Fast"
-description: "Most AEO strategists cannot answer these 7 questions accurately. They reveal whether someone understands the actual citation mechanics or is rebranding old SEO work as AEO. Use this list before any engagement."
+description: "The AEO market has no standardized scope, no certification, and no output checklist. These 7 questions reveal whether a candidate understands AI citation mechanics or is running standard content marketing under a new name."
 pubDate: 2026-05-24
 category: "aeo"
 readTime: "9 min"
 featured: false
-tldr: "AEO is a new discipline and the market has not yet separated genuine practitioners from agencies relabeling SEO services. Seven specific questions will reveal whether a candidate understands how AI citation systems actually work, what they track, and whether their process is designed for your specific situation."
+tldr: "AEO has no standardized scope. Agencies that added the acronym to their service pages in 2024 are largely running the same content retainers they sold in 2022. Seven specific questions separate practitioners who understand citation mechanics from agencies relabeling existing work. The questions target architecture knowledge, not methodology language."
 recap:
-  - "Ask for a live citation check before any engagement. A genuine AEO strategist will pull up ChatGPT or Perplexity and show you the current state of your brand in AI answers within minutes."
-  - "How they measure success reveals whether they understand AI search. Citation frequency across engines, branded search growth, and Bing impressions are real signals. Keywords and domain authority scores are not."
-  - "The question 'do you treat Copilot and ChatGPT the same way?' separates practitioners from agencies relabeling SEO. They require different technical approaches."
+  - "Ask for a live citation check before reviewing any proposal. A genuine AEO strategist will run your target queries in ChatGPT, Perplexity, and Copilot within minutes and show you exactly where your brand appears."
+  - "The Copilot vs. ChatGPT architecture question is the fastest filter: Copilot runs on Bing, ChatGPT uses a mix of training data and Bing, and Claude uses Brave Search. Any strategist who says they optimize for all engines with the same approach has not done the technical work."
+  - "Measure citations, not keyword rankings. An AEO strategist tracking your progress primarily through Google Search Console positions is running an SEO retainer with AEO branding."
 tags: ["AEO Strategist", "Hire AEO", "Answer Engine Optimization", "AEO Services", "AI Search Strategy"]
 faqs:
   - q: "What should I look for when hiring an AEO strategist?"
-    a: "Look for a strategist who can demonstrate current AI citation examples for their clients or their own brand, explain the technical difference between how Copilot and ChatGPT retrieve content, describe what they track beyond keyword rankings, and give you a realistic timeline based on your specific domain situation. Avoid any strategist who positions AEO as primarily a content volume exercise or who cannot explain the role of Bing indexation in Microsoft Copilot optimization."
+    a: "A genuine AEO strategist can demonstrate live AI citations for their own brand, explain the technical difference between how Copilot and Claude retrieve content, describe the first 30 days of work in specific deliverable terms, and name what they track beyond keyword rankings. Avoid any strategist who cannot explain Brave Search's role in Claude citations, who positions AEO primarily as a content volume exercise, or who reports progress through domain authority scores rather than verified citation frequency."
   - q: "What does an AEO strategist charge?"
-    a: "AEO strategy engagements typically run from $2,000 for a focused audit and fix list, to $8,000 to $15,000 per month for full-service retainers including content production and citation tracking. Project-based work for technical architecture and schema setup without ongoing content falls between $3,000 and $7,000. The price range is wide because the discipline is new and market pricing has not standardized. The best way to evaluate value is to ask what the deliverables are in the first 30 days and what measurable signal you should expect to see in 90 days."
-  - q: "How long does AEO take to show results?"
-    a: "First AI citations typically appear in 30 to 90 days for domains with existing authority. The technical layer, robots.txt access, Bing indexation, entity schema, can be fixed in the first two weeks. Content restructure takes 4 to 6 weeks depending on site size. Citation frequency builds over 60 to 120 days as AI engines crawl the updated architecture. Any strategist promising AI citations in the first week is not telling you the truth about how citation systems work."
-  - q: "Is AEO different from SEO, or is it the same thing rebranded?"
-    a: "AEO and SEO share a technical foundation but diverge significantly in what they optimize for. SEO targets keyword rankings in traditional search results. AEO targets citation inclusion in AI-generated answers. The surface is different: AI answers cite 1 to 3 sources rather than ranking 10 blue links. The technical requirements partially overlap, but AEO adds Bing indexation for Copilot, Brave Search indexation for Claude, entity schema for AI entity recognition, and answer-first content structure that standard SEO does not require. A genuine AEO strategist can explain specifically what they do differently from SEO, not just use the word AEO to describe standard content marketing."
+    a: "Focused audits with a prioritized fix list run $2,000 to $4,000. Full-service retainers covering technical implementation, content restructure, and monthly citation tracking run $5,000 to $15,000 per month. Project-based technical work covering schema, robots.txt, Bing and Brave indexation, and entity setup without ongoing content runs $3,000 to $7,000. The range is wide because the discipline has no standardized scope. Evaluate value by asking what the deliverables are in the first 30 days and what measurable signal you should expect at day 90."
+  - q: "How long does it take to see AEO results?"
+    a: "First citations typically appear in 30 to 90 days for domains with existing authority. Technical fixes — robots.txt, Bing and Brave indexation, entity schema — can be completed in the first two weeks. Content restructure takes 4 to 6 weeks. Citation frequency builds over 60 to 120 days as AI engines crawl the updated architecture. Any strategist promising citations in the first week does not understand how citation systems are updated."
+  - q: "Is AEO different from SEO, or the same thing rebranded?"
+    a: "AEO and SEO share a technical foundation but diverge in what they optimize for. SEO targets keyword positions in traditional search results. AEO targets citation inclusion in AI-generated answers. The content structure requirements differ: AEO requires answer-first formatting, FAQPage schema, and explicit AI bot access. SEO requires topical authority and Core Web Vitals. The most important difference: AEO requires separate indexation for Bing, Brave Search, and Google AI depending on which engines you are targeting. Standard SEO work does not address this."
 ---
 
-AEO is one of the fastest-growing categories in marketing services and one of the most poorly defined. Dozens of agencies have added "AEO" and "AI search optimization" to their service pages in the past 18 months without changing what they actually do. Some are adding an FAQ section to existing blog posts and calling it Answer Engine Optimization. Others are describing keyword research and content production as citation building.
+The AEO services market has a specific problem that is not talked about enough. There is no standardized scope, no certification body, and no widely agreed output checklist. A company that has been doing keyword research and content production since 2018 can add "AEO and AI search optimization" to their service page, change a few lines of their pitch deck, and credibly present to a buyer who does not know what to look for.
 
-Genuine AEO strategy is different from this. It requires understanding how AI citation systems work at an architectural level: which signals different AI engines use, how Bing and Brave Search indexation differ, what role entity schema plays versus content structure, and how to measure citation performance in a discipline that has no native analytics.
+Some do this. A lot, actually.
 
-These seven questions separate practitioners from agencies running old playbooks under new names.
+The seven questions below test architecture knowledge, not methodology language. Fluent use of terms like "entity optimization" and "answer-first content" is easy. Accurate answers to these specific technical questions is not.
 
-## Question 1: "Can you show me what an AI citation gap looks like for a site like mine?"
+## Question 1: Can you run a live citation check for my brand right now?
 
-Ask this before reviewing any proposal or pricing.
+This is the baseline. Not a proposal. Not a case study. A live check in ChatGPT, Perplexity, and Google AI Overviews while you are on the call.
 
-A competent AEO strategist will do one of two things: pull up ChatGPT or Perplexity live, run the queries your buyers are most likely to ask, and show you exactly where your brand appears or does not appear. Or they will share a recent client audit showing the before state clearly.
+A practitioner who works in AI citation daily thinks in terms of live engine output. They will open ChatGPT, type your most important buyer queries, and walk you through what the engines currently return. They will point out where your brand appears, where it is missing, and what the page text that is getting cited looks like versus yours.
 
-A strategist who responds with a deck or a case study without performing a live check is selling you their process, not demonstrating their knowledge. The live citation check is fast, free, and immediate. Any practitioner who understands AI search does this instinctively because it is how they think about the problem.
+Someone who does not work in citation mechanics will steer toward the deck, the case study, the process diagram. All of these things are valuable downstream. None of them substitute for demonstrating that the person can actually look at an AI engine output and read what it means.
 
-The secondary benefit of this question: you learn their baseline methodology. If they only check Google AI Overviews and not ChatGPT, Perplexity, and Copilot separately, you are looking at partial coverage positioned as a complete system.
+The secondary benefit: this five-minute exercise becomes a baseline audit before any contract is signed. You leave the call knowing exactly which engines are citing you and for which queries.
 
-## Question 2: "How is Microsoft Copilot optimization different from ChatGPT optimization?"
+## Question 2: What is the technical difference between optimizing for Copilot and optimizing for Claude?
 
-This is the fastest filter in the list.
+This is the fastest architecture filter in the list.
 
-The correct answer is specific and architectural: Copilot runs on the Bing index. Every Copilot response starts with a live Bing search. If your site is not indexed by Bing, Copilot cannot cite it, regardless of your Google rankings or how much content you have published. ChatGPT citations depend primarily on OpenAI's training corpus and Bing integration; the optimization signals are different.
+Correct answer: Microsoft Copilot runs on Bing. Every Copilot response starts with a live Bing search. Bing indexation is a prerequisite for any Copilot citation. Claude uses Brave Search for live queries. Brave operates an independent index that is separate from both Google and Bing. A site well-indexed by Bing can have almost no Brave indexation, meaning comprehensive Bing-focused optimization produces strong Copilot and ChatGPT citation rates and near-zero Claude citation rates.
 
-The wrong answer is vague: "we optimize for all AI engines with a consistent content approach." This is how a general content marketer talks about AEO. It indicates they have not worked with the specific citation mechanics of each platform.
+Wrong answer: "We use the same content approach for all AI engines."
 
-If a strategist cannot explain the role of Bing Webmaster Tools in Copilot optimization, or does not know that [LinkedIn signals carry particular weight for Copilot](/insights/microsoft-copilot-optimization) because Microsoft owns both properties, they have not done the technical work to understand the platform they are selling to optimize.
+No one who has actually worked on multi-engine citation campaigns believes the engines are interchangeable. They have different crawlers, different indexation sources, different content extraction preferences, and different entity signals. The [Microsoft Copilot optimization](/insights/microsoft-copilot-optimization) work is entirely different from Brave-specific Claude optimization in its technical steps.
 
-## Question 3: "What are the first three things you fix on a site before touching content?"
+If a strategist cannot articulate this distinction, they have not audited multi-engine citation performance for real clients.
 
-Content-first approaches to AEO are backwards. The highest-impact AEO fixes are technical, not content-related. A strategist who leads with content production before fixing the technical layer is working in the wrong sequence.
+## Question 3: What are the first three things you fix on a site before touching content?
 
-The correct answer covers, in some order:
+Content-first AEO is backwards. The highest-impact fixes are technical, and they come before any content restructure.
 
-- **AI bot access in robots.txt.** GPTBot, ClaudeBot, PerplexityBot, and Bingbot must all be explicitly allowed. The most common reason for AI invisibility is a robots.txt that blocks these crawlers by default, often because of a security plugin or a legacy wildcard disallow rule.
-- **Bing indexation.** A site can rank number one on Google and return zero results on Bing. Since Microsoft Copilot and partially ChatGPT depend on Bing's index, Bing indexation is a prerequisite for citations on the highest-volume AI engines.
-- **Entity schema.** JSON-LD Organization and Person schema connects your brand to a recognizable entity in AI systems. Without it, AI engines cannot confidently identify who you are before deciding whether to cite you.
+What a practitioner should name:
 
-Content restructure comes after these. Publishing more answer-first articles on a site that blocks AI bots produces no citations.
+**AI bot access in robots.txt.** GPTBot, ClaudeBot, PerplexityBot, and Bingbot must all be explicitly allowed. Blocked bots prevent citations at the crawl layer, before any content quality evaluation happens. This is the most common gap in every audit I run.
 
-## Question 4: "How do you measure whether the AEO work is producing results?"
+**Bing indexation verification and submission.** Search `site:yourdomain.com` on Bing. If the result count is significantly lower than your published page count, submit your XML sitemap to Bing Webmaster Tools. Bing indexation is separate from Google and is the direct prerequisite for Copilot and ChatGPT citations.
 
-This question reveals whether they have thought seriously about measurement in a discipline where the native analytics do not exist.
+**Entity schema on homepage and key pages.** Organization schema with a precise description, sameAs links to LinkedIn and other verified profiles, and Person schema for the founder. This establishes AI engine entity recognition before any content restructure starts.
 
-Legitimate measurement signals for AEO:
+Content restructure, new content production, and citation tracking all come after these three items are complete. Publishing more answer-first articles on a site that blocks AI bots produces no citations.
 
-- **Citation frequency per engine.** Manually verified, monthly, across the specific queries you are targeting. "We are cited in 3 of 20 target queries on ChatGPT this month versus 0 last month" is a real signal.
-- **Bing impressions.** Bing Webmaster Tools shows impressions and clicks for target queries. Rising impressions indicate better Bing indexation and relevance, which directly improves Copilot citation probability.
-- **Branded search volume.** Buyers who encounter your brand in AI answers often search your name directly on Google afterward. Month-over-month growth in branded Google Search Console impressions correlates with AI citation growth.
-- **Lead quality shift.** Buyers arriving from AI citations often arrive with more specific questions and shorter sales cycles. Tracking source of qualified pipeline, not just lead volume, captures this.
+## Question 4: How do you measure whether AEO work is producing results?
 
-Illegitimate substitutes: domain authority scores, keyword rankings in Google, traffic from Google, and general brand awareness metrics. These are not AEO results. They are SEO results being presented as AEO outcomes.
+This question reveals whether the candidate has thought seriously about measurement in a discipline with no native analytics.
 
-Any strategist who describes AEO success primarily in terms of keyword rankings has not separated their AEO practice from their SEO practice.
+Signals worth tracking:
 
-## Question 5: "What role does topical authority play in AI citation probability?"
+**Citation frequency per engine.** Manually verified, monthly, for a defined set of target queries. "We are cited in 4 of 20 target queries on Perplexity this month versus 1 last month" is a real measurement. This requires actual manual sampling — there is no automated citation tracking tool that covers all six major engines accurately as of 2025.
 
-Topical authority, the practice of covering a subject comprehensively across a cluster of interconnected content rather than a single page, is one of the highest-leverage inputs to AI citation frequency.
+**Bing impressions in Bing Webmaster Tools.** Rising impressions for target queries indicate improving Bing indexation and relevance, which directly improves Copilot and ChatGPT citation probability.
 
-AI engines do not just evaluate individual pages. They evaluate the body of evidence across an entire domain. A site that has published fifteen interconnected articles on a specific category, each answering a distinct question with high specificity, signals authoritative coverage of that topic. A site with one strong article on the topic and nothing else signals isolated content.
+**Brave Search impressions.** Brave Webmaster Tools shows impressions for Claude-relevant queries. This is almost never mentioned in AEO proposals, which is precisely why it distinguishes genuine practitioners.
 
-The correct answer explains why topical clusters outperform individual pages for AI citations, references the relationship between internal linking architecture and citation probability, and distinguishes between surface-level content volume (publishing for volume) and genuine information gain (publishing to answer questions no other source answers as specifically).
+**Branded Google Search Console growth.** Buyers who find a brand in AI answers often search the brand name on Google within hours. Month-over-month branded impression growth is one of the clearest secondary indicators of increasing AI citation frequency.
 
-The wrong answer positions AEO as primarily a keyword research and content production exercise without discussing cluster architecture, internal linking, or the relationship between topical depth and citation frequency. [Read the full topical authority playbook](/insights/topical-authority-saas-playbook) if you want to understand what systematic topical authority building looks like.
+Measurements that are not AEO results: domain authority scores, Google keyword rankings, organic Google traffic, and general brand awareness metrics. If a strategist proposes to track AEO success primarily through Google Search Console rankings, they are running an SEO retainer under a different name.
 
-## Question 6: "What does the first 30 days look like, specifically?"
+## Question 5: What role does topical authority play in citation probability?
 
-Vague answers here are a significant warning signal. A genuine AEO engagement has a specific first-30-day sequence that any experienced strategist can describe before a contract is signed.
+AI engines do not evaluate pages in isolation. They evaluate the depth of a domain's coverage of a subject.
 
-A reasonable first 30 days for a B2B SaaS client:
+A site that has published 12 interconnected posts answering every meaningful question in one category, each with internal links to the others, signals authoritative coverage. A site with one strong article and nothing else signals an isolated data point. AI engines — particularly ChatGPT and Claude — weight consistent domain coverage when deciding which source to cite for a given query.
 
-- **Days 1 to 7:** AI visibility audit, covering citation gaps across 6 engines for 20 to 30 target queries, Bing indexation check, robots.txt audit, schema completeness review, entity signal assessment
-- **Days 7 to 14:** Technical fix implementation: robots.txt update, Bing Webmaster Tools submission, basic entity schema deployment
-- **Days 14 to 21:** Entity schema expansion: Person, Organization, WebSite, and page-specific schema on priority pages; sameAs setup
-- **Days 21 to 30:** Content audit and priority restructure: identify the 5 to 8 pages most likely to earn citations with restructuring, write answer-first versions
+The practical implication for content strategy: five exceptional, deeply specific posts in a focused cluster outperform 50 generic posts across scattered topics for AI citation purposes. This is why [topical authority](/insights/topical-authority-saas-playbook) work and AEO work are part of the same system, not separate streams.
 
-By the end of day 30, the technical layer should be complete and the first content pages should be restructured. This is measurable: you can run the same 20 queries in Bing and verify indexation improved, and you can check robots.txt access for each AI bot.
+A strategist who positions AEO as primarily a technical schema task without a content architecture component is describing half the system. Schema on weak, isolated content does not produce sustained citations.
 
-Any strategist who cannot describe this level of specificity for the first 30 days has not operationalized their process.
+## Question 6: What specifically happens in the first 30 days?
 
-## Question 7: "Have you personally run an AEO audit on your own brand?"
+Vague answers here mean the process is not operationalized.
 
-This is the credibility check.
+A specific first 30 days for a B2B SaaS client:
 
-The most reliable indicator that a consultant understands AEO in practice, not just theory, is that they have applied the same work to their own site. Shivam Attri's site, the one you are reading now, was built with every AEO principle applied from day one: full entity schema, answer-first content across every page, explicit AI bot access, Bing and Brave indexation verified, and 20+ buyer queries tracked monthly across 6 engines.
+- **Days 1–5:** Baseline audit. 20 to 30 target queries across 6 engines. robots.txt audit. Bing site search. Brave site search. Entity schema review. Existing content structure assessment.
+- **Days 5–10:** Technical fixes. robots.txt corrections. Bing Webmaster Tools submission. Brave sitemap submission. Organization and Person schema deployment on homepage.
+- **Days 10–20:** Entity schema expansion. sameAs properties. FAQPage schema on 3 to 5 priority pages. Person schema for founder.
+- **Days 20–30:** Content restructure of 3 to 5 highest-priority pages. Answer moved to first sentence. H2 headings rewritten to question format. Inline FAQ sections added with markup.
 
-If a strategist cannot point to their own domain as a live example of their approach working, and explain specifically which queries they appear in for which engines, they are selling a methodology they have not proven in practice.
+By day 30, the technical layer is complete and first-pass content work is in progress. The same 20 to 30 queries from day one are re-run to verify whether Bing and Brave indexation improvements are measurable.
 
-Ask to see their robots.txt. Ask them to search their own brand on ChatGPT and Perplexity live. Ask what their current Bing impressions are for their top three target queries. These are answerable questions for anyone doing the work, not just writing about it.
+If a strategist cannot describe this level of specificity before a contract is signed, the process does not exist in this form. Most likely, they are doing a custom scope per client without a defined first-30-day system, which is fine for experienced freelancers but a risk indicator for agencies selling AEO at scale.
 
-## The right fit for the right situation
+## Question 7: Does your own site get cited by AI engines for your target queries?
 
-Beyond filtering for competence, the right AEO strategist for your situation depends on your specific context:
+The most direct credibility check.
 
-**Early-stage B2B SaaS ($0 to $1M ARR):** Focus on technical foundation and a tight content cluster around your core category. Do not pay for broad content production yet. A strategist who will build the architecture correctly and give you a content brief queue you can execute with one good writer is more valuable than a full-service agency at this stage.
+Ask them to search their own brand in ChatGPT and Perplexity on the call. Ask which queries they currently appear for and which they do not. Ask what their current Bing impressions are for their primary target terms.
 
-**Mid-market SaaS ($1M to $10M ARR):** Technical layer should already be in place. The focus shifts to topical authority expansion and citation tracking at scale across multiple product categories and buyer personas.
+These are questions any practitioner can answer immediately if they run the same process for themselves that they are proposing to run for you. The reason this matters: AEO is still early enough that practitioners learn primarily by doing, not by reading about it. Someone who has systematically built their own site's citation presence across multiple engines has worked through the actual failure modes. Someone who has only implemented this for clients, and only recently, has a shallower practical understanding of where the gaps appear and why.
 
-**Enterprise or established brands:** The emphasis is on protecting existing visibility and expanding into new AI engine surfaces, particularly Microsoft Copilot for enterprise B2B categories where the buyer base is heavily Microsoft 365.
+---
 
-For a full picture of what a genuine AEO engagement includes at each phase, see the [AEO strategy service page](/services/aeo). The AI Visibility Score tool at [/tools/ai-visibility-score](/tools/ai-visibility-score) gives you a current benchmark across all 6 major AI engines before you hire anyone.
+## Where to start before hiring anyone
+
+Before engaging any strategist, benchmark your current AI visibility. The [AI Visibility Score](/tools/ai-visibility-score) runs a 10-question audit covering citation presence, technical access, schema completeness, and content structure across all 6 major engines. It takes 4 minutes and produces a prioritized gap list.
+
+The [AEO strategy service](/services/aeo) describes what a full engagement looks like with specific deliverables at each phase. Use it as a comparison baseline when evaluating other providers.
 
 ---
 
 ## Related reading
 
-- [What Is AEO? Answer Engine Optimization Explained](/insights/what-is-aeo) — the foundational guide to how AEO works and why it matters
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — how the two disciplines relate and where they diverge
-- [How to Get Cited by ChatGPT](/insights/how-to-get-cited-by-chatgpt) — the ChatGPT citation playbook referenced in Question 5
-- [AEO Strategy and Services](/services/aeo) — what a full engagement looks like, including 30/60/90 day deliverables
+- [what is AEO](/insights/what-is-aeo) — the foundational mechanics of how AI citation works
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — where the two disciplines diverge and where they share infrastructure
+- [how to get cited by ChatGPT](/insights/how-to-get-cited-by-chatgpt) — the citation mechanics your strategist should know
+- [AEO strategy](/services/aeo) — deliverables, phases, and what the first 30 days looks like
 
 ---
 
-*If you want to evaluate your current AI citation gaps before talking to anyone, use the [AI Visibility Score tool](/tools/ai-visibility-score). It covers all 6 major engines and takes about 4 minutes.*
+*Want to evaluate citation gaps before talking to anyone? [Use the AI Visibility Score](/tools/ai-visibility-score). It covers all 6 major engines and takes 4 minutes.*

@@ -57,7 +57,7 @@ The mechanism difference is equally significant. SEO builds ranking signals thro
 
 Where they converge: the same deep, accurate, well-structured content that earns Google rankings also earns AI citations. Building for AEO rarely hurts SEO. The reverse is frequently true: brands optimizing exclusively for traditional search often have content that ranks but never gets cited.
 
-The right framework is one integrated system, one build, two surfaces. I cover the full comparison in [AEO vs SEO: The Real Difference](/insights/aeo-vs-seo-difference).
+The right framework is one integrated system, one build, two surfaces. I cover the full comparison in [AEO vs SEO](/insights/aeo-vs-seo-difference).
 
 ## The five pillars of a working AEO implementation
 
@@ -177,7 +177,7 @@ Comparison tables with specific values get extracted directly by AI engines for 
 
 Step-by-step process guides with numbered steps and one specific action per step get synthesized cleanly for how-to queries. Numbered processes are a format AI engines are built to read.
 
-The full cluster playbook, including how to sequence publication, build internal links, and map buyer questions to content topics, is in [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook).
+The full cluster playbook, including how to sequence publication, build internal links, and map buyer questions to content topics, is in the [topical authority cluster playbook](/insights/topical-authority-saas-playbook).
 
 ### Pillar 5: Freshness and consistency signals
 
@@ -292,12 +292,12 @@ Every month you delay is a month competitors are accumulating entity recognition
 
 ## Related reading
 
-- [AEO vs SEO: The Real Difference](/insights/aeo-vs-seo-difference): why you need both surfaces and how one system serves them simultaneously
-- [How to Get Cited by ChatGPT and Perplexity](/insights/how-to-get-cited-by-chatgpt): the step-by-step implementation guide
-- [Schema Markup for AI Search: Complete JSON-LD Guide](/insights/schema-markup-for-ai-search): every schema type that matters, with implementation examples
-- [Topical Authority Cluster Playbook](/insights/topical-authority-saas-playbook): the content architecture that sustains citations over time
-- [Google AI Overviews Optimization](/insights/google-ai-overviews-optimization): the Google-specific layer of the AEO system
-- [AEO Strategy and Implementation](/services/aeo): how I build AI visibility systems for B2B SaaS brands
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — one system, two surfaces: why you need both and how they share infrastructure
+- [ChatGPT citations](/insights/how-to-get-cited-by-chatgpt) — the step-by-step technical implementation guide
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — every schema type that matters, with implementation examples
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content architecture that sustains citations over time
+- [Google AI Overviews](/insights/google-ai-overviews-optimization) — the Google-specific layer of AEO
+- [AEO strategy](/services/aeo) — how I build AI visibility systems for B2B SaaS brands
 
 ---
 

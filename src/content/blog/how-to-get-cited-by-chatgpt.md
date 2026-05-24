@@ -208,10 +208,10 @@ All three, in parallel, is what produces consistent AI citation at scale.
 
 ## Related reading
 
-- [Schema Markup for AI Search: The Complete JSON-LD Guide](/insights/schema-markup-for-ai-search) — every schema type that matters, with implementation examples
-- [AEO vs SEO: What Is the Difference?](/insights/aeo-vs-seo-difference) — how citation optimization and organic rankings work together
-- [Topical Authority for SaaS: The Cluster Playbook](/insights/topical-authority-saas-playbook) — the content depth that sustains AI citations over time
-- [AEO Strategy and Services](/services/aeo) — full AEO implementation across 6 AI engines
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) — every schema type that matters, with implementation examples
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how citation optimization and organic rankings work together
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that sustains AI citations over time
+- [AEO strategy](/services/aeo) — full AEO implementation across 6 AI engines
 
 ---
 
