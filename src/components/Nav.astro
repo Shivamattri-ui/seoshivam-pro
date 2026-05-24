@@ -59,7 +59,26 @@ const drops = [
   <div class="mm-inner">
     <ul class="mm-links">
       <li><a href="/" class="mm-a">Home</a></li>
-      {navLinks.map(l=><li><a href={l.href} class="mm-a">{l.label}</a></li>)}
+      {navLinks.map(l=>(
+        <li class={l.drop ? 'mm-has-sub' : ''}>
+          <a href={l.href} class="mm-a">{l.label}</a>
+          {l.drop && (
+            <ul class="mm-sub" aria-label="Services sub-pages">
+              {drops.map(d=>(
+                <li>
+                  <a href={d.href} class="mm-sub-a">
+                    <span class="mm-sub-arrow" aria-hidden="true">↳</span>
+                    <span class="mm-sub-body">
+                      <span class="mm-sub-label">{d.label}</span>
+                      <span class="mm-sub-desc">{d.desc}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
     </ul>
     <a href="/contact" class="btn-p" style="margin-top:32px;justify-content:center;width:100%">Work with me ↗</a>
   </div>
@@ -130,6 +149,18 @@ html.light .mob-menu{background:rgba(248,246,242,.97)}
 .mm-links{width:100%;display:flex;flex-direction:column;gap:2px}
 .mm-a{display:block;font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--wd);padding:10px 0;border-bottom:1px solid var(--s3);transition:color .2s,padding-left .2s}
 .mm-a:hover{color:var(--w);padding-left:8px}
+/* Mobile sub-menu — services sub-pages */
+.mm-has-sub{position:relative}
+.mm-has-sub>.mm-a{border-bottom:none;padding-bottom:6px}
+.mm-sub{list-style:none;margin:0 0 2px 16px;padding:0;border-left:1px solid var(--bd);display:flex;flex-direction:column;gap:0}
+.mm-sub-a{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;text-decoration:none;transition:background .18s,padding-left .18s;border-bottom:none}
+.mm-sub-a:hover{background:var(--s2);padding-left:16px}
+.mm-sub-arrow{font-family:'Syne',sans-serif;font-size:13px;color:var(--ac);flex-shrink:0;margin-top:2px;line-height:1}
+.mm-sub-body{display:flex;flex-direction:column;gap:2px}
+.mm-sub-label{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--w);line-height:1.2}
+.mm-sub-desc{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
+/* Add border-bottom back after the sub-list */
+.mm-has-sub::after{content:'';display:block;height:1px;background:var(--s3);margin-bottom:2px}
  
 @media(max-width:900px){.burger{display:flex}}
 @media(max-width:768px){
