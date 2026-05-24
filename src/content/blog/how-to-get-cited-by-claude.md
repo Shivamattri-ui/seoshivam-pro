@@ -7,7 +7,7 @@ readTime: "11 min"
 featured: false
 tldr: "Claude retrieves live web content via Brave Search, not Bing. Getting cited requires Brave indexation (verified at search.brave.com), ClaudeBot allowed in robots.txt, answer-first content structure, and FAQPage schema. Most AEO strategies written in 2024 optimize entirely for Bing-dependent engines and miss Claude's citation pathway entirely."
 recap:
-  - "Claude uses Brave Search for live queries. A site well-indexed by Bing may still be invisible to Claude. Check Brave indexation separately at search.brave.com and submit your sitemap at search.brave.com/webmaster."
+  - "Claude uses Brave Search for live queries. A site well-indexed by Bing may still be invisible to Claude. Check Brave indexation separately by running site:yourdomain.com at search.brave.com. Brave does not have a submission portal: BraveBot crawls naturally once it is allowed in robots.txt."
   - "ClaudeBot is Anthropic's training crawler. Allow it explicitly in robots.txt alongside BraveBot. Many security plugins block both by default."
   - "Claude strongly favors FAQPage schema: the acceptedAnswer text is directly extractable as a citation. Every service and content page should have 3 to 5 structured Q&A pairs with specific, data-bearing answers."
 tags: ["Claude Citations", "AI Search", "AEO", "Answer Engine Optimization", "Anthropic AI Search"]
@@ -15,7 +15,7 @@ faqs:
   - q: "How does Claude decide what to cite?"
     a: "Claude cites sources through two mechanisms. For real-time queries with search enabled, Claude retrieves results from Brave Search and cites the most relevant indexed pages. For knowledge-type questions, Claude draws on its training corpus. In both cases, Claude strongly favors pages with FAQPage schema, answer-first content structure, and specific data rather than vague claims. Brave Search indexation is the technical prerequisite for live-search citations."
   - q: "Is Brave Search indexation different from Google and Bing?"
-    a: "Yes. Brave Search operates an independent index crawled by BraveBot. A site can rank number one on Google, be well-indexed by Bing, and still return few results in a Brave site search. To verify Brave indexation, search site:yourdomain.com at search.brave.com. To submit your sitemap, go to search.brave.com/webmaster. These are entirely separate from Google Search Console and Bing Webmaster Tools."
+    a: "Yes. Brave Search operates an independent index crawled by BraveBot. A site can rank number one on Google, be well-indexed by Bing, and still return few results in a Brave site search. To verify Brave indexation, run site:yourdomain.com at search.brave.com. Brave does not currently offer a webmaster submission portal equivalent to Google Search Console or Bing Webmaster Tools. BraveBot crawls naturally: allowing it in robots.txt and keeping your sitemap accessible are the primary levers."
   - q: "What is ClaudeBot and do I need to allow it separately?"
     a: "ClaudeBot is Anthropic's training data crawler. It crawls the web to include content in future model training. BraveBot is Brave's indexing crawler for live search results. Both need to be explicitly allowed in robots.txt. A site that allows ClaudeBot but not BraveBot will appear in Claude's training data but not in live search citations. A site that allows neither cannot be cited by Claude through either mechanism."
   - q: "How is getting cited by Claude different from ChatGPT?"
@@ -42,9 +42,7 @@ The practical implication: brands that want consistent Claude citations across b
 
 Open [search.brave.com](https://search.brave.com) and run `site:yourdomain.com`. Compare the result count to your actual published page count. For most sites, the discrepancy is significant — some return under 20% of their actual pages.
 
-To submit your sitemap: [search.brave.com/webmaster](https://search.brave.com/webmaster). Add your domain, verify ownership (same process as Google Search Console), and submit your XML sitemap URL.
-
-Brave does not have a URL-by-URL submission tool as of 2025. Sitemap submission and natural crawling are the primary mechanisms. This means Brave indexation builds more slowly than Bing, and is another reason to address it early rather than retroactively.
+Brave does not currently offer a webmaster submission portal. There is no equivalent to Google Search Console or Bing Webmaster Tools for direct sitemap submission to Brave. BraveBot crawls naturally: allowing it in robots.txt and ensuring your sitemap is linked from your homepage are the only direct levers. Brave indexation builds more slowly than Bing for this reason, which is why addressing it early matters rather than retrofitting after a campaign is already running.
 
 Allow BraveBot explicitly in robots.txt alongside the other AI crawlers:
 
@@ -159,7 +157,7 @@ No native analytics exist for Claude citations. Three indirect signals are worth
 
 **Monthly manual sampling.** Ask Claude your 20 most important buyer queries, with and without the search tool enabled. Document which responses cite your domain and what text is extracted. Repeat monthly. Changes in citation frequency and the queries you appear for reveal whether the Brave indexation and content structure work is producing results.
 
-**Brave Search Console impressions.** Brave Webmaster Tools shows impressions and clicks for your domain across Brave queries. Rising impressions for target queries correlate with improving Claude live-search citation probability.
+**Brave Search indexation check.** Run `site:yourdomain.com` on [search.brave.com](https://search.brave.com) monthly. Track the indexed page count. If pages you published weeks ago are still missing, check that BraveBot is not blocked in robots.txt or by a Cloudflare firewall rule. Brave does not offer a webmaster console with impression data, so the site search check is the only direct signal available.
 
 **Branded Google search growth.** Buyers who encounter your brand in Claude responses frequently search your brand name on Google as a follow-up. Unexplained growth in branded impressions in Google Search Console is one of the more reliable secondary indicators of increasing AI citation frequency across engines.
 
