@@ -4,6 +4,7 @@ export type RouteMeta = {
   description: string;
 };
 
+/** Blog post title suffix — unchanged, applied via blogLayoutTitle(). */
 export const BLOG_LAYOUT_TITLE_SUFFIX = ' | Shivam Attri';
 
 export function blogLayoutTitle(postTitle: string): string {
@@ -11,74 +12,102 @@ export function blogLayoutTitle(postTitle: string): string {
 }
 
 export const SITE_ROUTE_META: Record<string, RouteMeta> = {
+
+  // ─── Homepage ────────────────────────────────────────────────────────────────
   '/': {
-    title: 'Shivam Attri: AEO, SEO & AI-Visible Web Design | seoshivam.pro',
+    title: 'AI SEO Expert, AEO Strategist & Growth Marketing Specialist | Shivam Attri',
     description:
-      'Shivam Attri helps B2B SaaS founders get cited by ChatGPT, Perplexity and Google AI Overviews. AEO strategy, SEO architecture, AI-visible web design from India to the world.',
+      'AEO, SEO, and AI-visible web design that gets brands cited by ChatGPT, Perplexity, and Google AI Overviews. 7+ years · 40+ clients globally. Book a free audit.',
   },
+
+  // ─── About ───────────────────────────────────────────────────────────────────
   '/about': {
-    title: 'About Shivam Attri · AEO Specialist and SEO Strategist',
+    title: 'Shivam Attri · AEO Specialist, AI SEO Expert & B2B SaaS Growth Strategist',
     description:
-      'Shivam Attri: AEO Specialist helping B2B SaaS founders get cited in ChatGPT, Perplexity, and Google AI Overviews. 7+ years, 30+ brands, clients across US, UK, EU, AU, IN, DE.',
+      'AEO specialist and SEO strategist. 7+ years, 40+ brands across SaaS, HealthTech, Logistics, eCommerce, and more. US · UK · EU · AU · IN. See the work.',
   },
+
+  // ─── Contact ─────────────────────────────────────────────────────────────────
   '/contact': {
-    title: 'Contact Shivam Attri | AEO and SEO Specialist',
+    title: 'Start an AEO or SEO Project · Free 1-Page Audit | Shivam Attri',
     description:
-      'Start a conversation about AEO strategy, SEO architecture, or AI-visible web design. Based in India, working globally with US, UK, EU, and AU clients.',
+      'Describe your project. I reply within 4 hours with a 1-page AI visibility audit. AEO, SEO, and web design. Working globally: US, UK, EU, AU.',
   },
+
+  // ─── Work / Case Studies ─────────────────────────────────────────────────────
   '/work': {
-    title: 'Client Work: AEO and SEO Results | Shivam Attri',
+    title: 'AEO & SEO Results: 16× Click Growth, 20+ AI Citations | Shivam Attri',
     description:
-      'Real client results: 16x click growth in 30 days, 20+ AI citations tracked, 4.7x organic leads. GSC-verified case studies across SaaS, hospitality, recruitment tech, and corporate gifting.',
+      'GSC-verified results across SaaS, HealthTech, Logistics, and B2B Services. 16× clicks in 30 days · 463K users in 90 days · 20+ AI citations. View case studies.',
   },
+
+  // ─── Insights / Blog ─────────────────────────────────────────────────────────
   '/insights': {
-    title: 'Insights: AEO, SEO and AI Search Visibility | Shivam Attri',
+    title: 'The Visibility Engine: SEO, AEO, GEO & AI Search Insights | Shivam Attri',
     description:
-      'Long-form guides on Answer Engine Optimization, SEO architecture, Google AI Overviews, and building AI search visibility for B2B SaaS brands.',
+      'Practitioner guides on AEO, SEO, GEO, and AI search visibility. Written from real client work, not theory. Get cited by ChatGPT, Perplexity, and Google AI Overviews.',
   },
+
+  // ─── Resources ───────────────────────────────────────────────────────────────
   '/resources': {
-    title: 'AEO Audit, Content Brief, Claude Skills | Shivam Attri',
+    title: 'Free AEO Audit, Content Brief & Claude Skills PDF | Shivam Attri',
     description:
-      'Three free AEO resources: 80-point audit checklist, content brief Notion template, and Claude Skills PDF for SEO content production. Email-gated.',
+      '80-point AEO audit, Notion content brief, and Claude Skills PDF. Free email-gated resources for AI-search optimized content systems. Download instantly.',
   },
+
+  // ─── Tools hub ───────────────────────────────────────────────────────────────
   '/tools': {
-    title: 'Free AEO and SEO Tools: Visibility Score, Bot Checker, Robots.txt Generator | Shivam Attri',
+    title: 'Free AEO Tools: AI Visibility Score & Bot Checker | Shivam Attri',
     description:
-      'Three free tools for AI search visibility: a 10-signal AEO readiness quiz, an AI bot access checker for robots.txt, and a robots.txt generator covering fifteen AI crawlers. No account required.',
+      'Free AEO tools: AI visibility quiz, robots.txt bot checker, and robots.txt generator for 15 AI crawlers. No account required. Run your audit now.',
   },
+
+  // ─── Tool: AI Visibility Score ───────────────────────────────────────────────
   '/tools/ai-visibility-score': {
-    title: 'AI Visibility Score: Free AEO Readiness Quiz | Shivam Attri',
+    title: 'AI Visibility Score: Test Your AEO Readiness for Free | Shivam Attri',
     description:
-      'Free 10-question AI visibility quiz for B2B SaaS sites. Score bot access, entity schema, FAQ markup, and citation-ready content. Instant score out of 100 plus a prioritised fix list.',
+      'Free 10-question quiz that scores your AI visibility across bot access, entity schema, FAQ markup, and citation-ready content. Get your score out of 100 instantly.',
   },
+
+  // ─── Tool: Robots.txt Checker ────────────────────────────────────────────────
   '/tools/robots-txt-checker': {
-    title: 'AI Bot Access Checker: Free robots.txt Checker for AI Engines | Shivam Attri',
+    title: 'AI Bot Access Checker: Free robots.txt Audit | Shivam Attri',
     description:
-      'Check whether GPTBot, ClaudeBot, PerplexityBot, Bingbot, and Googlebot can access your website. The most common reason for zero AI citations is a blocked robots.txt. Free, instant, no login.',
+      'Check if GPTBot, ClaudeBot, PerplexityBot, and Bingbot can crawl your site. Blocked robots.txt is the #1 cause of zero AI citations. Free, instant, no login.',
   },
+
+  // ─── Tool: Robots.txt Generator ──────────────────────────────────────────────
   '/tools/robots-txt-generator': {
-    title: 'AI Robots.txt Generator: Free robots.txt Builder for ChatGPT, Claude, Perplexity | Shivam Attri',
+    title: 'AI Robots.txt Generator: Build for 15 AI Crawlers | Shivam Attri',
     description:
-      'Build a robots.txt file optimized for 15 AI crawlers. Allow or block GPTBot, ClaudeBot, PerplexityBot, Googlebot, Bingbot, and more with one click. Live preview, copy, download. No login required.',
+      'Build a robots.txt for 15 AI crawlers in seconds. Allow or block GPTBot, ClaudeBot, PerplexityBot, Bingbot, and more. Live preview, copy, and download.',
   },
+
+  // ─── Services hub ────────────────────────────────────────────────────────────
   '/services': {
-    title: 'AEO, SEO and AI-Visible Web Design Services | Shivam Attri',
+    title: 'AEO Strategist · SEO · AI-Visible Web Design | Shivam Attri',
     description:
-      'Get cited by ChatGPT, Perplexity, and Google AI Overviews. AEO strategy, SEO architecture, and AI-visible web design for B2B SaaS founders.',
+      'Three services, one architecture: AEO for AI citations, SEO for organic pipeline, and AI-visible web design to power both. For brands reducing paid dependency.',
   },
+
+  // ─── AEO Service ─────────────────────────────────────────────────────────────
   '/services/aeo': {
-    title: 'AEO Strategy for B2B SaaS | Shivam Attri',
+    title: 'AEO Services: AI Search Optimization & Citation Growth | Shivam Attri',
     description:
-      'Get your brand cited in ChatGPT, Perplexity, and Google AI Overviews. AEO strategy built from real client results across US, UK, EU, and Australia.',
+      'Get cited by ChatGPT, Perplexity, Google AI Overviews, and Copilot. Technical audit, entity schema, answer-first content, and 6-engine citation tracking.',
   },
+
+  // ─── SEO Service ─────────────────────────────────────────────────────────────
   '/services/seo': {
-    title: 'SEO Strategy and Architecture for B2B SaaS | Shivam Attri',
+    title: 'SEO Expert: Organic Growth, AI Search & Brand Visibility | Shivam Attri',
     description:
-      'Organic rankings that compound. Technical SEO, content architecture, topical authority systems, and entity optimization for B2B SaaS brands with ambition.',
+      'Organic pipeline, lower CAC, and AI citations from one SEO system. Technical SEO, topical authority, entity optimization. Start with a free SEO audit.',
   },
+
+  // ─── Web Design Service ──────────────────────────────────────────────────────
   '/services/web-design': {
-    title: 'AI-Visible Web Design: Webflow, Framer, Astro, WordPress | Shivam Attri',
+    title: 'AI-Optimized Web Design: Conversion Focused & AEO Ready | Shivam Attri',
     description:
-      'Websites structured for AI crawlability from day one. JSON-LD schema, semantic HTML, bot-accessible architecture. Webflow, Framer, Astro, and WordPress builds.',
+      'Websites cited by ChatGPT, Perplexity, and Google AI Overviews from launch day. JSON-LD schema, semantic HTML, AI bot access. Webflow, Framer, Astro, WordPress.',
   },
 };
