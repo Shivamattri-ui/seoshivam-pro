@@ -7,7 +7,7 @@ readTime: "11 min"
 featured: false
 tldr: "Claude retrieves live web content via Brave Search, not Bing. Getting cited requires Brave indexation (verified at search.brave.com), ClaudeBot allowed in robots.txt, answer-first content structure, and FAQPage schema. Most AEO strategies written in 2024 optimize entirely for Bing-dependent engines and miss Claude's citation pathway entirely."
 recap:
-  - "Claude uses Brave Search for live queries. A site well-indexed by Bing may still be invisible to Claude. Check Brave indexation separately by running site:yourdomain.com at search.brave.com. Brave does not have a submission portal: BraveBot crawls naturally once it is allowed in robots.txt."
+  - "Claude uses Brave Search for live queries. A site well-indexed by Bing may still be invisible to Claude. Check Brave indexation separately by running site:yourdomain.com at search.brave.com. Submit individual URLs at search.brave.com/submit-url for indexation within 1 to 3 days."
   - "ClaudeBot is Anthropic's training crawler. Allow it explicitly in robots.txt alongside BraveBot. Many security plugins block both by default."
   - "Claude strongly favors FAQPage schema: the acceptedAnswer text is directly extractable as a citation. Every service and content page should have 3 to 5 structured Q&A pairs with specific, data-bearing answers."
 tags: ["Claude Citations", "AI Search", "AEO", "Answer Engine Optimization", "Anthropic AI Search"]
@@ -15,7 +15,7 @@ faqs:
   - q: "How does Claude decide what to cite?"
     a: "Claude cites sources through two mechanisms. For real-time queries with search enabled, Claude retrieves results from Brave Search and cites the most relevant indexed pages. For knowledge-type questions, Claude draws on its training corpus. In both cases, Claude strongly favors pages with FAQPage schema, answer-first content structure, and specific data rather than vague claims. Brave Search indexation is the technical prerequisite for live-search citations."
   - q: "Is Brave Search indexation different from Google and Bing?"
-    a: "Yes. Brave Search operates an independent index crawled by BraveBot. A site can rank number one on Google, be well-indexed by Bing, and still return few results in a Brave site search. To verify Brave indexation, run site:yourdomain.com at search.brave.com. Brave does not currently offer a webmaster submission portal equivalent to Google Search Console or Bing Webmaster Tools. BraveBot crawls naturally: allowing it in robots.txt and keeping your sitemap accessible are the primary levers."
+    a: "Yes. Brave Search operates an independent index crawled by BraveBot. A site can rank number one on Google, be well-indexed by Bing, and still return few results in a Brave site search. To verify Brave indexation, run site:yourdomain.com at search.brave.com. To accelerate indexation, submit individual URLs at search.brave.com/submit-url: Brave typically crawls submitted URLs within 1 to 3 days. Brave does not currently offer a full webmaster dashboard equivalent to Google Search Console or Bing Webmaster Tools."
   - q: "What is ClaudeBot and do I need to allow it separately?"
     a: "ClaudeBot is Anthropic's training data crawler. It crawls the web to include content in future model training. BraveBot is Brave's indexing crawler for live search results. Both need to be explicitly allowed in robots.txt. A site that allows ClaudeBot but not BraveBot will appear in Claude's training data but not in live search citations. A site that allows neither cannot be cited by Claude through either mechanism."
   - q: "How is getting cited by Claude different from ChatGPT?"
@@ -42,7 +42,7 @@ The practical implication: brands that want consistent Claude citations across b
 
 Open [search.brave.com](https://search.brave.com) and run `site:yourdomain.com`. Compare the result count to your actual published page count. For most sites, the discrepancy is significant — some return under 20% of their actual pages.
 
-Brave does not currently offer a webmaster submission portal. There is no equivalent to Google Search Console or Bing Webmaster Tools for direct sitemap submission to Brave. BraveBot crawls naturally: allowing it in robots.txt and ensuring your sitemap is linked from your homepage are the only direct levers. Brave indexation builds more slowly than Bing for this reason, which is why addressing it early matters rather than retrofitting after a campaign is already running.
+Brave does not offer a full webmaster dashboard like Google Search Console or Bing Webmaster Tools. It does offer a URL submission tool at [search.brave.com/submit-url](https://search.brave.com/submit-url). Submit your key pages individually: Brave typically crawls submitted URLs within 1 to 3 days. For bulk indexation, BraveBot crawls naturally once it is allowed in robots.txt and your XML sitemap is accessible. Brave indexation still builds more slowly than Bing, which is why addressing it early matters rather than retrofitting after a campaign is already running.
 
 Allow BraveBot explicitly in robots.txt alongside the other AI crawlers:
 
@@ -157,7 +157,7 @@ No native analytics exist for Claude citations. Three indirect signals are worth
 
 **Monthly manual sampling.** Ask Claude your 20 most important buyer queries, with and without the search tool enabled. Document which responses cite your domain and what text is extracted. Repeat monthly. Changes in citation frequency and the queries you appear for reveal whether the Brave indexation and content structure work is producing results.
 
-**Brave Search indexation check.** Run `site:yourdomain.com` on [search.brave.com](https://search.brave.com) monthly. Track the indexed page count. If pages you published weeks ago are still missing, check that BraveBot is not blocked in robots.txt or by a Cloudflare firewall rule. Brave does not offer a webmaster console with impression data, so the site search check is the only direct signal available.
+**Brave Search indexation check.** Run `site:yourdomain.com` on [search.brave.com](https://search.brave.com) monthly. Track the indexed page count. If pages you published weeks ago are still missing, check that BraveBot is not blocked in robots.txt or by a Cloudflare firewall rule, then resubmit those URLs at [search.brave.com/submit-url](https://search.brave.com/submit-url). Brave does not offer a webmaster console with impression data, so the site search count and the submit-url tool are the primary direct levers available.
 
 **Branded Google search growth.** Buyers who encounter your brand in Claude responses frequently search your brand name on Google as a follow-up. Unexplained growth in branded impressions in Google Search Console is one of the more reliable secondary indicators of increasing AI citation frequency across engines.
 
