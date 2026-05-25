@@ -1,14 +1,14 @@
----
+﻿---
 title: "How to Get Your Brand Cited by ChatGPT and Perplexity"
 description: "A practical guide to getting your brand cited by ChatGPT, Perplexity, and other AI engines. Schema markup, entity optimization, and answer-first content that actually works."
-pubDate: 2025-04-07
+pubDate: 2026-05-08
 category: "aeo"
 readTime: "11 min"
 featured: true
 recap:
-  - "ChatGPT cites sources with clear entity schema, FAQPage markup, and GPTBot access in robots.txt — all three are required, none is optional."
+  - "ChatGPT cites sources with clear entity schema, FAQPage markup, and GPTBot access in robots.txt â€” all three are required, none is optional."
   - "Answer-first structure is the highest-leverage change: lead every section with the direct answer, then expand. AI engines extract the first sentence."
-  - "Most brands missing from ChatGPT have no technical barrier — just missing schema and bot access, fixable in under a week."
+  - "Most brands missing from ChatGPT have no technical barrier â€” just missing schema and bot access, fixable in under a week."
 ---
 
 Getting cited by <a href="https://openai.com" rel="nofollow noreferrer" target="_blank">ChatGPT</a> or <a href="https://www.perplexity.ai" rel="nofollow noreferrer" target="_blank">Perplexity</a> is not random. It is the result of specific, deliberate choices about how your website is structured, how your content is written, and whether AI bots can even crawl your site in the first place.
@@ -208,10 +208,10 @@ All three, in parallel, is what produces consistent AI citation at scale.
 
 ## Related reading
 
-- [schema markup for AI search](/insights/schema-markup-for-ai-search) — every schema type that matters, with implementation examples
-- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how citation optimization and organic rankings work together
-- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that sustains AI citations over time
-- [AEO strategy](/services/aeo) — full AEO implementation across 6 AI engines
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) â€” every schema type that matters, with implementation examples
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) â€” how citation optimization and organic rankings work together
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) â€” the content depth that sustains AI citations over time
+- [AEO strategy](/services/aeo) â€” full AEO implementation across 6 AI engines
 
 ---
 

@@ -1,13 +1,13 @@
----
+﻿---
 title: "Schema Markup for AI Search: The Complete JSON-LD Guide"
 description: "JSON-LD schema markup is the most direct way to communicate with AI engines. Here is every schema type that matters for AI search visibility and exactly how to implement each one."
-pubDate: 2025-04-21
+pubDate: 2026-05-15
 category: "web-design"
 readTime: "13 min"
 featured: false
 recap:
   - "JSON-LD schema is the language AI engines use to understand your entity, expertise, and trust signals before they decide to cite you."
-  - "FAQPage and HowTo schema give AI engines pre-formatted extractable answers — brands with these are cited at significantly higher rates."
+  - "FAQPage and HowTo schema give AI engines pre-formatted extractable answers â€” brands with these are cited at significantly higher rates."
   - "Schema validation must pass both Google Rich Results Test and Schema.org validator before you consider the implementation done."
 ---
 
@@ -263,8 +263,8 @@ The way to combine schemas in a single JSON-LD block is to use `@graph`:
 
 Before deploying, validate with:
 
-1. **Google's Rich Results Test**: <a href="https://search.google.com/test/rich-results" rel="nofollow noreferrer" target="_blank">search.google.com/test/rich-results</a> — tests schema types eligible for Google rich snippets
-2. **Schema.org Validator**: <a href="https://validator.schema.org" rel="nofollow noreferrer" target="_blank">validator.schema.org</a> — comprehensive validation against the full schema.org spec
+1. **Google's Rich Results Test**: <a href="https://search.google.com/test/rich-results" rel="nofollow noreferrer" target="_blank">search.google.com/test/rich-results</a> â€” tests schema types eligible for Google rich snippets
+2. **Schema.org Validator**: <a href="https://validator.schema.org" rel="nofollow noreferrer" target="_blank">validator.schema.org</a> â€” comprehensive validation against the full schema.org spec
 
 Common errors to check for:
 - Required fields missing (e.g., Article without `datePublished`)
@@ -284,10 +284,10 @@ Check `yourwebsite.com/robots.txt` using the [robots.txt checker](/tools/robots-
 
 ## Related reading
 
-- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) — schema in context of a complete AI citation strategy
-- [AEO vs SEO](/insights/aeo-vs-seo-difference) — where schema fits in the broader visibility system
-- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that makes schema markup produce citations
-- [AEO strategy](/services/aeo) — schema implementation as part of a full AEO engagement
+- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) â€” schema in context of a complete AI citation strategy
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) â€” where schema fits in the broader visibility system
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) â€” the content depth that makes schema markup produce citations
+- [AEO strategy](/services/aeo) â€” schema implementation as part of a full AEO engagement
 
 ---
 

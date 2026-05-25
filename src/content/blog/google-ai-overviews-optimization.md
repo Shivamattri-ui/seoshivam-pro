@@ -1,12 +1,12 @@
----
+﻿---
 title: "How to Optimize for Google AI Overviews (Formerly SGE)"
 description: "Google AI Overviews appear above organic results for millions of queries. Here is exactly how to structure your content and schema to get included rather than bypassed."
-pubDate: 2025-04-14
+pubDate: 2026-05-11
 category: "ai-search"
 readTime: "10 min"
 featured: false
 recap:
-  - "Google AI Overviews pull from pages with strong E-E-A-T signals, FAQPage schema, and an answer-first first paragraph — not from the highest-ranking pages."
+  - "Google AI Overviews pull from pages with strong E-E-A-T signals, FAQPage schema, and an answer-first first paragraph â€” not from the highest-ranking pages."
   - "Pages ranking in positions 1-5 are not guaranteed AIO inclusion. Schema and content structure are evaluated separately from ranking position."
   - "Optimizing for AI Overviews does not require separate content: the same answer-first rewrites that win AIO citations improve organic CTR simultaneously."
 ---
@@ -127,10 +127,10 @@ The measurement gap is real. But building toward AI Overview inclusion even with
 
 ## Related reading
 
-- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the structured data foundation behind AI Overview inclusion
-- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) — the same principles across all AI engines, not just Google
-- [what is AEO](/insights/what-is-aeo) — how AI engine optimization works across platforms
-- [AEO strategy](/services/aeo) — full AI visibility implementation including Google AI Overviews
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) â€” the structured data foundation behind AI Overview inclusion
+- [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) â€” the same principles across all AI engines, not just Google
+- [what is AEO](/insights/what-is-aeo) â€” how AI engine optimization works across platforms
+- [AEO strategy](/services/aeo) â€” full AI visibility implementation including Google AI Overviews
 
 ---
 

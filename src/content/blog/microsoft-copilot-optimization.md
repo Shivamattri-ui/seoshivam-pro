@@ -1,13 +1,13 @@
----
+﻿---
 title: "How to Optimize for Microsoft Copilot: The B2B AI Citation Channel Most Brands Ignore"
 description: "Microsoft Copilot is embedded in every Microsoft 365 subscription across US and EU enterprise. Over 380 million seats. Most AEO strategies skip it entirely. Here is how to get your brand cited before your competitors notice this channel exists."
-pubDate: 2025-05-15
+pubDate: 2026-05-20
 category: "ai-search"
 readTime: "9 min"
 featured: false
 tldr: "Copilot is powered by Bing, not OpenAI's training data. It performs a live Bing search for every query. Getting cited requires Bing indexation (separate from Google), LinkedIn authority signals (LinkedIn is owned by Microsoft), and content structured for the specific query formats enterprise buyers use inside Microsoft 365. It is the most undercontested AI citation channel in B2B SaaS right now."
 recap:
-  - "Microsoft Copilot runs a live Bing search for every query — getting cited requires Bing indexation and optimization, which is entirely separate from Google."
+  - "Microsoft Copilot runs a live Bing search for every query â€” getting cited requires Bing indexation and optimization, which is entirely separate from Google."
   - "LinkedIn authority signals carry significant weight for Copilot citations: publishing on LinkedIn accelerates enterprise citation eligibility faster than any other channel."
   - "With 380 million Microsoft 365 seats and almost no brands actively optimizing for it, Copilot is the least contested AI citation channel in B2B right now."
 faqs:
@@ -147,10 +147,10 @@ Use the [AI Visibility Score tool](/tools/ai-visibility-score) to benchmark your
 
 ## Related reading
 
-- [schema markup for AI search](/insights/schema-markup-for-ai-search) — the JSON-LD foundation Copilot reads via Bing indexing
-- [AEO vs SEO](/insights/aeo-vs-seo-difference) — how Copilot optimization fits into a multi-channel visibility strategy
-- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content depth that earns consistent Copilot citations
-- [AEO strategy](/services/aeo) — full multi-engine AEO including Microsoft Copilot and Bing AI
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) â€” the JSON-LD foundation Copilot reads via Bing indexing
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) â€” how Copilot optimization fits into a multi-channel visibility strategy
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) â€” the content depth that earns consistent Copilot citations
+- [AEO strategy](/services/aeo) â€” full multi-engine AEO including Microsoft Copilot and Bing AI
 
 ---
 

@@ -1,7 +1,7 @@
----
+﻿---
 title: "What is Answer Engine Optimization (AEO)? The Complete Guide"
 description: "AEO is the practice of structuring your content, schema, and entity signals so AI engines like ChatGPT, Perplexity, and Google AI Overviews cite your brand. Here is everything: the mechanics, the implementation, and what actually produces citations."
-pubDate: 2025-04-01
+pubDate: 2026-05-07
 updatedDate: 2026-05-19
 category: "aeo"
 readTime: "16 min"
@@ -292,12 +292,12 @@ Every month you delay is a month competitors are accumulating entity recognition
 
 ## Related reading
 
-- [AEO vs SEO](/insights/aeo-vs-seo-difference) — one system, two surfaces: why you need both and how they share infrastructure
-- [ChatGPT citations](/insights/how-to-get-cited-by-chatgpt) — the step-by-step technical implementation guide
-- [schema markup for AI search](/insights/schema-markup-for-ai-search) — every schema type that matters, with implementation examples
-- [topical authority for SaaS](/insights/topical-authority-saas-playbook) — the content architecture that sustains citations over time
-- [Google AI Overviews](/insights/google-ai-overviews-optimization) — the Google-specific layer of AEO
-- [AEO strategy](/services/aeo) — how I build AI visibility systems for B2B SaaS brands
+- [AEO vs SEO](/insights/aeo-vs-seo-difference) â€” one system, two surfaces: why you need both and how they share infrastructure
+- [ChatGPT citations](/insights/how-to-get-cited-by-chatgpt) â€” the step-by-step technical implementation guide
+- [schema markup for AI search](/insights/schema-markup-for-ai-search) â€” every schema type that matters, with implementation examples
+- [topical authority for SaaS](/insights/topical-authority-saas-playbook) â€” the content architecture that sustains citations over time
+- [Google AI Overviews](/insights/google-ai-overviews-optimization) â€” the Google-specific layer of AEO
+- [AEO strategy](/services/aeo) â€” how I build AI visibility systems for B2B SaaS brands
 
 ---
 
