@@ -1,10 +1,12 @@
 /**
- * POST /api/resource-gate — email-gated resource requests (list 3, server-side Brevo).
+ * POST /api/resource-gate — email-gated resource requests (server-side Brevo).
  *
  * Flow:
  *   1. Validate honeypot, time-trap, email, and resourceId.
- *   2. Add contact to Brevo list 3 with LEAD_SOURCE attribute.
+ *   2. Add contact to the Brevo list for that resource with LEAD_SOURCE attribute.
  *   3. Return success — Brevo automation handles file delivery email.
+ *
+ * Lists: default list 3 (seoshivam-leads). Claude Skills PDF uses list 6 only.
  *
  * No download URL is returned to the browser. Users must check their inbox.
  * This keeps the email list as the gate and lets the Brevo automation build the relationship.
@@ -13,7 +15,16 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-const LIST_ID = 3;
+const DEFAULT_LIST_ID = 3;
+
+/** Per-resource Brevo list overrides. All others use DEFAULT_LIST_ID. */
+const RESOURCE_LIST_IDS: Record<string, number> = {
+  'claude-skills-seo-pdf': 6,
+};
+
+function listIdFor(resourceId: string): number {
+  return RESOURCE_LIST_IDS[resourceId] ?? DEFAULT_LIST_ID;
+}
 /** Timer starts when the user focuses the email field (client). Shorter window than the full contact form. */
 const MIN_FILL_MS = 1200;
 
@@ -111,7 +122,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers,
       body: JSON.stringify({
         email,
-        listIds: [LIST_ID],
+        listIds: [listIdFor(resourceId)],
         attributes,
         updateEnabled: true,
       }),
