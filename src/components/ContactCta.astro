@@ -129,7 +129,7 @@ const dialCodes = [
       </aside>
 
       <!-- RIGHT: form -->
-      <form class="ccta-form" id={`${id}-form`} novalidate data-list-id={listId} data-source={source} data-mounted-at={Date.now()}>
+      <form class="ccta-form" id={`${id}-form`} novalidate data-list-id={listId} data-source={source} data-mounted-at="0">
 
         <!-- Honeypot: hidden from humans, bots fill anything name="website" -->
         <div class="cct-honey" aria-hidden="true">
@@ -387,6 +387,8 @@ const dialCodes = [
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   document.querySelectorAll<HTMLFormElement>('.ccta-form').forEach(form => {
+    form.dataset.mountedAt = String(Date.now());
+
     const submitBtn = form.querySelector('.ccta-submit') as HTMLButtonElement | null;
     const submitTxt = form.querySelector('.ccta-submit-txt') as HTMLElement | null;
     const statusEl  = form.querySelector('.ccta-status') as HTMLElement | null;

@@ -27,6 +27,13 @@
  * client. Set BREVO_API_KEY in Vercel project env (Settings → Env Vars).
  */
 import type { APIRoute } from 'astro';
+import {
+  guardResponse,
+  validateLeadEmail,
+  validateLeadName,
+  validateSubmissionTiming,
+  validateUserAgent,
+} from '../../lib/spam-guard';
 
 export const prerender = false; // Force this route to run as a function
 
@@ -39,7 +46,7 @@ const NOTIFY_FROM_EMAIL = 'hello@seoshivam.pro';
 const NOTIFY_FROM_NAME = 'seoshivam.pro form';
 /** All contact-form leads go to List 2 (leads). */
 const CONTACT_LIST_ID = 2;
-const MIN_FILL_MS = 2500;
+const MIN_FILL_MS = 3000;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const NAME_RE  = /^[A-Za-zÀ-ſ .'\-]{2,80}$/;
@@ -98,12 +105,13 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true, message: 'ok' });
   }
 
+  const uaBlock = guardResponse(validateUserAgent(request.headers.get('user-agent')), json);
+  if (uaBlock) return uaBlock;
+
   // ── 2. Time-trap ──
   const mountedAt = Number(body.mountedAt) || 0;
-  const elapsed = Date.now() - mountedAt;
-  if (mountedAt && elapsed < MIN_FILL_MS) {
-    return json({ ok: false, error: 'Please take a moment to fill the form.' }, 400);
-  }
+  const timingBlock = guardResponse(validateSubmissionTiming(mountedAt, MIN_FILL_MS), json);
+  if (timingBlock) return timingBlock;
 
   // ── 3. Sanitize + validate ──
   const name        = clean(body.name, 80);
@@ -118,8 +126,12 @@ export const POST: APIRoute = async ({ request }) => {
   const leadSrc     = clean(body.lead_source, 60) || 'unknown';
   const listId      = CONTACT_LIST_ID; // always List 2 — leads
 
-  if (!NAME_RE.test(name))   return json({ ok: false, error: 'Enter a real name.' }, 400);
+  if (!NAME_RE.test(name)) return json({ ok: false, error: 'Enter a real name.' }, 400);
+  const nameBlock = guardResponse(validateLeadName(name), json);
+  if (nameBlock) return nameBlock;
   if (!EMAIL_RE.test(email)) return json({ ok: false, error: 'Enter a valid email.' }, 400);
+  const emailBlock = guardResponse(validateLeadEmail(email), json);
+  if (emailBlock) return emailBlock;
   if (phone && !PHONE_RE.test(phone)) return json({ ok: false, error: 'Phone has invalid characters.' }, 400);
   if (!service)     return json({ ok: false, error: 'Select a service.' }, 400);
   if (!budget)      return json({ ok: false, error: 'Select a budget.' }, 400);

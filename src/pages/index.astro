@@ -765,7 +765,10 @@ const clients = [
         <div class="score-cap">
           <div class="sc-title">Get your personalised playbook.</div>
           <p class="sc-sub">Your 5-step action plan based on this score. Free, delivered instantly via email.</p>
-          <form class="sc-form" id="scoreCapForm">
+          <form class="sc-form" id="scoreCapForm" data-mounted-at="0">
+            <div class="cct-honey" aria-hidden="true">
+              <label>Do not fill this field<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
             <input type="email" placeholder="your@email.com" class="sc-input" required autocomplete="email">
             <button type="submit" class="btn-p" style="padding:12px 22px;font-size:13px">Send it ↗</button>
           </form>
@@ -1120,7 +1123,10 @@ const clients = [
       </div>
       <h2 class="sec-h lead-h">The AEO Visibility<br><em>Playbook. Free.</em></h2>
       <p class="lead-sub">The exact framework I use to get brands cited by ChatGPT, Perplexity, and Google AI Overviews. 14 actions. Implementation-ready. Zero fluff.</p>
-      <form class="lead-form" id="leadForm">
+      <form class="lead-form" id="leadForm" data-mounted-at="0">
+        <div class="cct-honey" aria-hidden="true">
+          <label>Do not fill this field<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
         <input type="email" placeholder="your@email.com" class="lead-inp" required autocomplete="email" aria-label="Email address">
         <button type="submit" class="btn-p lead-sbtn">Get it now ↗</button>
       </form>
@@ -3435,38 +3441,73 @@ function showScore(){
 buildQuiz();
  
 // ── Score form + lead form — routes through /api/subscribe (server-side key) ──
-const _subMountedAt = Date.now();
+function markSubStart(form: HTMLFormElement) {
+  if (!form.dataset.mountedAt || form.dataset.mountedAt === '0') {
+    form.dataset.mountedAt = String(Date.now());
+  }
+}
 
-async function postSubscribe(email: string, leadSource: string): Promise<boolean> {
+async function postSubscribe(
+  email: string,
+  leadSource: string,
+  website = '',
+  mountedAt = 0,
+): Promise<boolean> {
   try {
     const res = await fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, leadSource, mountedAt: _subMountedAt }),
+      body: JSON.stringify({ email, leadSource, website, mountedAt }),
     });
     const data = await res.json().catch(() => ({}));
     return (data as { ok?: boolean }).ok === true;
   } catch { return false; }
 }
 
+const scoreCapForm = document.getElementById('scoreCapForm') as HTMLFormElement | null;
+scoreCapForm?.querySelector('input[type="email"]')?.addEventListener('focus', () => {
+  if (scoreCapForm) markSubStart(scoreCapForm);
+}, { passive: true });
+
 document.getElementById('scoreCapForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const inp = ((e.target as HTMLFormElement).querySelector('input[type="email"]') as HTMLInputElement);
+  const form = e.target as HTMLFormElement;
+  markSubStart(form);
+  const inp = form.querySelector('input[type="email"]') as HTMLInputElement;
+  const hp = form.querySelector('input[name="website"]') as HTMLInputElement;
   const email = inp.value;
-  const btn = (e.target as HTMLFormElement).querySelector('button') as HTMLButtonElement;
+  const btn = form.querySelector('button') as HTMLButtonElement;
   btn.textContent = 'Sending...'; btn.disabled = true;
-  await postSubscribe(email, 'ai-score-tool');
+  await postSubscribe(
+    email,
+    'ai-score-tool',
+    hp?.value || '',
+    parseInt(form.dataset.mountedAt || '0', 10) || 0,
+  );
   if (typeof gtag === 'function') gtag('event', 'sign_up', { event_category: 'tool', event_label: 'ai_score_capture' });
   document.getElementById('scoreCapForm')!.parentElement!.innerHTML = `<div style="font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;color:var(--w);text-align:center;padding:20px 0">Playbook sent. Check your inbox.</div>`;
 });
 
+const leadForm = document.getElementById('leadForm') as HTMLFormElement | null;
+leadForm?.querySelector('input[type="email"]')?.addEventListener('focus', () => {
+  if (leadForm) markSubStart(leadForm);
+}, { passive: true });
+
 document.getElementById('leadForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const inp = ((e.target as HTMLFormElement).querySelector('input[type="email"]') as HTMLInputElement);
+  const form = e.target as HTMLFormElement;
+  markSubStart(form);
+  const inp = form.querySelector('input[type="email"]') as HTMLInputElement;
+  const hp = form.querySelector('input[name="website"]') as HTMLInputElement;
   const email = inp.value;
-  const btn = (e.target as HTMLFormElement).querySelector('button') as HTMLButtonElement;
+  const btn = form.querySelector('button') as HTMLButtonElement;
   btn.textContent = 'Sending...'; btn.disabled = true;
-  const ok = await postSubscribe(email, 'blog-newsletter');
+  const ok = await postSubscribe(
+    email,
+    'blog-newsletter',
+    hp?.value || '',
+    parseInt(form.dataset.mountedAt || '0', 10) || 0,
+  );
   if (ok && typeof gtag === 'function') gtag('event', 'sign_up', { event_category: 'newsletter', event_label: 'homepage_lead' });
   (e.target as HTMLFormElement).parentElement!.innerHTML = ok
     ? `<div style="font-family:'Instrument Serif',serif;font-size:32px;font-style:italic;color:var(--w);text-align:center;padding:20px 0">You're in. Check your inbox.</div>`

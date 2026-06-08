@@ -859,3 +859,6 @@ html.light a.ilink-muted:hover{text-decoration-color:rgba(26,58,143,.6)}
 .site-link-tip-u{font-family:var(--fm);font-size:10px;color:var(--wm);margin-top:10px;word-break:break-all;opacity:.85}
 html.light .site-link-tip{background:var(--s1);border-color:rgba(37,84,214,.22)}
 
+/* Honeypot — shared by ContactCta + homepage subscribe forms */
+.cct-honey{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+

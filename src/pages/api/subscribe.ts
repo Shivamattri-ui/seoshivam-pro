@@ -10,6 +10,12 @@
  * Contact form leads go through /api/contact, not this endpoint.
  */
 import type { APIRoute } from 'astro';
+import {
+  guardResponse,
+  validateLeadEmail,
+  validateSubmissionTiming,
+  validateUserAgent,
+} from '../../lib/spam-guard';
 
 export const prerender = false;
 
@@ -21,7 +27,7 @@ const LIST_ROUTING: Record<string, number> = {
 };
 const DEFAULT_LIST = 3;
 
-const MIN_FILL_MS = 1200;
+const MIN_FILL_MS = 2000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function clean(raw: unknown, max: number): string {
@@ -69,17 +75,19 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true, message: 'ok' });
   }
 
-  // Time-trap
+  const uaBlock = guardResponse(validateUserAgent(request.headers.get('user-agent')), json);
+  if (uaBlock) return uaBlock;
+
   const mountedAt = Number(body.mountedAt) || 0;
-  const elapsed = Date.now() - mountedAt;
-  if (mountedAt && elapsed < MIN_FILL_MS) {
-    return json({ ok: false, error: 'Please take a moment before submitting.' }, 400);
-  }
+  const timingBlock = guardResponse(validateSubmissionTiming(mountedAt, MIN_FILL_MS), json);
+  if (timingBlock) return timingBlock;
 
   const email = clean(body.email, 100).toLowerCase();
   if (!EMAIL_RE.test(email)) {
     return json({ ok: false, error: 'Enter a valid email.' }, 400);
   }
+  const emailBlock = guardResponse(validateLeadEmail(email), json);
+  if (emailBlock) return emailBlock;
 
   const allowedSources = new Set(Object.keys(LIST_ROUTING));
   const sourceRaw = clean(body.leadSource, 40);

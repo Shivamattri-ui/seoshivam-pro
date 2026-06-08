@@ -12,6 +12,12 @@
  * This keeps the email list as the gate and lets the Brevo automation build the relationship.
  */
 import type { APIRoute } from 'astro';
+import {
+  guardResponse,
+  validateLeadEmail,
+  validateSubmissionTiming,
+  validateUserAgent,
+} from '../../lib/spam-guard';
 
 export const prerender = false;
 
@@ -26,7 +32,7 @@ function listIdFor(resourceId: string): number {
   return RESOURCE_LIST_IDS[resourceId] ?? DEFAULT_LIST_ID;
 }
 /** Timer starts when the user focuses the email field (client). Shorter window than the full contact form. */
-const MIN_FILL_MS = 1200;
+const MIN_FILL_MS = 2000;
 
 const ALLOWED = new Set([
   'aeo-audit-80',
@@ -81,17 +87,19 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true, message: 'ok' });
   }
 
-  // Time-trap
+  const uaBlock = guardResponse(validateUserAgent(request.headers.get('user-agent')), json);
+  if (uaBlock) return uaBlock;
+
   const mountedAt = Number(body.mountedAt) || 0;
-  const elapsed = Date.now() - mountedAt;
-  if (mountedAt && elapsed < MIN_FILL_MS) {
-    return json({ ok: false, error: 'Please take a moment before submitting.' }, 400);
-  }
+  const timingBlock = guardResponse(validateSubmissionTiming(mountedAt, MIN_FILL_MS), json);
+  if (timingBlock) return timingBlock;
 
   const email = clean(body.email, 100).toLowerCase();
   if (!EMAIL_RE.test(email)) {
     return json({ ok: false, error: 'Enter a valid email.' }, 400);
   }
+  const emailBlock = guardResponse(validateLeadEmail(email), json);
+  if (emailBlock) return emailBlock;
 
   const resourceId = clean(body.resourceId, 64);
   if (!ALLOWED.has(resourceId)) {
