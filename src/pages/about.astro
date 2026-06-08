@@ -23,68 +23,67 @@ const aboutSchema = {
       "@id": "https://seoshivam.pro/#shivam",
       "name": "Shivam Attri",
       "alternateName": ["seoshivam", "seoshivampro"],
-      "jobTitle": "AEO Specialist, SEO Strategist, AI-Visible Web Designer",
-      "description": "Shivam Attri is an AEO and SEO specialist with 7+ years of experience helping B2B SaaS founders and growing brands get cited by ChatGPT, Perplexity, and Google AI Overviews. Based in India, serving clients across the US, UK, EU, and Australia.",
-      "url": "https://seoshivam.pro",
-      "image": {
-        "@type": "ImageObject",
-        "url": "https://seoshivam.pro/images/shivam-attri.jpg",
-        "width": 800,
-        "height": 800,
-        "caption": "Shivam Attri — AEO Specialist and SEO Strategist"
-      },
+      "jobTitle": "AEO Specialist and AI SEO Expert",
+      "description": "Shivam Attri is an international AEO specialist and AI SEO expert based in India, working with brands across the US, UK, EU, Australia, and India. Seven years in search. 30+ brands shipped across 8+ countries. Specialises in entity schema, answer-first content architecture, and AI engine citation growth.",
+      "url": "https://seoshivam.pro/about",
+      "image": "https://seoshivam.pro/images/shivam-portrait-square.jpg",
+      "email": "hello@seoshivam.pro",
       "sameAs": [
         "https://www.linkedin.com/in/seoshivampro/",
         "https://www.instagram.com/seoshivam.pro/",
+        "https://www.facebook.com/seoshivam.pro",
         "https://www.threads.com/@seoshivam.pro",
         "https://substack.com/@seoshivampro",
-        "https://www.reddit.com/r/aiseovisibility/"
+        "https://x.com/seoshivampro",
+        "https://www.reddit.com/r/aiseovisibility/",
+        "https://seoshivam.pro"
       ],
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "IN"
       },
       "knowsAbout": [
-        "Answer Engine Optimization (AEO)",
-        "AI Search Visibility",
-        "ChatGPT Citation Strategy",
-        "Perplexity Optimization",
-        "Google AI Overviews",
-        "Search Engine Optimization (SEO)",
+        "Answer Engine Optimization",
+        "AEO",
+        "AI SEO",
+        "Generative Engine Optimization",
+        "GEO",
+        "LLM SEO",
+        "Entity SEO",
+        "Schema Markup",
+        "FAQPage Schema",
         "Technical SEO",
+        "Google AI Overviews Optimization",
+        "ChatGPT SEO",
+        "Perplexity SEO",
+        "Topical Authority",
         "Programmatic SEO",
-        "Topical Authority Building",
-        "JSON-LD Schema Markup",
-        "Entity Optimization",
-        "E-E-A-T",
-        "Webflow Development",
-        "Framer Development",
-        "Astro Development",
-        "WordPress Development",
-        "Content Architecture",
-        "B2B SaaS Marketing"
+        "Astro",
+        "Webflow",
+        "Framer",
+        "JSON-LD",
+        "SEO for B2B SaaS"
       ],
       "hasOccupation": {
         "@type": "Occupation",
-        "name": "AEO Specialist and SEO Strategist",
-        "description": "Specializes in Answer Engine Optimization — making brands visible and citable across AI search platforms including ChatGPT, Perplexity, Google AI Overviews, and Claude."
+        "name": "AEO Consultant",
+        "description": "Answer Engine Optimization consulting for B2B SaaS, HealthTech, Logistics, and E-commerce brands across the US, UK, EU, Australia, and India.",
+        "occupationLocation": {
+          "@type": "Country",
+          "name": "India"
+        }
       },
       "worksFor": {
         "@type": "Organization",
         "name": "seoshivam.pro",
         "url": "https://seoshivam.pro"
-      },
-      "award": [
-        "Grew client from 63 to 1010 organic clicks in 30 days (16x growth) — HealthTech SaaS, India",
-        "20+ tracked AI engine citation appearances — Health Tech, US Market",
-        "Top-10 keywords scaled from 40 to 220 — B2B Services"
-      ]
+      }
     },
     {
       "@type": "AboutPage",
       "@id": "https://seoshivam.pro/about",
-      "name": "About Shivam Attri — AEO Specialist, SEO Strategist",
-      "description": "Learn about Shivam Attri, AEO and SEO specialist helping B2B SaaS founders get cited by ChatGPT, Perplexity, and Google AI Overviews. 7+ years, 30+ brands, clients across US, UK, EU, AU, IN, DE.",
+      "name": "About Shivam Attri — International AEO Expert and AI SEO Specialist",
+      "description": "International AEO specialist based in India. 7+ years, 30+ brands, US · UK · EU · AU · IN. 16x click growth in 30 days. 60+ AI citations tracked. Entity schema, answer-first content, 6-engine citation growth.",
       "url": "https://seoshivam.pro/about",
       "isPartOf": { "@id": "https://seoshivam.pro/#website" },
       "about": { "@id": "https://seoshivam.pro/#shivam" },
@@ -183,6 +182,10 @@ const row2 = [
       <span class="ab-chip-dot"></span>
       <span class="ab-chip">AI-Visible Web Designer</span>
     </div>
+
+    <p class="ab-hero-lead ub" style="--ud:0.62s">
+      Shivam Attri is an International AEO specialist and AI SEO expert based in India, working with brands across the US, UK, EU, Australia, and India. Seven years in search. 30+ brands across SaaS, HealthTech, Logistics, and E-commerce. The work covers Answer Engine Optimization, entity schema, and AI-visible web architecture from Astro, Webflow, and Framer builds.
+    </p>
 
     <p class="ab-hero-sub">
       <span class="ub" style="--ud:0.7s">Seven years.</span>
@@ -872,6 +875,18 @@ const row2 = [
 }
 .ab-chip-dot {
   width:4px;height:4px;border-radius:50%;background:var(--bd);
+}
+
+.ab-hero-lead {
+  font-family:var(--fu);
+  font-size:clamp(15px,1.55vw,17.5px);
+  font-weight:400;
+  color:var(--wd);
+  line-height:1.78;
+  letter-spacing:.002em;
+  max-width:720px;
+  margin:0 auto 28px;
+  text-align:center;
 }
 
 .ab-hero-sub {
@@ -1887,6 +1902,7 @@ html.light .site-footer{background:var(--s1)}
   .ab-chip-dot{display:none}
   .ab-soc span{display:none}
   .ab-soc{padding:8px}
+  .ab-hero-lead{font-size:15px;margin-bottom:22px;padding:0 8px;line-height:1.72}
   .ab-hero-sub{font-size:16px;margin-bottom:32px;padding:0 8px}
   .ab-hero-socials{gap:6px}
 }

@@ -22,9 +22,9 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
 
   // ─── About ───────────────────────────────────────────────────────────────────
   '/about': {
-    title: 'Shivam Attri · AEO Specialist, AI SEO Expert & B2B SaaS Growth Strategist',
+    title: 'Shivam Attri — International AEO Expert and AI SEO Specialist | seoshivampro',
     description:
-      'AEO specialist and SEO strategist. 7+ years, 40+ brands across SaaS, HealthTech, Logistics, eCommerce, and more. US · UK · EU · AU · IN. See the work.',
+      'International AEO specialist based in India. 7+ years, 30+ brands, US · UK · EU · AU · IN. 16x click growth in 30 days. 60+ AI citations tracked. Entity schema, answer-first content, 6-engine citation growth.',
   },
 
   // ─── Contact ─────────────────────────────────────────────────────────────────
@@ -92,9 +92,9 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
 
   // ─── AEO Service ─────────────────────────────────────────────────────────────
   '/services/aeo': {
-    title: 'AEO Services: AI Search Optimization & Citation Growth | Shivam Attri',
+    title: 'Hire AEO Consultant — AI Search Optimization and Citation Growth | Shivam Attri',
     description:
-      'Get cited by ChatGPT, Perplexity, Google AI Overviews, and Copilot. Technical audit, entity schema, answer-first content, and 6-engine citation tracking.',
+      'Hire an AEO consultant for AI search visibility. Entity schema, answer-first content restructure, 6-engine citation growth. Get Visible in AI search today',
   },
 
   // ─── SEO Service ─────────────────────────────────────────────────────────────
