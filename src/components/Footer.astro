@@ -16,10 +16,11 @@ const buildDate = new Date().toLocaleDateString('en-US', { month: 'short', year:
 const year = new Date().getFullYear();
 
 const services = [
-  { label: 'AEO Strategy',    href: '/services/aeo' },
+  { label: 'AEO Strategy',     href: '/services/aeo' },
   { label: 'SEO Architecture', href: '/services/seo' },
-  { label: 'Web Design',      href: '/services/web-design' },
-  { label: 'All Services',    href: '/services' },
+  { label: 'Web Design',       href: '/services/web-design' },
+  { label: 'AI SEO Consultant', href: '/ai-seo-consultant' },
+  { label: 'All Services',     href: '/services' },
 ];
 
 const navigate = [
@@ -455,8 +456,4 @@ html.light .ft-soc:hover{color:#fff}
     if(lenis && typeof lenis.scrollTo === 'function'){
       lenis.scrollTo(0, { duration: 1.4 });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
-})();
-</script>
+      window.scrol

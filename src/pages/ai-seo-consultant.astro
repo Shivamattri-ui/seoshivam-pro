@@ -1,0 +1,502 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import AeoMacbookIllustration from '../components/AeoMacbookIllustration.astro';
+import AnalyticsDeck from '../components/AnalyticsDeck.astro';
+import ContactCta from '../components/ContactCta.astro';
+
+const pageTitle = "AI SEO Consultant for AEO, GEO & AI Search | Shivam Attri";
+const pageDescription = "Shivam Attri is an AI SEO, AEO and GEO consultant getting brands cited by ChatGPT, Perplexity, Gemini and Google AI Overviews across the US, UK, EU and Australia.";
+
+const engines = [
+  { name: 'ChatGPT', note: 'Sources live results from Bing, 87% overlap', color: '#10A37F' },
+  { name: 'Perplexity', note: 'Real-time retrieval, rewards fresh, structured sources', color: '#8B5CF6' },
+  { name: 'Google AI Overviews', note: 'On roughly 48% of searches, weights schema heavily', color: '#4285F4' },
+  { name: 'Google AI Mode', note: 'Conversational search, entity and source-type driven', color: '#EA4335' },
+  { name: 'Gemini', note: 'Tied to Google entity graph and Knowledge Panel', color: '#1A73E8' },
+  { name: 'Claude', note: 'Retrieves via Brave Search, favors clean attribution', color: '#D97706' },
+];
+
+const services = [
+  { n: '01', t: 'AEO and GEO', d: 'Answer Engine and Generative Engine Optimization. I define your entity, ship the structured data, and rewrite content answer-first so ChatGPT, Perplexity, Gemini, Google AI Mode, and Claude cite your brand as the source, not your competitor.' },
+  { n: '02', t: 'SEO Architecture', d: 'Technical foundations, topical authority clusters, and entity mapping that build organic rankings which compound month over month, instead of plateauing after the first quarter the way most agency programs do.' },
+  { n: '03', t: 'AI-Visible Web Build', d: 'Webflow, Framer, Astro, and WordPress builds structured for AI crawlability from day one. Clean schema, open bot access, fast rendering. I build it right, I do not retrofit it after launch.' },
+  { n: '04', t: 'Citation Tracking', d: 'Every week I run your target prompts through five AI engines and log who gets cited. You see exactly which content and which mentions move your visibility, measured against AI answers, not vanity keyword positions.' },
+];
+
+const compare = [
+  { label: 'Who does the work', them: 'A junior on the account', me: 'Me, directly, start to finish' },
+  { label: 'What you receive', them: 'A monthly PDF report', me: 'A built system, plus the report' },
+  { label: 'Built for', them: 'Google rankings only', me: 'Google plus AI answers from day one' },
+  { label: 'Proof shown', them: 'Estimated third-party metrics', me: 'Live Search Console and GA4 dashboards' },
+  { label: 'Commitment', them: 'Locked 12-month retainer', me: 'Audit, sprint, or retainer, your call' },
+];
+
+const results = [
+  {
+    cat: 'Health Tech · India', service: 'SEO + AEO', n: '16×', label: 'Organic click growth in 30 days',
+    metrics: [{ v: '63 → 1,010', l: 'Monthly clicks' }, { v: 'Zero ad spend', l: 'Method' }, { v: 'GSC verified', l: 'Source' }],
+  },
+  {
+    cat: 'Platform SaaS · Australia', service: 'Full AEO + SEO', n: '9×', label: 'Click growth in 6 months',
+    metrics: [{ v: '240 → 2,200', l: 'Monthly clicks' }, { v: '4K → 142K', l: 'Impressions' }, { v: 'GSC verified', l: 'Source' }],
+  },
+  {
+    cat: 'B2B Services · Global', service: 'SEO + Content', n: '4.7×', label: 'Organic leads per month',
+    metrics: [{ v: '15 → 70+', l: 'Monthly leads' }, { v: 'Down 40%', l: 'Paid dependency' }, { v: 'Client reported', l: 'Source' }],
+  },
+];
+
+const industries = [
+  { t: 'B2B SaaS', r: 'US · UK · EU' },
+  { t: 'Ecommerce', r: 'DTC · AU · UK' },
+  { t: 'Health Tech', r: 'US · India' },
+  { t: 'Logistics', r: 'US · India' },
+  { t: 'Restaurants & Hospitality', r: 'US · EU' },
+  { t: 'FinTech', r: 'US · UAE' },
+  { t: 'Local Businesses', r: 'US · UK · AU' },
+  { t: 'White-Label for Agencies', r: 'Global' },
+];
+
+const faqs = [
+  { q: "What does an AI SEO consultant do?", a: "An AI SEO consultant makes your brand visible in both classic search and AI answers. In practice that means three connected workstreams: SEO architecture so you rank and compound in Google, AEO and GEO so AI engines like ChatGPT, Perplexity, Gemini, and Google AI Overviews cite you as a source, and an AI-visible web build so the site is technically readable by both crawlers and AI bots. I run all three as one system, not as separate projects." },
+  { q: "Which industries do you work with?", a: "I work across verticals, not one niche. Over seven years I have shipped results for logistics, health tech, ecommerce, hospitality, and B2B SaaS, across the US, UK, EU, UAE, Canada, and Australia. The AI search mechanics are consistent across industries: clear entity, structured data, source-worthy content, and third-party corroboration. What changes is the buyer language and the proof, both of which I tailor to your market." },
+  { q: "How long until I see results?", a: "It depends on your starting point. Sites with existing authority and indexed content can move in 30 to 60 days. Newer domains or sites with technical debt take 90 to 120 days to compound. AI citations often appear within 30 to 90 days once the entity and structure are in place. One health tech client grew from 63 to 1,010 organic clicks in 30 days, and a logistics brand in the US is now cited on 40+ queries across Gemini, ChatGPT, Google AI Mode, and Perplexity. The honest answer: early signals in 90 days, organic becoming a primary channel by month 6 to 9." },
+  { q: "Do you only do strategy, or the implementation too?", a: "Both. Some clients want a strategy and roadmap their internal team executes. Others want the full build done for them: technical fixes, entity and schema setup, content production, internal linking, and monthly reporting. Most start with an audit or a focused sprint, see the first movement around week 6 to 8, then move to a retainer for ongoing execution." },
+  { q: "What makes you different from an SEO agency?", a: "Three things. First, you work directly with the person doing the work, not an account manager relaying to a junior team. Second, I show real receipts: live Search Console and GA4 dashboards with actual result curves, not estimated third-party numbers. Third, I build for AI search from day one, not as a retrofit. Most agencies still optimize for the 2022 Google playbook. I build for the era where AI answers first." },
+  { q: "Do you work with clients outside India?", a: "Yes. Most of my work is international: the US, UK, Germany, Netherlands, Ireland, France, UAE, Canada, and Australia. I am based in Gurugram, India, and work as a fractional partner across time zones. Engagements run over email, shared docs, and scheduled calls, with everything documented so nothing depends on being in the same room." },
+  { q: "How do we start working together?", a: "Send your website and your main goal through the form on this page. I reply within a few hours with a short, specific read on where your AI and search visibility gaps are. If it is a fit, we scope an audit, a sprint, or a retainer depending on what you need. No long sales cycle, no boilerplate proposal." },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://seoshivam.pro/#shivam",
+      "name": "Shivam Attri",
+      "url": "https://seoshivam.pro/",
+      "image": "https://seoshivam.pro/images/shivam-portrait-square.jpg",
+      "jobTitle": "AI SEO Consultant, AEO and GEO Specialist",
+      "description": "AI SEO consultant and AEO specialist helping brands get cited by ChatGPT, Perplexity, Claude, Gemini, and Google AI Overviews across the US, UK, EU, UAE, Canada, and Australia.",
+      "knowsAbout": ["Answer Engine Optimization", "Generative Engine Optimization", "AI Search Visibility", "SEO", "Schema Markup", "Entity SEO", "Topical Authority"],
+      "sameAs": [
+        "https://www.linkedin.com/in/seoshivampro/",
+        "https://www.instagram.com/seoshivam.pro/",
+        "https://www.threads.com/@seoshivam.pro",
+        "https://substack.com/@seoshivampro",
+        "https://www.reddit.com/r/aiseovisibility/",
+        "https://twitter.com/seoshivampro"
+      ]
+    },
+    {
+      "@type": "Service",
+      "name": "AI SEO Consulting",
+      "serviceType": "AI SEO, AEO, and GEO consulting",
+      "description": "AI SEO consulting that combines SEO architecture, Answer Engine Optimization, and Generative Engine Optimization to make brands visible in Google and in AI answers from ChatGPT, Perplexity, Claude, Gemini, and Google AI Overviews.",
+      "provider": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" },
+      "url": "https://seoshivam.pro/ai-seo-consultant",
+      "areaServed": ["US", "GB", "DE", "NL", "IE", "FR", "AE", "CA", "AU", "IN"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://seoshivam.pro"},
+        {"@type":"ListItem","position":2,"name":"AI SEO Consultant","item":"https://seoshivam.pro/ai-seo-consultant"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+    }
+  ]
+};
+---
+
+<Layout title={pageTitle} description={pageDescription} canonical="https://seoshivam.pro/ai-seo-consultant" schema={schema}>
+  <Nav />
+  <div class="grid-bg"></div>
+  <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <main>
+
+    <!-- HERO (2-col: copy + animated AI Overview citation card) -->
+    <section class="hire-hero">
+      <div class="container">
+        <nav class="pg-bc rv" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><span>AI SEO Consultant</span>
+        </nav>
+        <div class="hire-hero-grid">
+          <div class="hire-hero-l">
+            <div class="rv"><span class="label">AI SEO Consultant · AEO and GEO</span></div>
+            <h1 class="hire-h1 rv d1">AI SEO Consultant<br>for AEO, GEO and<br><em>AI search visibility.</em></h1>
+            <p class="hire-sub rv d2">Hi, I am Shivam. I get brands cited by ChatGPT, Perplexity, Gemini, and Google AI Overviews, while their Google rankings compound at the same time. You are not invisible because of SEO. You are invisible because AI does not understand you yet. I build the system that fixes that, across <a href="/work" class="ilink">every market you sell into.</a></p>
+            <div class="hire-btns rv d3">
+              <a href="#start-project" class="btn-p">Work with me ↗</a>
+              <a href="#start-project" class="btn-s">Free AI visibility audit →</a>
+            </div>
+            <p class="hire-cred rv d4">7+ years · 40+ international clients · US · UK · EU · UAE · Canada · Australia</p>
+          </div>
+          <div class="hire-hero-r rv d2">
+            <div class="acm">
+              <div class="acm-query">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                best ai seo consultant for my brand
+              </div>
+              <div class="acm-engine">
+                <div class="acm-bar">
+                  <span class="acm-dot"></span>
+                  <span class="acm-name">AI Overview</span>
+                  <span class="acm-src-ct">4 sources</span>
+                </div>
+                <p class="acm-answer" id="hireAnswer"></p>
+                <div class="acm-cites">
+                  <span class="acm-cite-chip"><span class="adot" style="width:4px;height:4px"></span>seoshivam.pro</span>
+                  <span class="acm-cite-chip acm-cite-dim">linkedin.com/in/seoshivampro</span>
+                </div>
+              </div>
+              <div class="acm-foot">
+                <span class="acm-foot-dot"></span>
+                seoshivam.pro · cited source
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hire-stats rv d4">
+          <div class="hire-stat"><span class="hire-sn">7+</span><span class="hire-sl">Years compounding<br>SEO and AEO</span></div>
+          <div class="hire-stat-div"></div>
+          <div class="hire-stat"><span class="hire-sn">40+</span><span class="hire-sl">International<br>clients shipped</span></div>
+          <div class="hire-stat-div"></div>
+          <div class="hire-stat"><span class="hire-sn">5</span><span class="hire-sl">AI engines tracked<br>every week</span></div>
+          <div class="hire-stat-div hide-mob"></div>
+          <div class="hire-stat hide-mob"><span class="hire-sn">2022</span><span class="hire-sl">Working in AEO<br>since</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE SHIFT (2-col editorial + engine list) -->
+    <section class="hire-shift-sec">
+      <div class="container">
+        <div class="hire-shift-grid">
+          <div class="hire-shift-l rv">
+            <span class="label">Why hire for this now</span>
+            <h2 class="sec-h" style="margin-top:14px">Your buyer asks AI<br><em class="grad-anim">before they ask Google.</em></h2>
+            <p class="hire-shift-p">When a founder searches "best platform for X," they no longer get ten blue links. They get one answer, with a few sources cited. That is the moment your brand exists or it does not. AI Overviews already appear on roughly half of Google searches.</p>
+            <p class="hire-shift-p">Most brands rank fine on Google and still miss from every AI engine, because the technical and entity layer is broken. That gap is the work. I close it, then keep both surfaces growing together. The same cluster that ranks on Google earns the citation on <a href="/insights/aeo-vs-seo-difference" class="ilink">ChatGPT and Perplexity</a> when the architecture connects them.</p>
+            <p class="hire-shift-p">This is not a niche play for one industry. It is the new default for any brand whose buyers research with AI, which is now most of them.</p>
+          </div>
+          <div class="hire-shift-r rv d1">
+            <div class="hire-eng-list">
+              {engines.map(e => (
+                <div class="hire-eng-row">
+                  <span class="hire-eng-dot" style={`background:${e.color}`}></span>
+                  <div class="hire-eng-info">
+                    <span class="hire-eng-nm">{e.name}</span>
+                    <span class="hire-eng-nt">{e.note}</span>
+                  </div>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animated AEO graphic component -->
+    <AeoMacbookIllustration />
+
+    <!-- WHAT I DO (numbered editorial rows) -->
+    <section class="hire-do-sec">
+      <div class="container">
+        <div class="hire-do-hdr rv">
+          <span class="label">What I do</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">One system that ranks<br><em class="grad-anim">and gets cited.</em></h2>
+        </div>
+        <div class="hire-do-list">
+          {services.map((s, i) => (
+            <div class={`hire-do-row rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
+              <div class="hire-do-num">{s.n}</div>
+              <div class="hire-do-body">
+                <div class="hire-do-t">{s.t}</div>
+                <p class="hire-do-d">{s.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW I WORK VS TYPICAL (comparison table) -->
+    <section class="hire-vs-sec">
+      <div class="container">
+        <div class="hire-vs-hdr rv">
+          <div class="hair left">WHY ME / THE DIFFERENCE</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Not an agency.<br><em class="grad-anim">An operator with receipts.</em></h2>
+        </div>
+        <div class="hire-vs-table rv d1">
+          <div class="hire-vs-row hire-vs-head">
+            <div class="hire-vs-col hire-vs-label-h"></div>
+            <div class="hire-vs-col hire-vs-them-h">Typical agency</div>
+            <div class="hire-vs-col hire-vs-me-h">Working with me</div>
+          </div>
+          {compare.map(row => (
+            <div class="hire-vs-row">
+              <div class="hire-vs-col hire-vs-label">{row.label}</div>
+              <div class="hire-vs-col hire-vs-them">{row.them}</div>
+              <div class="hire-vs-col hire-vs-me">{row.me}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Live receipts -->
+    <AnalyticsDeck
+      id="hire-deck"
+      eyebrow="RECEIPTS / SEARCH CONSOLE + GA4"
+      heading="Real dashboards, real curves,"
+      headingEm="names withheld under NDA."
+      deck="Most consultants show estimated third-party numbers. I show the actual Search Console and GA4 views from real engagements. Different lenses, same outcome: visibility that compounds."
+      gsc={{
+        id: 'hire-feat', domain: 'B2B SaaS Platform / Sales Engagement', industry: 'B2B SaaS · Sales Engagement · 3 months', range: 'Last 3 months',
+        clicks: { from: 4200, to: 11000 }, impressions: { from: 142000, to: 346000 }, ctr: { from: 2.96, to: 3.2 }, position: { from: 16.4, to: 11.3 },
+        queries: [
+          { q: 'sales engagement platform', clicks: 1840, pos: 4 }, { q: 'multi-channel sales sequence', clicks: 1521, pos: 6 },
+          { q: 'sdr productivity software', clicks: 1287, pos: 8 }, { q: 'cold outreach platform comparison', clicks: 1102, pos: 9 },
+          { q: 'sales engagement vs enablement', clicks: 962, pos: 11 }, { q: 'sales sequence automation', clicks: 814, pos: 12 },
+        ],
+        insights: ['Entity-first content architecture', 'FAQPage on 14 service pages', '84 programmatic landing pages', 'GPTBot + ClaudeBot allowed'],
+      }}
+      audience={{
+        id: 'hire-audience', property: 'HR Tech SaaS / Global', industry: 'HR Tech · Global', range: 'Last 90 days',
+        activeUsers: 463000, sessions: 552000, views: 747000, newUsers: 463000, realtime: 157,
+        countries: [{ name: 'United States', users: 147 }, { name: 'Canada', users: 9 }, { name: 'Ireland', users: 1 }],
+      }}
+    />
+
+    <!-- Featured citation + results -->
+    <section class="hire-results-sec">
+      <div class="container">
+        <div class="hire-results-hdr rv">
+          <div class="hair left">VERIFIED RESULTS / GSC + AI CITATIONS</div>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Cited where buyers ask.<br><em class="grad-anim">Ranked where they search.</em></h2>
+        </div>
+        <div class="hire-feat-cite rv">
+          <div class="hire-feat-l">
+            <div class="hire-feat-cat">Logistics Brand · USA</div>
+            <div class="hire-feat-n grad">40+</div>
+            <div class="hire-feat-label">Queries and prompts where the brand is now cited in AI answers</div>
+          </div>
+          <div class="hire-feat-r">
+            <div class="hire-feat-engines-l">Cited across</div>
+            <div class="hire-feat-engines">
+              <span class="hire-engine">Gemini</span><span class="hire-engine">ChatGPT</span><span class="hire-engine">Google AI Mode</span><span class="hire-engine">Perplexity</span>
+            </div>
+            <p class="hire-feat-note">From zero AI presence to being named as a source on 40+ buyer queries and prompts. This is the exact outcome AEO and GEO are built to produce, tracked manually against live engine responses.</p>
+          </div>
+        </div>
+        <div class="hire-results-grid">
+          {results.map((r, i) => (
+            <div class={`hire-result-card rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
+              <div class="hrc-head"><span class="hrc-cat">{r.cat}</span><span class="hrc-service">{r.service}</span></div>
+              <div class="hrc-n grad">{r.n}</div>
+              <div class="hrc-label">{r.label}</div>
+              <div class="hrc-metrics">
+                {r.metrics.map(m => (<div class="hrc-met"><span class="hrc-met-v">{m.v}</span><span class="hrc-met-l">{m.l}</span></div>))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="hire-results-note rv">Client names withheld under NDA. Search and traffic data from Google Search Console and GA4. AI citations verified manually against live engine responses. References available on request. <a href="/work" class="ilink">See full case studies.</a></p>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section class="hire-ind-sec">
+      <div class="container">
+        <div class="hire-ind-grid">
+          <div class="hire-ind-l rv">
+            <span class="label">Industries</span>
+            <h2 class="sec-h" style="margin-top:14px">Cross-vertical,<br><em class="grad-anim">not one niche.</em></h2>
+            <p class="hire-ind-p">The AI search mechanics hold across industries: clean entity, structured data, source-worthy content, third-party corroboration. What changes is the buyer language and the proof, both of which I tailor to your market.</p>
+          </div>
+          <div class="hire-ind-r rv d1">
+            {industries.map(ind => (
+              <div class="hire-ind-card">
+                <span class="hire-ind-t">{ind.t}</span>
+                <span class="hire-ind-r-note">{ind.r}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About + portrait -->
+    <section class="hire-about-sec">
+      <div class="container">
+        <div class="hire-about-grid">
+          <div class="hire-about-img-wrap rv">
+            <img src="/images/shivam-portrait-square.jpg" width="600" height="600" alt="Shivam Attri, AI SEO and AEO consultant based in Gurugram, India" class="hire-about-img" />
+            <div class="hire-about-badge"><span class="hire-about-badge-dot"></span>Available for new work</div>
+          </div>
+          <div class="hire-about-body rv d1">
+            <div class="hair left">ABOUT / THE PERSON YOU HIRE</div>
+            <h2 class="hire-about-h">The person you want<br><em class="grad-anim">when visibility matters.</em></h2>
+            <p>I started in web development in 2018, moved into SEO because of how it compounds, then into content, paid search, and automation. When AI search arrived, I did not resist it. I leaned in completely: AEO, structured data, entity optimization, answer-first systems. I was three moves ahead before most agencies knew the rules had changed.</p>
+            <p>Seven years later, that work spans logistics, health tech, hospitality, ecommerce, and SaaS, for brands in India, the US, the UK, the EU, and Australia. From near-zero organic presence to being cited by ChatGPT. From 63 clicks a month to 1,010. From spending everything on ads to an organic channel that compounds without touching the budget.</p>
+            <p>I do not hand you a report. I hand you a system: one that makes AI engines understand your brand, cite your content, and send you buyers who already trust you before they reach your site. That is a different outcome from anything traditional SEO delivers, and it is the only thing I build.</p>
+            <div class="hire-about-sign">
+              <span class="hire-about-sign-name">Shivam Attri</span>
+              <span class="hire-about-sign-role">AEO Specialist · SEO Strategist · AI-Visible Web Designer</span>
+              <a href="/about" class="ilink hire-about-link">Read the full story →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Engagement tiers -->
+    <section class="hire-eng-sec">
+      <div class="container">
+        <div class="hire-eng-hdr rv">
+          <span class="label">Ways to work together</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">Three ways in,<br><em class="grad-anim">scoped to your stage.</em></h2>
+        </div>
+        <div class="hire-tiers">
+          <div class="hire-tier rv">
+            <div class="hire-tier-top"><span class="hire-tier-eye">AUDIT</span><span class="hire-tier-tag">Start here</span></div>
+            <div class="hire-tier-t">AI Visibility Audit</div>
+            <p class="hire-tier-d">A full read across the major AI engines and your search footprint, with prioritized fixes.</p>
+            <ul class="hire-tier-list">
+              <li>Citation check across 5 engines</li>
+              <li>Bing index and AI bot access</li>
+              <li>Entity and schema gaps</li>
+              <li>Prioritized fix list</li>
+            </ul>
+          </div>
+          <div class="hire-tier hire-tier--mid rv d1">
+            <div class="hire-tier-top"><span class="hire-tier-eye">SPRINT</span><span class="hire-tier-tag">Most popular</span></div>
+            <div class="hire-tier-t">Foundation Sprint</div>
+            <p class="hire-tier-d">A scoped build that opens the door to citation, done in weeks, not quarters.</p>
+            <ul class="hire-tier-list">
+              <li>Entity and schema setup</li>
+              <li>Technical and rendering fixes</li>
+              <li>First answer-first content cluster</li>
+              <li>Citation tracking turned on</li>
+            </ul>
+          </div>
+          <div class="hire-tier rv d2">
+            <div class="hire-tier-top"><span class="hire-tier-eye">RETAINER</span><span class="hire-tier-tag">Ongoing</span></div>
+            <div class="hire-tier-t">Ongoing Partnership</div>
+            <p class="hire-tier-d">Continuous AEO, SEO, and content for brands making AI visibility a core channel.</p>
+            <ul class="hire-tier-list">
+              <li>Monthly content and execution</li>
+              <li>GSC and GA4 reporting</li>
+              <li>Weekly citation tracking</li>
+              <li>Direct access to me</li>
+            </ul>
+          </div>
+        </div>
+        <p class="hire-eng-note rv">Scope and pricing are set after a short conversation, because the right starting point depends on your site, market, and goals. <a href="#start-project" class="ilink">Tell me where you are and I will point you to the right one.</a></p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="hire-faq-sec">
+      <div class="container">
+        <div class="rv" style="margin-bottom:48px">
+          <span class="label">Common questions</span>
+          <h2 class="sec-h rv d1" style="margin-top:14px">What buyers<br><em class="grad-anim">ask first.</em></h2>
+        </div>
+        <div class="faq-list" style="max-width:760px">
+          {faqs.map((f) => (
+            <div class="faq-item">
+              <button class="faq-btn" aria-expanded="false"><span>{f.q}</span><i class="faq-icon">+</i></button>
+              <div class="faq-ans" hidden>{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div id="start-project"></div>
+    <ContactCta
+      id="hire-cta" source="ai-seo-consultant"
+      eyebrow="START THE CONVERSATION / FREE AI VISIBILITY AUDIT"
+      heading="Tell me where you want" headingEm="to be visible."
+      deck="Send your site and your main goal. You get a specific, no-boilerplate read on your AI and search visibility gaps, replied within a few hours. If it is a fit, we scope from there."
+    />
+
+  </main>
+  <Footer />
+
+  <style>
+  .pg-bc{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
+  .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
+
+  /* HERO */
+  .hire-hero{padding:160px 0 0}
+  .hire-hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center}
+  .hire-h1{font-family:var(--fd);font-size:clamp(38px,5.2vw,72px);font-weight:400;line-height:.95;letter-spacing:-.022em;color:var(--w);margin:16px 0 22px}
+  .hire-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hire-sub{font-family:var(--fu);font-size:clamp(14px,1.5vw,16px);color:var(--wd);line-height:1.78;max-width:520px;margin-bottom:28px}
+  .hire-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .hire-cred{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+
+  .acm{background:var(--s1);border:1px solid var(--bd);border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.32)}
+  .acm-query{display:flex;align-items:center;gap:8px;padding:13px 16px;font-family:var(--fu);font-size:12px;color:var(--wd);border-bottom:1px solid var(--bd);background:var(--s2)}
+  .acm-query svg{color:var(--wm)}
+  .acm-engine{padding:14px 16px;border-bottom:1px solid var(--bd)}
+  .acm-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .acm-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0;box-shadow:0 0 8px var(--agl)}
+  .acm-name{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+  .acm-src-ct{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-left:auto}
+  .acm-answer{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.65;margin-bottom:12px;min-height:78px}
+  .acm-cites{display:flex;gap:6px;flex-wrap:wrap}
+  .acm-cite-chip{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--ac);background:var(--agl);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:3px 8px;display:inline-flex;align-items:center;gap:5px}
+  .acm-cite-dim{color:var(--wm);background:var(--s3);border-color:var(--bd)}
+  .acm-foot{display:flex;align-items:center;gap:8px;padding:11px 16px;font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+  .acm-foot-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:opcPulse 1.6s ease-in-out infinite}
+
+  .hire-stats{display:flex;align-items:center;padding:32px 0;border-top:1px solid var(--bd);margin-top:48px}
+  .hire-stat{padding:0 28px;display:flex;flex-direction:column;gap:4px}
+  .hire-stat:first-child{padding-left:0}
+  .hire-stat-div{width:1px;height:32px;background:var(--bd);flex-shrink:0}
+  .hire-sn{font-family:var(--fd);font-size:26px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+  .hire-sl{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+
+  /* THE SHIFT */
+  .hire-shift-sec{padding:88px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .hire-shift-grid{display:grid;grid-template-columns:1fr 380px;gap:80px;align-items:start}
+  .hire-shift-p{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.8;margin:0 0 16px;max-width:560px}
+  .hire-eng-list{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+  .hire-eng-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bd);background:var(--s1);transition:background .2s}
+  .hire-eng-row:last-child{border-bottom:none}
+  .hire-eng-row:hover{background:var(--s2)}
+  .hire-eng-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .hire-eng-info{flex:1}
+  .hire-eng-nm{display:block;font-family:var(--fu);font-size:13px;font-weight:700;color:var(--w);letter-spacing:-.01em}
+  .hire-eng-nt{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.04em;color:var(--wm)}
+  .hire-eng-row svg{color:var(--green);flex-shrink:0}
+
+  /* WHAT I DO */
+  .hire-do-sec{padding:88px 0}
+  .hire-do-hdr{margin-bottom:52px}
+  .hire-do-list{display:flex;flex-direction:column}
+  .hire-do-row{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
+  .hire-do-row:first-child{border-top:1px solid var(--bd)}
+  .hire-do-num{font-family:var(--fm);font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
+  .hire-do-row:hover .hire-do-num{color:var(--ac)}
+  .hire-do-t{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
+  .hire-do-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.75;margin:0;max-width:720px}
+
+  /* VS TABLE */
+  .hire-vs-sec{padding:88px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+  .hire-vs-hdr{margin-bottom:44px}
+  .hire-vs-table{border:1px solid var(--bd);border-radius:16px;overflow
