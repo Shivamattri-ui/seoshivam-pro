@@ -25,7 +25,10 @@ const publisherName = 'seoshivampro';
 const authorProfileUrl = `${siteOrigin}/about`;
 const publisherId = `${siteOrigin}/#publisher`;
 const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${ogImage.startsWith('/') ? ogImage : '/' + ogImage}`;
-const isOgSvg = ogImageAbsolute.endsWith('.svg');
+const ogImageType = ogImageAbsolute.endsWith('.svg') ? 'image/svg+xml'
+  : ogImageAbsolute.endsWith('.png') ? 'image/png'
+  : ogImageAbsolute.endsWith('.webp') ? 'image/webp'
+  : 'image/jpeg';
 
 const defaultSchema = {
   "@context": "https://schema.org",
@@ -218,7 +221,7 @@ const finalSchema = schema || defaultSchema;
   <meta property="og:type" content="website">
   <meta property="og:image" content={ogImageAbsolute}>
   <meta property="og:image:secure_url" content={ogImageAbsolute}>
-  <meta property="og:image:type" content={isOgSvg ? 'image/svg+xml' : 'image/jpeg'}>
+  <meta property="og:image:type" content={ogImageType}>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content={title}>
