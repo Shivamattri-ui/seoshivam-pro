@@ -29,14 +29,17 @@ function wrap(text: string, maxChars: number, maxLines: number): string[] {
   const words = text.split(/\s+/);
   const lines: string[] = [];
   let cur = '';
-  for (const w of words) {
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
     const next = cur ? cur + ' ' + w : w;
     if (next.length > maxChars && cur) {
       lines.push(cur);
       cur = w;
       if (lines.length === maxLines - 1) {
-        // Last line: keep adding remaining words and ellipsize if needed
-        const rest = words.slice(words.indexOf(w)).join(' ');
+        // Last line: pack the remaining words (from the current index, NOT
+        // words.indexOf(w) which matches an earlier duplicate word and repeats
+        // text) and ellipsize if it overflows.
+        const rest = words.slice(i).join(' ');
         lines.push(rest.length > maxChars ? rest.slice(0, maxChars - 1).trimEnd() + '…' : rest);
         return lines;
       }

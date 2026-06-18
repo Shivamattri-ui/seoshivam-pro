@@ -7,6 +7,7 @@ interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   schema?: object;
 }
 
@@ -15,8 +16,13 @@ const {
   description,
   canonical = Astro.url.href,
   ogImage = '/og-image.svg',
+  ogImageAlt,
   schema,
 } = Astro.props;
+
+// Descriptive alt for the social/Discover preview image. Falls back to the
+// page title so the og:image is never missing alt text.
+const ogAltText = ogImageAlt || title;
 
 // Resolve OG image to absolute URL (social platforms require it)
 const siteOrigin = 'https://seoshivam.pro';
@@ -224,7 +230,7 @@ const finalSchema = schema || defaultSchema;
   <meta property="og:image:type" content={ogImageType}>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content={title}>
+  <meta property="og:image:alt" content={ogAltText}>
   <meta property="og:site_name" content="Shivam Attri">
   <meta property="og:locale" content="en_US">
 
@@ -235,7 +241,7 @@ const finalSchema = schema || defaultSchema;
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
   <meta name="twitter:image" content={ogImageAbsolute}>
-  <meta name="twitter:image:alt" content={title}>
+  <meta name="twitter:image:alt" content={ogAltText}>
 
   <!-- Fonts: preconnect + non-blocking load + swap for fast LCP/FCP -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

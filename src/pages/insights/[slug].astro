@@ -39,6 +39,8 @@ const articleUrl = `https://seoshivam.pro/insights/${post.id}`;
 // Raster PNG (not SVG): required for Google Discover eligibility and
 // accepted by every social crawler. See src/pages/og/[slug].png.ts.
 const articleOgImage = post.data.ogImage || `/og/${post.id}.png`;
+// Descriptive alt for the OG/Discover cover (frontmatter `ogAlt` overrides).
+const articleOgAlt = post.data.ogAlt || `${post.data.title} · seoshivam.pro Insights cover`;
 const aiPromptText = encodeURIComponent(`Summarise this article and explain the key points: ${articleUrl}`);
 
 const nlStackLogos = [
@@ -141,6 +143,7 @@ const schema = {
   description={post.data.description}
   canonical={articleUrl}
   ogImage={articleOgImage}
+  ogImageAlt={articleOgAlt}
   schema={schema}
 >
   <Nav />
