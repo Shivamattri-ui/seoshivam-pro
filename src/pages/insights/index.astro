@@ -75,27 +75,14 @@ const schema = {
     <!-- ─────────── HERO: editorial masthead ─────────── -->
     <section class="ix-hero">
       <div class="container">
-        <div class="ix-mast rv">
-          <span class="stamp">FILE / INSIGHTS</span>
-          <span class="ix-mast-sep"></span>
-          <span class="ix-mast-meta">Vol. 01 &middot; {posts.length} guide{posts.length===1?'':'s'} published</span>
-          <span class="ix-mast-spacer"></span>
-          <span class="ix-mast-meta hide-mob">Updated {fmtDate(posts[0]?.data.pubDate || new Date())}</span>
-        </div>
+        <div class="hair left rv">Insights / AEO &amp; SEO field notes</div>
 
         <h1 class="ix-h1 rv d1">
           <span>The AEO and SEO</span>
           <em class="grad-anim">field notes.</em>
         </h1>
 
-        <div class="ix-hero-foot rv d2">
-          <p class="ix-sub">Long-form guides on <a href="/services/aeo" class="ilink">Answer Engine Optimization</a>, <a href="/services/seo" class="ilink">SEO architecture</a>, AI search visibility, and <a href="/services/web-design" class="ilink">web design for machines</a>. Written for founders done playing yesterday's game. See the work behind the writing: <a href="/work" class="ilink">client results.</a></p>
-          <div class="ix-stats">
-            <div class="ix-stat"><span class="ix-stat-n grad-anim">{posts.length}</span><span class="ix-stat-l">Guides</span></div>
-            <div class="ix-stat"><span class="ix-stat-n grad-anim">04</span><span class="ix-stat-l">Pillars</span></div>
-            <div class="ix-stat"><span class="ix-stat-n grad-anim">52</span><span class="ix-stat-l">Per year</span></div>
-          </div>
-        </div>
+        <p class="ix-sub rv d2">Long-form guides on <a href="/services/aeo" class="ilink">Answer Engine Optimization</a>, <a href="/services/seo" class="ilink">SEO architecture</a>, AI search visibility, and <a href="/services/web-design" class="ilink">web design for machines</a>. Written for founders done playing yesterday's game. See the work behind the writing: <a href="/work" class="ilink">client results.</a></p>
 
         <div class="ix-cats rv d3" role="tablist" aria-label="Filter by category">
           {categories.map(c=>(
@@ -235,22 +222,13 @@ const schema = {
   .ix-feat-sec > .container,
   .ix-grid-sec > .container,
   .ix-nl-sec > .container{max-width:1280px}
-  .ix-hero{padding:160px 0 56px;position:relative;z-index:1}
-  .ix-mast{display:flex;align-items:center;gap:14px;margin-bottom:36px;padding-bottom:18px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
-  .ix-mast .stamp{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ac);padding:5px 10px;border:1px solid rgba(79,142,247,.28);border-radius:3px;background:var(--agl)}
-  .ix-mast-sep{width:24px;height:1px;background:var(--bd)}
-  .ix-mast-meta{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm)}
-  .ix-mast-spacer{flex:1 1 auto}
+  .ix-hero{padding:150px 0 52px;position:relative;z-index:1}
+  .ix-hero .hair{margin-bottom:28px}
 
-  .ix-h1{font-family:var(--fd);font-size:clamp(48px,8vw,128px);font-weight:400;line-height:.92;letter-spacing:-.03em;color:var(--w);margin:0 0 36px;display:flex;flex-direction:column;gap:2px}
+  .ix-h1{font-family:var(--fd);font-size:clamp(48px,8vw,128px);font-weight:400;line-height:.92;letter-spacing:-.03em;color:var(--w);margin:0 0 32px;display:flex;flex-direction:column;gap:2px}
   .ix-h1 em{font-style:italic}
 
-  .ix-hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:48px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid var(--bd)}
-  .ix-sub{font-family:var(--fu);font-size:clamp(15px,1.5vw,17px);color:var(--wd);line-height:1.7;max-width:560px;font-weight:400}
-  .ix-stats{display:flex;align-items:flex-end;gap:36px;flex-shrink:0}
-  .ix-stat{display:flex;flex-direction:column;gap:6px}
-  .ix-stat-n{font-family:var(--fd);font-size:clamp(40px,4.5vw,64px);font-weight:400;line-height:.85;letter-spacing:-.03em;font-style:italic}
-  .ix-stat-l{font-family:var(--fm);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--wm)}
+  .ix-sub{font-family:var(--fu);font-size:clamp(15px,1.5vw,17px);color:var(--wd);line-height:1.7;max-width:620px;font-weight:400;margin:0 0 44px;padding-bottom:40px;border-bottom:1px solid var(--bd)}
 
   /* ───────────── CATEGORY TABS + SEARCH ───────────── */
   .ix-cats{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
@@ -385,12 +363,9 @@ const schema = {
   @media(max-width:1100px){
     .ix-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
   }
-  @media(max-width:900px){
-    .ix-hero-foot{flex-direction:column;align-items:flex-start;gap:28px}
-    .ix-stats{align-self:flex-start}
-  }
   @media(max-width:680px){
-    .ix-hero{padding:130px 0 36px}
+    .ix-hero{padding:124px 0 36px}
+    .ix-sub{margin-bottom:32px;padding-bottom:28px}
     .ix-h1{margin-bottom:28px}
     .ix-grid{grid-template-columns:1fr;gap:28px}
     .ix-cats{gap:8px}
