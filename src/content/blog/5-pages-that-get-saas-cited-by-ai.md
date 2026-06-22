@@ -95,6 +95,20 @@ Sequence by intent heat. Build the pages closest to a purchase first.
 
 Across all of them, apply the same structural rules: answer first, real numbers, tables and lists over prose walls, and a self-contained opening on every page.
 
+<div class="dl-cta">
+  <div class="dl-cta-ico" aria-hidden="true">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-5"/><path d="m9 15 3 3 3-3"/></svg>
+  </div>
+  <div class="dl-cta-body">
+    <span class="dl-cta-kicker">Free checklist · no signup</span>
+    <h3 class="dl-cta-h">The 5-Page AI Citation Audit</h3>
+    <p class="dl-cta-sub">The printable, page-by-page checklist version of this guide. Walk your site, tick what is done, and fix the pages AI cites first.</p>
+  </div>
+  <a class="dl-cta-btn" href="/downloads/5-page-ai-citation-checklist.pdf" download data-cursor="Download the PDF" onclick="try{window.gtag&&gtag('event','file_download',{file_name:'5-page-ai-citation-checklist.pdf',link_text:'5-Page AI Citation Audit'})}catch(e){}">Download the checklist
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+  </a>
+</div>
+
 ## The honest reality
 
 These five pages are necessary, not sufficient. They put you in the answer for the queries that decide the sale, which is why they are worth building before the next batch of blogs. But a meaningful share of AI citations, especially on branded queries, goes to third-party listicles, reviews, and communities you do not own. The complete strategy is both: own the decision-stage pages on your site, and earn presence in the independent sources AI already trusts.
