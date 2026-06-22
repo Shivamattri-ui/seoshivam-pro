@@ -16,7 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const HOST = 'seoshivam.pro';
-const KEY = 'aab3919b8d18adb74090622a666fc2a4';
+const KEY = '557bee82cbe04cc4835072b085e3edbc';
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 const ENDPOINT = 'https://api.indexnow.org/indexnow';
 // The Vercel adapter writes to dist/client; some setups surface it under
