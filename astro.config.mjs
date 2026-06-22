@@ -1,7 +1,28 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
+import fs from 'node:fs';
+import path from 'node:path';
 import { rehypeWrapTables } from './src/plugins/rehype-wrap-tables.ts';
+
+// Build a { slug -> lastmod ISO } map from blog frontmatter so the sitemap
+// carries a real <lastmod> per post (updatedDate if set, else pubDate). This
+// is the freshness signal Google uses to prioritize re-crawling changed URLs.
+function blogLastmod() {
+  const dir = path.join(process.cwd(), 'src', 'content', 'blog');
+  const map = {};
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.md')) continue;
+    const fm = (fs.readFileSync(path.join(dir, file), 'utf8').split('---')[1]) || '';
+    const pub = /pubDate:\s*"?([0-9-]+)"?/.exec(fm)?.[1];
+    const upd = /updatedDate:\s*"?([0-9-]+)"?/.exec(fm)?.[1];
+    const d = upd || pub;
+    if (d) map[file.replace(/\.md$/, '')] = new Date(d).toISOString();
+  }
+  return map;
+}
+const BLOG_LASTMOD = blogLastmod();
+const BUILD_LASTMOD = new Date().toISOString();
 
 export default defineConfig({
   site: 'https://seoshivam.pro',
@@ -25,7 +46,14 @@ export default defineConfig({
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
   },
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    serialize(item) {
+      // Per-post lastmod for /insights/<slug>/; build time for other pages.
+      const m = item.url.match(/\/insights\/([^/]+)\/?$/);
+      item.lastmod = (m && BLOG_LASTMOD[m[1]]) ? BLOG_LASTMOD[m[1]] : BUILD_LASTMOD;
+      return item;
+    },
+  })],
   build: {
     inlineStylesheets: 'auto',
   },

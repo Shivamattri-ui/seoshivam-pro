@@ -402,6 +402,15 @@ npm run preview   # preview production build locally
    - `BREVO_API_KEY` (all environments)
 3. Domain: `seoshivam.pro`
 4. Build output: static pages + per-blog OG covers (both `.svg` and `.png` per post) + 3 serverless functions (`/api/contact`, `/api/subscribe`, `/api/resource-gate`)
+5. `vercel.json` pins `buildCommand` to `npm run build` so the `postbuild` hook always runs (Vercel otherwise may call `astro build` directly and skip it).
+
+### Indexing (sitemap + IndexNow)
+- **Sitemap** (`@astrojs/sitemap`) emits per-URL `<lastmod>`: blog posts get their `updatedDate || pubDate` (mapped in `astro.config.mjs` via `blogLastmod()` + the `serialize` hook), other pages get build time. This is the freshness signal for Google. Don't drop the serialize hook.
+- **IndexNow** (`scripts/indexnow-submit.mjs`, wired as `postbuild`): on every Vercel **production** build it POSTs all sitemap URLs to `api.indexnow.org`, instantly notifying Bing/Yandex/Naver/Seznam. Bing's index powers ChatGPT Search + Copilot, so this is the main "instant indexing" lever. Google does NOT use IndexNow.
+  - Public key file: `public/aab3919b8d18adb74090622a666fc2a4.txt` (the key is public by design, served at that URL; `keyLocation` in the script must keep matching this filename).
+  - The script only runs on `VERCEL_ENV=production` (set `INDEXNOW_FORCE=1` to run locally), and never fails the build (always exits 0).
+  - Verify submissions in **Bing Webmaster Tools → IndexNow**. There is no legit instant-index API for Google; use sitemap `lastmod` + GSC "Request Indexing".
+  - Legacy `public/seoshivampro.txt` is an unused orphan (a weak old IndexNow key with no submitter); harmless, left in place.
 
 ---
 
