@@ -409,7 +409,8 @@ npm run preview   # preview production build locally
 - **IndexNow** (`scripts/indexnow-submit.mjs`, wired as `postbuild`): on every Vercel **production** build it POSTs all sitemap URLs to `api.indexnow.org`, instantly notifying Bing/Yandex/Naver/Seznam. Bing's index powers ChatGPT Search + Copilot, so this is the main "instant indexing" lever. Google does NOT use IndexNow.
   - Public key file: `public/aab3919b8d18adb74090622a666fc2a4.txt` (the key is public by design, served at that URL; `keyLocation` in the script must keep matching this filename).
   - The script only runs on `VERCEL_ENV=production` (set `INDEXNOW_FORCE=1` to run locally), and never fails the build (always exits 0).
-  - Verify submissions in **Bing Webmaster Tools → IndexNow**. There is no legit instant-index API for Google; use sitemap `lastmod` + GSC "Request Indexing".
+  - ⚠️ **One-time unlock required:** IndexNow returns `403 UserForbiddedToAccessSite` until the domain is added + verified in **Bing Webmaster Tools** (Bing must recognize ownership of seoshivam.pro). Our side is correct (key file live + byte-exact, payload host matches); the 403 is purely Bing not yet knowing the domain. After BWT verification (easiest: "Import from Google Search Console"), submissions start succeeding and every deploy auto-submits. Verify in **Bing Webmaster Tools → IndexNow**.
+  - There is no legit instant-index API for Google; use sitemap `lastmod` + GSC "Request Indexing".
   - Legacy `public/seoshivampro.txt` is an unused orphan (a weak old IndexNow key with no submitter); harmless, left in place.
 
 ---
