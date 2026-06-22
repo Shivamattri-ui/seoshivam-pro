@@ -137,7 +137,7 @@ Every time a cluster post goes live, add the internal link to the pillar at the 
 
 Certain formats build topical authority faster because they attract more external links, more AI citations, and more internal link density.
 
-**Original benchmark data.** A survey of 100 customers or a data analysis of your own platform metrics creates a citable source. Other publishers cite it. AI engines cite it. The same data can be referenced across multiple cluster posts, each time adding a link back to the source. "Our 2025 benchmark report of 150 B2B SaaS companies found..." is the most citation-magnet content format in the cluster model.
+**Original benchmark data.** A survey of 100 customers or a data analysis of your own platform metrics creates a citable source. Other publishers cite it. AI engines cite it. The same data can be referenced across multiple cluster posts, each time adding a link back to the source. "Our 2026 benchmark report of 150 B2B SaaS companies found..." is the most citation-magnet content format in the cluster model.
 
 **Comparison tables.** HTML tables comparing options in a category get extracted by AI engines and displayed directly in answers. A table with five options, four comparison criteria, and specific data in each cell is more likely to be cited for comparison queries than three paragraphs describing the same information.
 

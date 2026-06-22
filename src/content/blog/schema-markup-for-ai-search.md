@@ -159,8 +159,8 @@ Every blog post should have Article schema. This tells AI engines the content ty
   "headline": "Your Post Title",
   "description": "Your meta description",
   "url": "https://yoursite.com/blog/your-post",
-  "datePublished": "2025-04-01",
-  "dateModified": "2025-04-21",
+  "datePublished": "2026-04-01",
+  "dateModified": "2026-04-21",
   "author": {
     "@type": "Person",
     "@id": "https://yoursite.com/#you",

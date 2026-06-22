@@ -1,5 +1,5 @@
 ﻿---
-title: "SEO for B2B SaaS: The Complete Architecture Guide for 2025"
+title: "SEO for B2B SaaS: The Complete Architecture Guide"
 description: "B2B SaaS SEO requires a different architecture than ecommerce or content sites. Here is the complete framework: topical authority, programmatic pages, and the content system that actually compounds."
 pubDate: 2026-05-13
 category: "seo"

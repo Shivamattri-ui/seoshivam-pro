@@ -70,7 +70,7 @@ This question reveals whether the candidate has thought seriously about measurem
 
 Signals worth tracking:
 
-**Citation frequency per engine.** Manually verified, monthly, for a defined set of target queries. "We are cited in 4 of 20 target queries on Perplexity this month versus 1 last month" is a real measurement. This requires actual manual sampling — there is no automated citation tracking tool that covers all six major engines accurately as of 2025.
+**Citation frequency per engine.** Manually verified, monthly, for a defined set of target queries. "We are cited in 4 of 20 target queries on Perplexity this month versus 1 last month" is a real measurement. This requires actual manual sampling — there is no automated citation tracking tool that covers all six major engines accurately as of 2026.
 
 **Bing impressions in Bing Webmaster Tools.** Rising impressions for target queries indicate improving Bing indexation and relevance, which directly improves Copilot and ChatGPT citation probability.
 
