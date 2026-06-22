@@ -1,0 +1,3 @@
+# IndexNow key file must be byte-exact (only the key, no trailing newline),
+# or Bing rejects verification with UserForbiddedToAccessSite. Never EOL-convert it.
+public/aab3919b8d18adb74090622a666fc2a4.txt -text
