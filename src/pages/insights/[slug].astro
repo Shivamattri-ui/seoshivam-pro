@@ -1458,6 +1458,13 @@ const schema = {
     text-decoration-color:rgba(79,142,247,.4);text-underline-offset:3px;
   }
   #artProse .dl-soft-nl a:hover{text-decoration-color:rgba(79,142,247,.85)}
+  /* Highlight pulse when the soft nudge focuses the sidebar signup */
+  #sidebarForm.nl-flash{animation:nlFlash 1.5s ease}
+  @keyframes nlFlash{
+    0%,100%{box-shadow:0 0 0 0 rgba(79,142,247,0)}
+    18%{box-shadow:0 0 0 3px rgba(79,142,247,.5)}
+    65%{box-shadow:0 0 0 3px rgba(79,142,247,.16)}
+  }
   @media(max-width:680px){
     #artProse .dl-cta{flex-direction:column;align-items:flex-start;gap:18px;padding:24px}
     #artProse .dl-cta-btn{width:100%;justify-content:center}
@@ -1468,6 +1475,33 @@ const schema = {
   // ─── Sidebar form mount time (anti-bot, matches /api/subscribe) ───
   const sidebarFormMount = document.getElementById('sidebarForm');
   if(sidebarFormMount) sidebarFormMount.dataset.mountedAt = String(Date.now());
+
+  // ─── Soft newsletter nudge (under the download CTA) ───
+  // The link uses href="#sidebarForm" as a no-JS fallback, but that form sits
+  // in a sticky sidebar that is usually already on screen, so a raw anchor jump
+  // just scrolls upward and feels broken. Instead: focus the email field, and
+  // only scroll when the form is genuinely out of view (e.g. stacked on mobile).
+  document.querySelectorAll<HTMLAnchorElement>('.dl-soft-nl a[href="#sidebarForm"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('sidebarEmail') as HTMLInputElement | null;
+      const form = document.getElementById('sidebarForm');
+      if(!input || !form) return;
+      const focusInput = () => { try { input.focus({ preventScroll: true }); } catch(_) { input.focus(); } };
+      const flash = () => { form.classList.add('nl-flash'); setTimeout(() => form.classList.remove('nl-flash'), 1500); };
+      const r = input.getBoundingClientRect();
+      const inView = r.top >= 64 && r.bottom <= (window.innerHeight - 16);
+      if(inView){ focusInput(); flash(); return; }
+      const lenis = (window as any).__lenis;
+      if(lenis && typeof lenis.scrollTo === 'function'){
+        lenis.scrollTo(form, { offset: -110, duration: 1.0, onComplete: () => { focusInput(); flash(); } });
+        setTimeout(() => { focusInput(); flash(); }, 950);
+      } else {
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { focusInput(); flash(); }, 500);
+      }
+    });
+  });
 
   // ─── Article reading progress + TOC highlight (single scroll handler) ───
   const artProg = document.getElementById('artProg');
