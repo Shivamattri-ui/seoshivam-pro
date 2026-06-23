@@ -108,6 +108,7 @@ Across all of them, apply the same structural rules: answer first, real numbers,
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
   </a>
 </div>
+<p class="dl-soft-nl">Prefer it in your inbox? <a href="#sidebarForm" data-cursor="Join the newsletter">Get the weekly AEO brief free</a>: one actionable insight, one data point, one thing worth reading.</p>
 
 ## The honest reality
 

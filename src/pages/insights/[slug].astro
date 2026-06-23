@@ -1447,6 +1447,17 @@ const schema = {
   }
   #artProse .dl-cta-btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(79,142,247,.28)}
   html.light #artProse .dl-cta-btn{color:#fff}
+  /* Soft newsletter nudge directly under the download CTA */
+  #artProse .dl-cta:has(+ .dl-soft-nl){margin-bottom:0}
+  #artProse .dl-soft-nl{
+    margin:14px 0 48px;
+    font-family:var(--fu);font-size:13.5px;color:var(--wm);line-height:1.6;text-align:center;
+  }
+  #artProse .dl-soft-nl a{
+    color:var(--ac);font-weight:600;text-decoration:underline;
+    text-decoration-color:rgba(79,142,247,.4);text-underline-offset:3px;
+  }
+  #artProse .dl-soft-nl a:hover{text-decoration-color:rgba(79,142,247,.85)}
   @media(max-width:680px){
     #artProse .dl-cta{flex-direction:column;align-items:flex-start;gap:18px;padding:24px}
     #artProse .dl-cta-btn{width:100%;justify-content:center}
