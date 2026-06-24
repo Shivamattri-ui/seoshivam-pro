@@ -12,13 +12,14 @@ Shivam Attri spent a year over-thinking how his personal brand site should look.
 
 **Who:** Shivam Attri — AEO Specialist · SEO Strategist · AI-Visible Web Designer
 **Where:** Gurugram, India · Available globally (US/UK/EU/AU clients)
-**Experience:** 7+ years · 30+ brands shipped across logistics SaaS, health tech, hospitality, ecommerce, B2B SaaS
+**Experience:** 7+ years · 30+ brands shipped across health tech, logistics, manufacturing, ecommerce, marketing, tech / software, consultancies, SaaS, and hospitality
 **Build credentials:** 150+ production websites + 50+ high-converting landing pages
 **Email:** shivamattri27@gmail.com (public replies and notifications)
 
 **Core POV:** AI search is a power shift, not a trend. Brands that build structured, intent-driven content systems now will dominate visibility while everyone else plays outdated SEO games. The bridge: between invisible brands and AI-visible companies.
 
-**Target buyer:** US-based B2B SaaS founder · $500K–$3M ARR · team of 5–20 · spending $5K–$20K/mo on ads · CAC feels like slow poison · heard about AEO but doesn't know how to show up there.
+**Target buyer:** Founders and marketing leads at growing brands across MANY industries (health tech, logistics, manufacturing, ecommerce, marketing, tech / software, consultancies, SaaS, hospitality, and more) · spending on ads while organic never compounded · CAC feels like slow poison · heard about AEO but doesn't know how to show up there.
+**HARD RULE (Shivam has corrected this repeatedly):** NEVER position the site, headlines, titles, or copy around "B2B SaaS" as the single or primary target buyer. Lead with the SERVICE (AEO / SEO / AI-visible web design) and prove reach with BREADTH of industries. SaaS may appear only as one item in a list, never as the headline ICP.
 The line that stops them mid-scroll: *"You are not invisible because of SEO. You are invisible because AI does not understand you."*
 
 ---
@@ -129,7 +130,7 @@ CSS vars: `--fd` (display), `--fu` (ui), `--fm` (mono). Always use these — nev
    - 40+ international clients
    - 30+ brands across 4 continents
    - 7+ years compounding (since 2018, AEO since 2022)
-   - 16× click growth in 30 days (HealthTech SaaS, India: 63 → 1,010 organic clicks)
+   - 16× click growth in 30 days (Logistics SaaS, India: 63 → 1,010 organic clicks)
    - 11K clicks · 346K impressions · 3.2% CTR · 11.3 avg position (Logistics Platform, 3 months)
    - 1.88K clicks · 110K impressions · 1.7% CTR · 10.1 avg position (Health Tech US, 3 months)
    - 463K active users · 552K sessions · 747K views · 157 realtime active (Logistics SaaS GA4, 90 days)

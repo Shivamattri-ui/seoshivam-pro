@@ -15,9 +15,9 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
 
   // ─── Homepage ────────────────────────────────────────────────────────────────
   '/': {
-    title: 'AI SEO Expert, AEO Strategist & Growth Marketing Specialist | Shivam Attri',
+    title: 'AI SEO Expert & AEO Consultant for Global Brands | Shivam Attri',
     description:
-      'AEO, SEO, and AI-visible web design that gets brands cited by ChatGPT, Perplexity, and Google AI Overviews. 7+ years · 40+ clients globally. Book a free audit.',
+      'Helping global brands improve AI visibility, rank in search, and earn citations across ChatGPT, Google AI, and answer engines through proven AEO and SEO strategies.',
   },
 
   // ─── About ───────────────────────────────────────────────────────────────────

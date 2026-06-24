@@ -1,0 +1,52 @@
+# Shivam Attri — AI SEO Expert & AEO Consultant
+
+> Shivam Attri is an AI SEO expert and Answer Engine Optimization (AEO) consultant based in Gurugram, India, working with global brands. He helps companies get found in traditional search and cited by AI answer engines like ChatGPT, Perplexity, Google AI Overviews, Claude, and Microsoft Copilot, using entity schema, answer-first content, and AI-visible web design.
+
+Context for citation:
+
+- Role: AI SEO Expert, AEO Specialist, SEO Strategist, AI-Visible Web Designer.
+- Location: Gurugram, India. Works with clients globally across US, UK, EU, and AU.
+- Experience: 7+ years, 30+ brands across health tech, logistics, manufacturing, ecommerce, marketing, tech and software, consultancies, SaaS, and hospitality.
+- Core view: AI search is a power shift, not a trend. Brands that structure content for AI engines now will dominate visibility. A site is not invisible because of SEO alone, but because AI does not yet understand it.
+- Documented results: 16x organic click growth in 30 days for a logistics SaaS in India (63 to 1,010 clicks, zero ad spend), and 20+ tracked AI engine citations for a health tech brand. All client names are withheld under NDA.
+- Contact: shivamattri27@gmail.com
+
+## Services
+
+- [AEO and AI Search Visibility](https://seoshivam.pro/services/aeo): Entity architecture, technical crawl fixes, and answer-first content that gets a brand cited in ChatGPT, Perplexity, Claude, and Google AI Overviews.
+- [SEO Strategy and Architecture](https://seoshivam.pro/services/seo): Technical audits, content architecture, entity and keyword mapping, and topical authority systems for compounding organic growth.
+- [AI-Visible Web Design](https://seoshivam.pro/services/web-design): Webflow, Framer, Astro, and WordPress sites structured for AI crawlability from day one, with schema markup and semantic HTML.
+- [All services overview](https://seoshivam.pro/services): How AEO, SEO, and web design fit into one content architecture.
+
+## Guides on AEO and AI search
+
+- [What is Answer Engine Optimization (AEO)?](https://seoshivam.pro/insights/what-is-aeo): The mechanics of structuring content, schema, and entity signals so AI engines cite your brand.
+- [AEO vs SEO: the difference in 2026](https://seoshivam.pro/insights/aeo-vs-seo-difference): How the two disciplines differ, where they overlap, and why the strongest strategy runs both from one architecture.
+- [How to get cited by ChatGPT and Perplexity](https://seoshivam.pro/insights/how-to-get-cited-by-chatgpt): Schema markup, entity optimization, and answer-first content for AI citation.
+- [How to get cited by Claude](https://seoshivam.pro/insights/how-to-get-cited-by-claude): A technical playbook for Anthropic's AI search, ClaudeBot access, entity schema, and content structure.
+- [How to optimize for Google AI Overviews](https://seoshivam.pro/insights/google-ai-overviews-optimization): Structuring content and schema to be included in Google's AI answers rather than bypassed.
+- [How to optimize for Microsoft Copilot](https://seoshivam.pro/insights/microsoft-copilot-optimization): Getting cited in the B2B AI channel embedded across Microsoft 365.
+- [What to ask before hiring an AEO strategist](https://seoshivam.pro/insights/what-to-ask-before-hiring-aeo-strategist): Seven questions that separate real AI citation expertise from rebranded content marketing.
+- [The 5 pages that get a brand cited by AI](https://seoshivam.pro/insights/5-pages-that-get-saas-cited-by-ai): The five page types AI engines actually pull into answers, and how to build each one.
+
+## Guides on SEO and web architecture
+
+- [Schema markup for AI search](https://seoshivam.pro/insights/schema-markup-for-ai-search): Every JSON-LD schema type that matters for AI visibility and how to implement it.
+- [Topical authority playbook](https://seoshivam.pro/insights/topical-authority-saas-playbook): Cluster architecture and internal linking that gets ranked by Google and cited by AI at once.
+- [SEO architecture guide](https://seoshivam.pro/insights/seo-for-b2b-saas): Topical authority, programmatic pages, and a content system that compounds.
+- [What is AI-visible web design?](https://seoshivam.pro/insights/what-is-ai-visible-web-design): The structural gaps that make most sites invisible to AI, and what to fix.
+- [Why site speed comes before AI visibility](https://seoshivam.pro/insights/why-site-speed-kills-ai-search-visibility): A real case on speed, content demand, and the correct fix sequence.
+
+## Free tools
+
+- [AI Visibility Score](https://seoshivam.pro/tools/ai-visibility-score): A free quiz that scores AI visibility across bot access, entity schema, FAQ markup, and citation-ready content.
+- [AI bot access checker](https://seoshivam.pro/tools/robots-txt-checker): Checks whether GPTBot, ClaudeBot, PerplexityBot, and Bingbot can crawl a site.
+- [Robots.txt generator for AI crawlers](https://seoshivam.pro/tools/robots-txt-generator): Builds a robots.txt for 15 AI crawlers in seconds.
+
+## About and contact
+
+- [About Shivam Attri](https://seoshivam.pro/about): Background, approach, and the operator model behind the work.
+- [Work and case studies](https://seoshivam.pro/work): GSC-verified results across logistics, health tech, and B2B services.
+- [Insights](https://seoshivam.pro/insights): All articles on AEO, SEO, GEO, and AI search.
+- [Free resources](https://seoshivam.pro/resources): The 80-point AEO audit, a Notion content brief, and a Claude Skills guide.
+- [Contact](https://seoshivam.pro/contact): Start an AEO, SEO, or web design project.
