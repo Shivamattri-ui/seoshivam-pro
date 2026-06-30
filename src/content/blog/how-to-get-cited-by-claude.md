@@ -1,55 +1,49 @@
 ---
 title: "How to Get Your Brand Cited by Claude: The Anthropic AI Search Playbook"
-description: "Claude uses Brave Search for live queries, not Bing. Most AEO strategies miss this entirely. This is the complete technical playbook for getting your brand cited by Claude: Brave indexation, ClaudeBot access, entity schema, and the content structure Claude's retrieval system actually prefers."
+description: "How to get your brand cited by Claude, based on verifiable signals: ClaudeBot access, clear entity data, answer-first content, named expertise, and authoritative third-party mentions."
 pubDate: 2026-05-24
+updatedDate: 2026-06-30
 category: "ai-search"
-readTime: "11 min"
+readTime: "10 min"
 featured: false
-tldr: "Claude retrieves live web content via Brave Search, not Bing. Getting cited requires Brave indexation (verified at search.brave.com), ClaudeBot allowed in robots.txt, answer-first content structure, and FAQPage schema. Most AEO strategies written in 2024 optimize entirely for Bing-dependent engines and miss Claude's citation pathway entirely."
+tldr: "Claude rewards verifiable credibility over keyword tactics. To get cited: let ClaudeBot crawl your raw HTML, make your entity unambiguous with Organization schema and consistent naming, lead every section with a direct answer backed by specific data, attribute claims to named experts, and earn mentions on sources Claude already trusts. Neutral, evidence-first writing is cited; promotional copy is suppressed."
 recap:
-  - "Claude uses Brave Search for live queries. A site well-indexed by Bing may still be invisible to Claude. Check Brave indexation separately by running site:yourdomain.com at search.brave.com. Submit individual URLs at search.brave.com/submit-url for indexation within 1 to 3 days."
-  - "ClaudeBot is Anthropic's training crawler. Allow it explicitly in robots.txt alongside BraveBot. Many security plugins block both by default."
-  - "Claude strongly favors FAQPage schema: the acceptedAnswer text is directly extractable as a citation. Every service and content page should have 3 to 5 structured Q&A pairs with specific, data-bearing answers."
+  - "Let ClaudeBot reach your raw HTML. Anthropic's crawler cannot read content hidden behind JavaScript, tabs, or a bot-blocking firewall rule. Confirm access with the robots.txt checker."
+  - "Make your entity unambiguous: Organization schema with a precise description, plus identical brand naming across your site, LinkedIn, and any profile Claude can cross-reference."
+  - "Write answer-first. Lead each section with a direct, specific, data-bearing answer in neutral language. This is what AI extracts, and promotional phrasing is what gets suppressed."
 tags: ["Claude Citations", "AI Search", "AEO", "Answer Engine Optimization", "Anthropic AI Search"]
 faqs:
   - q: "How does Claude decide what to cite?"
-    a: "Claude cites sources through two mechanisms. For real-time queries with search enabled, Claude retrieves results from Brave Search and cites the most relevant indexed pages. For knowledge-type questions, Claude draws on its training corpus. In both cases, Claude strongly favors pages with FAQPage schema, answer-first content structure, and specific data rather than vague claims. Brave Search indexation is the technical prerequisite for live-search citations."
-  - q: "Is Brave Search indexation different from Google and Bing?"
-    a: "Yes. Brave Search operates an independent index crawled by BraveBot. A site can rank number one on Google, be well-indexed by Bing, and still return few results in a Brave site search. To verify Brave indexation, run site:yourdomain.com at search.brave.com. To accelerate indexation, submit individual URLs at search.brave.com/submit-url: Brave typically crawls submitted URLs within 1 to 3 days. Brave does not currently offer a full webmaster dashboard equivalent to Google Search Console or Bing Webmaster Tools."
-  - q: "What is ClaudeBot and do I need to allow it separately?"
-    a: "ClaudeBot is Anthropic's training data crawler. It crawls the web to include content in future model training. BraveBot is Brave's indexing crawler for live search results. Both need to be explicitly allowed in robots.txt. A site that allows ClaudeBot but not BraveBot will appear in Claude's training data but not in live search citations. A site that allows neither cannot be cited by Claude through either mechanism."
+    a: "Claude favors verifiable credibility: named authors with real expertise, primary or original data, clear entity signals, and claims that are consistent across multiple authoritative sources. Structurally, it extracts best from answer-first content where a direct, specific answer leads the section. Its training also biases against promotional language, so neutral, evidence-led writing is cited more often than brand-forward copy."
+  - q: "Does Claude use Brave Search?"
+    a: "It has been widely reported across the AI-search industry that Claude's live web search uses Brave's Search API. Anthropic has not officially confirmed a single, permanent retrieval provider, and the stack can change, so treat this as reported rather than settled fact. The reliable approach is to optimize for signals that work regardless of the backend: crawler access, clear entity data, answer-first content, and authoritative mentions."
+  - q: "What is ClaudeBot and do I need to allow it?"
+    a: "ClaudeBot is Anthropic's crawler. If it cannot reach your raw HTML, your content cannot enter Claude's pipeline. Allow it explicitly in robots.txt and confirm no security plugin or Cloudflare rule blocks it. Content hidden behind JavaScript interactions, tabs, or dropdowns is also invisible, because AI crawlers read the server's raw HTML, not the interacted page."
   - q: "How is getting cited by Claude different from ChatGPT?"
-    a: "The content structure requirements are similar. The technical requirements are different. ChatGPT uses Bing for live search. Claude uses Brave Search. Bing indexation, which most AEO playbooks correctly emphasize for ChatGPT and Copilot, does not help Claude. You need separate Brave indexation alongside Bing indexation to cover both engines. The entity schema and FAQPage schema requirements are the same across both."
+    a: "The content and entity requirements are largely the same: answer-first structure, clear entities, named expertise, and primary data. The biggest practical difference is tone. Claude's training biases harder against promotional language, so neutral, source-backed writing matters more for Claude. Off-site authority, meaning mentions on sources the model already trusts, drives citations on both."
 ---
 
-Most AEO strategies published in 2024 assume AI engines all pull from the same sources. They optimize for Bing indexation because ChatGPT and Copilot use Bing. They work for those engines. They miss Claude entirely.
+Most AEO playbooks treat every AI engine the same. Claude is the one where that assumption costs you the most. Anthropic's model is trained to prefer verifiable credibility and to distrust promotional language, so the brands it cites are rarely the ones with the most keyword-optimized pages. They are the ones with clear entity signals, named expertise, primary data, and a presence on sources the model already trusts.
 
-Claude uses Brave Search for live queries. Brave operates its own independent index, crawled by its own bot, with its own submission interface. A site thoroughly indexed by Bing can return almost no results in a Brave site search. Brands running comprehensive Bing-focused AEO campaigns and wondering why their Claude citation rate stays at zero are missing this technical gap.
+This is the Claude-specific playbook: what is verifiable, what is only reported, and what to actually do. The [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) covers the Bing-based engines.
 
-This is the Claude-specific playbook. The [ChatGPT citation playbook](/insights/how-to-get-cited-by-chatgpt) covers Bing-dependent engines. This covers what is different for Claude.
+## How Claude retrieves and cites
 
-## How Claude retrieves information
+Claude cites through two pathways.
 
-Claude operates two distinct citation pathways:
+**Live web search (when enabled):** For queries that benefit from current information, such as vendor comparisons, pricing, and recent updates, Claude runs a web search and cites relevant pages. The retrieval provider behind this has been widely reported to be Brave's Search API, though Anthropic has not officially confirmed a single, permanent provider, and it can change. The strategic response is not to chase an unconfirmed backend. It is to optimize for the signals that hold across any retrieval layer: crawlability, entity clarity, and credible, well-structured content.
 
-**Live Brave Search (when search is enabled):** For queries that benefit from current information — vendor comparisons, pricing, current tools, recent updates — Claude runs a Brave Search query and cites the most relevant indexed pages. If your site is not indexed by Brave, this pathway is entirely closed.
+**Training corpus (for knowledge questions):** For stable questions with durable answers, Claude draws on its training data. Content that met quality and credibility signals during training can be cited without a live search step.
 
-**Training corpus (for knowledge questions):** For questions with stable answers — "what is topical authority," "how does FAQPage schema work," "what is the difference between AEO and SEO" — Claude draws on its training data. Content that met Claude's quality signals during previous training runs can produce citations without a live search step.
+The practical takeaway: you cannot engineer a search index you cannot verify. You can control whether Claude's crawler reaches you, whether your entity is unambiguous, and whether your content is credible and extractable. That is where the leverage is.
 
-The practical implication: brands that want consistent Claude citations across both query types need to address both pathways. Brave indexation for live queries. Content quality and structure for training corpus citations.
+## Step 1: Make sure ClaudeBot can reach your content
 
-## Step 1: Verify and fix Brave indexation
+Before anything else, confirm Anthropic's crawler can read your pages. AI crawlers fetch the raw HTML your server returns. They do not click, scroll, or wait for JavaScript. Content behind a tab, an accordion, a "load more" button, or a client-side render can be invisible to them even when it looks fine in a browser.
 
-Open [search.brave.com](https://search.brave.com) and run `site:yourdomain.com`. Compare the result count to your actual published page count. For most sites, the discrepancy is significant — some return under 20% of their actual pages.
-
-Brave does not offer a full webmaster dashboard like Google Search Console or Bing Webmaster Tools. It does offer a URL submission tool at [search.brave.com/submit-url](https://search.brave.com/submit-url). Submit your key pages individually: Brave typically crawls submitted URLs within 1 to 3 days. For bulk indexation, BraveBot crawls naturally once it is allowed in robots.txt and your XML sitemap is accessible. Brave indexation still builds more slowly than Bing, which is why addressing it early matters rather than retrofitting after a campaign is already running.
-
-Allow BraveBot explicitly in robots.txt alongside the other AI crawlers:
+Allow the AI crawlers explicitly in robots.txt:
 
 ```
-User-agent: BraveBot
-Allow: /
-
 User-agent: ClaudeBot
 Allow: /
 
@@ -63,40 +57,13 @@ User-agent: Bingbot
 Allow: /
 ```
 
-Note the distinction between BraveBot (Brave's indexing crawler) and ClaudeBot (Anthropic's training crawler). Both need to be allowed. Many sites block all non-major-search-engine bots by default through security plugins or Cloudflare settings. Use the [robots.txt checker](/tools/robots-txt-checker) to confirm which bots your site is currently allowing.
+Many sites block non-major-search-engine bots by default through security plugins or Cloudflare rules. Use the [robots.txt checker](/tools/robots-txt-checker) to confirm exactly which bots your site allows today. ClaudeBot access is binary: if it is blocked, no other optimization matters.
 
-## Step 2: FAQPage schema — Claude's highest-extractability format
+## Step 2: Make your entity unambiguous
 
-Of all schema types, FAQPage produces the most direct citations in Claude responses. The `acceptedAnswer` text is structured, clearly attributed to the source URL, and extractable without the surrounding prose context that live search results carry.
+Claude's value to a user depends on knowing what a brand is, what it does, and what category it belongs to. Brands with weak entity signals either do not appear in Claude responses or appear with hedged language ("I believe" rather than a direct statement).
 
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is AEO and how does it differ from SEO?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AEO, Answer Engine Optimization, is the practice of structuring content so AI engines cite your brand in generated answers. SEO targets keyword rankings in traditional search results. The technical foundation overlaps but the content structure requirements differ: AEO requires answer-first formatting, FAQPage schema, and entity definition. SEO requires topical authority and technical crawlability. The most effective approach builds one system that satisfies both."
-      }
-    }
-  ]
-}
-```
-
-The accepted answer text should be 40 to 100 words, contain a direct factual answer, include at least one specific data point, and avoid any marketing language. Claude's extraction is precise: vague answers produce low-confidence citations with hedged language; specific answers produce direct citations with source attribution.
-
-Every service page and high-traffic content page should have 3 to 5 FAQ schema entries targeting the specific questions your buyers ask. The broader [schema markup for AI search](/insights/schema-markup-for-ai-search) guide covers the full JSON-LD stack.
-
-## Step 3: Entity signals Claude uses
-
-Claude's training corpus includes entity knowledge: what a brand is, what it does, what category it operates in. Brands with weak entity signals either do not appear in Claude responses or appear with uncertain language ("I believe" rather than a direct statement).
-
-Entity clarity for Claude requires:
-
-**Organization schema with a precise description field:**
+Define your entity with Organization schema and a precise description:
 
 ```json
 {
@@ -114,63 +81,67 @@ Entity clarity for Claude requires:
 }
 ```
 
-The `description` field is pulled directly into entity representations in AI training data. It needs to be precise enough to distinguish your brand from every other brand in your category. "We help SaaS companies grow" is not a distinguishing description. "Customer success automation for B2B SaaS companies with 50 to 500 seats" is.
+The `description` needs to be precise enough to separate you from every other brand in your category. "We help companies grow" is not distinguishing. "Customer success automation for B2B teams with 50 to 500 seats" is.
 
-**Consistent naming across surfaces.** If your company name in the schema is "Acme AI," your LinkedIn is "Acme AI Inc.," and your GitHub is "acme-ai-hq," Claude's entity model may treat these as separate entities or have low confidence in the connection. Consistent naming across your schema, LinkedIn, GitHub, and any press mentions strengthens entity coherence.
+Then keep the naming identical everywhere. If your schema says "Acme AI," your LinkedIn says "Acme AI Inc.," and your GitHub says "acme-ai-hq," the entity model may treat these as separate, low-confidence entities. Consistent naming across your schema, LinkedIn, and any press mentions strengthens the connection the model can trust.
 
-## Step 4: Content structure that Claude extracts reliably
+## Step 3: Write answer-first, evidence-led content
 
-Claude users in professional settings write longer, more specific queries than typical search users. Common patterns from enterprise and developer contexts:
+This is the durable lever, and it predates every AI engine. The content that gets extracted is the content that answers a clear question directly, early, and with specifics.
 
-- "Explain the difference between [X] and [Y] for [specific use case]"
-- "What are the most important factors when evaluating [vendor category] for [company type]"
-- "How does [approach] compare to [alternative approach] in terms of [specific metric]"
+**Answer in sentence one.** The direct response to the question a page targets must appear before any context or background. AI pulls from the start of a content block when constructing a citation.
 
-Content targeting these patterns performs better in Claude citations than content targeting generic short-tail queries. Specificity is the signal. A guide titled "AEO for Legal Tech: Getting Cited by AI Tools Used by Corporate Counsel" will be cited for more Claude queries than a guide titled "Introduction to AEO."
+**Specific data over general claims.** "Our median client sees first citations within 60 days" is citable. "Our clients see great results" is not. Attach a number to a claim wherever you honestly can.
 
-The structural requirements for content Claude extracts predictably:
+**Question-match headings.** An H2 phrased as the question a buyer actually asks ("How long does AEO take?") gives the model a precise extraction anchor. "Our Process" does not.
 
-**Answer in sentence one.** The direct response to the question the page targets must appear before any context, qualification, or background. Claude pulls from the beginning of content blocks when constructing citations.
+**Neutral, non-promotional tone.** Claude's training biases against salesy language. The same fact stated plainly is more citable than the same fact wrapped in marketing. Write like a source, not a brochure.
 
-**Specific data over general claims.** "Our median client sees first citations within 60 days" is citable. "Our clients see great results" is not. Every factual claim should have a number attached where possible.
+A note on schema, because it gets oversold: mark this content up with FAQPage and Organization structured data, but understand what it does. Structured data helps machines parse your page unambiguously. It is not a citation lever, and it is not a Google rich-result lever anymore either. It is low-cost plumbing worth keeping, not the thing that does the work. Your content and your credibility do the work.
 
-**Question-match headings.** H2 and H3 headings written as questions or matching question phrasing give Claude precise extraction anchors. "How long does AEO take?" as an H2 will be extracted for Claude queries asking that exact question. "Our Process" will not.
+This is the same content that earns [topical authority](/insights/topical-authority-saas-playbook) in traditional search. One system, structured well, serves both.
 
-This content structure overlaps exactly with what produces [topical authority](/insights/topical-authority-saas-playbook) for traditional search. The same cluster of specific, expert-level posts that earns Google citations earns Claude citations when the Brave indexation layer is in place.
+## Step 4: Earn off-site authority
 
-## Step 5: Comparing Claude to other engines
+This is the part most on-site playbooks skip, and it is where the majority of citation weight actually sits. AI engines lean heavily on what authoritative third parties say about you, not just what you say about yourself. The same fact appearing consistently across independent, trusted sources is far stronger than the same fact on your own domain alone.
+
+Practical moves, in order of leverage:
+
+- **Publish original data.** A benchmark, survey, or metric from your own work that exists nowhere else makes you a primary source. Primary sources get cited at a much higher rate than pages that aggregate other people's numbers. This is the highest-leverage asset you can build.
+- **Earn mentions on sources the model already trusts.** Find the third-party pages and threads AI repeatedly cites in your category, and get named in them through genuinely useful contributions or direct outreach to the author.
+- **Keep your facts consistent across profiles.** Reviews, directories, and professional profiles that state the same entity facts reinforce the model's confidence.
+- **Attribute to named experts.** A claim tied to a real person with relevant, verifiable expertise carries an E-E-A-T signal that anonymous copy does not.
+
+## Step 5: How Claude compares to other engines
 
 | Signal | Claude | ChatGPT | Copilot | Perplexity |
 |--------|--------|---------|---------|------------|
-| Live search index | Brave Search | Bing | Bing | Bing + multiple |
+| Live retrieval provider | Reported Brave (unconfirmed) | Bing | Bing | Multiple |
 | Training corpus weight | High | High | Moderate | Low |
-| Bing indexation required | No | Yes | Yes | Yes |
-| Brave indexation required | Yes | No | No | No |
-| FAQPage schema value | Very high | High | High | High |
-| LinkedIn signals | Moderate | Low | High | Low |
+| Rewards named expertise + primary data | Very high | High | Moderate | High |
+| Penalizes promotional tone | High | Moderate | Low | Moderate |
+| Off-site authority weight | High | High | High (LinkedIn / MS ecosystem) | High |
 
-The [Microsoft Copilot playbook](/insights/microsoft-copilot-optimization) covers the Bing-specific optimization path for Copilot, which is the enterprise AI engine most different from Claude in its technical requirements.
+The [Microsoft Copilot playbook](/insights/microsoft-copilot-optimization) covers the Bing-specific path, which is the enterprise engine most different from Claude in its technical requirements.
 
 ## Measuring Claude citation performance
 
-No native analytics exist for Claude citations. Three indirect signals are worth tracking:
+No native analytics exist for Claude citations. Two indirect signals are worth tracking:
 
-**Monthly manual sampling.** Ask Claude your 20 most important buyer queries, with and without the search tool enabled. Document which responses cite your domain and what text is extracted. Repeat monthly. Changes in citation frequency and the queries you appear for reveal whether the Brave indexation and content structure work is producing results.
+**Monthly manual sampling.** Ask Claude your 20 most important buyer queries, with and without search enabled. Document which responses cite your domain and what text is extracted. Repeat monthly. Shifts in citation frequency, and in the queries you appear for, show whether the entity, content, and authority work is landing.
 
-**Brave Search indexation check.** Run `site:yourdomain.com` on [search.brave.com](https://search.brave.com) monthly. Track the indexed page count. If pages you published weeks ago are still missing, check that BraveBot is not blocked in robots.txt or by a Cloudflare firewall rule, then resubmit those URLs at [search.brave.com/submit-url](https://search.brave.com/submit-url). Brave does not offer a webmaster console with impression data, so the site search count and the submit-url tool are the primary direct levers available.
+**Branded search growth.** Buyers who meet your brand inside a Claude answer frequently search your brand name afterward. Unexplained growth in branded impressions in Google Search Console is one of the more reliable secondary indicators that AI citations are increasing across engines.
 
-**Branded Google search growth.** Buyers who encounter your brand in Claude responses frequently search your brand name on Google as a follow-up. Unexplained growth in branded impressions in Google Search Console is one of the more reliable secondary indicators of increasing AI citation frequency across engines.
-
-Run the [AI Visibility Score](/tools/ai-visibility-score) to benchmark your current citation status across Claude, ChatGPT, Perplexity, and Google AI Overviews before building a channel-specific optimization roadmap.
+Run the [AI Visibility Score](/tools/ai-visibility-score) to benchmark where you currently stand across Claude, ChatGPT, Perplexity, and Google AI Overviews before building a channel-specific roadmap.
 
 ---
 
 ## Related reading
 
-- [ChatGPT citations](/insights/how-to-get-cited-by-chatgpt) — Bing-based engines: ChatGPT and Perplexity
-- [Microsoft Copilot optimization](/insights/microsoft-copilot-optimization) — Bing indexation, LinkedIn signals, enterprise citation mechanics
-- [schema markup for AI search](/insights/schema-markup-for-ai-search) — complete JSON-LD implementation by page type
-- [AEO strategy](/services/aeo) — multi-engine implementation including Claude, ChatGPT, Perplexity, and Copilot
+- [ChatGPT citations](/insights/how-to-get-cited-by-chatgpt): the Bing-based engines, ChatGPT and Perplexity
+- [Microsoft Copilot optimization](/insights/microsoft-copilot-optimization): Bing indexation, LinkedIn signals, enterprise citation mechanics
+- [Schema markup for AI search](/insights/schema-markup-for-ai-search): the full JSON-LD stack by page type
+- [AEO strategy](/services/aeo): multi-engine implementation including Claude, ChatGPT, Perplexity, and Copilot
 
 ---
 
