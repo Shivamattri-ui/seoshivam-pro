@@ -27,6 +27,11 @@ const BUILD_LASTMOD = new Date().toISOString();
 export default defineConfig({
   site: 'https://seoshivam.pro',
   compressHTML: true,
+  // One canonical URL form site-wide: NO trailing slash (root stays '/').
+  // Keeps sitemap, <link rel=canonical>, og:url and the served URL identical,
+  // and makes the Vercel adapter 308-redirect '/x/' -> '/x' so there's only
+  // ever one indexable address per page. Internal links are all no-slash too.
+  trailingSlash: 'never',
   // Windows: some setups miss file-change events; polling makes `src/content/blog/*.md` edits reliable in `astro dev`.
   vite: {
     server: {
@@ -48,7 +53,21 @@ export default defineConfig({
   },
   integrations: [sitemap({
     serialize(item) {
-      // Per-post lastmod for /insights/<slug>/; build time for other pages.
+      // Belt-and-suspenders: strip any trailing slash (except root) so the
+      // sitemap <loc> exactly matches the canonical tag. Must run before the
+      // lastmod match so the URL is normalized either way.
+      try {
+        const u = new URL(item.url);
+        // Drop the trailing slash on every non-root path so <loc> matches the
+        // page's <link rel=canonical> exactly. (The integration already does
+        // this under trailingSlash:'never'; this is a guard if that changes.)
+        // The integration also strips the ROOT slash; scripts/fix-sitemap-root.mjs
+        // re-adds it in postbuild so the homepage <loc> matches its canonical
+        // 'https://seoshivam.pro/'.
+        if (u.pathname !== '/') u.pathname = u.pathname.replace(/\/+$/, '');
+        item.url = u.href;
+      } catch { /* leave item.url as-is if it can't be parsed */ }
+      // Per-post lastmod for /insights/<slug>; build time for other pages.
       const m = item.url.match(/\/insights\/([^/]+)\/?$/);
       item.lastmod = (m && BLOG_LASTMOD[m[1]]) ? BLOG_LASTMOD[m[1]] : BUILD_LASTMOD;
       return item;
