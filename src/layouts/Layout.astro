@@ -253,8 +253,13 @@ const finalSchema = schema || defaultSchema;
   <!-- DNS prefetch for Brevo (lead capture latency) -->
   <link rel="dns-prefetch" href="https://api.brevo.com">
 
-  <!-- Favicon -->
+  <!-- Favicon: SVG for modern browsers, PNG/ICO fallback for the rest
+       (Safari, Google's favicon crawler, bookmarks) so no context falls
+       back to a default icon. All are the branded 'SA' monogram. -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <!-- RSS (Insights blog) -->
   <link rel="alternate" type="application/rss+xml" title="seoshivam.pro Insights" href={`${siteOrigin}/rss.xml`}>
