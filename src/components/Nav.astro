@@ -511,6 +511,20 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   // the slide choreography.
   if(reduced) return;
 
+  // ── Pause infinite gradient-heading animations while off screen ──
+  //    Keeps the animated look on every heading, but only the ones
+  //    currently visible actually repaint. This removes the site-wide
+  //    continuous paint load that made scrolling feel laggy against Lenis.
+  const animEls = document.querySelectorAll('.grad-anim, .sec-h em, .sec-h2 em, .display em, .gs-h2 em, .gh-line-em em');
+  if (animEls.length) {
+    const animObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        (e.target as HTMLElement).style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+      });
+    }, { rootMargin: '160px 0px' });
+    animEls.forEach(el => { (el as HTMLElement).style.animationPlayState = 'paused'; animObs.observe(el); });
+  }
+
   // Re-observe late `.rv` nodes briefly only (full subtree MutationObserver is costly during scroll/layout).
   const mut = new MutationObserver((muts) => {
     muts.forEach(m => {

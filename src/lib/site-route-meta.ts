@@ -110,4 +110,11 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
     description:
       'Websites cited by ChatGPT, Perplexity, and Google AI Overviews from launch day. JSON-LD schema, semantic HTML, AI bot access. Webflow, Framer, Astro, WordPress.',
   },
+
+  // ─── GEO Service ─────────────────────────────────────────────────────────────
+  '/services/generative-engine-optimization': {
+    title: 'Generative Engine Optimization Services (GEO) | Shivam Attri',
+    description:
+      'Generative engine optimization that gets your brand named in AI answers across ChatGPT, Perplexity, and Google AI. Built on entity clarity, real data, and earned authority.',
+  },
 };

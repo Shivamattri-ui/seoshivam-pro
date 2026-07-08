@@ -35,18 +35,18 @@ html.light {
   --bg:#F7F4EE; --s1:#FFFFFF; --s2:#F1ECE3; --s3:#E5DFD3; --s4:#D9D2C4;
   --bd:#D8D2C7; --bds:#E8E2D6;
   --w:#15110D; --wd:#54504A; --wm:#9F9A92;
-  --ac:#2554D6; --ac2:#173389;
-  --ag:linear-gradient(135deg,#2554D6 0%,#173389 100%);
-  --agl:rgba(37,84,214,0.08);
+  --ac:#DA7756; --ac2:#B85C3C;
+  --ag:linear-gradient(135deg,#DA7756 0%,#B85C3C 100%);
+  --agl:rgba(218,119,86,0.08);
   --green:#0E7A3E; --glow:rgba(14,122,62,0.22);
   --grid-color:rgba(20,16,12,0.045);
-  --ray-color:rgba(37,84,214,0.022);
+  --ray-color:rgba(218,119,86,0.022);
   --grain-op:0.010;
 }
 
 /* Light mode — cursor: remove difference blend (inverts weirdly on cream) */
 html.light .cur-dot{mix-blend-mode:normal;background:var(--ac)}
-html.light .cur-ring{border-color:rgba(37,84,214,.30)}
+html.light .cur-ring{border-color:rgba(218,119,86,.30)}
 
 /* Light mode — keep terminal panel always dark */
 html.light .term{background:#0D0D14!important;border-color:#1E1E2E!important}
@@ -67,26 +67,26 @@ html.light .ab-bl-log,
 html.light .pgal-frame{
   box-shadow:
     0 24px 56px rgba(20,16,12,.10),
-    0 4px 12px rgba(37,84,214,.08),
-    0 0 0 1px rgba(37,84,214,.18);
-  border-color:rgba(37,84,214,.20);
+    0 4px 12px rgba(218,119,86,.08),
+    0 0 0 1px rgba(218,119,86,.18);
+  border-color:rgba(218,119,86,.20);
 }
 
 /* Light-mode editorial covers — soften the deep blue-on-cream contrast */
 html.light .ic-cover{
   box-shadow:
     0 28px 56px rgba(20,16,12,.12),
-    0 4px 14px rgba(37,84,214,.10),
+    0 4px 14px rgba(218,119,86,.10),
     inset 0 1px 0 rgba(255,255,255,.06),
-    inset 0 0 0 1px rgba(37,84,214,.22);
+    inset 0 0 0 1px rgba(218,119,86,.22);
 }
 
 /* Cards on cream: lift them with refined shadow recipes */
 html.light .ccta-card{
   box-shadow:
     0 24px 56px rgba(20,16,12,.08),
-    0 2px 8px rgba(37,84,214,.06),
-    0 0 0 1px rgba(37,84,214,.10);
+    0 2px 8px rgba(218,119,86,.06),
+    0 0 0 1px rgba(218,119,86,.10);
 }
 
 /* Form inputs on cream: warm white background + refined focus ring */
@@ -97,13 +97,13 @@ html.light .ccta-input{
 html.light .ccta-input:focus{
   background:#FFFFFF;
   border-color:var(--ac);
-  box-shadow:0 0 0 3px rgba(37,84,214,.10);
+  box-shadow:0 0 0 3px rgba(218,119,86,.10);
 }
 
 /* Service-page FAQ open state — softer brand-tint on cream */
 html.light .faq-list .faq-item:has(.faq-btn[aria-expanded="true"]){
-  background:rgba(37,84,214,.05);
-  border-color:rgba(37,84,214,.32);
+  background:rgba(218,119,86,.05);
+  border-color:rgba(218,119,86,.32);
 }
 html.light .faq-list .faq-item{background:#FFFFFF}
 
@@ -112,13 +112,13 @@ html.light .svc-other,
 html.light .mytools-link{
   box-shadow:
     0 12px 32px rgba(20,16,12,.06),
-    0 2px 6px rgba(37,84,214,.04);
+    0 2px 6px rgba(218,119,86,.04);
 }
 html.light .svc-other:hover,
 html.light .mytools-link:hover{
   box-shadow:
     0 18px 48px rgba(20,16,12,.10),
-    0 4px 12px rgba(37,84,214,.14);
+    0 4px 12px rgba(218,119,86,.14);
 }
 
 /* Pills, chips, eyebrows: deeper blue on cream for legibility */
@@ -129,7 +129,7 @@ html.light .stamp{color:var(--ac)}
 
 /* Underlined article links on cream */
 html.light .art-prose a:not(.no-style){
-  text-decoration-color:rgba(37,84,214,.32);
+  text-decoration-color:rgba(218,119,86,.32);
 }
 html.light .art-prose a:not(.no-style):hover{
   color:var(--ac2);
@@ -146,7 +146,7 @@ html.light .art-prose pre code{background:transparent}
 
 /* Drop cap on light articles: deeper blue gradient for letterpress feel */
 html.light .art-prose > p:first-of-type::first-letter{
-  background:linear-gradient(140deg, var(--ac) 0%, #5A85E8 50%, var(--ac2) 100%);
+  background:linear-gradient(140deg, var(--ac) 0%, #E39A7C 50%, var(--ac2) 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
 }
 
@@ -335,7 +335,7 @@ body::after{
   display:flex;flex-direction:column;justify-content:space-between;gap:24px;
   background:
     radial-gradient(ellipse 120% 80% at 90% 10%, rgba(79,142,247,.32) 0%, transparent 55%),
-    radial-gradient(ellipse 100% 100% at 10% 100%, rgba(26,58,143,.55) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 10% 100%, rgba(184,92,60,.55) 0%, transparent 55%),
     radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,142,247,.10) 0%, transparent 70%),
     linear-gradient(135deg, #0A0B14 0%, #050608 100%);
   box-shadow:
@@ -468,7 +468,7 @@ section{padding:110px 0;position:relative;z-index:1}
   will-change:background-position;
 }
 html.light .sec-h em,html.light .sec-h2 em,html.light .display em{
-  background:linear-gradient(110deg,var(--ac) 0%,#5A8AE8 25%,var(--ac2) 50%,#5A8AE8 75%,var(--ac) 100%);
+  background:linear-gradient(110deg,var(--ac) 0%,#EBA98C 25%,var(--ac2) 50%,#EBA98C 75%,var(--ac) 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
 }
@@ -496,7 +496,7 @@ html.light .sec-h em,html.light .sec-h2 em,html.light .display em{
 }
 .label:hover::before, .hair:hover::before, .eyebrow:hover::before{
   width:48px;
-  background:linear-gradient(90deg,transparent 0%,var(--ac) 60%,#7BAEFF 100%);
+  background:linear-gradient(90deg,transparent 0%,var(--ac) 60%,var(--ac2) 100%);
 }
 /* Override .hair's old double-line treatment (right-side line removed for consistency) */
 .hair::after{display:none}
@@ -555,7 +555,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
 }
 @keyframes gradShift{0%{background-position:0% 50%}100%{background-position:-300% 50%}}
 @media(prefers-reduced-motion:reduce){.grad-anim{animation:none;background-position:0% 50%}}
-html.light .grad-anim{background:linear-gradient(110deg,var(--ac) 0%,#5A8AE8 25%,var(--ac2) 50%,#5A8AE8 75%,var(--ac) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+html.light .grad-anim{background:linear-gradient(110deg,var(--ac) 0%,#EBA98C 25%,var(--ac2) 50%,#EBA98C 75%,var(--ac) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
 /* ── Classification stamp / file label (monospace operator chrome) ── */
 .stamp{
@@ -655,7 +655,7 @@ html.light .pill{border-color:rgba(43,91,224,.22)}
 /* Animated gradient capsule fill on hover */
 .pill::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(110deg,rgba(79,142,247,.18) 0%,rgba(123,174,255,.32) 25%,rgba(26,58,143,.18) 50%,rgba(123,174,255,.32) 75%,rgba(79,142,247,.18) 100%);
+  background:linear-gradient(110deg,rgba(79,142,247,.18) 0%,rgba(123,174,255,.32) 25%,rgba(184,92,60,.18) 50%,rgba(123,174,255,.32) 75%,rgba(79,142,247,.18) 100%);
   background-size:300% 100%;
   background-position:0% 50%;
   opacity:0;
@@ -775,7 +775,7 @@ html.light #artProse a.content-int,
 html.light .art-prose a.content-int,
 html.light .avs-steps-note a.content-int{
   color:var(--ac);
-  text-decoration-color:rgba(37,84,214,.42);
+  text-decoration-color:rgba(218,119,86,.42);
 }
 
 /* ── External links in blog prose (preview-enabled, opens in new tab) ── */
@@ -798,7 +798,7 @@ html.light .avs-steps-note a.content-int{
 html.light #artProse a.content-ext,
 html.light .art-prose a.content-ext{
   color:var(--ac);
-  text-decoration-color:rgba(37,84,214,.38);
+  text-decoration-color:rgba(218,119,86,.38);
 }
 
 /* ── Site-wide inline internal links (preview-enabled on all pages) ── */
@@ -817,11 +817,11 @@ a.ilink:hover{
 }
 html.light a.ilink{
   color:var(--ac);
-  text-decoration-color:rgba(37,84,214,.4);
+  text-decoration-color:rgba(218,119,86,.4);
 }
 html.light a.ilink:hover{
   color:var(--ac2);
-  text-decoration-color:rgba(26,58,143,.6);
+  text-decoration-color:rgba(184,92,60,.6);
 }
 a.ilink-muted{
   color:inherit;
@@ -835,8 +835,8 @@ a.ilink-muted{
 a.ilink-muted:hover{
   text-decoration-color:rgba(123,190,255,.8);
 }
-html.light a.ilink-muted{text-decoration-color:rgba(37,84,214,.35)}
-html.light a.ilink-muted:hover{text-decoration-color:rgba(26,58,143,.6)}
+html.light a.ilink-muted{text-decoration-color:rgba(218,119,86,.35)}
+html.light a.ilink-muted:hover{text-decoration-color:rgba(184,92,60,.6)}
 .site-link-tip{
   position:fixed;
   z-index:480;
@@ -857,7 +857,7 @@ html.light a.ilink-muted:hover{text-decoration-color:rgba(26,58,143,.6)}
 .site-link-tip-t{font-family:var(--fu);font-size:14px;font-weight:700;color:var(--w);line-height:1.35;margin:0 0 6px;letter-spacing:-.02em}
 .site-link-tip-d{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .site-link-tip-u{font-family:var(--fm);font-size:10px;color:var(--wm);margin-top:10px;word-break:break-all;opacity:.85}
-html.light .site-link-tip{background:var(--s1);border-color:rgba(37,84,214,.22)}
+html.light .site-link-tip{background:var(--s1);border-color:rgba(218,119,86,.22)}
 
 /* Honeypot — shared by ContactCta + homepage subscribe forms */
 .cct-honey{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
