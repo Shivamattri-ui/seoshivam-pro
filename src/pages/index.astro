@@ -39,8 +39,6 @@ const clients = [
 <div class="grid-bg"></div>
 <div class="rays-wrap">{Array.from({length:12}).map((_,i)=><div class="ray" style={`--i:${i}`}></div>)}</div>
 <div class="scroll-prog" id="scrollProg"></div>
-<div class="cur-dot" id="curDot"></div>
-<div class="cur-ring" id="curRing"></div>
 
 <main id="main-content">
 
@@ -2985,8 +2983,6 @@ html.light .ic-cover{
 </style>
  
 <script>
-import gsap from 'gsap';
- 
 // ── Scroll progress ──
 const progEl = document.getElementById('scrollProg') as HTMLElement;
 window.addEventListener('scroll',()=>{
@@ -2994,26 +2990,10 @@ window.addEventListener('scroll',()=>{
   if(progEl) progEl.style.width=(dh>0?sy/dh*100:0)+'%';
 },{passive:true});
  
-// ── Custom cursor (GPU transform — no jitter) ──
-const dot=document.getElementById('curDot') as HTMLElement;
-const ring=document.getElementById('curRing') as HTMLElement;
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',(e)=>{
-  mx=e.clientX;my=e.clientY;
-  if(dot) dot.style.transform=`translate(${mx-4}px,${my-4}px)`;
-},{passive:true});
-(function loop(){
-  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
-  if(ring) ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;
-  requestAnimationFrame(loop);
-})();
-document.addEventListener('mouseover',(e)=>{
-  if((e.target as Element).closest('a,button,[data-hover]')){dot?.classList.add('hov');ring?.classList.add('hov');}
-});
-document.addEventListener('mouseout',(e)=>{
-  if((e.target as Element).closest('a,button,[data-hover]')){dot?.classList.remove('hov');ring?.classList.remove('hov');}
-});
- 
+// Cursor handled globally by the .bcur system in Nav.astro.
+// (Removed the legacy #curDot/#curRing loop: those elements are display:none,
+//  so it was running a 60fps rAF writing transforms to invisible nodes.)
+
 // Logo scramble on load
 document.addEventListener('DOMContentLoaded',()=>{
   const logoEl=document.querySelector('.logo-s') as HTMLElement;
@@ -3062,7 +3042,7 @@ const coObs=new IntersectionObserver((e)=>{
   });
 },{threshold:0.5});
 document.querySelectorAll('[data-count]').forEach(el=>coObs.observe(el));
- 
+
 // ── Vaporize cycling text (guarded — old hero element, may be absent) ──
 const words=document.querySelectorAll('.cw');
 if (words.length){
@@ -3185,7 +3165,8 @@ function runSERP(){
     if(pos<start)deltaEl.textContent=`↑${start-pos}`;
     if(p<1)requestAnimationFrame(step);
     else setTimeout(()=>{
-      gsap.to(rankEl,{opacity:0,duration:0.3,onComplete:()=>{rankEl.textContent='48';deltaEl.textContent='—';gsap.to(rankEl,{opacity:1,duration:0.3});setTimeout(runSERP,1500);}});
+      const fadeOut=rankEl.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'});
+      fadeOut.onfinish=()=>{rankEl.textContent='48';deltaEl.textContent='—';rankEl.animate([{opacity:0},{opacity:1}],{duration:300,fill:'forwards'});setTimeout(runSERP,1500);};
     },3000);
   }
   requestAnimationFrame(step);

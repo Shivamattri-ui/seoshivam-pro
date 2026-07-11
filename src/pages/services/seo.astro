@@ -39,8 +39,6 @@ const faqs = [
   <div class="grid-bg"></div>
   <div class="rays-wrap">{[0,1,2,3,4,5,6,7,8,9,10,11].map(i=><div class="ray" style={`--i:${i}`}></div>)}</div>
   <div class="scroll-prog" id="scrollProg"></div>
-  <div class="cur-dot" id="curDot"></div>
-  <div class="cur-ring" id="curRing"></div>
 
   <main>
 
@@ -574,11 +572,7 @@ const faqs = [
   <script>
   const prog=document.getElementById('scrollProg');
   window.addEventListener('scroll',()=>{if(prog){const s=document.documentElement;prog.style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%'}},{passive:true});
-  const dot=document.getElementById('curDot');const ring=document.getElementById('curRing');
-  let mx=0,my=0,rx=0,ry=0;
-  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(dot)dot.style.transform=`translate(${mx-4}px,${my-4}px)`},{passive:true});
-  (function loop(){if(ring){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`}requestAnimationFrame(loop)})();
-  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{dot?.classList.add('hov');ring?.classList.add('hov')});el.addEventListener('mouseleave',()=>{dot?.classList.remove('hov');ring?.classList.remove('hov')})});
+  // Cursor handled globally by the .bcur system in Nav.astro (legacy loop removed).
   const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 

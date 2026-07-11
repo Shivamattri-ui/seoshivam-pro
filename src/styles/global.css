@@ -44,10 +44,6 @@ html.light {
   --grain-op:0.010;
 }
 
-/* Light mode — cursor: remove difference blend (inverts weirdly on cream) */
-html.light .cur-dot{mix-blend-mode:normal;background:var(--ac)}
-html.light .cur-ring{border-color:rgba(218,119,86,.30)}
-
 /* Light mode — keep terminal panel always dark */
 html.light .term{background:#0D0D14!important;border-color:#1E1E2E!important}
 html.light .term-bar{background:#13131C!important;border-color:#1E1E2E!important}
@@ -187,7 +183,6 @@ html.js .rv{
   opacity:0;
   transform:translateY(24px);
   transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
-  will-change:opacity, transform;
 }
 html.js .rv.in{opacity:1;transform:translateY(0)}
 /* Stagger delays — .rv.d1 .. d4 cascade after the parent reveal */
@@ -204,7 +199,6 @@ html.js .op-hero .rv{
   opacity:1;
   transform:translateY(28px);
   transition:transform .75s cubic-bezier(.16,1,.3,1);
-  will-change:transform;
 }
 html.js .op-hero .rv.in{opacity:1;transform:translateY(0)}
 
@@ -243,83 +237,50 @@ body::after{
   -webkit-mask-image:radial-gradient(ellipse 90% 90% at 50% 40%,black 30%,transparent 100%);
 }
 
-.rays-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+/* Rotation is on the WRAP (one GPU layer) instead of each of the 12 rays
+   (which were 12 permanent layers). Rays are now static; the wrap spins them
+   as a group. Each ray's static angle bakes in its old base(30deg*i) + the old
+   animation-delay stagger(29.25deg*i) = 59.25deg*i, so the pattern is identical. */
+.rays-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;animation:rayRot 80s linear infinite;will-change:transform}
 
 .ray{
   position:absolute;top:50%;left:50%;
   width:1px;height:55vh;
   background:linear-gradient(to bottom,var(--ray-color),transparent);
   transform-origin:top center;
-  transform:rotate(calc(var(--i)*30deg)) translateX(-50%);
-  animation:rayRot 80s linear infinite;
-  animation-delay:calc(var(--i)*-6.5s);
-  will-change:transform;
+  transform:rotate(calc(var(--i)*59.25deg)) translateX(-50%);
 }
-@keyframes rayRot{to{transform:rotate(calc(var(--i)*30deg + 360deg)) translateX(-50%)}}
+@keyframes rayRot{to{transform:rotate(360deg)}}
 
 .scroll-prog{position:fixed;top:0;left:0;height:2px;background:var(--ag);width:0%;z-index:9999;border-radius:0 2px 2px 0;pointer-events:none}
 
-/* ─── OLD cursor system: HIDDEN, replaced by .bcur ─── */
-.cur-dot,.cur-ring{display:none !important}
-
-/* ─── NEW BRAND CURSOR ─── */
-/* Single element. Always centered on actual mouse via translate(-50%,-50%).
-   Default: 10px dot. On data-cursor hover: morphs into a brand-gradient pill with label. */
-.bcur{
-  position:fixed;
-  top:0;left:0;
-  width:10px;height:10px;
-  border-radius:999px;
+/* Minimal brand cursor: a dot at the EXACT pointer (no trail = no lag), theme-aware
+   (var(--ac) = blue in dark, terracotta in light). Position lives on the OUTER
+   element (moved by JS transform); the visible dot is the INNER element whose hover
+   scale is a pure GPU transform, so position and scale never fight (no jitter).
+   width/height are NOT animated (that reflow was the old jitter). Native cursor is
+   hidden from first paint via html.has-cursor (set in the <head> boot script);
+   native I-beam kept on form fields. Touch: no custom cursor. */
+.spm-cursor{
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:10000;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+.spm-cursor.is-active{opacity:1}
+.spm-cursor.is-text{opacity:0}
+.spm-cursor-i{
+  position:absolute;left:0;top:0;
+  width:10px;height:10px;border-radius:50%;
   background:var(--ac);
-  pointer-events:none;
-  z-index:9999;
-  display:flex;align-items:center;justify-content:center;
-  transform:translate(-50%,-50%);
-  transition:
-    width .35s cubic-bezier(.16,1,.3,1),
-    height .35s cubic-bezier(.16,1,.3,1),
-    background .3s,
-    box-shadow .3s,
-    padding .3s cubic-bezier(.16,1,.3,1);
-  will-change:left,top;
-  white-space:nowrap;
-  overflow:hidden;
-  box-shadow:0 0 0 1px rgba(79,142,247,.0), 0 4px 14px rgba(79,142,247,.0);
+  transform:translate(-50%,-50%) scale(1);
+  transition:transform .22s cubic-bezier(.16,1,.3,1),opacity .22s ease,background .3s;
+  will-change:transform;
 }
-.bcur-lbl{
-  font-family:var(--fm);font-size:10px;font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:#fff;
-  opacity:0;
-  width:0;
-  transition:opacity .2s ease,width .35s cubic-bezier(.16,1,.3,1);
-  pointer-events:none;
-}
-/* Soft hover state (any clickable a/button) */
-.bcur.hov{
-  width:38px;height:38px;
-  background:transparent;
-  box-shadow:0 0 0 1px rgba(79,142,247,.55), 0 6px 18px rgba(79,142,247,.18);
-}
-/* Labeled hover state: pill grows with text inside */
-.bcur.lbl{
-  width:auto;height:34px;
-  padding:0 18px;
-  background:linear-gradient(135deg,#4F8EF7 0%,#1A3A8F 100%);
-  background-size:220% 100%;
-  animation:bcurGrad 6s linear infinite;
-  box-shadow:0 0 0 1px rgba(79,142,247,.0), 0 10px 28px rgba(79,142,247,.45);
-}
-.bcur.lbl .bcur-lbl{opacity:1;width:auto}
-/* Hide custom cursor over social icon buttons (brand hover only) */
-.bcur.soc-off{
-  opacity:0;
-  width:10px;height:10px;
-  box-shadow:none;
-  transition:opacity .12s ease,width .12s ease,box-shadow .12s ease;
-}
-@keyframes bcurGrad{0%{background-position:0% 50%}100%{background-position:220% 50%}}
-@media(hover:none){.bcur{display:none}}
+.spm-cursor.is-hover .spm-cursor-i{transform:translate(-50%,-50%) scale(1.8);opacity:.6}
+html.has-cursor{cursor:none}
+html.has-cursor input,html.has-cursor textarea,html.has-cursor select{cursor:auto}
+@media(hover:none){.spm-cursor{display:none}}
 
 /* ════════════════════════════════════════════════════════════
    EDITORIAL COVER PRIMITIVE — used on homepage, /insights, /insights/[slug]
@@ -465,7 +426,6 @@ section{padding:110px 0;position:relative;z-index:1}
   background-size:300% 100%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:gradShift 8s linear infinite;
-  will-change:background-position;
 }
 html.light .sec-h em,html.light .sec-h2 em,html.light .display em{
   background:linear-gradient(110deg,var(--ac) 0%,#EBA98C 25%,var(--ac2) 50%,#EBA98C 75%,var(--ac) 100%);
@@ -551,7 +511,6 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
   background-size:300% 100%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:gradShift 8s linear infinite;
-  will-change:background-position;
 }
 @keyframes gradShift{0%{background-position:0% 50%}100%{background-position:-300% 50%}}
 @media(prefers-reduced-motion:reduce){.grad-anim{animation:none;background-position:0% 50%}}
@@ -631,6 +590,7 @@ html.light .grad-anim{background:linear-gradient(110deg,var(--ac) 0%,#EBA98C 25%
 @media(max-width:640px){
   .grad-anim{animation-duration:14s}
   .ray{display:none} /* drop ray work on mobile to save paint */
+  .rays-wrap{animation:none;will-change:auto} /* no empty spinning layer on mobile */
   body::after{opacity:calc(var(--grain-op) * .6)}
 }
 

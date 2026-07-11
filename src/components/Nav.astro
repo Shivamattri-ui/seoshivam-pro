@@ -86,12 +86,12 @@ const drops = [
 </div>
  
 <style>
-.nav-wrap{position:fixed;top:0;left:0;right:0;z-index:500;padding:16px 0;transition:padding .4s cubic-bezier(.16,1,.3,1),transform .3s ease}
+.nav-wrap{position:fixed;top:0;left:0;right:0;z-index:500;padding:16px 0;transition:padding .4s cubic-bezier(.16,1,.3,1),transform .3s ease;will-change:transform}
 .nav-wrap.sc{padding:10px 0}
 .nav-wrap.hidden{transform:translateY(-100%)}
  
-.nav-pill{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(8,8,8,.82);border:1px solid #2A2A2A;border-radius:999px;padding:8px 8px 8px 24px;backdrop-filter:blur(28px) saturate(1.6);-webkit-backdrop-filter:blur(28px) saturate(1.6);transition:box-shadow .4s}
-html.light .nav-pill{background:rgba(248,246,242,.88);border-color:#D4CFC6}
+.nav-pill{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(10,10,10,.97);border:1px solid #2A2A2A;border-radius:999px;padding:8px 8px 8px 24px;transition:box-shadow .4s}
+html.light .nav-pill{background:rgba(248,246,242,.97);border-color:#D4CFC6}
 .nav-wrap.sc .nav-pill{box-shadow:0 12px 48px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.05)}
  
 .logo{display:flex;align-items:baseline;gap:1px;text-decoration:none;flex-shrink:0}
@@ -180,15 +180,22 @@ const nav = document.getElementById('mainNav');
 const burger = document.getElementById('burger');
 const mob = document.getElementById('mobMenu');
 let last = 0, tick = false;
- 
+
+// Hysteresis: only flip hide/show after >6px of travel in a direction, so Lenis
+// momentum micro-jitter (sub-pixel scrollY wobble as it settles) cannot rapidly
+// toggle the state. That rapid toggle was what restarted the slide = the flicker.
 window.addEventListener('scroll',()=>{
   if(!tick){
     requestAnimationFrame(()=>{
       const sy = window.scrollY;
       nav?.classList.toggle('sc', sy>40);
-      if(sy>last && sy>200) nav?.classList.add('hidden');
-      else nav?.classList.remove('hidden');
-      last=sy; tick=false;
+      const diff = sy - last;
+      if(Math.abs(diff) > 6){
+        if(diff > 0 && sy > 200) nav?.classList.add('hidden');   // scrolling down
+        else if(diff < 0) nav?.classList.remove('hidden');       // scrolling up
+        last = sy;
+      }
+      tick=false;
     });
     tick=true;
   }
@@ -320,149 +327,36 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   });
 }
 
-// ──────────────────────────────────────────────
-// BRAND CURSOR (descriptive, brand-colored)
-// Single cursor element. Stays centered on the actual mouse via
-// translate(-50%,-50%). Default: small dot. On hover over any
-// link/button: subtle ring grows. On data-cursor="..." hover:
-// expands into a brand-gradient pill containing the label text.
-// ──────────────────────────────────────────────
+// ── Minimal brand cursor: single dot at the EXACT pointer, theme-aware, no labels ──
 (function(){
-  if(matchMedia('(hover:none)').matches) return;
-  if(document.querySelector('.bcur')) return; // guard against double-mount
+  if(matchMedia('(hover:none)').matches) return;            // touch: keep native
+  if(document.querySelector('.spm-cursor')) return;         // guard double-mount
 
-  const cursor = document.createElement('div');
-  cursor.className = 'bcur';
-  const lbl = document.createElement('span');
-  lbl.className = 'bcur-lbl';
-  cursor.appendChild(lbl);
-  document.body.appendChild(cursor);
+  const c = document.createElement('div');
+  c.className = 'spm-cursor';
+  c.innerHTML = '<span class="spm-cursor-i"></span>';
+  document.body.appendChild(c);
+  document.documentElement.classList.add('has-cursor');     // no-op if <head> already set it
 
-  let mx = -100, my = -100;
-  let cx = -100, cy = -100;
-
-  function loop(){
-    cx += (mx - cx) * 0.22;
-    cy += (my - cy) * 0.22;
-    cursor.style.left = cx + 'px';
-    cursor.style.top = cy + 'px';
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-
+  let shown = false, hovering = false, texting = false;
   document.addEventListener('mousemove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
+    // Exact position, no trail = no perceived lag. Only the OUTER transform changes here.
+    c.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+    if(!shown){ c.classList.add('is-active'); shown = true; }
   }, {passive:true});
+  document.addEventListener('mouseleave', () => c.classList.remove('is-active'));
+  document.addEventListener('mouseenter', () => { if(shown) c.classList.add('is-active'); });
 
-  document.addEventListener('mouseleave', () => {
-    cursor.style.opacity = '0';
-  });
-  document.addEventListener('mouseenter', () => {
-    cursor.style.opacity = '1';
-  });
-
-  // Hover state delegation: data-cursor elements activate label pill.
-  // Any other interactive element auto-generates a smart label from
-  // its text/aria/role so the descriptive cursor works site-wide.
-  let activeText = '';
-
-  function smartLabel(el: HTMLElement): string {
-    // 1. Explicit
-    if(el.dataset.cursor) return el.dataset.cursor;
-    // 2. Aria-label
-    const aria = el.getAttribute('aria-label');
-    if(aria && aria.length < 40) return aria;
-    // 3. Title attr
-    const ttl = el.getAttribute('title');
-    if(ttl && ttl.length < 40) return ttl;
-    // 4. By tag/role
-    const tag = el.tagName.toLowerCase();
-    const role = el.getAttribute('role');
-    // External link?
-    if(tag === 'a'){
-      const href = (el as HTMLAnchorElement).href || '';
-      const target = (el as HTMLAnchorElement).target;
-      if(target === '_blank') return 'Open ↗';
-      // Anchor on same page
-      if(href.includes('#') && href.split('#')[0] === location.href.split('#')[0]) return 'Jump to';
-      // Mailto / tel
-      if(href.startsWith('mailto:')) return 'Send email';
-      if(href.startsWith('tel:')) return 'Call';
-    }
-    // Form fields
-    if(tag === 'input' || tag === 'textarea') return 'Type here';
-    if(tag === 'select') return 'Choose';
-    // Submit-style buttons
-    if(tag === 'button' || role === 'button'){
-      const t = (el.textContent || '').trim();
-      if(t && t.length < 22) return t;
-      return 'Click';
-    }
-    // Default link
-    if(tag === 'a'){
-      const t = (el.textContent || '').trim();
-      if(t && t.length < 22) return t;
-      return 'View';
-    }
-    return '';
-  }
-
-  function setLabel(text: string){
-    if(!text){
-      cursor.classList.add('hov');
-      cursor.classList.remove('lbl');
-      activeText = '';
-      return;
-    }
-    if(text === activeText) return;
-    activeText = text;
-    lbl.textContent = text;
-    cursor.classList.add('lbl');
-    cursor.classList.remove('hov');
-  }
-  function reset(){
-    activeText = '';
-    cursor.classList.remove('lbl');
-    cursor.classList.remove('hov');
-    cursor.classList.remove('soc-off');
-  }
-
-  function isSocialIconTarget(el: HTMLElement): boolean {
-    if(el.closest('[data-cursor-skip]')) return true;
-    if(el.closest('.ft-soc, .ft-socials, .art-au-socials, .ab-soc-row')) return true;
-    if(el.classList.contains('ft-soc')) return true;
-    const svgOnly = el.tagName === 'A' && el.querySelector('svg, img') && !(el.textContent || '').trim();
-    if(svgOnly && el.closest('.ft-socials, .art-au-socials, footer')) return true;
-    return false;
-  }
-
-  function parkCursorForSocial(){
-    activeText = '';
-    cursor.classList.remove('lbl');
-    cursor.classList.remove('hov');
-    cursor.classList.add('soc-off');
-  }
-
+  // Toggle hover state ONLY when it actually changes. Moving within a button fires
+  // mouseover on its child nodes; without this guard that re-triggered the scale
+  // every event = the jitter. Now it flips once on enter, once on leave.
   document.addEventListener('mouseover', (e) => {
     const t = e.target as HTMLElement | null;
-    if(!t || !t.closest) return;
-    const interactive = t.closest('[data-cursor], a, button, [role="button"], input, textarea, select, summary') as HTMLElement | null;
-    if(!interactive) return;
-    if(isSocialIconTarget(interactive)){
-      parkCursorForSocial();
-      return;
-    }
-    cursor.classList.remove('soc-off');
-    setLabel(smartLabel(interactive));
-  });
-  document.addEventListener('mouseout', (e) => {
-    const from = (e.target as HTMLElement | null);
-    const to = (e.relatedTarget as HTMLElement | null);
-    if(!from?.closest) return;
-    const fromInteractive = from.closest('[data-cursor], a, button, [role="button"], input, textarea, select, summary');
-    const toInteractive = to?.closest?.('[data-cursor], a, button, [role="button"], input, textarea, select, summary');
-    if(fromInteractive && fromInteractive !== toInteractive) reset();
+    const el = t && t.closest ? t.closest('a,button,[role="button"],input,textarea,select,summary,label') : null;
+    const nextText  = !!el && /^(input|textarea|select)$/i.test(el.tagName);
+    const nextHover = !!el && !nextText;
+    if(nextHover !== hovering){ c.classList.toggle('is-hover', nextHover); hovering = nextHover; }
+    if(nextText  !== texting ){ c.classList.toggle('is-text',  nextText ); texting  = nextText;  }
   });
 })();
 
@@ -668,11 +562,30 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
         // @ts-ignore — Lenis is bundled by Vite from npm
         const Lenis = (await import('lenis')).default;
         const easeOut = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+
+        // ── GSAP + ScrollTrigger — DESKTOP ONLY (lazy). Mobile uses native scroll
+        //    (smoothWheel:false) and has no GSAP animations, so loading ~45KB gzip
+        //    there is pure dead weight. If it fails to load, Lenis falls back to its
+        //    own RAF loop (autoRaf) so scroll can NEVER break. ──
+        let gsap: any = null, ScrollTrigger: any = null;
+        if (!isTouch) {
+          try {
+            // @ts-ignore
+            gsap = (await import('gsap')).default;
+            // @ts-ignore
+            ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
+            gsap.registerPlugin(ScrollTrigger);
+          } catch (_e) { gsap = null; ScrollTrigger = null; }
+        }
+        const useGsap = !!(gsap && ScrollTrigger);
+
         const lenis = new Lenis({
-          autoRaf: true,
-          // Higher lerp: wheel input tracks faster (less floaty lag on desktop).
-          lerp: isTouch ? 0.12 : 0.2,
-          duration: isTouch ? 0.85 : 0.55,
+          // GSAP's ticker drives Lenis when available (one shared clock — the
+          // canonical integration). Fall back to Lenis' own loop only if GSAP is absent.
+          autoRaf: !useGsap,
+          // lerp 0.11 = crisp but smooth (midpoint of 0.2 "cheap" and 0.085 "laggy").
+          lerp: isTouch ? 0.1 : 0.11,
+          duration: 1.0,
           easing: easeOut,
           orientation: 'vertical',
           smoothWheel: !isTouch,
@@ -681,6 +594,18 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
           syncTouch: false,
         });
         (window as unknown as { __lenis?: typeof lenis }).__lenis = lenis;
+
+        if (useGsap) {
+          // Canonical Lenis + GSAP ScrollTrigger wiring (per the Lenis README):
+          lenis.on('scroll', ScrollTrigger.update);                   // ScrollTrigger reads Lenis' scroll
+          gsap.ticker.add((time: number) => lenis.raf(time * 1000));  // GSAP clock drives Lenis (s → ms)
+          gsap.ticker.lagSmoothing(0);                                // stop GSAP frame-drop smoothing
+          (window as any).gsap = gsap;
+          (window as any).ScrollTrigger = ScrollTrigger;
+          (window as any).__gsapReady = true;
+          window.dispatchEvent(new Event('spm:gsap-ready'));          // page scripts can await this
+          window.addEventListener('load', () => ScrollTrigger.refresh()); // recalc after assets settle
+        }
 
         unbindWindowScroll?.();
 

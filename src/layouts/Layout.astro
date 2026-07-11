@@ -163,6 +163,17 @@ const finalSchema = schema || defaultSchema;
       applyTheme();
       // Mark JS available so .rv is hidden + revealed (CSS is gated on .js).
       html.classList.add('js');
+      // Hide the native cursor BEFORE first paint (non-touch only) so the custom
+      // dot never flashes the default arrow on load/navigation. Self-heal: if the
+      // dot element hasn't been created after 3s (script failed), restore native.
+      try {
+        if (!window.matchMedia('(hover:none)').matches) {
+          html.classList.add('has-cursor');
+          setTimeout(function () {
+            if (!document.querySelector('.spm-cursor')) html.classList.remove('has-cursor');
+          }, 3000);
+        }
+      } catch (e) {}
 
       window.addEventListener('pageshow', applyTheme);
       window.addEventListener('storage', function (e) {
