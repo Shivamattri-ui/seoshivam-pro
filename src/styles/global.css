@@ -822,3 +822,28 @@ html.light .site-link-tip{background:var(--s1);border-color:rgba(218,119,86,.22)
 /* Honeypot — shared by ContactCta + homepage subscribe forms */
 .cct-honey{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
 
+/* ════════════════════════════════════════════════════════════
+   MOBILE PERF: freeze non-composited animations (<=768px)
+   These animate background-position / box-shadow / border-color, which cannot be
+   GPU-composited, so on mobile they run continuous main-thread paint (Lighthouse
+   flagged "53 non-composited animations" -> high Style & Layout time). Stopped on
+   mobile only; the gradient/dot/tile LOOK stays static. Desktop keeps the motion.
+   ════════════════════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* Single-animation elements: safe to remove the animation entirely */
+  .grad-anim, .sec-h em, .sec-h2 em, .display em,
+  .iccl-2, .ic-cover-title, .spl-w2, .gh-line-em em,
+  .ix-cat.active, .ccta-submit, .cb-expand, .pseo-tile, .pill::before,
+  .ic-cover-tag-dot, .abp-avail-dot, .stack-foot-dot, .acm-foot-dot,
+  .rtc-pill-dot, .rtc-live-dot, .rtg-pill-dot{
+    animation: none !important;
+  }
+  /* .aud-rt-bar has a forwards reveal + an infinite pulse: keep the reveal, drop the pulse */
+  .aud-rt-bar{ animation: audRtIn .35s cubic-bezier(.16,1,.3,1) forwards !important; }
+  /* Catch-all for any GLOBAL-keyframe usage not covered by a class above
+     (empty keyframes = the animation runs but changes nothing). */
+  @keyframes gradShift{}
+  @keyframes opcPulse{}
+  @keyframes pillSweep{}
+}
+
