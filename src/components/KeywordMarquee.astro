@@ -1,0 +1,48 @@
+---
+/**
+ * Edge-to-edge keyword ticker.
+ *
+ * Lived in the footer until it collided with the oversized wordmark (both
+ * wanted the footer's bottom band, and this has an opaque background). It sits
+ * on the homepage now, as a capability band between the hero and the stats.
+ *
+ * Motion: transform-only (GPU-composited), so it costs no main-thread paint.
+ */
+const keywords = [
+  'AEO Specialist','AI Search Visibility','SEO Strategy','Google AI Overviews',
+  'ChatGPT Citation','Perplexity Optimization','Schema Markup Expert','Topical Authority',
+  'Technical SEO','AI-Visible Web Design','Content Architecture','Entity Optimization',
+  'E-E-A-T','Programmatic SEO','FAQPage Schema','JSON-LD Expert',
+];
+---
+
+<div class="km" aria-hidden="true">
+  <div class="km-track">
+    {[...keywords, ...keywords].map(k => <span class="km-i">{k}</span>)}
+  </div>
+</div>
+
+<style is:global>
+.km{
+  position:relative;
+  border-top:1px solid var(--bds);
+  border-bottom:1px solid var(--bds);
+  padding:18px 0;
+  overflow:hidden;
+  background:var(--bg);
+  z-index:1;
+}
+/* Fade the ends so the loop seam never shows. */
+.km::before,.km::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none;
+}
+.km::before{left:0;background:linear-gradient(90deg,var(--bg) 0%,transparent 100%)}
+.km::after{right:0;background:linear-gradient(270deg,var(--bg) 0%,transparent 100%)}
+.km-track{display:flex;gap:48px;width:max-content;animation:mq 40s linear infinite}
+.km-i{
+  font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--wd);white-space:nowrap;opacity:.75;
+}
+@media(prefers-reduced-motion:reduce){.km-track{animation:none}}
+@media(max-width:768px){.km{padding:14px 0}}
+</style>

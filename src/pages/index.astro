@@ -46,9 +46,8 @@ const clients = [
 <section class="op-hero" id="hero">
   <div class="container">
 
-    <!-- Top strip: file marker + working location + live clock -->
+    <!-- Top strip: working location + live clock -->
     <div class="op-strip rv">
-      <span class="stamp">FILE/001 &middot; INDEX</span>
       <span class="op-meta hide-mob">India <span class="op-arrow">&rarr;</span> Worldwide</span>
       <span class="op-spacer"></span>
       <span class="op-clock" id="opClock" aria-live="off">
@@ -62,7 +61,7 @@ const clients = [
       <h1 class="op-h">
         <span class="op-line op-line-1 rv d1">AI SEO that</span>
         <span class="op-line op-line-2 rv d2">gets you cited.</span>
-        <span class="op-line op-line-3 rv d3"><span class="grad-anim">Not just ranked.</span></span>
+        <span class="op-line op-line-3 rv d3"><span class="grad-anim grad-anim-live">Not just ranked.</span></span>
       </h1>
 
       <aside class="op-marg marg rv d4">
@@ -122,60 +121,141 @@ const clients = [
   </div>
 </div>
  
-<!-- ═══════════ 02 PROBLEM ═══════════ -->
-<!-- ═══════════ 02 MANIFESTO — editorial spread, no cards ═══════════ -->
+<!-- ═══════════ 02 MANIFESTO — glass bento on a gradient backdrop ═══════════ -->
 <section class="man-sec" id="problem">
+  <div class="man-bg" aria-hidden="true"></div>
   <div class="container">
     <header class="man-hdr rv">
       <div class="hair left">REALITY &middot; 2026 / NUMBERS THAT FORCED THIS WORK</div>
       <h2 class="man-h">Search changed.<br><em class="grad-anim">Most SEO did not.</em></h2>
     </header>
 
-    <!-- Asymmetric editorial spread — big stat dominates, two recede -->
-    <div class="man-spread">
-      <article class="man-stat man-stat-1 rv d1" data-stat>
-        <span class="man-tag">SOURCE / SPARKTORO &middot; 2024</span>
-        <div class="man-num grad-anim" data-count="63" data-suf="%">0%</div>
+    <!-- Bento grid: three stat cards + full-width insight card -->
+    <div class="man-bento">
+      <article class="man-card rv d1">
+        <span class="man-tag">SOURCE / SPARKTORO &middot; 2026</span>
+        <div class="man-num grad-anim" data-count="68" data-suf="%">0%</div>
         <p class="man-text">
-          of Google searches now end <strong>without a click.</strong>
-          AI Overviews answer before the user reaches a single website.
+          of US Google searches now end <strong>without a click.</strong>
+          Up from 60% two years ago.
         </p>
         <span class="man-rule"></span>
       </article>
 
-      <article class="man-stat man-stat-2 rv d2" data-stat>
-        <span class="man-tag">SOURCE / OPENAI &middot; NOV 2024</span>
-        <div class="man-num grad-anim" data-count="200" data-suf="M+">0M+</div>
+      <article class="man-card rv d2">
+        <span class="man-tag">SOURCE / SEER INTERACTIVE &middot; 2025</span>
+        <div class="man-num grad-anim" data-count="61" data-suf="%">0%</div>
         <p class="man-text">
-          weekly ChatGPT users searching for <strong>vendor recommendations</strong>, without opening Google at all.
+          drop in <strong>organic clicks</strong> when an AI Overview appears. Paid clicks drop 68%.
         </p>
         <span class="man-rule"></span>
       </article>
 
-      <article class="man-stat man-stat-3 rv d3" data-stat>
-        <span class="man-tag">SOURCE / SEMRUSH &middot; 2024</span>
-        <div class="man-num grad-anim" data-count="47" data-suf="%">0%</div>
+      <article class="man-card rv d3">
+        <span class="man-tag">SOURCE / SEER INTERACTIVE &middot; 2025</span>
+        <div class="man-num grad-anim" data-count="35" data-suf="%">0%</div>
         <p class="man-text">
-          of informational searches now trigger a <strong>Google AI Overview.</strong>
-          Up from 11% at launch in May 2023.
+          <strong>more organic clicks</strong> when your brand is named inside that AI Overview. Paid clicks rise 91%.
         </p>
         <span class="man-rule"></span>
       </article>
+
+      <blockquote class="man-insight rv d4">
+        <p class="man-insight-body">
+          Google AI Overviews, ChatGPT, and Perplexity are replacing the moment a buyer decides who to trust. If your content is not structured to be cited by these engines, you are invisible at the exact moment it matters most.
+        </p>
+        <cite class="man-insight-cite">
+          <span class="grad-anim">The brands AI recommends are the ones that win the fundamentals. There is no secret tactic.</span>
+        </cite>
+      </blockquote>
     </div>
-
-    <!-- Editorial pull quote (replaces manifesto card) -->
-    <blockquote class="man-pull rv d4">
-      <p class="man-pull-body">
-        Google AI Overviews, ChatGPT, and Perplexity are replacing the moment a buyer decides who to trust. If your content is not structured to be cited by these engines, you are invisible at the exact moment it matters most.
-      </p>
-      <cite class="man-pull-cite">
-        <span class="grad-anim">Traditional SEO gets you to page one. AEO gets you into the answer.</span>
-      </cite>
-    </blockquote>
   </div>
 </section>
 
-<!-- ═══════════ 03 CASE FILE — interactive viewer, no cards ═══════════ -->
+<!-- ═══════════ 03 ABOUT TEASER — editorial portrait spread ═══════════ -->
+<section class="about-sec" id="about">
+  <div class="container">
+    <header class="abp-hdr rv">
+      <div class="hair left">FILED BY / OPERATOR DOSSIER</div>
+      <h2 class="abp-h">Not a consultant.<br><em>An operator.</em></h2>
+    </header>
+
+    <div class="abp-spread">
+      <!-- Editorial portrait -->
+      <figure class="abp-photo rv">
+        <div class="abp-photo-frame">
+          <img src="/shivam-attri.jpg" alt="Shivam Attri, AEO and SEO Specialist based in India"
+               width="520" height="640" loading="lazy" decoding="async"
+               onerror="this.style.opacity='0';this.nextElementSibling?.classList.add('show')" />
+          <div class="abp-photo-fb"><span>SA</span></div>
+          <!-- editorial frame markers -->
+          <span class="abp-corner abp-corner-tl" aria-hidden="true"></span>
+          <span class="abp-corner abp-corner-tr" aria-hidden="true"></span>
+          <span class="abp-corner abp-corner-bl" aria-hidden="true"></span>
+          <span class="abp-corner abp-corner-br" aria-hidden="true"></span>
+        </div>
+        <figcaption class="abp-cap">
+          <span class="abp-cap-name">Shivam <em>Attri</em></span>
+          <span class="abp-cap-meta">India <span class="op-arrow">&rarr;</span> Worldwide</span>
+        </figcaption>
+      </figure>
+
+      <!-- Editorial bio block -->
+      <div class="abp-bio rv d2">
+        <div class="abp-byline">
+          <div class="abp-byline-tag">DOSSIER &middot; 2026</div>
+          <div class="abp-byline-name">SHIVAM ATTRI</div>
+          <div class="abp-byline-role"><a href="/services/aeo" class="ilink-muted">AEO Specialist</a> &middot; <a href="/services/seo" class="ilink-muted">SEO Strategist</a> &middot; <a href="/services/web-design" class="ilink-muted">AI-Visible Web Designer</a></div>
+        </div>
+
+        <p class="abp-deck">
+          The operator you call when <strong>ads stopped scaling</strong>, agency reports stopped helping, and AI engines started answering for you.
+        </p>
+
+        <!-- Inline editorial fact line (replaces stat tiles) -->
+        <div class="abp-facts">
+          <div class="abp-fact"><span class="abp-fact-n grad-anim" data-count="7" data-suf="+">7+</span><span class="abp-fact-l">Years</span></div>
+          <span class="abp-fact-sep" aria-hidden="true"></span>
+          <div class="abp-fact"><span class="abp-fact-n grad-anim" data-count="30" data-suf="+">30+</span><span class="abp-fact-l">Brands</span></div>
+          <span class="abp-fact-sep" aria-hidden="true"></span>
+          <div class="abp-fact"><span class="abp-fact-n">4</span><span class="abp-fact-l">Continents</span></div>
+          <span class="abp-fact-sep" aria-hidden="true"></span>
+          <div class="abp-fact"><span class="abp-fact-n">100%</span><span class="abp-fact-l">Independent</span></div>
+        </div>
+
+        <p class="abp-body">
+          Seven years across health tech, logistics, manufacturing, ecommerce, marketing, consultancies, and SaaS. Working async across US, UK, EU, and AU time zones. Strategy, content, schema, and builds, all from one operator. No account manager relay.
+        </p>
+
+        <!-- Daily stack (no chip-cards, just ticker) -->
+        <div class="abp-stack">
+          <span class="abp-stack-label">DAILY STACK /</span>
+          <span class="abp-stack-list">
+            {['Claude','ChatGPT','Perplexity','GSC','Semrush','Ahrefs','n8n','Framer','Webflow','Astro'].map((t,i)=>(
+              <>
+                <span class="abp-stack-t">{t}</span>
+                {i < 9 && <span class="abp-stack-d">&middot;</span>}
+              </>
+            ))}
+          </span>
+        </div>
+
+        <div class="abp-foot">
+          <span class="abp-avail">
+            <span class="abp-avail-dot"></span>
+            <span class="abp-avail-txt">Booking 2 spots <strong>Q3 2026</strong></span>
+          </span>
+          <a href="/about" class="abp-link">
+            Full dossier
+            <span class="abp-link-arr" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 04 CASE FILE — interactive viewer, no cards ═══════════ -->
 <section class="case-sec" id="results">
   <div class="container">
     <header class="case-hdr rv">
@@ -298,7 +378,7 @@ const clients = [
   </div>
 </section>
  
-<!-- ═══════════ 04 SERVICES (sticky card stack) ═══════════ -->
+<!-- ═══════════ 05 SERVICES (sticky card stack) ═══════════ -->
 <section class="svc-sec" id="services">
   <div class="container">
     <div class="rv" style="margin-bottom:56px">
@@ -541,7 +621,7 @@ const clients = [
   </div>
 </section>
  
-<!-- ═══════════ 05 PROCESS — vertical scroll-driven timeline ═══════════ -->
+<!-- ═══════════ 06 PROCESS — vertical scroll-driven timeline ═══════════ -->
 <section class="proc-sec" id="process">
   <div class="container">
     <header class="proc-hdr rv">
@@ -580,6 +660,7 @@ const clients = [
 </section>
 
 <!-- ═══════════ 05B SEO vs AEO COMPARISON ═══════════ -->
+<!-- ═══════════ 07 SEO VS AEO — comparison ═══════════ -->
 <section class="cmp-sec" id="seo-vs-aeo" aria-label="SEO vs AEO comparison">
   <div class="container">
 
@@ -650,90 +731,8 @@ const clients = [
   </div>
 </section>
 
-<!-- ═══════════ 06 ABOUT TEASER — editorial portrait spread ═══════════ -->
-<section class="about-sec" id="about">
-  <div class="container">
-    <header class="abp-hdr rv">
-      <div class="hair left">FILED BY / OPERATOR DOSSIER</div>
-      <h2 class="abp-h">Not a consultant.<br><em>An operator.</em></h2>
-    </header>
-
-    <div class="abp-spread">
-      <!-- Editorial portrait -->
-      <figure class="abp-photo rv">
-        <div class="abp-photo-frame">
-          <img src="/shivam-attri.jpg" alt="Shivam Attri, AEO and SEO Specialist based in India"
-               width="520" height="640" loading="lazy" decoding="async"
-               onerror="this.style.opacity='0';this.nextElementSibling?.classList.add('show')" />
-          <div class="abp-photo-fb"><span>SA</span></div>
-          <!-- editorial frame markers -->
-          <span class="abp-corner abp-corner-tl" aria-hidden="true"></span>
-          <span class="abp-corner abp-corner-tr" aria-hidden="true"></span>
-          <span class="abp-corner abp-corner-bl" aria-hidden="true"></span>
-          <span class="abp-corner abp-corner-br" aria-hidden="true"></span>
-        </div>
-        <figcaption class="abp-cap">
-          <span class="abp-cap-name">Shivam <em>Attri</em></span>
-          <span class="abp-cap-meta">India <span class="op-arrow">&rarr;</span> Worldwide</span>
-        </figcaption>
-      </figure>
-
-      <!-- Editorial bio block -->
-      <div class="abp-bio rv d2">
-        <div class="abp-byline">
-          <div class="abp-byline-tag">DOSSIER &middot; 2026</div>
-          <div class="abp-byline-name">SHIVAM ATTRI</div>
-          <div class="abp-byline-role"><a href="/services/aeo" class="ilink-muted">AEO Specialist</a> &middot; <a href="/services/seo" class="ilink-muted">SEO Strategist</a> &middot; <a href="/services/web-design" class="ilink-muted">AI-Visible Web Designer</a></div>
-        </div>
-
-        <p class="abp-deck">
-          The operator you call when <strong>ads stopped scaling</strong>, agency reports stopped helping, and AI engines started answering for you.
-        </p>
-
-        <!-- Inline editorial fact line (replaces stat tiles) -->
-        <div class="abp-facts">
-          <div class="abp-fact"><span class="abp-fact-n grad-anim" data-count="7" data-suf="+">7+</span><span class="abp-fact-l">Years</span></div>
-          <span class="abp-fact-sep" aria-hidden="true"></span>
-          <div class="abp-fact"><span class="abp-fact-n grad-anim" data-count="30" data-suf="+">30+</span><span class="abp-fact-l">Brands</span></div>
-          <span class="abp-fact-sep" aria-hidden="true"></span>
-          <div class="abp-fact"><span class="abp-fact-n">4</span><span class="abp-fact-l">Continents</span></div>
-          <span class="abp-fact-sep" aria-hidden="true"></span>
-          <div class="abp-fact"><span class="abp-fact-n">100%</span><span class="abp-fact-l">Independent</span></div>
-        </div>
-
-        <p class="abp-body">
-          Seven years across health tech, logistics, manufacturing, ecommerce, marketing, consultancies, and SaaS. Working async across US, UK, EU, and AU time zones. Strategy, content, schema, and builds, all from one operator. No account manager relay.
-        </p>
-
-        <!-- Daily stack (no chip-cards, just ticker) -->
-        <div class="abp-stack">
-          <span class="abp-stack-label">DAILY STACK /</span>
-          <span class="abp-stack-list">
-            {['Claude','ChatGPT','Perplexity','GSC','Semrush','Ahrefs','n8n','Framer','Webflow','Astro'].map((t,i)=>(
-              <>
-                <span class="abp-stack-t">{t}</span>
-                {i < 9 && <span class="abp-stack-d">&middot;</span>}
-              </>
-            ))}
-          </span>
-        </div>
-
-        <div class="abp-foot">
-          <span class="abp-avail">
-            <span class="abp-avail-dot"></span>
-            <span class="abp-avail-txt">Booking 2 spots <strong>Q3 2026</strong></span>
-          </span>
-          <a href="/about" class="abp-link">
-            Full dossier
-            <span class="abp-link-arr" aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
  
-<!-- ═══════════ 07 AI SCORE TOOL ═══════════ -->
+<!-- ═══════════ 08 AI SCORE TOOL ═══════════ -->
 <section class="tool-sec" id="tool">
   <div class="container">
     <div class="tool-inner rv">
@@ -777,7 +776,7 @@ const clients = [
   </div>
 </section>
  
-<!-- ═══════════ 08 CONTACT + TOOLS ═══════════ -->
+<!-- ═══════════ 09 CONTACT + TOOLS ═══════════ -->
 <section class="contact-sec" id="contact">
   <div class="container">
     <div class="contact-grid">
@@ -849,10 +848,6 @@ const clients = [
             </div>
           );
         })()}
-        <div class="stack-foot">
-          <span class="stack-foot-dot"></span>
-          <span class="stack-foot-txt">Active on every engagement</span>
-        </div>
       </div>
 
       <!-- RIGHT: My tools (free interactive widgets) -->
@@ -932,7 +927,7 @@ const clients = [
   </div>
 </section>
 
-<!-- ═══════════ 09 TESTIMONIALS (marquee) ═══════════ -->
+<!-- ═══════════ 10 TESTIMONIALS (marquee) ═══════════ -->
 {(() => {
   const row1 = [
     {q:"It's been Amazing Working Experience With Mr. Shivam Attri, Energetic and Power-packed with the Excellent Skill Set in Website Design & Development, and Digital Marketing. Together We Developed Over 10+ Projects and his Positive Attitude towards his Work Makes him Different from others. I would Highly recommend 'Shivam Attri' if you are in NCR.",n:"Mr. Vaibhav Gujral",r:"Dishant Web Solutions",av:"VG"},
@@ -986,7 +981,7 @@ const clients = [
   );
 })()}
  
-<!-- ═══════════ 09 INSIGHTS ═══════════ -->
+<!-- ═══════════ 11 INSIGHTS ═══════════ -->
 <section class="ins-sec-v2" id="insights">
   <div class="container">
     <header class="ins-hdr-v2 rv">
@@ -1055,7 +1050,7 @@ const clients = [
   </div>
 </section>
  
-<!-- ═══════════ 10 FAQs ═══════════ -->
+<!-- ═══════════ 12 FAQs ═══════════ -->
 <section class="faq-sec" id="faqs">
   <div class="container">
     <div class="faq-grid">
@@ -1111,7 +1106,7 @@ const clients = [
   ],
 })} />
 
-<!-- ═══════════ 11 LEAD CAPTURE ═══════════ -->
+<!-- ═══════════ 13 LEAD CAPTURE ═══════════ -->
 <section class="lead-sec" id="lead">
   <div class="container">
     <div class="lead-inner rv">
@@ -2007,6 +2002,24 @@ html.light .op-strip,html.light .op-sub-grid,html.light .op-pull{border-color:va
    MANIFESTO SECTION — editorial spread
    ════════════════════════════════════════════════════════════ */
 .man-sec{padding:120px 0 64px;position:relative;z-index:1}
+.man-sec > .container{position:relative;z-index:1}
+
+/* Gradient backdrop — gives the glass something to sit on.
+   Static paint, no animation. Theme-aware via hardcoded stops per mode. */
+.man-bg{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 72% 58% at 10% 4%, rgba(79,142,247,.28) 0%, transparent 58%),
+    radial-gradient(ellipse 68% 60% at 94% 96%, rgba(26,58,143,.45) 0%, transparent 60%),
+    linear-gradient(168deg, rgba(9,14,32,.9) 0%, rgba(6,8,16,.35) 52%, rgba(10,16,40,.8) 100%);
+}
+html.light .man-bg{
+  background:
+    radial-gradient(ellipse 72% 58% at 10% 4%, rgba(218,119,86,.20) 0%, transparent 58%),
+    radial-gradient(ellipse 68% 60% at 94% 96%, rgba(184,92,60,.18) 0%, transparent 60%),
+    linear-gradient(168deg, rgba(255,251,244,.75) 0%, transparent 52%, rgba(246,234,224,.7) 100%);
+}
+
 .man-hdr{margin-bottom:72px;max-width:760px}
 .man-h,.case-h,.proc-h,.abp-h,.stack-h,.contact-sec .form-h{
   font-family:var(--fd);
@@ -2019,7 +2032,6 @@ html.light .op-strip,html.light .op-sub-grid,html.light .op-pull{border-color:va
   background:linear-gradient(110deg,var(--ac) 0%,#7BAEFF 25%,var(--ac2) 50%,#7BAEFF 75%,var(--ac) 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:gradShift 8s linear infinite;
   will-change:background-position;
 }
 html.light .man-h em,html.light .case-h em,html.light .proc-h em,html.light .abp-h em,html.light .stack-h em,html.light .contact-sec .form-h em{
@@ -2029,63 +2041,142 @@ html.light .man-h em,html.light .case-h em,html.light .proc-h em,html.light .abp
 }
 
 /* Asymmetric editorial spread: big stat dominates left, two recede right */
-.man-spread{
+.man-bento{
   display:grid;
-  grid-template-columns:1.35fr 1fr;
-  grid-template-rows:auto auto;
-  gap:48px 64px;
-  margin-bottom:72px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:64px;
 }
-.man-stat{
-  position:relative;display:flex;flex-direction:column;gap:14px;
-  transition:opacity .35s ease;
+/* Card: layered glass with a real light source.
+   ::before = grid texture. ::after = corner gradients (the ONLY thing hover touches).
+   Nothing animates at rest; hover fades corner opacity, which is GPU-composited. */
+.man-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;flex-direction:column;gap:14px;
+  border-radius:24px;
+  padding:32px 30px 28px;
+  background:linear-gradient(158deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.025) 48%,rgba(79,142,247,.07) 100%);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 22px 54px rgba(0,0,0,.5);
+  transition:border-color .4s ease,transform .45s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
 }
-.man-spread:hover .man-stat[data-stat]{opacity:.45}
-.man-spread:hover .man-stat[data-stat]:hover{opacity:1}
-.man-stat-1{grid-row:1 / span 2}
-.man-stat-2{grid-column:2;grid-row:1}
-.man-stat-3{grid-column:2;grid-row:2}
+html.light .man-card{
+  background:linear-gradient(158deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.62) 48%,rgba(218,119,86,.08) 100%);
+  border-color:rgba(20,16,12,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 22px 48px rgba(20,16,12,.10);
+}
+/* backdrop-filter is expensive: desktop only, so mobile paint stays as tuned. */
+@media(min-width:769px){
+  .man-card{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+}
+
+/* Grid texture, masked so it fades toward the edges. Static paint, never animates. */
+.man-card::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:radial-gradient(ellipse 92% 82% at 50% 32%,#000 18%,transparent 84%);
+  -webkit-mask-image:radial-gradient(ellipse 92% 82% at 50% 32%,#000 18%,transparent 84%);
+}
+html.light .man-card::before{
+  background-image:
+    linear-gradient(rgba(20,16,12,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,16,12,.055) 1px,transparent 1px);
+}
+
+/* Corner gradients — the light source. Hover raises ONLY this layer's opacity. */
+.man-card::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle 200px at 100% 0%,rgba(79,142,247,.38) 0%,transparent 68%),
+    radial-gradient(circle 180px at 0% 100%,rgba(79,142,247,.24) 0%,transparent 68%);
+  opacity:.5;
+  transition:opacity .5s ease;
+}
+html.light .man-card::after{
+  background:
+    radial-gradient(circle 200px at 100% 0%,rgba(218,119,86,.34) 0%,transparent 68%),
+    radial-gradient(circle 180px at 0% 100%,rgba(218,119,86,.20) 0%,transparent 68%);
+}
+.man-card:hover::after{opacity:1}
+
+.man-card > *{position:relative;z-index:1}
+
+.man-card:hover{
+  border-color:rgba(79,142,247,.5);
+  transform:translateY(-4px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 28px 70px rgba(0,0,0,.55),0 0 44px rgba(79,142,247,.18);
+}
+html.light .man-card:hover{
+  border-color:rgba(218,119,86,.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 28px 60px rgba(20,16,12,.14),0 0 40px rgba(218,119,86,.18);
+}
 
 .man-tag{font-family:var(--fm);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--wm);display:flex;align-items:center;gap:8px}
 .man-num{
-  font-family:var(--fd);font-weight:400;line-height:.84;letter-spacing:-.04em;
-  font-size:clamp(96px,18vw,260px);
-  margin-top:4px;
+  font-family:var(--fd);font-weight:400;line-height:.88;letter-spacing:-.03em;
+  font-size:clamp(58px,6vw,88px);
+  margin-top:2px;
 }
-.man-stat-2 .man-num,.man-stat-3 .man-num{font-size:clamp(72px,10vw,140px)}
 .man-text{
-  font-family:var(--fu);font-size:clamp(15px,1.4vw,17px);
-  line-height:1.55;color:var(--wd);max-width:440px;margin-top:8px;
+  font-family:var(--fu);font-size:clamp(14px,1.3vw,15.5px);
+  line-height:1.55;color:var(--wd);
 }
 .man-text strong{color:var(--w);font-weight:700}
 .man-rule{
-  display:block;width:0;height:1px;background:var(--ac);margin-top:18px;
+  display:block;width:0;height:1px;background:var(--ac);margin-top:20px;
   transition:width .8s cubic-bezier(.16,1,.3,1) .15s;
 }
-.man-stat.in .man-rule{width:96px}
-.man-stat-1.in .man-rule{width:160px}
+.man-card.in .man-rule{width:72px}
 
-/* Pull quote */
-.man-pull{
-  margin:32px 0 0;padding:40px 0 0;
-  border-top:1px solid var(--bd);
-  display:flex;flex-direction:column;gap:24px;
-  max-width:1000px;
+/* Full-width insight card — same glass, slightly stronger surface */
+.man-insight{
+  grid-column:1 / -1;
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;gap:40px;align-items:center;
+  background:linear-gradient(158deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.03) 50%,rgba(79,142,247,.08) 100%);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:24px;
+  padding:36px 40px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 22px 54px rgba(0,0,0,.5);
 }
-.man-pull-body{font-family:var(--fu);font-size:clamp(15px,1.5vw,18px);line-height:1.7;color:var(--wd);max-width:760px}
-.man-pull-cite{
-  font-family:var(--fd);font-size:clamp(22px,2.8vw,38px);font-weight:400;font-style:italic;
-  line-height:1.2;letter-spacing:-.01em;display:block;
+html.light .man-insight{
+  background:linear-gradient(158deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.66) 50%,rgba(218,119,86,.09) 100%);
+  border-color:rgba(20,16,12,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 22px 48px rgba(20,16,12,.10);
+}
+/* Corner gradient on the insight card too, so the set reads as one family. */
+.man-insight::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(circle 260px at 98% 6%,rgba(79,142,247,.30) 0%,transparent 66%);
+  opacity:.6;
+}
+html.light .man-insight::after{
+  background:radial-gradient(circle 260px at 98% 6%,rgba(218,119,86,.26) 0%,transparent 66%);
+}
+.man-insight > *{position:relative;z-index:1}
+@media(min-width:769px){
+  .man-insight{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+}
+.man-insight-body{
+  flex:1.3;
+  font-family:var(--fu);font-size:clamp(15px,1.4vw,17px);line-height:1.7;color:var(--wd);
+}
+.man-insight-cite{
+  flex:1;
+  font-family:var(--fd);font-size:clamp(22px,2.4vw,32px);font-weight:400;font-style:italic;
+  line-height:1.22;letter-spacing:-.01em;display:block;
 }
 
 @media(max-width:900px){
   .man-sec{padding:80px 0}
   .man-hdr{margin-bottom:48px}
-  .man-spread{grid-template-columns:1fr;gap:48px;margin-bottom:48px}
-  .man-stat-1,.man-stat-2,.man-stat-3{grid-row:auto;grid-column:auto}
-  .man-num{font-size:clamp(72px,18vw,120px)}
-  .man-stat-2 .man-num,.man-stat-3 .man-num{font-size:clamp(56px,14vw,96px)}
-  .man-pull{padding:32px 0;margin-top:32px}
+  .man-bento{grid-template-columns:1fr;gap:14px;margin-bottom:48px}
+  .man-num{font-size:clamp(56px,16vw,92px)}
+  .man-card{padding:26px 22px 24px;border-radius:20px}
+  .man-insight{flex-direction:column;gap:20px;align-items:flex-start;padding:28px 24px;border-radius:20px}
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -2459,8 +2550,6 @@ html.light .stack-tool.is-dark .st-ic img{filter:none}
 .stack-tool:hover .st-ic{transform:translateY(-1px) scale(1.1)}
 .st-name{font-family:var(--fu);font-size:14px;font-weight:600;color:var(--w);letter-spacing:-.005em}
 
-.stack-foot{display:inline-flex;align-items:center;gap:10px;font-family:var(--fm);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--wd);padding-top:6px}
-.stack-foot-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--agl);animation:opcPulse 1.6s ease-in-out infinite}
 
 @media(max-width:640px){
   .stack-row{grid-template-columns:1fr;gap:8px;padding:14px 0}
@@ -2743,7 +2832,6 @@ html.light .mytools-glow{
   background:linear-gradient(110deg,var(--ac) 0%,#7BAEFF 25%,var(--ac2) 50%,#7BAEFF 75%,var(--ac) 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:gradShift 8s linear infinite;
 }
 .faq-deck{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.7;max-width:380px}
 .faq-meta{display:inline-flex;align-items:baseline;gap:12px;margin-top:8px}
@@ -2886,7 +2974,6 @@ html.light .ic-cover{
   background:linear-gradient(110deg,#4F8EF7 0%,#7BAEFF 50%,#1A3A8F 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:gradShift 8s linear infinite;
   margin:0 1px;
 }
 .iccl-3{color:rgba(255,255,255,.6);font-size:13px}
@@ -2911,7 +2998,6 @@ html.light .ic-cover{
   background:linear-gradient(110deg,#4F8EF7 0%,#A8C8FF 25%,#7BAEFF 50%,#A8C8FF 75%,#4F8EF7 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:gradShift 10s linear infinite;
   position:relative;z-index:1;
   max-width:560px;
 }

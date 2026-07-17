@@ -327,38 +327,8 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   });
 }
 
-// ── Minimal brand cursor: single dot at the EXACT pointer, theme-aware, no labels ──
-(function(){
-  if(matchMedia('(hover:none)').matches) return;            // touch: keep native
-  if(document.querySelector('.spm-cursor')) return;         // guard double-mount
-
-  const c = document.createElement('div');
-  c.className = 'spm-cursor';
-  c.innerHTML = '<span class="spm-cursor-i"></span>';
-  document.body.appendChild(c);
-  document.documentElement.classList.add('has-cursor');     // no-op if <head> already set it
-
-  let shown = false, hovering = false, texting = false;
-  document.addEventListener('mousemove', (e) => {
-    // Exact position, no trail = no perceived lag. Only the OUTER transform changes here.
-    c.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
-    if(!shown){ c.classList.add('is-active'); shown = true; }
-  }, {passive:true});
-  document.addEventListener('mouseleave', () => c.classList.remove('is-active'));
-  document.addEventListener('mouseenter', () => { if(shown) c.classList.add('is-active'); });
-
-  // Toggle hover state ONLY when it actually changes. Moving within a button fires
-  // mouseover on its child nodes; without this guard that re-triggered the scale
-  // every event = the jitter. Now it flips once on enter, once on leave.
-  document.addEventListener('mouseover', (e) => {
-    const t = e.target as HTMLElement | null;
-    const el = t && t.closest ? t.closest('a,button,[role="button"],input,textarea,select,summary,label') : null;
-    const nextText  = !!el && /^(input|textarea|select)$/i.test(el.tagName);
-    const nextHover = !!el && !nextText;
-    if(nextHover !== hovering){ c.classList.toggle('is-hover', nextHover); hovering = nextHover; }
-    if(nextText  !== texting ){ c.classList.toggle('is-text',  nextText ); texting  = nextText;  }
-  });
-})();
+// Custom dot cursor removed (was main-thread on mousemove, stuttered on animation-heavy
+// pages). Native OS cursor restored site-wide. Magnetic-button hover is unaffected.
 
 // ──────────────────────────────────────────────
 // GLOBAL SCROLL-ENGAGEMENT LAYER

@@ -12,7 +12,6 @@
  *   - Bottom strip with copy + city pill
  *   - Edge-to-edge keyword marquee scrolling on the bottom edge
  */
-const buildDate = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 const year = new Date().getFullYear();
 
 const services = [
@@ -34,34 +33,28 @@ const navigate = [
 ];
 
 const askAi = [
-  { label: 'ChatGPT',    icon: '/icons/chatgpt-icon.svg',     href: 'https://chat.openai.com/?q=Who+is+Shivam+Attri+and+how+can+he+help+my+SaaS+brand+with+AEO+and+SEO%3F' },
+  { label: 'ChatGPT',    icon: '/icons/chatgpt-icon.svg',     href: 'https://chat.openai.com/?q=Who+is+Shivam+Attri+and+how+can+he+help+my+brand+with+AEO+and+SEO%3F' },
   { label: 'Perplexity', icon: '/icons/perplexity-icon.svg',  href: 'https://www.perplexity.ai/?q=Who+is+Shivam+Attri+and+how+can+he+help+with+AEO+and+AI+search+visibility%3F' },
-  { label: 'Claude',     icon: '/icons/claude-icon.svg',      href: 'https://claude.ai/new?q=Who+is+Shivam+Attri+and+how+can+he+help+my+SaaS+brand+with+AEO+and+SEO%3F' },
+  { label: 'Claude',     icon: '/icons/claude-icon.svg',      href: 'https://claude.ai/new?q=Who+is+Shivam+Attri+and+how+can+he+help+my+brand+with+AEO+and+SEO%3F' },
   { label: 'Gemini',     icon: '/icons/google-gemini.svg',    href: 'https://gemini.google.com/app?q=Who+is+Shivam+Attri+and+how+can+he+help+my+brand+with+AEO+and+AI+search+visibility%3F' },
 ];
 
-const keywords = [
-  'AEO Specialist','AI Search Visibility','SEO Strategy','Google AI Overviews',
-  'ChatGPT Citation','Perplexity Optimization','Schema Markup Expert','Topical Authority',
-  'Technical SEO','AI-Visible Web Design','Content Architecture','Entity Optimization',
-  'E-E-A-T','Programmatic SEO','FAQPage Schema','JSON-LD Expert',
-];
 ---
 
 <footer class="site-footer">
 
-  <!-- Edge masthead — file-stamp + edition + build date -->
-  <div class="ft-mast container">
-    <div class="ft-mast-l">
-      <span class="ft-mast-stamp">FOOTER / FILE 01</span>
-      <span class="ft-mast-meta">EDITION {year}</span>
-      <span class="ft-mast-meta ft-mast-build">BUILT {buildDate.toUpperCase()}</span>
-    </div>
-    <a href="/" class="ft-mast-back" data-cursor="Back to top">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-      Top
-    </a>
+  <!-- Lamp at the leading edge: two conic cones + tube + blooms -->
+  <div class="ft-lamp" aria-hidden="true">
+    <span class="ft-lamp-cone ft-lamp-cone--l"></span>
+    <span class="ft-lamp-cone ft-lamp-cone--r"></span>
+    <span class="ft-lamp-bloom"></span>
+    <span class="ft-lamp-core"></span>
+    <span class="ft-lamp-line"></span>
   </div>
+
+  <!-- Atmosphere rising from the bottom edge, behind the wordmark -->
+  <div class="ft-glow-b" aria-hidden="true"></div>
+
 
   <div class="container">
     <div class="ft-grid">
@@ -73,7 +66,8 @@ const keywords = [
         </a>
         <p class="ft-bio">
           AEO Specialist, SEO Strategist, and AI-Visible Web Designer.
-          Helping B2B SaaS founders get cited by Claude, ChatGPT, Perplexity, and Google AI Overviews.
+          Helping brands across health tech, logistics, manufacturing, and ecommerce get cited by
+          Claude, ChatGPT, Perplexity, and Google AI Overviews.
         </p>
         <div class="ft-loc">
           <span class="adot" style="width:6px;height:6px"></span>
@@ -170,55 +164,145 @@ const keywords = [
     </div>
   </div>
 
-  <!-- Keyword marquee -->
-  <div class="ft-mq" aria-hidden="true">
-    <div class="ft-mq-track">
-      {[...keywords, ...keywords].map(k => <span class="ft-mq-i">{k}</span>)}
-    </div>
-  </div>
+  <!-- Oversized ghost wordmark, cropped by the panel's bottom edge -->
+  <div class="ft-ghost" aria-hidden="true">seoshivam</div>
 </footer>
 
 <style is:global>
+/* Inset panel, not a full-bleed page terminus: the page background breathes
+   down the left, right and bottom so the footer reads as a deliberate object.
+   overflow:hidden + the radius is what crops the oversized wordmark. */
 .site-footer{
   position:relative;
   background:var(--s1);
-  border-top:1px solid var(--bd);
-  padding:0 0 0;
+  margin:0 16px 16px;
+  border-radius:28px;
+  border:1px solid var(--bds);
+  /* bottom padding reserves the band the wordmark sits in */
+  padding:96px 0 132px;
   overflow:hidden;
+  isolation:isolate;
+}
+.site-footer > .container{position:relative;z-index:1}
+@media(max-width:768px){
+  .site-footer{margin:0 8px 8px;border-radius:20px;padding-bottom:96px}
 }
 
-/* ─── Masthead row ─── */
-.ft-mast{
-  display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding-top:32px;padding-bottom:18px;
-  border-bottom:1px solid var(--bd);
-  margin-bottom:48px;
-  flex-wrap:wrap;
+/* ─── Lamp at the leading edge ───
+   Port of the conic-gradient lamp: two 480x224 cones meeting at the top centre,
+   a 2px tube across them, and two blurred blooms behind it. Geometry is the
+   reference's own (h-56=224, w-[30rem]=480, 70deg/290deg at center top,
+   w-40/h-40=160 mask fades, blur-3xl=64, blur-2xl=40).
+   The reference's overlay divs that paint the page colour over the cone edges
+   are translated into real masks here (same result, one element instead of two).
+   The React/motion in the original is ONLY an entrance animation, which we
+   deliberately do not want: nothing below animates. */
+.ft-lamp{
+  position:absolute;top:0;left:0;right:0;height:300px;
+  pointer-events:none;z-index:0;
+  overflow:hidden;          /* clips above the tube, so light emerges from the edge */
+  isolation:isolate;
 }
-.ft-mast-l{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap}
-.ft-mast-stamp{
-  font-family:var(--fm);font-size:9px;font-weight:600;
-  letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ac);
-  padding:5px 10px;border:1px solid rgba(79,142,247,.28);
-  border-radius:3px;background:var(--agl);
+.ft-lamp-cone{
+  position:absolute;top:0;
+  width:480px;height:224px;
+  -webkit-mask-composite:source-in;
+  mask-composite:intersect;
 }
-.ft-mast-meta{font-family:var(--fm);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--wd)}
-.ft-mast-meta::before{content:'';display:inline-block;width:14px;height:1px;background:var(--bd);margin-right:10px;vertical-align:middle}
-.ft-mast-back{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--wd);
-  padding:6px 12px;border-radius:999px;
-  border:1px solid var(--bd);background:var(--s2);
-  text-decoration:none;
-  transition:color .25s,border-color .25s,background .25s,transform .25s;
+.ft-lamp-cone--l{
+  right:50%;
+  background:conic-gradient(from 70deg at center top,rgba(79,142,247,.55),transparent,transparent);
+  -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 71%),linear-gradient(to right,transparent 0%,#000 33%);
+  mask-image:linear-gradient(to top,transparent 0%,#000 71%),linear-gradient(to right,transparent 0%,#000 33%);
 }
-.ft-mast-back:hover{color:var(--ac);border-color:rgba(79,142,247,.45);background:var(--agl);transform:translateY(-1px)}
-@media(max-width:680px){
-  .ft-mast-build{display:none}
-  .ft-mast-back{padding:5px 10px}
+.ft-lamp-cone--r{
+  left:50%;
+  background:conic-gradient(from 290deg at center top,transparent,transparent,rgba(79,142,247,.55));
+  -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 71%),linear-gradient(to left,transparent 0%,#000 33%);
+  mask-image:linear-gradient(to top,transparent 0%,#000 71%),linear-gradient(to left,transparent 0%,#000 33%);
 }
+/* Wide bloom, centred on the tube (top:-72 = half its height). */
+.ft-lamp-bloom{
+  position:absolute;left:50%;top:-72px;
+  width:448px;height:144px;border-radius:50%;
+  transform:translateX(-50%);
+  background:rgba(79,142,247,.5);
+  filter:blur(64px);
+}
+/* Tighter, brighter core sitting just under the tube. */
+.ft-lamp-core{
+  position:absolute;left:50%;top:-56px;
+  width:256px;height:144px;border-radius:50%;
+  transform:translateX(-50%);
+  background:rgba(123,174,255,.55);
+  filter:blur(40px);
+}
+/* The tube itself. */
+.ft-lamp-line{
+  position:absolute;left:50%;top:0;
+  width:480px;height:2px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent 0%,#7BAEFF 22%,#A8C8FF 50%,#7BAEFF 78%,transparent 100%);
+}
+html.light .ft-lamp-cone--l{background:conic-gradient(from 70deg at center top,rgba(218,119,86,.5),transparent,transparent)}
+html.light .ft-lamp-cone--r{background:conic-gradient(from 290deg at center top,transparent,transparent,rgba(218,119,86,.5))}
+html.light .ft-lamp-bloom{background:rgba(218,119,86,.42)}
+html.light .ft-lamp-core{background:rgba(235,169,140,.5)}
+html.light .ft-lamp-line{background:linear-gradient(90deg,transparent 0%,#DA7756 22%,#EBA98C 50%,#DA7756 78%,transparent 100%)}
+@media(max-width:768px){
+  .ft-lamp{height:190px}
+  .ft-lamp-cone{width:300px;height:150px}
+  .ft-lamp-bloom{width:280px;height:100px;top:-50px}
+  .ft-lamp-core{width:170px;height:100px;top:-40px}
+  .ft-lamp-line{width:300px}
+}
+
+/* ─── Atmosphere at the bottom edge ───
+   Vertical rise: brightest at the panel's bottom, fading out upward. Static
+   paint, no animation. Declared BEFORE .ft-ghost in the DOM at the same
+   z-index, so the wordmark paints on top of the light rather than under it. */
+.ft-glow-b{
+  position:absolute;left:0;right:0;bottom:0;
+  height:360px;
+  pointer-events:none;z-index:0;
+  /* Atmosphere: dark at altitude, brightening to near-white at the horizon.
+     Falloff is front-loaded so the copyright row above only picks up a faint
+     tint instead of being washed out. */
+  background:linear-gradient(to top,
+    rgba(190,215,255,.78) 0%,
+    rgba(96,155,250,.50) 10%,
+    rgba(51,102,204,.26) 26%,
+    rgba(26,58,143,.10) 48%,
+    transparent 100%);
+}
+html.light .ft-glow-b{
+  background:linear-gradient(to top,
+    rgba(250,224,210,.85) 0%,
+    rgba(232,150,116,.52) 10%,
+    rgba(218,119,86,.26) 26%,
+    rgba(184,92,60,.09) 48%,
+    transparent 100%);
+}
+
+/* ─── Oversized wordmark ───
+   Sits in the reserved bottom band and is cropped by the panel's rounded
+   bottom edge. Sized so all 9 letters fit inside the panel (a 9-letter word
+   at 19vw ran 2008px wide on a 1280 screen and lost both ends).
+   It is a DARK silhouette, not a light ghost: it sits in the brightest part of
+   the atmosphere, so a white word would wash out. Dark reads against the light
+   in both themes. */
+.ft-ghost{
+  position:absolute;left:50%;bottom:-0.14em;
+  transform:translateX(-50%);
+  font-family:var(--fu);font-weight:800;
+  font-size:clamp(52px,11.5vw,210px);
+  line-height:.8;letter-spacing:-.045em;
+  color:rgba(5,9,22,.5);
+  white-space:nowrap;pointer-events:none;user-select:none;
+  z-index:0;
+}
+html.light .ft-ghost{color:rgba(20,16,12,.16)}
+
 
 /* ─── Grid ─── */
 .ft-grid{
@@ -242,7 +326,6 @@ const keywords = [
   background:linear-gradient(110deg,#4F8EF7 0%,#7BAEFF 50%,#1A3A8F 100%);
   background-size:300% 100%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:gradShift 8s linear infinite;
   margin:0 1px;
 }
 .ft-wm-3{color:var(--wd);font-size:18px;font-weight:600;transition:color .35s}
@@ -396,19 +479,7 @@ html.light .ft-ai-btn--perplexity .ft-ai-ico{filter:none}
 .ft-totop svg{transition:transform .35s cubic-bezier(.16,1,.3,1)}
 
 /* ─── Marquee ─── */
-.ft-mq{border-top:1px solid var(--bd);padding:18px 0;overflow:hidden;background:var(--bg);position:relative}
-.ft-mq::before,.ft-mq::after{
-  content:'';position:absolute;top:0;bottom:0;width:80px;z-index:1;pointer-events:none;
-}
-.ft-mq::before{left:0;background:linear-gradient(90deg, var(--bg) 0%, transparent 100%)}
-.ft-mq::after{right:0;background:linear-gradient(270deg, var(--bg) 0%, transparent 100%)}
-.ft-mq-track{display:flex;gap:48px;width:max-content;animation:mq 40s linear infinite}
-.ft-mq-i{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--wd);white-space:nowrap;opacity:.75}
-
-@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
 /* ─── Light mode ─── */
-html.light .ft-mq{background:var(--bg)}
 html.light .ft-soc{background:var(--s2)}
 html.light .ft-soc:hover{color:#fff}
 
@@ -437,8 +508,9 @@ html.light .ft-soc:hover{color:#fff}
 .ft-contact-link--wa:hover svg{color:#25D366}
 
 @media(max-width:640px){
-  .site-footer{padding-top:0}
-  .ft-mast{padding-top:24px;margin-bottom:32px}
+  .site-footer{padding-top:68px}
+  .ft-glow{height:220px}
+  .ft-glow::before,.ft-glow::after{height:180px}
   .ft-grid{grid-template-columns:1fr;gap:32px}
   .ft-bottom{flex-direction:column;gap:14px;align-items:flex-start;text-align:left}
   .ft-tag-row{width:100%;justify-content:space-between}
