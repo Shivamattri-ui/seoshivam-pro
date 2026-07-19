@@ -1,145 +1,101 @@
 ---
 title: "AEO Consultant vs AEO Agency: Which Fits Your Stage in 2026"
-description: "A consultant is one senior brain with no hands. An agency is hands with a junior account manager in front of them. Here is the honest split, what the market actually charges in 2026, and when you should hire neither."
+description: "Should a startup hire an AEO consultant or an AEO agency? Agencies burn runway on vanity metrics and lock-in contracts. Why lean SaaS teams win with an AEO consultant."
 pubDate: 2026-07-17
 category: "aeo"
-readTime: "9 min"
+readTime: "8 min"
 featured: false
-tldr: "Hire an AEO consultant when you already have people who can execute and what you're missing is the decision: which engines to chase, what to fix first, how your entity should be structured. Hire an AEO agency when the work is volume, runs in parallel across technical, content, and PR, and needs to survive one person getting sick. The deciding question is not your revenue, it is who does the work after the plan exists. In 2026 the published market sits around $100 to $250 per hour for consultants and $5,000 to $15,000 per month for agency retainers, but every source publishing those numbers sells one of the two answers, including this one."
+tldr: "For a startup choosing between an AEO consultant and an AEO agency, stage decides it. An agency is a scale tool, and a seed or early-stage company does not have a scale problem, it has a runway problem and a deadline. Six reasons agencies misfire for startups: the senior who sold you is not who runs your account, they measure traffic instead of revenue, they build content on a broken technical foundation, they lock you into long contracts before proving anything, they take weeks to onboard, and they create dependency instead of training your team. An agency is the right call later, at volume, once you are past product-market fit. Until then a consultant fixes what is broken and gets you named in AI answers faster."
 recap:
-  - "Every article ranking for this question is written by someone selling one of the answers. Agencies conclude agency, marketplaces conclude marketplace. Read the byline before the argument."
-  - "The real axis is not company stage or ARR, it is execution capacity. AEO is roughly 30% decision and 70% doing. A consultant sells you the 30%. If you have nobody to run the 70%, a consultant is a plan that dies in your Drive."
-  - "Both models fail the same way: AEO has no standardized scope, so a relabeled SEO retainer sells identically to real citation work. Filter for architecture knowledge before you filter for headcount."
-tags: ["AEO Consultant", "AEO Agency", "Hire AEO", "Answer Engine Optimization", "AEO Services"]
+  - "The consultant vs agency choice is a stage decision, not good versus bad. A startup has runway and a clock, not a volume problem, so it usually needs one senior operator rather than a production line."
+  - "Six reasons agencies misfire for startups: the senior who pitched is not who works your account, they report traffic instead of revenue, they pile content on a broken technical foundation, they lock you into six to twenty-four month contracts, they take weeks to start, and they create dependency instead of upskilling your team."
+  - "An agency earns its place later, at scale, past product-market fit. Before that, a consultant fixes the foundation and gets you cited faster and cheaper."
+tags: ["AEO Consultant", "AEO Agency", "Startup AEO", "Hire AEO", "SaaS SEO"]
 faqs:
-  - q: "Should I hire an AEO consultant or an AEO agency?"
-    a: "It depends on who executes the work after the plan exists, not on your company size. Hire a consultant when you already have a developer, a writer, or a marketer who can implement, and what you actually lack is the decision layer: engine priority, technical sequencing, entity architecture, and what to fix first. Hire an agency when the work is volume, when technical, content, and digital PR need to run in parallel, or when you need delivery that survives one person being unavailable. A consultant with no hands behind them produces a strategy document, not citations."
-  - q: "What does an AEO consultant cost compared to an AEO agency in 2026?"
-    a: "Published 2026 rates put AEO consultants at roughly $100 to $250 per hour, with solo monthly engagements commonly quoted between $2,000 and $12,000, and scoped projects between $5,000 and $15,000. Agency retainers are commonly published between $3,000 and $18,000 per month, with mid-market work clustering around $5,000 to $10,000 and enterprise scopes reaching $25,000 to $50,000 or more. Treat all of these as published claims rather than verified market data, because nearly every source publishing them is selling one of the two models."
-  - q: "Is an AEO agency better than a consultant for a small company?"
-    a: "Usually not, and the reason is cost structure rather than talent. An agency retainer is split across an account manager, a strategist, a technical specialist, and a content team, so a smaller budget buys a smaller fraction of each. A consultant concentrates the same spend on senior work. The exception is a small company with nobody to implement, where an agency's execution layer is the entire point of hiring."
-  - q: "How do I tell real AEO from a rebranded SEO retainer?"
-    a: "Ask architecture questions rather than methodology questions. A real practitioner can explain that Microsoft Copilot runs on Bing and requires Bing indexation, that Claude retrieves through Brave Search on an independent index, and that a site can be well indexed in one and invisible in the other. They measure citation frequency per engine, not domain authority. Anyone reporting AEO progress primarily through Google keyword rankings is running an SEO retainer with a new label, and this is equally common among consultants and agencies."
+  - q: "Should a startup hire an AEO consultant or an AEO agency?"
+    a: "For most startups, a consultant. At seed or early stage you have a runway problem, not a volume problem, and an agency is built to run execution at a scale you do not have yet. A consultant gives you senior judgment, fixes the technical foundation, and moves in days instead of the weeks an agency needs to onboard. Hire an agency later, once you are past product-market fit and need content and technical work running across dozens of pages at once."
+  - q: "Why do SEO and AEO agencies push long contracts?"
+    a: "Because the results take months and the agency wants the revenue locked in before you can judge them. Standard SEO contracts run six to twenty-four months. The risk is that if the work is not producing by month four, you are still paying through month twelve. Startups are better served by month-to-month or deliverable-scoped engagements, which keep the person earning the next month instead of billing it automatically."
+  - q: "What does an AEO consultant do that an agency does not for a startup?"
+    a: "A consultant is a single senior operator who does the work directly instead of delegating it to junior staff. For a startup that means the person who audits your site is the person who fixes it, the foundation gets handled before any content, and the knowledge transfers to your in-house team instead of staying locked inside an agency. You are buying senior hours and speed, not an account manager and a production line."
+  - q: "When should a startup switch from a consultant to an agency?"
+    a: "When volume becomes the constraint. Once you are past product-market fit and need to publish and optimize across dozens of pages and multiple markets, running technical, content, and digital PR in parallel, one person becomes the bottleneck. That is when a staffed agency earns its retainer. Most companies use a consultant early to set strategy and fix the base, then an agency later to run it at scale."
+  - q: "Is AEO different enough from SEO that a startup needs a specialist?"
+    a: "Yes. Answer engine optimization depends on things classic SEO retainers rarely touch: crawl access for AI bots like GPTBot and ClaudeBot, clean structured data, Bing and Brave indexation, and entity clarity that makes an AI name you as the answer. The discipline is new and the playbook is still being written, which rewards a senior specialist working in citations daily over a junior running a general content process."
 ---
 
-Ask the internet whether to hire an AEO consultant or an AEO agency and you will get a very confident answer. Then read the byline.
+You started a company, and the loudest pitches in your inbox are from SEO agencies and AEO agencies. Twelve-month contracts, slick dashboards, a promise to get you cited in ChatGPT.
 
-The agency's article concludes: agency. The marketplace's article concludes: hire through the marketplace. The listicle concludes: whoever is in the listicle. Every page ranking for this question is written by someone who sells one of the two answers.
+Here's the question none of their pitches answer: does a company at your stage need an agency at all?
 
-I am a consultant. So apply the same suspicion here, then check my answer against the part the others skip: there are real situations where an agency beats me, and I am going to name them. If you want the filter for the person or team you end up choosing, the [questions that filter fast](/insights/what-to-ask-before-hiring-aeo-strategist) do more work than this comparison does.
+For most startups, no, and for two reasons. The senior expert who runs your sales call is not the person who runs your account, and you find that out about three weeks in. And an agency is built to sell you scale, execution at volume, when a seed-stage startup doesn't have a volume problem. It has a runway problem and a clock. What moves the needle now is one senior operator who does the work, an [AEO consultant](/ai-seo-consultant) who fixes what's broken and points your people at the moves that get you named in AI answers.
 
-## You are buying the same six things either way
+## An agency is a scale tool. You don't have scale yet.
 
-This is the part that gets lost in the comparison. The scope does not change between the two models.
+Strip the pitch down and an agency is a production line. Account managers, strategists, technical specialists, writers, a reporting layer, all of it built to run many workstreams across many pages at once. That machine is worth paying for when you have 300 pages, four markets, and no time to touch any of it.
 
-Real [answer engine optimization](/insights/what-is-aeo) work is six things, whoever does it:
+You have a landing page, a blog with nine posts, and a burn rate. Different problem. You don't need a production line, you need someone who knows which five things to do and does them before the quarter ends. Buying agency scale at seed stage is buying a forklift to move one box.
 
-1. Technical access. AI bots allowed in robots.txt, Bing and Brave indexation verified, rendering that does not hide your content from a crawler.
-2. Entity setup. Organization and Person schema, sameAs across your verified profiles, consistent naming everywhere you exist.
-3. Answer-first restructure of the pages that already matter.
-4. New content, built as a cluster, not as a blog calendar.
-5. Citation tracking per engine, manually verified.
-6. Reporting that measures citations instead of vanity positions.
+None of this makes agencies bad. It makes them the wrong shape for where you are. The mechanics of [SEO for B2B SaaS](/insights/seo-for-b2b-saas) don't change based on who runs them. The difference is what you're paying for and who actually touches the work. Here's where that gap costs a startup the most.
 
-Nothing on that list belongs to agencies. Nothing on it belongs to solo operators. The list is fixed. The only variable is who touches it, and how many of them there are.
+## The senior who sold you isn't the one doing the work
 
-So the comparison is not about capability. It is about staffing.
+Every agency sale runs the same play. A sharp senior strategist walks you through the audit, names the gaps, sounds exactly like someone who'll fix them. You sign. Three weeks later you're on a call with a junior account manager you've never met, and the strategist is off closing the next deal.
 
-## The question is not your revenue. It is who executes.
+This isn't a scam, it's the math. An agency makes money on the spread between what it charges and what it pays, so the model only works if juniors and contractors do most of the execution while seniors review on a deadline. An eight-thousand-dollar retainer might buy ten to twenty hours of real senior time and a stack of junior hours for the rest. Read that back. The person whose judgment you're buying is the one who touches your account least.
 
-Everyone frames this by stage. Seed hires a consultant, Series A hires an agency, past $20M ARR you go in-house. It is a tidy ladder and it is mostly wrong, because it measures the wrong thing.
+A consultant is the opposite by construction. The name on the invoice is the name doing the work. There's no junior to hand you to, and no one else to blame if it doesn't move.
 
-AEO is roughly 30% decision and 70% doing. The 30% is genuinely hard: which engines are worth your money, what gets fixed in what order, how your entity should be structured, which 5 pages carry the cluster. The 70% is unglamorous and enormous: writing, shipping, fixing schema, submitting sitemaps, re-running queries every month.
+## They report traffic. You needed revenue.
 
-A consultant sells you the 30% brilliantly. If you have nobody to run the 70%, you have bought a strategy document that dies in your Google Drive. I have watched it happen. The plan was right. Nobody had time.
+Ask an agency how it's doing and you'll get a chart of rankings and traffic climbing up and to the right. Ask what it did for pipeline and the room goes quiet.
 
-So ask one question before you ask any other: **after the plan exists, whose hands do the work?**
+A ranking is a visibility number, not a value number. It doesn't tell you if anyone clicked, if they converted, or if the ones who converted were worth anything. A startup pouring runway into SEO gets a dashboard that looks like progress while sales wonders where the leads are. Traffic doesn't make payroll.
 
-If the answer is a name at your company, you want a consultant. If the answer is silence, you want an agency, or you want a consultant scoped to build rather than advise, which is a different contract than the one you were about to sign.
+It's worse in AI search. Being cited by ChatGPT or Perplexity for a query no buyer cares about is a vanity metric with a new coat of paint. What matters is being the named answer for the handful of questions people actually ask before they buy. That's a small, deliberate set of [pages that get you cited](/insights/5-pages-that-get-saas-cited-by-ai), not a content mill measured by word count.
 
-## Where a consultant actually wins
+## They pour content onto a broken foundation
 
-**The person who pitched is the person who works.** This is the whole pitch, and it is not a small thing. In an agency, the senior operator you meet in the sales call is a sampling of the product, not the product. The work lands with whoever has capacity. That gap is structural, not dishonest.
+Most agencies lead with content because content is easy to sell and easy to bill. New posts every month, a number you can point at. The problem is what's underneath.
 
-**Judgment beats volume in this discipline.** The engines are not interchangeable, and the differences are architectural. [Copilot runs on Bing](/insights/microsoft-copilot-optimization), so Bing indexation is a hard prerequisite. Claude retrieves through Brave, an independent index, so a site that Bing loves can be invisible to Claude. Those are decisions, not deliverables. More people in the room does not make that call better.
+If AI bots can't crawl you, if your schema is missing, if your pages render slow or your entity is a mess, more content changes nothing. As Search Engine Journal argues, piling posts onto a site with technical problems is just decorating something that's already broken, and audits routinely find the majority of sites carry exactly those problems. Content-first agencies build right on top of them anyway.
 
-**Scoped technical work is days, not quarters.** robots.txt, entity schema, Bing and Brave submission: that is a week of focused work by someone who has done it 30 times. Routing it through an account manager, a sprint board, and a Friday status call does not make it more correct. It makes it slower and more expensive.
+AEO makes the foundation non-negotiable. Getting named in AI answers depends on crawl access for GPTBot and ClaudeBot, clean structured data, Bing and Brave indexation, and a stable, fast render. That's [the technical foundation](/services/web-design) work, and it comes before a single new article. A consultant who does this fixes the base first. An agency selling you twelve posts a month rarely looks down there at all.
 
-**Your budget stays on senior work.** An agency retainer is divided across an account manager, a strategist, a technical specialist, and writers. At $5,000 a month you are buying a slice of each. The same $5,000 with one senior operator buys one person's actual attention.
+## They lock you in before they prove anything
 
-## Where an agency actually wins
+The standard SEO contract runs six to twenty-four months. You commit the runway before anyone has shown you a result. If it isn't working by month four, you're still paying through month twelve.
 
-Now the part I am supposed to leave out.
+One SaaS startup signed an eighteen-month deal on a promise of first-page rankings and a 300% traffic lift. Nine months and <a href="https://bulkwp.com/when-seo-agencies-lock-you-in-with-long-term-contracts-without-results-how-to-exit-and-reclaim-control-case-studies/" rel="nofollow noreferrer" target="_blank">more than $35,000</a> later: no new backlinks, stale content, nothing to show. They fought their way out, went lean, and saw real growth within three months of leaving. The lock-in wasn't protecting their results, it was protecting the agency's revenue.
 
-**Volume is real work, and one person is one person.** Restructuring 200 pages, running six content clusters at once, localizing across four markets: that is not a solo job, and any consultant telling you they can absorb it is telling you about their pipeline, not your project.
+A consultant engagement is usually month to month or scoped to a deliverable. If it's not working, you leave. That asymmetry alone keeps the person honest, because they have to earn the next month instead of billing it automatically.
 
-**Parallel workstreams.** Technical, content, and digital PR moving at the same time, every week, is what a staffed team is for. A consultant does those in sequence because a consultant has one calendar.
+## They take six weeks to start. You don't have six weeks.
 
-**Bus factor.** I get sick. I take holidays. A bigger client shows up. A team has redundancy and you should price that honestly instead of pretending it does not matter. If your AEO program cannot pause for two weeks, do not hang it on one human being.
+Onboarding an agency is its own project: discovery calls, a proposal, contract back-and-forth, team assignment, a kickoff. Two to six weeks before real work begins, and you're often paying through part of it.
 
-**Procurement.** The least romantic reason and one of the most common. Plenty of companies genuinely cannot contract a solo operator: vendor onboarding, insurance minimums, security review, a legal team that requires an entity with employees. If that is your situation, the debate is already over and no article changes it.
+A consultant can be auditing your site the same week you talk. No account manager to loop in, no internal handoff, no committee. For a company measuring life in months of runway, weeks of setup is not a rounding error. It's the difference between shipping the fix this month or next.
 
-**Earned media.** If your gap is that nobody outside your domain mentions you, that is a PR motion with outreach headcount behind it. That is an agency capability, and a consultant who claims it usually means one freelancer they subcontract.
+## They make you dependent. A consultant makes your team better.
 
-## Both models fail in exactly the same place
+An agency's incentive is to keep the retainer. So the knowledge stays on their side, the reporting stays opaque enough that you can't tell what's actually working, and cancelling feels like starting from zero. You never build the muscle. You rent one, indefinitely.
 
-Here is the failure mode that has nothing to do with headcount.
+If you've already got a marketer or two who can execute but keep missing the north star, a consultant is a different trade. They set the direction, fix the foundation, and hand the playbook to your people so the work keeps compounding after the engagement ends. You come out able to [build topical authority](/insights/topical-authority-saas-playbook) yourself instead of paying someone to hold the map forever.
 
-AEO has no certification, no standardized scope, and no agreed output checklist. Which means a content retainer from 2022 can be relabeled "AI search optimization," get a new deck, and sell to a buyer who has no way to tell the difference. Consultants do this. Agencies do this. The label tells you nothing.
+## When the agency is the right call
 
-The tell is architecture knowledge. Ask how Copilot retrieval differs from Claude retrieval. Ask what gets fixed before any content is written. Ask what they track that is not a Google keyword position. If [AEO and SEO](/insights/aeo-vs-seo-difference) sound like the same job in their answer, they are selling you the same job.
+An agency isn't a worse choice. It's a later one. Once you're past product-market fit, publishing across dozens of pages and several markets, running technical, content, and digital PR at the same time, one person becomes the bottleneck. That's exactly the moment a staffed team earns its retainer, and the moment to hire one.
 
-You can hire the wrong consultant and the wrong agency with equal ease. Filter for what they know before you filter for how many of them there are.
+Most companies end up using both, just not at once. A consultant sets the strategy and fixes the base early. An agency runs it at volume later. Buying the second one first is the mistake, because you pay for scale you can't use yet with runway you can't spare.
 
-## What the market actually charges
+## So which one fits your stage?
 
-Every number below is a published claim from a company that sells one of these models. Not verified market data. Read it as the shape of the market, not the truth of it.
+If you have a team that can execute and what's missing is direction, engine judgment, and someone senior who actually does the hard parts, that's a consultant. If you have volume, budget, and a machine that needs feeding across many pages at once, that's an agency, and you're probably past the stage this post is written for.
 
-| Model | Published 2026 range |
-|---|---|
-| Consultant, hourly | $100 to $250 per hour, some quoting $150 to $300 |
-| Consultant, monthly | $2,000 to $6,000 fractional, $5,000 to $12,000 for senior solo engagements |
-| Scoped project | $5,000 to $15,000 for a defined 4 to 12 week build |
-| Agency, starter | $2,500 to $4,500 per month |
-| Agency, mid-market | $5,000 to $10,000 per month, some publishing up to $18,000 |
-| Agency, enterprise | $15,000 to $50,000+ per month |
+For a startup, the honest answer is usually the consultant. Not because agencies are worse, but because you're buying senior judgment and speed on a clock, and that's the one thing a production line can't sell you cheaply. Before you hire either, run the same filter on both and know [what to ask before you hire](/insights/what-to-ask-before-hiring-aeo-strategist) anyone for AEO. The wrong shape costs you a quarter, and on startup runway a quarter is a lot.
 
-Two things worth reading out of that table.
-
-The bands overlap almost completely between $5,000 and $12,000. Inside that range, price is not telling you which model you are buying. It is telling you nothing at all, and you have to look at scope.
-
-And the bottom of the market has a floor for a reason. Sub-$1,500 AEO is content marketing wearing a new hat, because the technical layer alone is more hours than that pays for.
-
-## The stage map, honestly
-
-**No implementation capacity, small scope.** A consultant on a scoped build, not an advisory retainer. You are buying hands and a brain in one person, for a fixed window. This is the most under-sold contract in the market and it is what most small companies actually need.
-
-**A team that ships, no AI search decision layer.** A consultant, monthly or fractional. Your people are the 70%. Buy the 30% and point them at it.
-
-**Volume, multiple markets, PR needed, deadlines that cannot slip.** An agency. This is their job and doing it with one freelancer is a false economy that shows up in month three.
-
-**Big enough that the retainer looks like a salary.** Hire in-house and keep a consultant for the architecture calls. The full-time person handles the 70% forever. You are not paying a retainer for a decision you need four times a year.
-
-**No budget yet.** Neither. The technical layer of [AEO strategy](/services/aeo) is genuinely doable yourself: allow the AI bots, submit to Bing and Brave, put real Organization schema on your homepage, rewrite your five most important pages answer-first. That is free and it is most of the ceiling for a small site. Come back when the constraint is time instead of money.
-
-## How to decide this afternoon
-
-Three moves. None of them take a week.
-
-1. **Answer the execution question out loud.** Name the human who does the work after the plan lands. If you cannot name one, you are shopping for execution and you should stop reading consultant pages.
-2. **Run the architecture filter on both.** Same three questions to a consultant and an agency: Copilot versus Claude retrieval, first three fixes before content, what you track that is not a keyword position. The answers will not be close. Filtering for competence removes more candidates than filtering for model does.
-3. **Price the same scope twice.** Not "what do you charge." Give both the identical scope and ask what lands in 30 days. The proposals become comparable immediately, and the vague one disqualifies itself.
-
-## The honest close
-
-There is no universal answer here, and anyone giving you one is describing their own business model.
-
-A consultant is a decision multiplier with a hard ceiling on volume. An agency is a volume multiplier with a soft floor on seniority. Neither of those is a flaw. They are just what the two shapes are, and you pick based on which one your gap actually is.
-
-Mine is the first one. If you already have people who ship and what you are missing is which engines to chase and what to fix first, that is the job when you [hire an AEO consultant](/ai-seo-consultant). If your gap is that nobody has time to touch it, be honest about that and buy hands. A great plan nobody executes is worse than a mediocre plan someone ships, and it costs the same.
-
-Either way, run the architecture questions first. The wrong model costs you a quarter. The wrong operator costs you a year.
+Start by finding out where you actually stand. Open ChatGPT, ask it what it recommends in your category, and see if your name comes up. If it doesn't, that's the work, and you don't need an agency to begin it.
 
 ---
 
-**Sources:** Published 2026 pricing claims from <a href="https://aiadvantageagency.com/aeo-agency-pricing/" rel="nofollow noreferrer" target="_blank">AI Advantage Agency</a> (updated June 12, 2026), <a href="https://www.austinheaton.com/blog/top-20-aeo-agencies-and-consultants-2026" rel="nofollow noreferrer" target="_blank">Austin Heaton</a> (June 4, 2026), and <a href="https://www.loudface.co/blog/aeo-consultant-vs-agency-2026" rel="nofollow noreferrer" target="_blank">LoudFace</a> (2026). All are vendors selling one of the models compared here.
+**Sources:** <a href="https://www.searchenginejournal.com/why-your-new-seo-vendor-cant-build-on-a-broken-foundation/570716/" rel="nofollow noreferrer" target="_blank">Why Your New SEO Vendor Can't Build on a Broken Foundation</a>, Search Engine Journal. <a href="https://bulkwp.com/when-seo-agencies-lock-you-in-with-long-term-contracts-without-results-how-to-exit-and-reclaim-control-case-studies/" rel="nofollow noreferrer" target="_blank">When SEO Agencies Lock You In With Long-Term Contracts</a>, Bulk WP, December 2025. <a href="https://writealfa.com/blog/saas-seo-consultants" rel="nofollow noreferrer" target="_blank">SaaS SEO Consultants vs Agencies</a>, WriteAlfa.
