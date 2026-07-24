@@ -58,6 +58,43 @@ const services = [
   { n: '06', t: 'Citation Tracking and Reporting', d: 'Monthly tracking of 20 to 30 buyer queries across 6 AI engines, manually verified against live responses. You see which platforms cite your brand, for which queries, how frequency changes over time, and what to adjust next.' },
 ];
 
+/* Engine cards. Every figure is company-disclosed except Grok, which xAI does not
+   publish: that one is a third-party estimate and is labelled as such on the card.
+   `note` lines are lifted from the voice already used on /services/generative-engine-optimization. */
+const engineCards = [
+  {
+    f: 'chatgpt-icon', n: 'ChatGPT',
+    stat: '900M', unit: 'weekly active users', src: 'OpenAI, Feb 2026',
+    note: 'The largest single surface where buyers ask which vendor to pick.',
+  },
+  {
+    // Google logo, not Gemini: AI Overviews is a Search feature, a separate product.
+    f: 'google-icon', n: 'Google AI Overviews',
+    stat: '~50%', unit: 'of US queries return one', src: 'Google',
+    note: 'Weights E-E-A-T and structured data more heavily than any other engine.',
+  },
+  {
+    f: 'perplexity-icon', n: 'Perplexity',
+    stat: '780M', unit: 'searches per month', src: 'Perplexity CEO, Jun 2025',
+    note: 'Leans on freshness. Stale pages drop out of its answers fast.',
+  },
+  {
+    f: 'copilot-icon', n: 'Microsoft Copilot',
+    stat: '20M', unit: 'paid enterprise seats', src: 'Microsoft earnings, Apr 2026',
+    note: 'Runs on Bing, so Bing indexation is not optional here.',
+  },
+  {
+    f: 'claude-icon', n: 'Claude',
+    stat: '300K+', unit: 'business customers', src: 'Anthropic',
+    note: 'Rewards verifiable credibility and a non-promotional tone.',
+  },
+  {
+    f: 'grok-icon', n: 'Grok', inv: true,
+    stat: '117M', unit: 'monthly users (est.)', src: 'Third-party estimate',
+    note: 'Reads real-time web and X signals, so recency carries unusual weight.',
+  },
+];
+
 const faqs = [
   { q: "What does an AEO strategist do for a B2B SaaS business?", a: "An AEO strategist makes your brand citable in AI-generated answers. For B2B SaaS specifically, that means three things: (1) establishing your brand as a recognized entity in your category across AI systems, (2) restructuring your existing content so AI engines can extract and cite it, and (3) building the technical signals — Bing indexation, AI bot access, entity schema — that determine whether your brand appears when buyers ask AI tools which vendor to choose. Most B2B SaaS brands rank well on Google and still do not appear in a single AI engine citation. AEO closes that gap." },
   { q: "What does a step-by-step AEO strategy for SaaS look like?", a: "Phase 1 is always audit and architecture: check AI bot access in robots.txt, verify Bing indexation (separate from Google), audit entity schema, and map the 20 to 30 buyer queries you need to rank for. Phase 2 is entity and technical build: deploy JSON-LD schema for Person and Organization, add sameAs signals across LinkedIn and GitHub, fix any crawl blocks. Phase 3 is content restructure: rewrite key pages so the answer appears in the first two sentences, add FAQPage markup, and align headings with the question formats AI users actually ask. Phase 4 is tracking: monthly citation checks across 6 engines, branded search monitoring, and Bing Webmaster Tools. Most SaaS clients complete phases 1 and 2 in weeks 1 to 4, phase 3 in weeks 4 to 8, and see first citations by week 10 to 12." },
@@ -131,90 +168,132 @@ const results = [
   <main>
 
     <!-- Hero -->
-    <section class="aeo-hero">
-      <div class="container">
-        <nav class="pg-bc rv" aria-label="Breadcrumb">
+    <section class="ah">
+      <div class="ah-skin" aria-hidden="true">
+        <div class="ah-mesh"></div>
+        <div class="ah-lines"></div>
+      </div>
+
+      <div class="container ah-in">
+        <nav class="pg-bc ah-bc rv" aria-label="Breadcrumb">
           <a href="/">Home</a><span>›</span><a href="/services">Services</a><span>›</span><span>AEO Strategy</span>
         </nav>
-        <div class="aeo-hero-grid">
-          <div class="aeo-hero-l">
-            <div class="rv"><span class="label">AEO Strategy</span></div>
-            <h1 class="aeo-h1 rv d1">Get cited by ChatGPT,<br>Perplexity, and<br><em>Google AI Overviews.</em></h1>
-            <p class="aeo-sub rv d2">Most SaaS brands rank well on Google and still miss from AI answers. ChatGPT, Perplexity, and Google AI Overviews pick sources based on entity trust, technical architecture, and content structure. This is the system that changes that.</p>
-            <div class="aeo-hero-btns rv d3">
-              <a href="/contact" class="btn-p">Get AEO audit ↗</a>
-              <a href="#what-included" class="btn-s">What is included →</a>
-            </div>
-          </div>
-          <div class="aeo-hero-r rv d2">
-            <div class="aeo-cite-mock">
-              <div class="acm-query">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                best aeo specialist for b2b saas startups
-              </div>
-              <div class="acm-engine">
-                <div class="acm-bar">
-                  <span class="acm-dot"></span>
-                  <span class="acm-name">AI Overview</span>
-                  <span class="acm-src-ct">3 sources</span>
-                </div>
-                <p class="acm-answer" id="aeoAnswer"></p>
-                <div class="acm-cites">
-                  <span class="acm-cite-chip"><span class="adot" style="width:4px;height:4px"></span>seoshivam.pro</span>
-                  <span class="acm-cite-chip acm-cite-dim">linkedin.com/in/seoshivampro</span>
-                </div>
-              </div>
-              <div class="acm-result">
-                <div class="acm-res-url">seoshivam.pro › services › aeo</div>
-                <div class="acm-res-title">AEO Strategy · Shivam Attri</div>
-                <div class="acm-res-snip">Answer Engine Optimization that gets your brand cited by ChatGPT, Perplexity...</div>
-              </div>
-            </div>
-          </div>
+
+        <div class="rv"><span class="label">AEO Strategy</span></div>
+        <h1 class="ah-h1 rv d1">Get cited by ChatGPT, Perplexity, and <em>Google AI Overviews.</em></h1>
+        <p class="ah-sub rv d2">Most brands rank well on Google and still go missing from AI answers. ChatGPT, Perplexity, and Google AI Overviews pick sources based on entity trust, technical architecture, and content structure. This is the system that changes that.</p>
+        <div class="ah-cta rv d3">
+          <a href="/contact" class="btn-p" data-cursor="Free audit, 4hr reply">Get AEO audit ↗</a>
+          <a href="#what-included" class="btn-s">What is included →</a>
         </div>
-        <div class="aeo-stats rv d4">
-          <div class="aeo-stat"><span class="aeo-sn">20+</span><span class="aeo-sl">AI citations tracked<br>for one client</span></div>
-          <div class="aeo-stat-div"></div>
-          <div class="aeo-stat"><span class="aeo-sn">30–90</span><span class="aeo-sl">Days to first<br>AI citations</span></div>
-          <div class="aeo-stat-div"></div>
-          <div class="aeo-stat"><span class="aeo-sn">6</span><span class="aeo-sl">AI engines<br>tracked monthly</span></div>
-          <div class="aeo-stat-div hide-mob"></div>
-          <div class="aeo-stat hide-mob"><span class="aeo-sn">70+</span><span class="aeo-sl">Organic leads/mo<br>Platform SaaS · AU</span></div>
+
+        <!-- Stage: the AI visibility report window -->
+        <div class="ah-stage rv d4" id="ahStage">
+          <div class="ah-win">
+            <div class="ah-win-bar">
+              <span class="ah-tl"><i></i><i></i><i></i></span>
+              <span class="ah-addr">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                seoshivam.pro/reports/ai-visibility
+              </span>
+            </div>
+
+            <div class="ah-dash">
+              <div class="ah-dhd">
+                <span class="ah-dt">AI Search Visibility</span>
+                <span class="ah-dpill"><span class="ah-live"></span>Last 90 days</span>
+              </div>
+
+              <div class="ah-cards">
+                <div class="ah-card">
+                  <svg class="ah-ring" viewBox="0 0 32 32" aria-hidden="true">
+                    <circle class="ah-ring-t" cx="16" cy="16" r="12"></circle>
+                    <circle class="ah-ring-v" cx="16" cy="16" r="12" style="--dash:75.4;--off:28.6"></circle>
+                  </svg>
+                  <span class="ah-card-b">
+                    <span class="ah-card-l">Brand mentions</span>
+                    <b class="ah-card-v" data-count="1284" data-fmt="1">1,284</b>
+                  </span>
+                </div>
+                <div class="ah-card">
+                  <svg class="ah-ring" viewBox="0 0 32 32" aria-hidden="true">
+                    <circle class="ah-ring-t" cx="16" cy="16" r="12"></circle>
+                    <circle class="ah-ring-v" cx="16" cy="16" r="12" style="--dash:75.4;--off:39.2"></circle>
+                  </svg>
+                  <span class="ah-card-b">
+                    <span class="ah-card-l">AI citations</span>
+                    <b class="ah-card-v" data-count="247">247</b>
+                  </span>
+                </div>
+                <div class="ah-card">
+                  <svg class="ah-ring" viewBox="0 0 32 32" aria-hidden="true">
+                    <circle class="ah-ring-t" cx="16" cy="16" r="12"></circle>
+                    <circle class="ah-ring-v" cx="16" cy="16" r="12" style="--dash:75.4;--off:19.6"></circle>
+                  </svg>
+                  <span class="ah-card-b">
+                    <span class="ah-card-l">Avg. cited pages</span>
+                    <b class="ah-card-v" data-count="3.4" data-dec="1">3.4</b>
+                  </span>
+                </div>
+              </div>
+
+              <div class="ah-cb">
+                <span class="ah-cb-l">Visibility by engine</span>
+                <div class="ah-cols">
+                  <span class="ah-col"><i class="ah-colb" style="--h:92%"></i><img src="/icons/chatgpt-icon.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                  <span class="ah-col"><i class="ah-colb" style="--h:78%"></i><img src="/icons/perplexity-icon.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                  <span class="ah-col"><i class="ah-colb" style="--h:64%"></i><img src="/icons/google-gemini.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                  <span class="ah-col"><i class="ah-colb" style="--h:55%"></i><img src="/icons/claude-icon.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                  <span class="ah-col"><i class="ah-colb" style="--h:41%"></i><img src="/icons/copilot-icon.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                  <span class="ah-col"><i class="ah-colb" style="--h:29%"></i><img class="ah-inv" src="/icons/grok-icon.svg" alt="" width="15" height="15" loading="eager" decoding="async" /></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- The Shift -->
-    <section class="aeo-what-sec" id="what-included">
-      <div class="container">
-        <div class="aeo-what-grid">
-          <div class="aeo-what-l rv">
-            <span class="label">The shift</span>
-            <h2 class="sec-h" style="margin-top:14px">Search changed.<br><em class="grad-anim">The strategy must too.</em></h2>
-            <p class="aeo-what-p">When a B2B founder searches "what is the best AEO tool for SaaS," they are not getting ten blue links. They are getting one answer, with one or two sources cited. That is the moment your brand either exists or it does not.</p>
-            <p class="aeo-what-p">Every day, buyers in your market ask AI engines which vendor to trust. The answer is not the brand with the best product. It is the brand with the clearest technical architecture, the most entity-consistent content, and the fastest answer to the exact question being asked. <a href="/insights/what-is-aeo" class="ilink">AEO is the discipline of becoming that brand.</a></p>
-            <p class="aeo-what-p">It runs in parallel with <a href="/services/seo" class="ilink">SEO</a>, not instead of it. The same content cluster that earns Google rankings earns ChatGPT citations, when the technical layer connects both surfaces correctly.</p>
+    <section class="shift" id="what-included">
+      <div class="container shift-in">
+        <div class="shift-l rv">
+          <div class="hair left">THE SHIFT</div>
+          <h2 class="sec-h" style="margin-top:14px">Search changed.<br><em class="grad-anim">The strategy must too.</em></h2>
+          <p class="shift-p">When a founder asks an AI engine which vendor to trust, they are not getting ten blue links. They get one answer, with one or two sources cited. That is the moment your brand either exists or it does not.</p>
+          <p class="shift-p">The brand that gets named is not the one with the best product. It is the one with the clearest technical architecture and the most entity-consistent content, which is what <a href="/insights/what-is-aeo" class="ilink">AEO is built to fix</a>. It runs alongside <a href="/services/seo" class="ilink">SEO</a>, not instead of it: the same cluster that earns rankings earns citations.</p>
+          <div class="shift-nav">
+            <button class="shift-btn" type="button" data-dir="-1" aria-label="Previous engine" aria-controls="shiftTrack">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="shift-btn" type="button" data-dir="1" aria-label="Next engine" aria-controls="shiftTrack">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </button>
           </div>
-          <div class="aeo-what-r rv d1">
-            <div class="aeo-engine-list">
-              {[
-                { name: 'Google AI Overviews', note: '47% of informational queries now trigger an overview', color: '#4285F4' },
-                { name: 'ChatGPT Search', note: '200M+ weekly users asking vendor questions', color: '#10A37F' },
-                { name: 'Perplexity AI', note: 'Semantic relevance and source citation model', color: '#8B5CF6' },
-                { name: 'Claude (Anthropic)', note: 'Brave Search indexing and entity signals', color: '#D97706' },
-                { name: 'Microsoft Copilot', note: 'Bing index and LinkedIn authority signals', color: '#0078D4' },
-                { name: 'Grok (xAI)', note: 'Real-time web and X platform signals', color: '#1DA1F2' },
-              ].map(e => (
-                <div class="aeo-eng-row">
-                  <span class="aeo-eng-dot" style={`background:${e.color}`}></span>
-                  <div class="aeo-eng-info">
-                    <span class="aeo-eng-nm">{e.name}</span>
-                    <span class="aeo-eng-nt">{e.note}</span>
-                  </div>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+
+        <div class="shift-r rv d1">
+          <div class="shift-track" id="shiftTrack" tabindex="0" role="group" aria-label="AI engines, scrollable">
+            {engineCards.map((e) => (
+              <article class="sc">
+                <img class={`sc-mark${e.inv ? ' sc-inv' : ''}`} src={`/icons/${e.f}.svg`} alt="" width="180" height="180" loading="lazy" decoding="async" aria-hidden="true" />
+                <div class="sc-top">
+                  <span class="sc-ic"><img src={`/icons/${e.f}.svg`} alt="" width="18" height="18" loading="lazy" decoding="async" /></span>
+                  <span class="sc-n">{e.n}</span>
                 </div>
-              ))}
-            </div>
+                <div class="sc-mid">
+                  <span class="sc-stat">{e.stat}</span>
+                  <span class="sc-unit">{e.unit}</span>
+                </div>
+                <p class="sc-note">{e.note}</p>
+                <span class="sc-src">{e.src}</span>
+              </article>
+            ))}
+          </div>
+          <div class="shift-prog">
+            <span class="shift-idx" id="shiftIdx">01</span>
+            <span class="shift-bar"><i id="shiftFill"></i></span>
+            <span class="shift-tot">0{engineCards.length}</span>
           </div>
         </div>
       </div>
@@ -378,47 +457,177 @@ const results = [
   .pg-bc{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-bottom:32px}
   .pg-bc a{color:var(--wm);transition:color .2s}.pg-bc a:hover{color:var(--w)}.pg-bc span:not(:last-child){opacity:.4}
 
-  .aeo-hero{padding:160px 0 0}
-  .aeo-hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center}
-  .aeo-h1{font-family:var(--fd);font-size:clamp(36px,5vw,68px);font-weight:400;line-height:.96;letter-spacing:-.02em;color:var(--w);margin:16px 0 20px}
-  .aeo-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .aeo-sub{font-family:var(--fu);font-size:clamp(14px,1.5vw,16px);color:var(--wd);line-height:1.75;max-width:460px;margin-bottom:28px}
-  .aeo-hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-  .aeo-stats{display:flex;align-items:center;padding:32px 0;border-top:1px solid var(--bd);margin-top:48px}
-  .aeo-stat{padding:0 28px;display:flex;flex-direction:column;gap:4px}
-  .aeo-stat:first-child{padding-left:0}
-  .aeo-stat-div{width:1px;height:32px;background:var(--bd);flex-shrink:0}
-  .aeo-sn{font-family:var(--fd);font-size:24px;font-weight:400;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-  .aeo-sl{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+  /* ══ HERO: rounded panel, gradient mesh, grid, engine orbit ══ */
+  .ah{
+    /* Two theme-aware locals so no raw colour is repeated anywhere below.
+       Shadows stay neutral-black by codebase convention (see .go-chip in
+       generative-engine-optimization.astro); everything tinted derives from --ac/--w. */
+    --ah-sh:rgba(0,0,0,.72);
+    --ah-line:color-mix(in srgb,var(--w) 5%,transparent);
+    position:relative;margin:0 14px;border-radius:32px;overflow:hidden;isolation:isolate;
+    min-height:calc(100vh - 16px);
+    min-height:calc(100svh - 16px);
+    display:grid;align-content:center;
+    padding:clamp(96px,11.5vh,128px) 0 clamp(24px,3.4vh,40px);
+    box-shadow:0 40px 120px -50px var(--ah-sh);
+  }
+  :global(html.light) .ah{--ah-sh:rgba(60,52,40,.24)}
+  .ah-skin{position:absolute;inset:0;z-index:0}
+  .ah-in{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center}
+  /* Bloom is derived from --ac via color-mix, so it is brand-blue in dark and
+     terracotta in light automatically. Never hardcode channel values here: that
+     is what previously leaked a blue glow into the cream theme. */
+  /* Blooms are raised and widened so tint reaches the upper hero, not just the
+     bottom strip. Base is the plain --bg token: no hardcoded hex. */
+  .ah-mesh{position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 56% 44% at 50% 92%,color-mix(in srgb,var(--ac) 58%,transparent) 0%,transparent 72%),
+      radial-gradient(ellipse 84% 64% at 50% 100%,color-mix(in srgb,var(--ac) 32%,transparent) 0%,transparent 74%),
+      radial-gradient(ellipse 118% 92% at 50% 108%,color-mix(in srgb,var(--ac) 17%,transparent) 0%,transparent 78%),
+      radial-gradient(ellipse 104% 76% at 50% 24%,color-mix(in srgb,var(--ac) 11%,transparent) 0%,transparent 72%),
+      var(--bg);
+  }
+  .ah-lines{position:absolute;inset:0;
+    background-image:linear-gradient(var(--ah-line) 1px,transparent 1px),linear-gradient(90deg,var(--ah-line) 1px,transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 86% 82% at 50% 42%,#000 26%,transparent 100%);
+    mask-image:radial-gradient(ellipse 86% 82% at 50% 42%,#000 26%,transparent 100%);
+  }
+  :global(html.light) .ah-mesh{
+    background:
+      radial-gradient(ellipse 56% 44% at 50% 92%,color-mix(in srgb,var(--ac) 30%,transparent) 0%,transparent 72%),
+      radial-gradient(ellipse 84% 64% at 50% 100%,color-mix(in srgb,var(--ac) 17%,transparent) 0%,transparent 74%),
+      radial-gradient(ellipse 118% 92% at 50% 108%,color-mix(in srgb,var(--ac) 9%,transparent) 0%,transparent 78%),
+      radial-gradient(ellipse 104% 76% at 50% 24%,color-mix(in srgb,var(--ac) 6%,transparent) 0%,transparent 72%),
+      var(--bg);
+  }
 
-  .aeo-cite-mock{background:var(--s1);border:1px solid var(--bd);border-radius:20px;overflow:hidden}
-  .acm-query{display:flex;align-items:center;gap:8px;padding:12px 16px;font-family:var(--fu);font-size:12px;color:var(--wd);border-bottom:1px solid var(--bd);background:var(--s2)}
-  .acm-engine{padding:14px 16px;border-bottom:1px solid var(--bd)}
-  .acm-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-  .acm-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0}
-  .acm-name{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
-  .acm-src-ct{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm);margin-left:auto}
-  .acm-answer{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.65;margin-bottom:12px;min-height:64px}
-  .acm-cites{display:flex;gap:6px;flex-wrap:wrap}
-  .acm-cite-chip{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--ac);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);border-radius:4px;padding:3px 8px;display:inline-flex;align-items:center;gap:5px}
-  .acm-cite-dim{color:var(--wm);background:var(--s3);border-color:var(--bd)}
-  .acm-result{padding:12px 16px}
-  .acm-res-url{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--green);margin-bottom:3px}
-  .acm-res-title{font-family:var(--fu);font-size:13px;font-weight:700;color:var(--ac);margin-bottom:3px}
-  .acm-res-snip{font-family:var(--fu);font-size:11px;color:var(--wm);line-height:1.5}
+  .ah-bc{justify-content:center;margin-bottom:16px}
+  .ah-h1{font-family:var(--fd);font-size:clamp(30px,4vw,52px);font-weight:400;line-height:1.04;letter-spacing:-.022em;color:var(--w);margin:12px auto 14px;max-width:780px;text-wrap:balance}
+  .ah-h1 em{font-style:italic;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .ah-sub{font-family:var(--fu);font-size:clamp(13px,1.35vw,15px);color:var(--wd);line-height:1.68;max-width:548px;margin:0 auto clamp(18px,2.6vh,26px);text-wrap:pretty}
+  .ah-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:clamp(16px,2.6vh,28px)}
 
-  .aeo-what-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
-  .aeo-what-grid{display:grid;grid-template-columns:1fr 380px;gap:80px;align-items:start}
-  .aeo-what-p{font-family:var(--fu);font-size:15px;color:var(--wd);line-height:1.8;margin:0 0 16px}
-  .aeo-engine-list{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
-  .aeo-eng-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bd);background:var(--s1);transition:background .2s}
-  .aeo-eng-row:last-child{border-bottom:none}
-  .aeo-eng-row:hover{background:var(--s2)}
-  .aeo-eng-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-  .aeo-eng-info{flex:1}
-  .aeo-eng-nm{display:block;font-family:var(--fu);font-size:13px;font-weight:700;color:var(--w);letter-spacing:-.01em}
-  .aeo-eng-nt{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.04em;color:var(--wm)}
-  .aeo-eng-row svg{color:var(--green);flex-shrink:0}
+  /* stage: the report window alone, narrower and taller so it reads as a product */
+  .ah-stage{position:relative;width:min(620px,100%);margin:0 auto}
+
+  .ah-win{width:100%;background:var(--s1);border:1px solid var(--bd);border-radius:16px;overflow:hidden;text-align:left;
+    box-shadow:0 32px 84px -30px var(--ah-sh)}
+  .ah-win-bar{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--s2);border-bottom:1px solid var(--bd)}
+  .ah-tl{display:flex;gap:5px;flex-shrink:0}
+  .ah-tl i{width:9px;height:9px;border-radius:50%;background:var(--s4);display:block}
+  :global(html.light) .ah-tl i{background:var(--s3)}
+  .ah-addr{flex:1;display:flex;align-items:center;gap:6px;min-width:0;background:var(--bg);border:1px solid var(--bds);border-radius:var(--r-pill);
+    padding:5px 11px;font-family:var(--fm);font-size:10px;letter-spacing:.02em;color:var(--wm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  :global(html.light) .ah-addr{border-color:var(--bd)}
+  .ah-addr svg{flex-shrink:0;color:var(--green)}
+
+  /* dashboard: every size is vh-aware so the hero can never exceed one screen */
+  .ah-dash{background:var(--bg);padding:clamp(12px,1.7vh,17px) clamp(13px,1.5vw,16px) clamp(13px,1.9vh,18px)}
+  .ah-dhd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:clamp(10px,1.5vh,14px)}
+  .ah-dt{font-family:var(--fu);font-size:clamp(12px,1.6vh,14px);font-weight:700;color:var(--w);letter-spacing:-.012em}
+  .ah-dpill{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--wm);background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-pill);padding:4px 9px;white-space:nowrap}
+  .ah-live{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+  .ah-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:clamp(10px,1.5vh,14px)}
+  .ah-card{display:flex;align-items:center;gap:9px;min-width:0;background:var(--s1);border:1px solid var(--bd);border-radius:10px;
+    padding:clamp(9px,1.3vh,12px) 10px}
+  .ah-ring{width:clamp(28px,3.8vh,34px);aspect-ratio:1;flex-shrink:0;transform:rotate(-90deg)}
+  .ah-ring circle{fill:none;stroke-width:4;stroke-linecap:round}
+  .ah-ring-t{stroke:var(--s3)}
+  .ah-ring-v{stroke:var(--ac);stroke-dasharray:var(--dash);stroke-dashoffset:var(--off)}
+  .ah-card-b{min-width:0;display:flex;flex-direction:column;gap:2px}
+  .ah-card-l{font-family:var(--fm);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ah-card-v{font-family:var(--fd);font-size:clamp(19px,2.5vh,23px);font-weight:400;color:var(--w);line-height:1.1;letter-spacing:-.01em}
+
+  .ah-cb{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:clamp(10px,1.5vh,14px) 12px}
+  .ah-cb-l{display:block;font-family:var(--fm);font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm);margin-bottom:clamp(8px,1.2vh,12px)}
+  .ah-cols{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,1.6vw,18px);height:clamp(76px,11.5vh,116px)}
+  .ah-col{display:grid;grid-template-rows:1fr auto;gap:8px;justify-items:center;height:100%}
+  .ah-colb{width:100%;max-width:38px;height:var(--h);align-self:end;border-radius:5px 5px 3px 3px;transform-origin:bottom center;
+    background:linear-gradient(180deg,var(--ac) 0%,color-mix(in srgb,var(--ac) 24%,transparent) 100%)}
+  .ah-col img{opacity:.92;object-fit:contain}
+  /* grok-icon.svg is solid #000000, invisible on the dark dashboard surface */
+  :global(html:not(.light)) .ah-inv{filter:invert(1)}
+
+  /* ══ THE SHIFT: rounded inset panel matching the hero, engine card slider ══ */
+  .shift{
+    --sc-sh:rgba(0,0,0,.55);
+    position:relative;margin:14px 14px 0;border-radius:32px;overflow:hidden;isolation:isolate;
+    min-height:calc(100vh - 28px);
+    min-height:calc(100svh - 28px);
+    display:grid;align-content:center;
+    padding:clamp(44px,6vh,76px) 0;
+    background:var(--s1);
+  }
+  :global(html.light) .shift{--sc-sh:rgba(60,52,40,.16)}
+  .shift-in{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);gap:clamp(26px,3.4vw,54px);align-items:center}
+  /* Capped below the global .sec-h size so "The strategy must too." stays on ONE
+     line inside this narrower column instead of wrapping to a third line. */
+  .shift .sec-h{font-size:clamp(28px,3vw,44px);line-height:1.04}
+  .shift-p{font-family:var(--fu);font-size:clamp(13.5px,1.4vw,15px);color:var(--wd);line-height:1.78;margin:0 0 14px;max-width:44ch}
+
+  .shift-nav{display:flex;gap:10px;margin-top:clamp(16px,2.4vh,26px)}
+  .shift-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
+    background:var(--s2);border:1px solid var(--bd);color:var(--w);cursor:pointer;
+    transition:background .2s,border-color .2s,transform .2s,opacity .2s}
+  .shift-btn:hover:not(:disabled){background:var(--agl);border-color:var(--ac);transform:translateY(-2px)}
+  .shift-btn:disabled{opacity:.3;cursor:default}
+
+  /* Native scroll-snap does the sliding: momentum on touch, smooth programmatic
+     scroll from the arrows, and no JS running per frame. */
+  .shift-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;
+    padding:8px;margin:-8px;scrollbar-width:none;-ms-overflow-style:none;
+    cursor:grab;
+    /* Cards fade out at the right instead of being hard-chopped by the column
+       edge. Removed once scrolled to the end so the last card is never dimmed. */
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 92px),transparent 100%);
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 92px),transparent 100%)}
+  .shift-track.at-end{-webkit-mask-image:none;mask-image:none}
+  .shift-track::-webkit-scrollbar{display:none}
+  .shift-track:active{cursor:grabbing}
+  .shift-track:focus-visible{outline:2px solid var(--ac);outline-offset:4px;border-radius:22px}
+
+  .sc{position:relative;flex:0 0 auto;scroll-snap-align:start;overflow:hidden;
+    /* Sized to sit level with the text column instead of floating in dead space. */
+    width:clamp(218px,23vw,278px);
+    min-height:clamp(300px,50vh,450px);
+    display:flex;flex-direction:column;
+    padding:clamp(15px,2vh,19px);
+    border:1px solid var(--bd);border-radius:20px;
+    background:linear-gradient(158deg,var(--s2) 0%,var(--s1) 60%);
+    box-shadow:0 18px 42px -22px var(--sc-sh);
+    transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s,border-color .3s}
+  .sc:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ac) 40%,var(--bd));
+    box-shadow:0 26px 56px -24px var(--sc-sh)}
+  /* corner shading, brand-tinted, derived from --ac */
+  .sc::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;z-index:0;
+    background:
+      radial-gradient(58% 46% at 0% 0%,color-mix(in srgb,var(--ac) 15%,transparent),transparent 70%),
+      radial-gradient(58% 46% at 100% 100%,color-mix(in srgb,var(--ac) 11%,transparent),transparent 70%)}
+  .sc-mark{position:absolute;right:-24px;bottom:-20px;width:clamp(116px,13vw,164px);height:auto;
+    opacity:.10;pointer-events:none;z-index:0}
+  :global(html:not(.light)) .sc-inv{filter:invert(1)}
+
+  .sc-top{position:relative;z-index:1;display:flex;align-items:center;gap:9px}
+  /* white plate so every brand logo stays legible in both themes (same as .go-chip) */
+  .sc-ic{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#fff;flex-shrink:0;
+    box-shadow:0 2px 8px var(--sc-sh)}
+  .sc-n{font-family:var(--fu);font-size:13.5px;font-weight:700;color:var(--w);letter-spacing:-.015em;line-height:1.25}
+  .sc-mid{position:relative;z-index:1;margin-top:auto;padding-top:18px}
+  .sc-stat{display:block;font-family:var(--fd);font-size:clamp(32px,4.4vh,44px);font-weight:400;line-height:1;color:var(--w);letter-spacing:-.02em}
+  .sc-unit{display:block;font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);margin-top:7px;line-height:1.5}
+  .sc-note{position:relative;z-index:1;font-family:var(--fu);font-size:12.5px;line-height:1.6;color:var(--wd);margin:12px 0 12px}
+  .sc-src{position:relative;z-index:1;font-family:var(--fm);font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--wm)}
+
+  .shift-prog{display:flex;align-items:center;gap:12px;margin-top:clamp(14px,2vh,20px)}
+  .shift-idx,.shift-tot{font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--wm)}
+  .shift-idx{color:var(--ac)}
+  .shift-bar{flex:1;height:2px;background:var(--bd);border-radius:2px;overflow:hidden}
+  .shift-bar i{display:block;height:100%;width:16.66%;background:var(--ag);border-radius:2px;
+    transition:width .35s cubic-bezier(.4,0,.2,1)}
 
   .aeo-how-sec{padding:80px 0}
   .aeo-how-hdr{margin-bottom:48px}
@@ -478,8 +687,34 @@ const results = [
 
   @media(max-width:1100px){.aeo-results-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:960px){
-    .aeo-hero-grid,.aeo-what-grid{grid-template-columns:1fr;gap:40px}
+    .shift-in{grid-template-columns:1fr;gap:30px;align-items:start}
+    .shift{min-height:auto;padding:clamp(56px,8vh,84px) 0}
+    .shift-p{max-width:none}
+    .shift-nav{margin-top:18px}
     .aeo-vs-row{grid-template-columns:160px 1fr 1fr}
+  }
+  @media(max-width:860px){
+    .shift{margin:8px 8px 0;border-radius:24px}
+  }
+  @media(max-width:860px){
+    .ah{margin:0 8px;border-radius:24px;padding:clamp(92px,12vh,112px) 0 clamp(22px,3vh,32px)}
+  }
+
+  /* ── One-screen guards ──────────────────────────────────────────────────
+     Width clamps alone cannot keep the hero inside a SHORT viewport, because
+     the H1 and breadcrumb do not shrink with height. These height queries drop
+     the optional chrome first, then tighten type, so the hero fits without the
+     dashboard ever being clipped. Worst case checked: 1920x700. */
+  @media(max-height:780px){
+    .ah-bc{display:none}
+    .ah-h1{font-size:clamp(28px,3.4vw,44px);margin-bottom:12px}
+    .ah-sub{max-width:520px}
+  }
+  @media(max-height:660px){
+    .ah-sub{font-size:13px;line-height:1.6;margin-bottom:14px}
+    .ah-cta{margin-bottom:14px}
+    .ah-card-l{display:none}
+    .ah-cols{height:clamp(64px,10vh,90px)}
   }
   @media(max-width:720px){
     .aeo-vs-row{grid-template-columns:1fr}
@@ -487,14 +722,21 @@ const results = [
     .aeo-results-grid{grid-template-columns:1fr 1fr}
   }
   @media(max-width:640px){
-    .aeo-hero{padding:120px 0 0}
+    .ah-bc{display:none}
+    .ah-sub{font-size:13.5px;line-height:1.66}
+    .ah-cta .btn-p,.ah-cta .btn-s{padding:11px 20px;font-size:13px}
     .aeo-del-row,.aeo-how-step{grid-template-columns:48px 1fr}
     .aeo-del-num,.aeo-how-num{font-size:18px}
-    .aeo-stats{flex-wrap:wrap;gap:16px}
-    .aeo-stat-div{display:none}
-    .aeo-stat{padding:0}
-    .hide-mob{display:none}
     .aeo-results-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .ah-card{gap:6px;padding:8px 7px}
+    .ah-ring{width:24px}
+    .ah-card-v{font-size:16px}
+    .ah-card-l{font-size:6.5px;letter-spacing:.05em}
+    .ah-dt{font-size:11.5px}
+    .ah-cols{gap:7px}
+    .ah-col img{width:13px;height:13px}
   }
   </style>
 
@@ -505,12 +747,114 @@ const results = [
   const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 
-  const answerEl=document.getElementById('aeoAnswer');
-  const text='Shivam Attri is a specialist in AEO for B2B SaaS. He builds technical architecture and content systems that get brands cited by ChatGPT, Perplexity, and Google AI Overviews. Working with US, UK, EU, and AU clients.';
-  let i=0;
-  function typeAnswer(){if(!answerEl)return;if(i<text.length){answerEl.textContent+=text[i];i++;setTimeout(typeAnswer,20)}}
-  const aObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){typeAnswer();aObs.unobserve(e.target)}})},{threshold:.5});
-  if(answerEl)aObs.observe(answerEl);
+  // ── Hero dashboard motion ──────────────────────────────────────────────────
+  // The markup renders in its FINAL state (bars full, line drawn, number set), so
+  // if GSAP never loads or motion is reduced the hero is still correct and complete.
+  // GSAP only rewinds to a "from" state once it has actually loaded, then plays.
+  const reduceMo=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stage=document.getElementById('ahStage');
+
+  if(stage&&!reduceMo){
+    import('gsap').then(m=>{
+      const g=(m as any).gsap||(m as any).default;if(!g)return;
+
+      const win=stage.querySelector('.ah-win');
+      const cards=stage.querySelectorAll('.ah-card');
+      const rings=stage.querySelectorAll('.ah-ring-v');
+      const bars=stage.querySelectorAll('.ah-colb');
+      const chartBox=stage.querySelector('.ah-cb');
+      const nums=stage.querySelectorAll('.ah-card-v');
+
+      const fmt=(el:HTMLElement,v:number)=>{
+        const dec=parseInt(el.dataset.dec||'0',10);
+        const s=dec>0?v.toFixed(dec):Math.round(v).toString();
+        el.textContent=el.dataset.fmt?Number(s).toLocaleString('en-US'):s;
+      };
+
+      // rewind to start state
+      g.set(win,{autoAlpha:0,y:20});
+      g.set(cards,{autoAlpha:0,y:10});
+      g.set(chartBox,{autoAlpha:0,y:10});
+      g.set(bars,{scaleY:0});
+      rings.forEach((r:any)=>g.set(r,{strokeDashoffset:parseFloat(getComputedStyle(r).getPropertyValue('--dash'))||75.4}));
+      nums.forEach((n:any)=>{n.textContent=n.dataset.dec?'0.0':'0'});
+
+      const play=()=>{
+        const tl=g.timeline({defaults:{ease:'power3.out'}});
+        tl.to(win,{autoAlpha:1,y:0,duration:.6})
+          .to(cards,{autoAlpha:1,y:0,duration:.5,stagger:.09,clearProps:'transform'},'-=.3');
+
+        rings.forEach((r:any,i:number)=>{
+          const off=parseFloat(getComputedStyle(r).getPropertyValue('--off'))||0;
+          tl.to(r,{strokeDashoffset:off,duration:1,ease:'power2.inOut'},'-=' + (i===0?'.35':'.92'));
+        });
+
+        nums.forEach((n:any,i:number)=>{
+          const o={v:0},t=parseFloat(n.dataset.count||'0');
+          tl.to(o,{v:t,duration:1.1,ease:'power2.out',onUpdate:()=>fmt(n,o.v)},'-=' + (i===0?'.95':'1.1'));
+        });
+
+        tl.to(chartBox,{autoAlpha:1,y:0,duration:.5,clearProps:'transform'},'-=.85')
+          .to(bars,{scaleY:1,duration:.62,stagger:.07,ease:'back.out(1.4)'},'-=.35');
+      };
+
+      const sObs=new IntersectionObserver(es=>{es.forEach(e=>{
+        if(e.isIntersecting){play();sObs.unobserve(e.target)}
+      })},{threshold:.15});
+      sObs.observe(stage);
+    }).catch(()=>{});
+  }
+
+  // ── Engine card slider ─────────────────────────────────────────────────────
+  // Sliding is native scroll-snap, so touch keeps its momentum and nothing runs
+  // per frame. JS only reads scroll position (rAF-throttled) to sync the counter.
+  const track=document.getElementById('shiftTrack');
+  if(track){
+    const cards=Array.from(track.querySelectorAll('.sc')) as HTMLElement[];
+    const idxEl=document.getElementById('shiftIdx');
+    const fillEl=document.getElementById('shiftFill');
+    const btns=Array.from(document.querySelectorAll('.shift-btn')) as HTMLButtonElement[];
+    const step=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:track.clientWidth;
+
+    btns.forEach(b=>b.addEventListener('click',()=>{
+      track.scrollBy({left:step()*Number(b.dataset.dir||'1'),behavior:'smooth'});
+    }));
+
+    let raf=0;
+    const sync=()=>{
+      raf=0;
+      const max=track.scrollWidth-track.clientWidth;
+      const i=Math.max(0,Math.min(cards.length-1,Math.round(track.scrollLeft/step())));
+      if(idxEl)idxEl.textContent=String(i+1).padStart(2,'0');
+      const unit=100/cards.length;
+      if(fillEl)fillEl.style.width=(max<=0?100:unit+(track.scrollLeft/max)*(100-unit))+'%';
+      // drop the right-edge fade once there is nothing further to reveal
+      track.classList.toggle('at-end',max<=0||track.scrollLeft>=max-2);
+      btns.forEach(b=>{
+        b.disabled=Number(b.dataset.dir||'1')<0?track.scrollLeft<=1:track.scrollLeft>=max-1;
+      });
+    };
+    track.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(sync)},{passive:true});
+    window.addEventListener('resize',()=>{if(!raf)raf=requestAnimationFrame(sync)},{passive:true});
+    sync();
+
+    // Mouse drag. Snap and smooth scrolling are disabled mid-drag so the track
+    // tracks the pointer 1:1 instead of easing behind it.
+    let down=false,sx=0,sl=0;
+    track.addEventListener('pointerdown',e=>{
+      if(e.pointerType!=='mouse')return;
+      down=true;sx=e.clientX;sl=track.scrollLeft;
+      track.style.scrollSnapType='none';track.style.scrollBehavior='auto';
+      track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener('pointermove',e=>{if(down)track.scrollLeft=sl-(e.clientX-sx)});
+    const endDrag=()=>{
+      if(!down)return;
+      down=false;track.style.scrollBehavior='';track.style.scrollSnapType='';
+    };
+    track.addEventListener('pointerup',endDrag);
+    track.addEventListener('pointercancel',endDrag);
+  }
 
   document.querySelectorAll('.faq-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
