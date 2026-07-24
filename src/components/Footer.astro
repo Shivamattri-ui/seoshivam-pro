@@ -263,25 +263,23 @@ html.light .ft-lamp-line{background:linear-gradient(90deg,transparent 0%,#DA7756
    z-index, so the wordmark paints on top of the light rather than under it. */
 .ft-glow-b{
   position:absolute;left:0;right:0;bottom:0;
-  height:360px;
+  height:380px;
   pointer-events:none;z-index:0;
-  /* Atmosphere: dark at altitude, brightening to near-white at the horizon.
-     Falloff is front-loaded so the copyright row above only picks up a faint
-     tint instead of being washed out. */
-  background:linear-gradient(to top,
-    rgba(190,215,255,.78) 0%,
-    rgba(96,155,250,.50) 10%,
-    rgba(51,102,204,.26) 26%,
-    rgba(26,58,143,.10) 48%,
-    transparent 100%);
+  /* Brand bloom rising from the bottom-centre, layered soft to hard like the
+     AEO hero (.ah-mesh). Every stop derives from --ac via color-mix, so dark is
+     brand-blue and light is terracotta from ONE definition. No raw rgba, and no
+     separate html.light block: the token flips the whole thing automatically. */
+  background:
+    radial-gradient(ellipse 46% 96% at 50% 100%,color-mix(in srgb,var(--ac) 50%,transparent) 0%,transparent 66%),
+    radial-gradient(ellipse 74% 100% at 50% 106%,color-mix(in srgb,var(--ac) 28%,transparent) 0%,transparent 72%),
+    radial-gradient(ellipse 122% 100% at 50% 116%,color-mix(in srgb,var(--ac) 14%,transparent) 0%,transparent 80%);
 }
 html.light .ft-glow-b{
-  background:linear-gradient(to top,
-    rgba(250,224,210,.85) 0%,
-    rgba(232,150,116,.52) 10%,
-    rgba(218,119,86,.26) 26%,
-    rgba(184,92,60,.09) 48%,
-    transparent 100%);
+  /* Light needs a touch less punch so the cream panel does not blow out. */
+  background:
+    radial-gradient(ellipse 46% 96% at 50% 100%,color-mix(in srgb,var(--ac) 34%,transparent) 0%,transparent 66%),
+    radial-gradient(ellipse 74% 100% at 50% 106%,color-mix(in srgb,var(--ac) 19%,transparent) 0%,transparent 72%),
+    radial-gradient(ellipse 122% 100% at 50% 116%,color-mix(in srgb,var(--ac) 9%,transparent) 0%,transparent 80%);
 }
 
 /* ─── Oversized wordmark ───
