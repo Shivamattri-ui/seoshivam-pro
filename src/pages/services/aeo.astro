@@ -3,17 +3,25 @@ import Layout from '../../layouts/Layout.astro';
 import { SITE_ROUTE_META } from '../../lib/site-route-meta';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-import CitationShowcase from '../../components/CitationShowcase.astro';
-import AeoMacbookIllustration from '../../components/AeoMacbookIllustration.astro';
 import ContactCta from '../../components/ContactCta.astro';
+
+const faqs = [
+  { q: "Can you actually get my brand named by AI engines?", a: "Yes, within reason. AI engines name brands they can identify, trust, and read cleanly. I build exactly those signals: consistent entity data, content a model can quote, and mentions on the sources engines already pull from in your category. No one can promise a specific engine names you on a specific day, but I can make you the obvious answer to the questions your buyers ask." },
+  { q: "How is AEO different from SEO?", a: "SEO gets you ranked in a list of links. AEO gets your brand named inside the AI answer itself, on ChatGPT, Perplexity, Google AI Overviews and the rest. Same technical foundation, a different surface. You do not choose between them: the same content cluster that ranks on Google earns the citation in AI." },
+  { q: "How long until I show up in AI answers?", a: "First citations usually appear in 30 to 90 days if your site already has some authority, longer on a new domain. The quickest wins come from removing what blocks you today: AI bots shut out in robots.txt, no Bing indexation, no entity schema. Those get fixed first because they move the needle fastest." },
+  { q: "Do I need to rebuild my website?", a: "No. Most of the gain comes from work that never touches your design: opening AI bot access, getting indexed by Bing, adding entity schema, and rewriting a handful of pages so the answer comes first. A redesign is rarely what is holding you back." },
+  { q: "Which AI engines do you optimise for?", a: "ChatGPT, Google AI Overviews, Gemini, Perplexity, Claude, Microsoft Copilot, Grok and DeepSeek. Each weighs signals differently, so I track your brand across all of them every month and work wherever the gap is, not one engine in isolation." },
+  { q: "How do you prove it is working?", a: "I track your brand across the engines for your real buyer queries, checked by hand against live answers, alongside brand mentions and the leads that follow in GA4. You see which engines cite you, for which questions, and how that turns into pipeline. Rankings are the byproduct, not the goal." },
+  { q: "Do you only work with one industry?", a: "No, the fundamentals hold everywhere: B2B services, logistics, health tech, ecommerce, SaaS, local businesses. What changes is the buyer query set and which sources each field's answers pull from. I have made brands visible across the US, UK, Germany and Australia." }
+];
 
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Service",
-      "name": "AEO Strategy for B2B SaaS",
-      "description": "Answer Engine Optimization for B2B SaaS brands. Technical architecture, entity schema, answer-first content, and citation tracking across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot, and Grok.",
+      "name": "AEO (Answer Engine Optimization) Strategy",
+      "description": "Answer Engine Optimization that gets your brand cited in AI answers. Technical architecture, entity schema, answer-first content, and citation tracking across ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude, Microsoft Copilot, Grok, and DeepSeek.",
       "provider": { "@type": "Person", "@id": "https://seoshivam.pro/#shivam" },
       "url": "https://seoshivam.pro/services/aeo",
       "areaServed": ["US", "UK", "AU", "CA", "DE", "IN"]
@@ -28,34 +36,49 @@ const schema = {
     },
     {
       "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What does an AEO engagement include?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A full engagement starts with an AI visibility audit across 6 engines for 20 buyer queries. Then: technical fixes (Bing indexation, AI bot access, rendering), entity schema setup, content restructure for answer-first retrieval, and monthly citation tracking. Most clients see first citations within 30 to 90 days. The technical build takes 4 to 6 weeks." }
-        },
-        {
-          "@type": "Question",
-          "name": "How do AI engines decide what to cite?",
-          "acceptedAnswer": { "@type": "Answer", "text": "AI engines cite sources that are technically accessible, semantically clear, entity-consistent, and answer-structured. The direct response needs to appear in the first two sentences. Schema is one signal in a larger system, not the primary one." }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I do AEO without rebuilding my website?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The most impactful fixes rarely require a redesign. Common gaps: site not indexed by Bing, AI bots blocked in robots.txt, no entity schema, content that buries the answer in paragraph six. All fixable without touching the design." }
-        }
-      ]
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
     }
   ]
 };
 
 const services = [
-  { n: '01', t: 'AI Visibility Audit', d: 'Start by knowing exactly where you stand. I track your brand across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot, and Grok for your 20 most important buyer queries. Most clients discover they are missing from at least 3 engines despite ranking well on Google.' },
-  { n: '02', t: 'Technical Architecture Fix', d: 'Crawlability before content. AI engines cannot cite what they cannot read. I audit Bing indexation (separate from Google), robots.txt AI bot permissions, rendering issues, and Core Web Vitals. These are fixed before any content work begins.' },
-  { n: '03', t: 'Entity Schema Build', d: 'AI engines need to know who you are before they will cite you. JSON-LD Person and Organization schema establishes your brand identity, product category, expertise areas, and cross-web relationships. This is the foundation everything else runs on.' },
-  { n: '04', t: 'Answer-First Content Restructure', d: 'Content that earns citations is structured differently from content written only for human readers. Each target page is restructured so the direct answer appears in the first two sentences, semantic subtopics are clearly separated, and the page works as a retrieval document.' },
-  { n: '05', t: 'Schema and Authority Layer', d: 'FAQPage markup, HowTo schema, and sameAs signals are applied after the content foundation is correct. Schema on weak content does not produce citations. Schema on answer-first, entity-clear content amplifies existing authority. The sequence matters.' },
-  { n: '06', t: 'Citation Tracking and Reporting', d: 'Monthly tracking of 20 to 30 buyer queries across 6 AI engines, manually verified against live responses. You see which platforms cite your brand, for which queries, how frequency changes over time, and what to adjust next.' },
+  { t: 'AI Visibility Audit', tag: 'Audit', d: 'Where your brand shows up, and where it does not, across ChatGPT, Perplexity, Google AI Overviews, Claude, Copilot and Grok, for the queries your buyers actually ask.' },
+  { t: 'Entity and Schema', tag: 'Foundation', d: 'Person, Organization and Product schema with sameAs signals, so the models can identify you before they cite you.' },
+  { t: 'Answer-First Content', tag: 'Content', d: 'Built on real expertise, written so a person understands it and a model can quote it, structured to rank on Google and get named in AI answers.' },
+  { t: 'Technical AI Access', tag: 'Technical', d: 'Core Web Vitals, crawl budget, Bing indexation and AI bot access, so the engines can read what you publish.' },
+  { t: 'Off-Site Authority', tag: 'Authority', d: 'Targeted outreach and links on the pages LLMs already cite in your category, plus presence where buyers compare vendors before they visit your site.' },
+  { t: 'Content Refresh', tag: 'Freshness', d: 'Monitoring for decay and updating what is slipping, because AI search rewards recent pages and so does Google.' },
+  { t: 'Tracking and Reporting', tag: 'Measurement', d: 'Your brand across the engines every month, with brand mentions and pipeline impact, so the data decides what to do next.' },
+];
+
+/* One relevant line-icon per service, index-aligned with `services`. Inner SVG only
+   (rendered into a currentColor stroke <svg> so it inherits the frosted badge). */
+const SVC_ICONS = [
+  '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  '<path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/>',
+  '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/>',
+  '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m7 9 3 3-3 3"/><path d="M13 15h4"/>',
+  '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
+  '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+  '<path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/>',
+];
+
+/* AI surfaces buyers use to ask, compare and decide. Each carries a category and a
+   one-line reason it matters, no hard count anywhere so the positioning never pins
+   to a number. All 8 logos live in /public/icons. */
+const platforms = [
+  { f: 'chatgpt-icon',    n: 'ChatGPT',      cat: 'Conversational', sig: 'Where most buyers start a vendor question.' },
+  { f: 'google-gemini',   n: 'Gemini',       cat: 'Conversational', sig: "Wired straight into Google's own ecosystem." },
+  { f: 'claude-icon',     n: 'Claude',       cat: 'Conversational', sig: 'Leaned on for considered, high-stakes research.' },
+  { f: 'perplexity-icon', n: 'Perplexity',   cat: 'Answer engine',  sig: 'Cites its sources on every single answer.' },
+  { f: 'copilot-icon',    n: 'Copilot',      cat: 'Work assistant', sig: 'Sits inside the tools your buyers use all day.' },
+  { f: 'grok-icon',       n: 'Grok',         cat: 'Social AI',      sig: 'Real-time, tied into the conversation on X.' },
+  { f: 'deepseek-icon',   n: 'DeepSeek',     cat: 'Open model',     sig: 'Fast-growing, and powering a wave of new tools.' },
+  { f: 'google-icon',     n: 'AI Overviews', cat: 'Search overlay', sig: 'Sits on top of the searches you already rank for.' },
 ];
 
 /* Engine cards. Every figure is company-disclosed except Grok, which xAI does not
@@ -95,62 +118,19 @@ const engineCards = [
   },
 ];
 
-const faqs = [
-  { q: "What does an AEO strategist do for a B2B SaaS business?", a: "An AEO strategist makes your brand citable in AI-generated answers. For B2B SaaS specifically, that means three things: (1) establishing your brand as a recognized entity in your category across AI systems, (2) restructuring your existing content so AI engines can extract and cite it, and (3) building the technical signals — Bing indexation, AI bot access, entity schema — that determine whether your brand appears when buyers ask AI tools which vendor to choose. Most B2B SaaS brands rank well on Google and still do not appear in a single AI engine citation. AEO closes that gap." },
-  { q: "What does a step-by-step AEO strategy for SaaS look like?", a: "Phase 1 is always audit and architecture: check AI bot access in robots.txt, verify Bing indexation (separate from Google), audit entity schema, and map the 20 to 30 buyer queries you need to rank for. Phase 2 is entity and technical build: deploy JSON-LD schema for Person and Organization, add sameAs signals across LinkedIn and GitHub, fix any crawl blocks. Phase 3 is content restructure: rewrite key pages so the answer appears in the first two sentences, add FAQPage markup, and align headings with the question formats AI users actually ask. Phase 4 is tracking: monthly citation checks across 6 engines, branded search monitoring, and Bing Webmaster Tools. Most SaaS clients complete phases 1 and 2 in weeks 1 to 4, phase 3 in weeks 4 to 8, and see first citations by week 10 to 12." },
-  { q: "How long does AEO take to produce measurable results?", a: "First citations typically appear in 30 to 90 days for domains with existing authority. New or low-authority domains take longer: 60 to 120 days before citations become consistent. The fastest results come from fixing Bing indexation and AI bot access, which are often the primary blockers. One HealthTech SaaS client went from zero AI citations to 20 tracked citations across 4 engines in 45 days, because the technical fixes were straightforward and the content quality was already good. The variable that determines speed most is content readiness: brands that already have strong, specific, expert-level content see faster citation rates than brands building content from scratch." },
-  { q: "What does an AEO engagement include?", a: "A full engagement starts with an AI visibility audit across 6 engines for your 20 most important buyer queries. Then: technical fixes (Bing indexation, AI bot access, rendering issues), entity schema setup, content restructure for answer-first retrieval, and monthly citation tracking. Most clients begin seeing citations within 30 to 90 days depending on domain authority and content quality. The technical build takes 4 to 6 weeks." },
-  { q: "How do AI engines decide what to cite?", a: "The pattern across audits is consistent. AI engines cite sources that are technically accessible (clean rendering, no crawl blocks, fast load), semantically clear (content immediately establishes what the brand does and for whom), entity-consistent (the brand appears in connected, trusted sources across the web), and answer-structured (the direct response is in the first two sentences). Schema is one signal in a larger system." },
-  { q: "Can I do AEO without rebuilding my website?", a: "Yes. The most impactful fixes rarely require a redesign. The most common gaps I find in audits: the site is not indexed by Bing at all (Copilot cannot cite what Bing has not crawled), AI bots are blocked in robots.txt, there is no entity schema connecting the brand to its category, and existing content buries the answer after several paragraphs of background. Every one of these is fixable without touching the design." },
-  { q: "Which AI engines do you optimise for?", a: "Google AI Overviews, ChatGPT, Perplexity, Claude, Microsoft Copilot, and Grok. Each has different citation signals. Google prioritises E-E-A-T and structured data. Perplexity prioritises semantic relevance and concise answers. Copilot runs on Bing, so Bing indexation is mandatory. Citation performance is tracked across all six in monthly reporting." },
-  { q: "How are results measured?", a: "I track 20 to 30 buyer queries per client across all 6 engines, verified manually against live AI responses. Monthly reports show which platforms cite your brand, for which queries, how citation frequency changes over time, and what content adjustments to make next. Secondary effects are also tracked: branded search growth on Google, Bing referral traffic, and lead quality changes as buyers arrive already knowing the brand." }
-];
-
-const results = [
-  {
-    cat: 'HealthTech SaaS · India',
-    service: 'SEO + AEO',
-    n: '16×',
-    label: 'Click growth in 30 days',
-    metrics: [
-      { v: '63 → 1,010', l: 'Monthly clicks' },
-      { v: '30 days', l: 'Timeline' },
-      { v: 'GSC verified', l: 'Source' },
-    ]
-  },
-  {
-    cat: 'Platform SaaS · Australia',
-    service: 'Full AEO + SEO',
-    n: '9×',
-    label: 'Click growth in 6 months',
-    metrics: [
-      { v: '240 → 2,200', l: 'Monthly clicks' },
-      { v: '4K → 142K', l: 'Impressions' },
-      { v: '20+ pages', l: 'AI-cited on 50+ queries' },
-    ]
-  },
-  {
-    cat: 'Logistics Tech SaaS · USA',
-    service: 'SEO + AEO + Content',
-    n: '8.3×',
-    label: 'Visitor growth in 7 months',
-    metrics: [
-      { v: '1,019 → 8,500', l: 'Organic visitors/mo' },
-      { v: '20 → 160+', l: 'Organic leads/mo' },
-      { v: 'GSC + Analytics', l: 'Source' },
-    ]
-  },
-  {
-    cat: 'Local Business · AUS + DE',
-    service: 'AEO + Local SEO',
-    n: '30+',
-    label: 'Organic leads per month',
-    metrics: [
-      { v: '0 → 30+', l: 'Monthly leads' },
-      { v: 'Australia + Germany', l: 'Markets' },
-      { v: 'Client reported', l: 'Source' },
-    ]
-  },
+/* AEO-only outcomes. AI-citation volumes are Microsoft Copilot (Bing Webmaster)
+   figures; leads are GA4 AI-sourced. Real client data, names withheld (NDA). */
+const outcome = {
+  tag: 'SaaS platform · Australia',
+  head: '0 → 237 organic leads from AI',
+  sub: 'In three months, from zero AI presence when I started. Every lead tracked in GA4 as AI-sourced traffic.',
+};
+const outcomeStat = { n: '30+', label: 'brands made AI-visible', sub: 'USA · UK · Germany · Australia' };
+const outcomeTiles = [
+  { n: '8.2K', l: 'AI citations', note: 'B2B services · USA · from zero, 3 months' },
+  { n: '2.8K', l: 'AI citations', note: 'Logistics · Germany · from zero, 3 months' },
+  { n: '5.3K', l: 'AI citations', note: 'SaaS platform · Australia · 3 months' },
+  { n: '2-3 days', l: 'to first citation', note: 'as fast as, on a clean build' },
 ];
 ---
 
@@ -255,7 +235,7 @@ const results = [
     </section>
 
     <!-- The Shift -->
-    <section class="shift" id="what-included">
+    <section class="shift">
       <div class="container shift-in">
         <div class="shift-l rv">
           <div class="hair left">THE SHIFT</div>
@@ -299,145 +279,467 @@ const results = [
       </div>
     </section>
 
-    <!-- How I get brands cited -->
-    <section class="aeo-how-sec">
+    <!-- My AI SEO Process -->
+    <section class="proc" id="how-i-work">
+      <div class="proc-skin" aria-hidden="true"><span class="proc-bloom"></span></div>
       <div class="container">
-        <div class="aeo-how-hdr">
-          <div class="hair left">PROCESS / HOW IT WORKS</div>
-          <h2 class="sec-h rv d1" style="margin-top:14px">How I get your brand<br><em class="grad-anim">cited across 6 AI engines.</em></h2>
-          <p class="aeo-how-intro rv d2">Most brands are invisible in AI search not because of bad content, but because the technical layer is broken. AI engines cannot cite what they cannot read, trust, or connect to a known entity. This is the system I build. You can check your own AI visibility with the <a href="/tools/ai-visibility-score" class="ilink">AI Visibility Score tool.</a></p>
+        <div class="proc-hd rv">
+          <div class="hair left">MY AI SEO PROCESS</div>
+          <h2 class="sec-h" style="margin-top:14px">How I convert AI visibility<br><em class="grad-anim">into qualified leads.</em></h2>
+          <p class="proc-deck"><a href="/insights/what-is-aeo" class="ilink">Answer Engine Optimization</a> only earns its keep when it brings you buyers. Before I open a single tool, I learn how you make money, who buys, and what they are up against. Everything after that is built to bring you leads with AI rankings.</p>
         </div>
-        <div class="aeo-how-steps">
-          <div class="aeo-how-step rv">
-            <div class="aeo-how-num">01</div>
-            <div class="aeo-how-body">
-              <div class="aeo-how-t">Establish your entity</div>
-              <p class="aeo-how-d">Before any content work, I make sure AI engines know who you are. Entity schema (Person, Organization, WebSite) with sameAs signals across LinkedIn, GitHub, and social profiles. A brand that AI systems cannot confidently identify is a brand they will not cite, regardless of content quality.</p>
-            </div>
+
+        <!-- Cluster 1 · Foundation (steps 1-3) -->
+        <div class="pc rv" id="pcFoundation">
+          <div class="pc-tab">
+            <span class="pc-tab-n">01</span>
+            <span class="pc-tab-t">Foundation</span>
+            <span class="pc-tab-s">Discovery · buyer · intent</span>
           </div>
-          <div class="aeo-how-step rv d1">
-            <div class="aeo-how-num">02</div>
-            <div class="aeo-how-body">
-              <div class="aeo-how-t">Make your content machine-readable</div>
-              <p class="aeo-how-d">Content that earns citations is answer-first, semantically structured, and technically accessible. I audit every target page: does Bing index it, does it load in under 3 seconds, is the rendering clean, does the answer appear in the first two sentences. Most SaaS pages fail at least two of these checks. These are the fixes that move the needle fastest.</p>
-            </div>
+
+          <div class="pc-bento">
+
+            <!-- 01 · Learn how you earn -->
+            <article class="pcard pcard--01">
+              <div class="pcard-viz">
+                <div class="vpanel vbrief">
+                  <div class="vpanel-hd">
+                    <span class="vpanel-ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+                    <span class="vpanel-t">Business brief</span>
+                    <span class="vpanel-tag"><span class="vspin"></span>Reading</span>
+                  </div>
+                  <div class="vbrief-rows">
+                    <div class="pc-seq vbrief-row"><span class="vbrief-k">Revenue model</span><span class="vbrief-v">Subscription + services</span></div>
+                    <div class="pc-seq vbrief-row"><span class="vbrief-k">Sales pipeline</span><span class="vbrief-v">4 stages · 62-day cycle</span></div>
+                    <div class="pc-seq vbrief-row"><span class="vbrief-k">Growth goal</span><span class="vbrief-v">3x qualified pipeline</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">01</span>
+                <h3 class="pcard-t">Learn how you earn</h3>
+                <p class="pcard-d">I go deep on your product, your sales pipeline, and where you want the business a year out. If I cannot see how a lead becomes revenue, I am not ready to write your strategy.</p>
+              </div>
+            </article>
+
+            <!-- 02 · Map your buyer -->
+            <article class="pcard pcard--02">
+              <div class="pcard-viz">
+                <div class="vbuy">
+                  <svg class="vbuy-links" viewBox="0 0 360 220" preserveAspectRatio="none" aria-hidden="true">
+                    <path id="vbl1" class="vbuy-link" d="M50,44 L180,110"></path>
+                    <path id="vbl2" class="vbuy-link" d="M310,48 L180,110"></path>
+                    <path id="vbl3" class="vbuy-link" d="M43,163 L180,110"></path>
+                    <path id="vbl4" class="vbuy-link" d="M317,167 L180,110"></path>
+                    <circle class="vbuy-pulse" r="2.3"><animateMotion dur="2.4s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#vbl1"></mpath></animateMotion></circle>
+                    <circle class="vbuy-pulse" r="2.3"><animateMotion dur="3.1s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#vbl2"></mpath></animateMotion></circle>
+                    <circle class="vbuy-pulse" r="2.3"><animateMotion dur="2.7s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#vbl3"></mpath></animateMotion></circle>
+                    <circle class="vbuy-pulse" r="2.3"><animateMotion dur="3.4s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#vbl4"></mpath></animateMotion></circle>
+                  </svg>
+                  <span class="vbuy-node" style="left:50%;top:50%">
+                    <span class="vbuy-core"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span>
+                  </span>
+                  <span class="vbuy-node" style="left:14%;top:20%"><span class="vbuy-sat">Budget owner</span></span>
+                  <span class="vbuy-node" style="left:86%;top:22%"><span class="vbuy-sat vbuy-sat--hot">High intent</span></span>
+                  <span class="vbuy-node" style="left:12%;top:74%"><span class="vbuy-sat">Comparing vendors</span></span>
+                  <span class="vbuy-node" style="left:88%;top:76%"><span class="vbuy-sat">Pain: rising CAC</span></span>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">02</span>
+                <h3 class="pcard-t">Map your buyer</h3>
+                <p class="pcard-d">Who buys, what they struggle to solve, how their market moves. I take the full picture end to end, so the plan is built for a person, not a search-volume chart.</p>
+              </div>
+            </article>
+
+            <!-- 03 · Keywords that bring leads (hero) -->
+            <article class="pcard pcard--hero">
+              <div class="pcard-txt">
+                <span class="pcard-n">03</span>
+                <h3 class="pcard-t">Pick keywords that bring leads</h3>
+                <p class="pcard-d">I read demand and buyer intent in the tools, then choose a deliberate mix: high-intent easy wins with almost no volume, commercial queries that convert, and enough reach to compound. I build for pipeline from day one, because the brand mentions that earn AI citations earn leads too.</p>
+              </div>
+              <div class="pcard-viz">
+                <div class="vfilter">
+                  <div class="vfilter-log">
+                    <div class="vfilter-hd"><span class="vspin"></span>Filtering 340 queries</div>
+                    <div class="pc-seq vfilter-step"><span class="vfilter-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Scored buyer intent</div>
+                    <div class="pc-seq vfilter-step"><span class="vfilter-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Weighed value vs difficulty</div>
+                    <div class="pc-seq vfilter-step"><span class="vfilter-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Kept commercial + easy wins</div>
+                  </div>
+                  <div class="vfilter-win">
+                    <div class="vfilter-win-top">
+                      <span class="vfilter-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+                      <span class="vfilter-kw">aeo consultant</span>
+                    </div>
+                    <div class="vfilter-meta">
+                      <span class="vfilter-tag vfilter-tag--com">Commercial</span>
+                      <span class="vfilter-tag vfilter-tag--low">KD 8</span>
+                      <span class="vfilter-vol">210 vol · high intent</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
           </div>
-          <div class="aeo-how-step rv d2">
-            <div class="aeo-how-num">03</div>
-            <div class="aeo-how-body">
-              <div class="aeo-how-t">Build topical trust at the right scale</div>
-              <p class="aeo-how-d">AI engines do not cite brands they have only seen once. Topical authority means your brand appears consistently, across connected content, for the same category. Not 100 thin articles. A coherent cluster of specific, expert-level content that signals you are the reliable source in your niche. One strong page with real information gain outperforms 50 shallow articles.</p>
+        </div>
+
+        <!-- Cluster 2 · On-site build (steps 4-6) -->
+        <div class="pc rv">
+          <div class="pc-tab">
+            <span class="pc-tab-n">02</span>
+            <span class="pc-tab-t">On-site build</span>
+            <span class="pc-tab-s">Technical · content</span>
+          </div>
+          <div class="pc-bento">
+
+            <!-- 04 · Fix the technical backbone (hero, terminal) -->
+            <article class="pcard pcard--hero">
+              <div class="pcard-txt">
+                <span class="pcard-n">04</span>
+                <h3 class="pcard-t">Fix the technical backbone</h3>
+                <p class="pcard-d">Technical SEO is the backbone of AI visibility, so I am blunt about it. Core Web Vitals, a lean tech stack, crawl budget spent where it counts, and a site that agentic AI bots can reach and read. The repetitive work gets automated, like sitemaps that keep themselves current.</p>
+              </div>
+              <div class="pcard-viz">
+                <div class="vterm">
+                  <div class="vterm-bar"><i></i><i></i><i></i><span class="vterm-ttl">technical-audit</span></div>
+                  <div class="vterm-body">
+                    <div class="pc-seq vterm-line"><span class="vterm-p">$</span>run audit</div>
+                    <div class="pc-seq vterm-line vterm-ok"><span class="vterm-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>LCP 1.8s · INP 120ms · CLS 0.02</div>
+                    <div class="pc-seq vterm-line vterm-ok"><span class="vterm-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>robots.txt · AI bots allowed</div>
+                    <div class="pc-seq vterm-line vterm-ok"><span class="vterm-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Bing index · 1,240 pages</div>
+                    <div class="pc-seq vterm-line vterm-ok"><span class="vterm-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>sitemap · auto-updating</div>
+                    <div class="vterm-line vterm-run"><span class="vterm-p">$</span><span class="vterm-cur"></span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 05 · Content pillars -->
+            <article class="pcard pcard--half">
+              <div class="pcard-viz">
+                <div class="vpanel vpil">
+                  <div class="vpanel-hd"><span class="vpanel-t">Content pillars</span><span class="vpanel-tag vpanel-tag--ac">+ KGR picks</span></div>
+                  <div class="vpil-cols">
+                    <span class="vpil-col"><span class="vpil-track"><i class="vpil-bar pgrow-y" style="--h:92%"></i></span><b>Comm.</b></span>
+                    <span class="vpil-col"><span class="vpil-track"><i class="vpil-bar pgrow-y" style="--h:70%"></i></span><b>Info.</b></span>
+                    <span class="vpil-col"><span class="vpil-track"><i class="vpil-bar pgrow-y" style="--h:82%"></i></span><b>BOFU</b></span>
+                    <span class="vpil-col"><span class="vpil-track"><i class="vpil-bar pgrow-y" style="--h:58%"></i></span><b>MOFU</b></span>
+                  </div>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">05</span>
+                <h3 class="pcard-t">Build content pillars with intent</h3>
+                <p class="pcard-d">Clusters tied to your buyer: commercial, informational, BOFU and MOFU, in the mix your market needs, with Keyword Golden Ratio picks for fast wins. That is how topical authority turns into a recommendation.</p>
+              </div>
+            </article>
+
+            <!-- 06 · Write for people, structure for machines -->
+            <article class="pcard pcard--half">
+              <div class="pcard-viz">
+                <div class="vpanel vdoc">
+                  <div class="vpanel-hd"><span class="vpanel-t">Answer-first page</span></div>
+                  <div class="vdoc-lines">
+                    <span class="vdoc-line vdoc-line--lead"></span>
+                    <span class="vdoc-line"></span>
+                    <span class="vdoc-line vdoc-line--sm"></span>
+                  </div>
+                  <div class="vdoc-tags">
+                    <span class="pc-seq vdoc-cite"><span class="vfilter-ck"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Cited by ChatGPT</span>
+                    <span class="pc-seq vdoc-schema">&#123; &#125; JSON-LD</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">06</span>
+                <h3 class="pcard-t">Write for people, structure for machines</h3>
+                <p class="pcard-d">First-hand expertise and E-E-A-T, written to be read by a person and cited by a machine. On-page SEO and AEO go in together, never as an afterthought.</p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Cluster 3 · Off-site & scale (steps 7-9) -->
+        <div class="pc rv">
+          <div class="pc-tab">
+            <span class="pc-tab-n">03</span>
+            <span class="pc-tab-t">Off-site &amp; scale</span>
+            <span class="pc-tab-s">Distribute · measure · sustain</span>
+          </div>
+          <div class="pc-bento">
+
+            <!-- 07 · Distribute and earn off-site authority -->
+            <article class="pcard pcard--half">
+              <div class="pcard-viz">
+                <div class="vpanel vdist">
+                  <div class="vpanel-hd"><span class="vpanel-t">Distribution</span><span class="vpanel-tag">+ outreach</span></div>
+                  <div class="vdist-logos">
+                    <span class="vdist-logo"><img src="/icons/linkedin-icon.svg" alt="" width="16" height="16" loading="lazy" decoding="async" /></span>
+                    <span class="vdist-logo"><img src="/icons/reddit-icon.svg" alt="" width="16" height="16" loading="lazy" decoding="async" /></span>
+                    <span class="vdist-logo"><img src="/icons/x-icon.svg" alt="" width="14" height="14" loading="lazy" decoding="async" /></span>
+                    <span class="vdist-logo"><img src="/icons/substack-icon.svg" alt="" width="15" height="15" loading="lazy" decoding="async" /></span>
+                  </div>
+                  <div class="vdist-stat"><b class="vdist-n" data-count="38">38</b> links on pages LLMs cite</div>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">07</span>
+                <h3 class="pcard-t">Distribute and earn off-site authority</h3>
+                <p class="pcard-d">Your content goes where buyers and models both look. Social distribution to build presence, plus targeted outreach and links on the pages LLMs already cite in your category.</p>
+              </div>
+            </article>
+
+            <!-- 08 · Track what pays -->
+            <article class="pcard pcard--half">
+              <div class="pcard-viz">
+                <div class="vpanel vtrack">
+                  <div class="vpanel-hd"><span class="vpanel-t">Pipeline impact</span><span class="vpanel-tag vpanel-tag--live"><span class="ah-live"></span>Live</span></div>
+                  <div class="vtrack-row">
+                    <div class="vtrack-metric"><b data-count="164">164</b><span>leads / mo</span></div>
+                    <svg class="vtrack-spark" viewBox="0 0 120 42" preserveAspectRatio="none" aria-hidden="true">
+                      <defs><linearGradient id="vtrackFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".34"></stop><stop offset="1" stop-color="currentColor" stop-opacity="0"></stop></linearGradient></defs>
+                      <path class="vtrack-area" d="M0,38 C18,36 24,30 40,26 C58,21 66,24 84,15 C100,8 110,7 120,3 L120,42 L0,42 Z" fill="url(#vtrackFill)"></path>
+                      <path class="vtrack-line" d="M0,38 C18,36 24,30 40,26 C58,21 66,24 84,15 C100,8 110,7 120,3" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                  </div>
+                  <div class="vtrack-sub">Brand mentions <b data-count="1284" data-fmt="1">1,284</b></div>
+                </div>
+              </div>
+              <div class="pcard-txt">
+                <span class="pcard-n">08</span>
+                <h3 class="pcard-t">Track what pays</h3>
+                <p class="pcard-d">Rankings and AI visibility get watched. Brand mentions and real pipeline lead the report, and the data points to where we scale next.</p>
+              </div>
+            </article>
+
+            <!-- 09 · Refresh before it fades (hero) -->
+            <article class="pcard pcard--hero">
+              <div class="pcard-txt">
+                <span class="pcard-n">09</span>
+                <h3 class="pcard-t">Refresh before it fades</h3>
+                <p class="pcard-d">AI search rewards recent pages, so I update your content on a schedule, before its rankings soften. One story stays consistent on the site and everywhere off it, because when models find conflicting signals, they stop recommending you.</p>
+              </div>
+              <div class="pcard-viz">
+                <div class="vpanel vfresh">
+                  <div class="vpanel-hd"><span class="vpanel-t">Content freshness</span><span class="vpanel-tag vpanel-tag--ac">Updated 2d ago</span></div>
+                  <div class="vfresh-meter"><i class="vfresh-fill pgrow" style="--w:92%"></i></div>
+                  <div class="vfresh-scale"><span>decaying</span><span class="vfresh-pct">92% fresh</span></div>
+                  <div class="vfresh-log">
+                    <div class="pc-seq vfresh-item"><span class="vfresh-dot"></span>Refreshed stats and examples</div>
+                    <div class="pc-seq vfresh-item"><span class="vfresh-dot"></span>Re-verified every citation</div>
+                    <div class="pc-seq vfresh-item"><span class="vfresh-dot"></span>Re-submitted to the index</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Finale · Knowledge graph build (step 10) -->
+        <div class="pc-fin rv">
+          <div class="pc-fin-card">
+            <div class="pc-fin-txt">
+              <div class="pc-tab pc-tab--fin">
+                <span class="pc-tab-n">10</span>
+                <span class="pc-tab-t">Knowledge graph build</span>
+              </div>
+              <h3 class="pc-fin-h">One entity every engine can trust</h3>
+              <p class="pc-fin-d">Everything above resolves into one knowledge graph: a single, consistent identity the models can recognise, connect, and cite. When your brand, your sources, and your content all say the same thing, you become the answer, not a link under it.</p>
+            </div>
+            <div class="pc-fin-viz">
+              <div class="vent">
+                <svg class="vent-links" viewBox="0 0 520 300" preserveAspectRatio="none" aria-hidden="true">
+                  <path id="vel1" class="vent-link" d="M96,58 L260,150"></path>
+                  <path id="vel2" class="vent-link" d="M260,40 L260,150"></path>
+                  <path id="vel3" class="vent-link" d="M424,58 L260,150"></path>
+                  <path id="vel4" class="vent-link" d="M60,150 L260,150"></path>
+                  <path id="vel5" class="vent-link" d="M460,150 L260,150"></path>
+                  <path id="vel6" class="vent-link" d="M96,242 L260,150"></path>
+                  <path id="vel7" class="vent-link" d="M260,260 L260,150"></path>
+                  <path id="vel8" class="vent-link" d="M424,242 L260,150"></path>
+                  <circle class="vent-pulse" r="2.6"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#vel1"></mpath></animateMotion></circle>
+                  <circle class="vent-pulse" r="2.6"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#vel3"></mpath></animateMotion></circle>
+                  <circle class="vent-pulse" r="2.6"><animateMotion dur="2.9s" repeatCount="indefinite"><mpath href="#vel5"></mpath></animateMotion></circle>
+                  <circle class="vent-pulse" r="2.6"><animateMotion dur="3.5s" repeatCount="indefinite"><mpath href="#vel7"></mpath></animateMotion></circle>
+                </svg>
+                <span class="vent-node vent-core" style="left:50%;top:50%">
+                  <span class="iccl-1">seo</span><span class="iccl-2">shivam</span>
+                </span>
+                <span class="vent-node vent-eng" style="left:18.5%;top:19.3%"><img src="/icons/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-eng" style="left:50%;top:13.3%"><img src="/icons/perplexity-icon.svg" alt="Perplexity" width="20" height="20" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-eng" style="left:81.5%;top:19.3%"><img src="/icons/claude-icon.svg" alt="Claude" width="20" height="20" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-eng" style="left:11.5%;top:50%"><img src="/icons/google-icon.svg" alt="Google AI" width="19" height="19" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-eng" style="left:88.5%;top:50%"><img src="/icons/copilot-icon.svg" alt="Copilot" width="19" height="19" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-id" style="left:18.5%;top:80.7%"><img src="/icons/linkedin-icon.svg" alt="LinkedIn" width="17" height="17" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-eng" style="left:50%;top:86.7%"><img src="/icons/grok-icon.svg" alt="Grok" width="19" height="19" loading="lazy" decoding="async" /></span>
+                <span class="vent-node vent-id" style="left:81.5%;top:80.7%"><img src="/icons/substack-icon.svg" alt="Substack" width="17" height="17" loading="lazy" decoding="async" /></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <AeoMacbookIllustration />
-
-    <!-- AEO vs SEO -->
-    <section class="aeo-vs-sec">
-      <div class="container">
-        <div class="aeo-vs-hdr rv">
-          <div class="hair left">AEO VS SEO</div>
-          <h2 class="sec-h rv d1" style="margin-top:14px">Two surfaces.<br><em class="grad-anim">One architecture.</em></h2>
-          <p class="aeo-vs-intro rv d2">Most agencies pick a side. I run both from one system. The same content cluster that earns Google rankings earns ChatGPT citations. The same technical foundation that powers structured data for Google powers AI retrieval for Perplexity. You do not choose between them.</p>
-        </div>
-        <div class="aeo-vs-table rv d1">
-          <div class="aeo-vs-row aeo-vs-head">
-            <div class="aeo-vs-col aeo-vs-label-h"></div>
-            <div class="aeo-vs-col aeo-vs-seo-h">SEO Only</div>
-            <div class="aeo-vs-col aeo-vs-aeo-h">SEO + AEO</div>
-          </div>
-          {[
-            { label: 'Search surfaces covered', seo: 'Google only', aeo: 'Google + 6 AI engines' },
-            { label: 'Where your brand appears', seo: 'Ranked pages', aeo: 'Ranked pages + AI-generated answers' },
-            { label: 'What you measure', seo: 'Clicks, rankings, impressions', aeo: '+ Citation appearances across 6 engines' },
-            { label: 'Buyer journey impact', seo: 'Top of funnel to decision', aeo: 'Also captures mid-funnel AI research queries' },
-            { label: 'Technical foundation', seo: 'Crawlability, indexation, speed', aeo: 'Same, extended to Bing and AI bots' },
-            { label: 'Content structure', seo: 'Keyword-anchored clusters', aeo: 'Same clusters, answer-first retrieval format' },
-          ].map(row => (
-            <div class="aeo-vs-row">
-              <div class="aeo-vs-col aeo-vs-label">{row.label}</div>
-              <div class="aeo-vs-col aeo-vs-seo">{row.seo}</div>
-              <div class="aeo-vs-col aeo-vs-aeo">{row.aeo}</div>
-            </div>
-          ))}
-        </div>
-        <p class="aeo-vs-note rv d2">For B2B SaaS founders, buyers doing AI-assisted research are often further along in the buying cycle. They are comparing vendors, not just browsing. Missing from that moment is expensive. Running <a href="/services/seo" class="ilink">SEO</a> without AEO means leaving the highest-intent surface unserved. Read the full breakdown: <a href="/insights/aeo-vs-seo-difference" class="ilink">AEO vs SEO.</a></p>
-      </div>
-    </section>
 
     <!-- Services -->
-    <section class="aeo-del-sec">
-      <div class="container">
-        <div class="aeo-del-hdr rv">
-          <span class="label">What is included</span>
-          <h2 class="sec-h rv d1" style="margin-top:14px">Six services.<br><em class="grad-anim">One compounding system.</em></h2>
+    <section class="svc" id="what-included">
+      <div class="proc-skin" aria-hidden="true"><span class="proc-bloom"></span></div>
+      <div class="container svc-in">
+        <div class="svc-hd rv">
+          <div class="hair left">SERVICES</div>
+          <h2 class="sec-h" style="margin-top:14px">Everything it takes<br><em class="grad-anim">to get you cited.</em></h2>
+          <p class="svc-deck">Each service maps to one goal: your brand named when buyers ask AI, and the pipeline that follows.</p>
         </div>
-        <div class="aeo-del-list" id="what-included-list">
-          {services.map((s, i) => (
-            <div class={`aeo-del-row rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
-              <div class="aeo-del-num">{s.n}</div>
-              <div class="aeo-del-body">
-                <div class="aeo-del-t">{s.t}</div>
-                <p class="aeo-del-d">{s.d}</p>
-              </div>
+
+        <div class="svc-grid">
+          <div class="svc-nav rv" role="tablist" aria-label="AEO services">
+            {services.map((s, i) => (
+              <button class={`svc-item${i === 0 ? ' is-active' : ''}`} type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-i={i} id={`svc-tab-${i}`} aria-controls={`svc-panel-${i}`}>
+                <span class="svc-item-n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="svc-item-t">{s.t}</span>
+                <span class="svc-item-ar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
+              </button>
+            ))}
+          </div>
+
+          <div class="svc-stage rv d1">
+            <div class="svc-art-wrap">
+              {services.map((s, i) => (
+                <div class={`svc-art${i === 0 ? ' is-active' : ''}`} data-i={i} style={`--seed:${i}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+                  <span class="svc-blob svc-b1"></span>
+                  <span class="svc-blob svc-b2"></span>
+                  <span class="svc-blob svc-b3"></span>
+                  <span class="svc-grain"></span>
+                  <span class="svc-art-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={SVC_ICONS[i]}></svg></span>
+                  <span class="svc-art-tag">{s.tag}</span>
+                </div>
+              ))}
             </div>
+            <div class="svc-copy-wrap">
+              {services.map((s, i) => (
+                <div class={`svc-copy${i === 0 ? ' is-active' : ''}`} data-i={i} id={`svc-panel-${i}`} role="tabpanel" aria-labelledby={`svc-tab-${i}`}>
+                  <h3 class="svc-copy-t">{s.t}</h3>
+                  <p class="svc-copy-d">{s.d}</p>
+                  <a href="/contact" class="svc-copy-cta" data-cursor="Free audit, 4hr reply">Start with this<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platforms -->
+    <section class="plat" id="platforms">
+      <div class="proc-skin" aria-hidden="true"><span class="proc-bloom"></span></div>
+      <div class="container">
+        <div class="plat-hd rv">
+          <div class="hair left">AI SURFACES</div>
+          <h2 class="sec-h" style="margin-top:14px">Where your buyers ask,<br><em class="grad-anim">compare, and decide.</em></h2>
+          <p class="plat-deck">I track, optimise, and earn citations across the AI surfaces that already shape your shortlist, so your brand shows up at the moment buyers choose.</p>
+        </div>
+        <div class="plat-grid">
+          {platforms.map((p, i) => (
+            <article class={`plat-card rv${i > 0 ? ' d' + Math.min(i, 5) : ''}`}>
+              <div class="plat-top">
+                <span class="plat-n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="plat-cat">{p.cat}</span>
+              </div>
+              <div class="plat-mid">
+                <span class="plat-logo"><img src={`/icons/${p.f}.svg`} alt={p.n} width="22" height="22" loading="lazy" decoding="async" /></span>
+                <span class="plat-name">{p.n}</span>
+              </div>
+              <p class="plat-sig">{p.sig}</p>
+            </article>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- AI citation showcase -->
-    <CitationShowcase />
-
-    <!-- Results grid -->
+    <!-- Results / AEO outcomes -->
     <section class="aeo-results-sec">
       <div class="container">
-        <div class="aeo-results-hdr rv">
-          <div class="hair left">VERIFIED RESULTS / GSC + ANALYTICS</div>
-          <h2 class="sec-h rv d1" style="margin-top:14px">Real outcomes<br><em class="grad-anim">across 8+ countries.</em></h2>
+        <div class="ro-hd rv">
+          <div class="hair left">VERIFIED AEO RESULTS</div>
+          <h2 class="sec-h" style="margin-top:14px">Real outcomes,<br><em class="grad-anim">measured in AI.</em></h2>
+          <p class="ro-deck">Pulled from Bing Webmaster and GA4 on live client work. AI citations from zero, and the leads that follow.</p>
         </div>
-        <div class="aeo-results-grid">
-          {results.map((r, i) => (
-            <div class={`aeo-result-card rv${i > 0 ? ' d' + Math.min(i, 4) : ''}`}>
-              <div class="arc-head">
-                <span class="arc-cat">{r.cat}</span>
-                <span class="arc-service">{r.service}</span>
-              </div>
-              <div class="arc-n grad">{r.n}</div>
-              <div class="arc-label">{r.label}</div>
-              <div class="arc-metrics">
-                {r.metrics.map(m => (
-                  <div class="arc-met">
-                    <span class="arc-met-v">{m.v}</span>
-                    <span class="arc-met-l">{m.l}</span>
-                  </div>
-                ))}
-              </div>
+
+        <div class="ro-grid">
+          <article class="ro-feat rv">
+            <div class="ro-feat-bg" aria-hidden="true">
+              <span class="ro-blob ro-b1"></span>
+              <span class="ro-blob ro-b2"></span>
+              <span class="ro-blob ro-b3"></span>
+              <span class="ro-grain"></span>
             </div>
-          ))}
+            <div class="ro-feat-in">
+              <span class="ro-feat-tag">{outcome.tag}</span>
+              <h3 class="ro-feat-h">{outcome.head}</h3>
+              <p class="ro-feat-sub">{outcome.sub}</p>
+              <a href="/work" class="ro-feat-cta" data-cursor="See the work">See the work<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+            </div>
+          </article>
+
+          <div class="ro-right">
+            <div class="ro-stat rv d1">
+              <span class="ro-stat-n">{outcomeStat.n}</span>
+              <span class="ro-stat-l">{outcomeStat.label}</span>
+              <span class="ro-stat-sub">{outcomeStat.sub}</span>
+            </div>
+            <div class="ro-tiles">
+              {outcomeTiles.map((t, i) => (
+                <div class={`ro-tile rv d${Math.min(i + 2, 5)}`}>
+                  <span class="ro-tile-n">{t.n}</span>
+                  <span class="ro-tile-l">{t.l}</span>
+                  <span class="ro-tile-note">{t.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <p class="aeo-results-note rv">All client names withheld under NDA. Data sourced from Google Search Console and Google Analytics 4. Screenshots available on request. <a href="/work" class="ilink">See full case studies.</a></p>
+
+        <p class="ro-note rv">AI citation volumes are Microsoft Copilot data from Bing Webmaster Tools; totals across all engines run higher. Leads tracked in GA4. Client names withheld under NDA. <a href="/work" class="ilink">See the full case studies.</a></p>
       </div>
     </section>
 
     <!-- FAQ -->
     <section class="aeo-faq-sec">
-      <div class="container">
-        <div class="rv" style="margin-bottom:48px">
-          <span class="label">Questions about AEO</span>
-          <h2 class="sec-h rv d1" style="margin-top:14px">What people ask<br><em class="grad-anim">before starting.</em></h2>
+      <div class="container aeo-faq-grid">
+        <div class="aeo-faq-main rv">
+          <div class="label">FAQ</div>
+          <h2 class="sec-h" style="margin-top:14px">Your questions,<br><em class="grad-anim">answered.</em></h2>
+          <div class="faq-list">
+            {faqs.map((f, i) => (
+              <div class="faq-item">
+                <button class="faq-btn" aria-expanded={i === 0 ? 'true' : 'false'}>
+                  <span class="faq-num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="faq-q">{f.q}</span>
+                  <i class="faq-icon" aria-hidden="true"></i>
+                </button>
+                <div class="faq-ans"><div class="faq-ans-in">{f.a}</div></div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div class="faq-list" style="max-width:760px">
-          {faqs.map((f) => (
-            <div class="faq-item">
-              <button class="faq-btn" aria-expanded="false"><span>{f.q}</span><i class="faq-icon">+</i></button>
-              <div class="faq-ans" hidden>{f.a}</div>
-            </div>
-          ))}
-        </div>
+
+        <aside class="aeo-faq-side rv d1">
+          <div class="faq-cta">
+            <img class="faq-cta-av" src="/images/shivam-headshot.jpg" width="64" height="64" alt="Shivam Attri" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/shivam-attri.jpg'" />
+            <span class="faq-cta-ey">Still not sure?</span>
+            <h3 class="faq-cta-h">Message me directly on WhatsApp.</h3>
+            <p class="faq-cta-d">Tell me where your brand stands in AI search and what you want to fix. No forms, no gatekeeping.</p>
+            <a class="faq-cta-btn" href="https://wa.me/919991853859" target="_blank" rel="noopener" data-cursor="Chat on WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.13c-.24.68-1.42 1.31-1.95 1.36-.5.05-.97.24-3.27-.68-2.77-1.09-4.5-3.94-4.63-4.12-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.24-.27.53-.34.71-.34.18 0 .35 0 .5.01.16.01.38-.06.59.45.24.55.79 1.91.86 2.05.07.14.12.3.02.48-.09.18-.14.29-.27.45-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.18-.2.69-.8.87-1.08.18-.28.36-.23.61-.14.24.09 1.55.73 1.82.87.27.14.44.2.5.31.07.11.07.64-.17 1.32z"/></svg>
+              Message on WhatsApp
+            </a>
+            <span class="faq-cta-note">Replies within 4 hours</span>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -629,69 +931,432 @@ const results = [
   .shift-bar i{display:block;height:100%;width:16.66%;background:var(--ag);border-radius:2px;
     transition:width .35s cubic-bezier(.4,0,.2,1)}
 
-  .aeo-how-sec{padding:80px 0}
-  .aeo-how-hdr{margin-bottom:48px}
-  .aeo-how-intro{font-family:var(--fu);font-size:16px;color:var(--wd);line-height:1.75;max-width:680px;margin-top:16px}
-  .aeo-how-steps{display:flex;flex-direction:column}
-  .aeo-how-step{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
-  .aeo-how-step:first-child{border-top:1px solid var(--bd)}
-  .aeo-how-num{font-family:var(--fm);font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
-  .aeo-how-step:hover .aeo-how-num{color:var(--ac)}
-  .aeo-how-t{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
-  .aeo-how-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.75;margin:0}
+  /* ══ MY AI SEO PROCESS: rounded inset panel, bento clusters ══ */
+  .proc{
+    --pc-sh:rgba(0,0,0,.5);
+    position:relative;margin:14px 14px 0;border-radius:32px;overflow:hidden;isolation:isolate;
+    padding:clamp(48px,7vh,84px) 0 clamp(52px,7vh,88px);background:var(--s1)}
+  :global(html.light) .proc{--pc-sh:rgba(60,52,40,.14)}
+  .proc-skin{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .proc-bloom{position:absolute;left:50%;top:-10%;width:min(920px,90%);height:52%;transform:translateX(-50%);
+    background:radial-gradient(ellipse 60% 60% at 50% 0%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 70%)}
+  .proc>.container{position:relative;z-index:1}
+  .proc-hd{max-width:660px;margin:0 auto clamp(34px,5vh,54px);text-align:center}
+  .proc-hd .hair{justify-content:center}
+  .proc-deck{font-family:var(--fu);font-size:clamp(14px,1.5vw,16px);color:var(--wd);line-height:1.75;margin:16px auto 0;max-width:600px}
 
-  .aeo-vs-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
-  .aeo-vs-hdr{margin-bottom:48px}
-  .aeo-vs-intro{font-family:var(--fu);font-size:16px;color:var(--wd);line-height:1.75;max-width:680px;margin-top:16px}
-  .aeo-vs-table{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
-  .aeo-vs-row{display:grid;grid-template-columns:220px 1fr 1fr;border-bottom:1px solid var(--bd)}
-  .aeo-vs-row:last-child{border-bottom:none}
-  .aeo-vs-head{background:var(--s2)}
-  .aeo-vs-col{padding:14px 20px;font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.5}
-  .aeo-vs-label{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm);display:flex;align-items:center}
-  .aeo-vs-label-h{padding:14px 20px}
-  .aeo-vs-seo-h,.aeo-vs-aeo-h{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;padding:14px 20px;display:flex;align-items:center}
-  .aeo-vs-seo-h{color:var(--wm)}
-  .aeo-vs-aeo-h{color:var(--ac)}
-  .aeo-vs-seo{color:var(--wd)}
-  .aeo-vs-aeo{color:var(--w);font-weight:500}
-  .aeo-vs-note{font-family:var(--fu);font-size:14px;color:var(--wm);line-height:1.7;max-width:680px;margin-top:32px}
+  /* cluster block */
+  .pc{margin-top:clamp(20px,3vh,34px)}
+  .pc-tab{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-left:2px}
+  .pc-tab-n{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--ac);letter-spacing:.06em}
+  .pc-tab-t{font-family:var(--fu);font-size:clamp(17px,2vw,21px);font-weight:800;color:var(--w);letter-spacing:-.02em}
+  .pc-tab-s{font-family:var(--fm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--wm)}
 
-  .aeo-del-sec{padding:80px 0}
-  .aeo-del-hdr{margin-bottom:56px}
-  .aeo-del-list{display:flex;flex-direction:column}
-  .aeo-del-row{display:grid;grid-template-columns:72px 1fr;align-items:start;padding:32px 0;border-bottom:1px solid var(--bd)}
-  .aeo-del-row:first-child{border-top:1px solid var(--bd)}
-  .aeo-del-num{font-family:var(--fm);font-size:26px;color:var(--bd);line-height:1;padding-top:4px;transition:color .25s}
-  .aeo-del-row:hover .aeo-del-num{color:var(--ac)}
-  .aeo-del-t{font-family:var(--fu);font-size:17px;font-weight:700;color:var(--w);letter-spacing:-.02em;margin-bottom:8px}
-  .aeo-del-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.75;margin:0}
+  /* bento */
+  .pc-bento{display:grid;gap:14px;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr}
+  .pcard--01,.pcard--02,.pcard--half{grid-column:span 3}
+  .pcard--hero{grid-column:span 6}
 
-  .aeo-results-sec{padding:80px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
-  .aeo-results-hdr{margin-bottom:48px}
-  .aeo-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:16px;overflow:hidden}
-  .aeo-result-card{background:var(--s1);padding:28px 24px;display:flex;flex-direction:column;gap:8px;transition:background .2s}
-  .aeo-result-card:hover{background:var(--s2)}
-  .arc-head{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-  .arc-cat{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
-  .arc-service{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm)}
-  .arc-n{font-family:var(--fd);font-size:clamp(40px,4vw,60px);font-weight:400;line-height:.9;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .arc-label{font-family:var(--fu);font-size:12px;color:var(--wd);line-height:1.4;margin-bottom:12px}
-  .arc-metrics{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--bd)}
-  .arc-met{display:flex;flex-direction:column;gap:2px}
-  .arc-met-v{font-family:var(--fu);font-size:12px;font-weight:700;color:var(--w)}
-  .arc-met-l{font-family:var(--fm);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
-  .aeo-results-note{font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--wm);margin-top:24px}
+  /* card shell */
+  .pcard{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;
+    padding:clamp(16px,1.8vw,20px);border:1px solid var(--bd);border-radius:20px;
+    background:linear-gradient(158deg,var(--s2) 0%,var(--s1) 62%);
+    box-shadow:0 18px 40px -24px var(--pc-sh);
+    transition:transform .3s cubic-bezier(.4,0,.2,1),border-color .3s,box-shadow .3s}
+  .pcard:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ac) 34%,var(--bd));box-shadow:0 28px 60px -26px var(--pc-sh)}
+  .pcard::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;z-index:0;
+    background:radial-gradient(60% 46% at 100% 0%,color-mix(in srgb,var(--ac) 12%,transparent),transparent 72%)}
+  .pcard>*{position:relative;z-index:1}
+  .pcard-n{font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.14em;color:var(--ac)}
+  .pcard-t{font-family:var(--fu);font-size:clamp(16px,1.5vw,18px);font-weight:800;color:var(--w);letter-spacing:-.02em;margin:6px 0 7px}
+  .pcard-d{font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.66;margin:0}
+  .pcard--hero{flex-direction:row;align-items:center;gap:clamp(20px,3vw,44px)}
+  .pcard--hero .pcard-txt{flex:0 0 40%;max-width:40%}
+  .pcard--hero .pcard-viz{flex:1;min-width:0}
 
-  .aeo-faq-sec{padding:80px 0}
+  /* surface + shared panel chrome for the inner visuals */
+  .pcard-viz{position:relative}
+  .vpanel{position:relative;border:1px solid var(--bd);border-radius:14px;padding:13px 14px;
+    background:color-mix(in srgb,var(--bg) 64%,var(--s1));
+    box-shadow:inset 0 1px 0 color-mix(in srgb,var(--w) 6%,transparent)}
+  .vpanel-hd{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .vpanel-ic{display:grid;place-items:center;width:22px;height:22px;border-radius:6px;flex-shrink:0;color:var(--ac);
+    background:var(--agl);border:1px solid color-mix(in srgb,var(--ac) 26%,var(--bd))}
+  .vpanel-t{font-family:var(--fu);font-size:11.5px;font-weight:700;color:var(--w);letter-spacing:-.01em}
+  .vpanel-tag{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--wm);background:var(--s2);border:1px solid var(--bd);
+    border-radius:var(--r-pill);padding:3px 8px;white-space:nowrap}
+  .vpanel-tag--ac{color:var(--ac);background:var(--agl);border-color:color-mix(in srgb,var(--ac) 30%,var(--bd))}
+  .vpanel-tag--live{color:var(--green);border-color:color-mix(in srgb,var(--green) 30%,var(--bd))}
+  .vspin{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1.5px solid color-mix(in srgb,var(--ac) 28%,transparent);
+    border-top-color:var(--ac);animation:vspin .8s linear infinite}
+  @keyframes vspin{to{transform:rotate(360deg)}}
+  .pgrow{transform-origin:left center}
+  .pgrow-y{transform-origin:bottom center}
 
-  @media(max-width:1100px){.aeo-results-grid{grid-template-columns:repeat(2,1fr)}}
+  /* viz 01 · business brief */
+  .vbrief-rows{display:flex;flex-direction:column;gap:7px}
+  .vbrief-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px;border-radius:9px;
+    background:color-mix(in srgb,var(--s1) 80%,transparent);border:1px solid color-mix(in srgb,var(--bd) 66%,transparent)}
+  .vbrief-k{font-family:var(--fm);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm)}
+  .vbrief-v{font-family:var(--fu);font-size:11.5px;color:var(--w);font-weight:600;text-align:right}
+
+  /* viz 02 · buyer node constellation */
+  .vbuy{position:relative;min-height:clamp(158px,21vh,196px);border:1px solid var(--bd);border-radius:14px;overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--ac) 13%,transparent),transparent 48%),
+      radial-gradient(color-mix(in srgb,var(--w) 6%,transparent) 1px,transparent 1px) 0 0/15px 15px,
+      color-mix(in srgb,var(--bg) 66%,var(--s1));
+    box-shadow:inset 0 1px 0 color-mix(in srgb,var(--w) 6%,transparent);
+    -webkit-mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,#000 60%,transparent 100%);
+    mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,#000 60%,transparent 100%)}
+  :global(html.light) .vbuy{background:
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--ac) 12%,transparent),transparent 48%),
+    radial-gradient(color-mix(in srgb,#000 6%,transparent) 1px,transparent 1px) 0 0/15px 15px,
+    var(--s1)}
+  .vbuy-links{position:absolute;inset:0;width:100%;height:100%;color:var(--ac);pointer-events:none}
+  .vbuy-link{stroke:currentColor;stroke-width:1;fill:none;opacity:.38;vector-effect:non-scaling-stroke}
+  .vbuy-pulse{fill:currentColor;filter:drop-shadow(0 0 4px var(--ac))}
+  .vbuy-node{position:absolute;transform:translate(-50%,-50%);z-index:2}
+  .vbuy-core{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:#fff;background:var(--ag);
+    box-shadow:0 10px 24px -6px var(--ac),0 0 0 6px color-mix(in srgb,var(--ac) 12%,transparent);
+    animation:pcFloat 6s ease-in-out infinite;will-change:transform}
+  .vbuy-sat{display:inline-block;font-family:var(--fm);font-size:9px;letter-spacing:.02em;color:var(--wd);white-space:nowrap;
+    background:color-mix(in srgb,var(--s2) 86%,transparent);border:1px solid var(--bd);border-radius:var(--r-pill);padding:5px 11px;
+    backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);box-shadow:0 8px 18px -10px var(--pc-sh);
+    animation:pcFloat 5s ease-in-out infinite;will-change:transform}
+  .vbuy-node:nth-child(4) .vbuy-sat{animation-delay:-1.3s}
+  .vbuy-node:nth-child(5) .vbuy-sat{animation-delay:-2.6s}
+  .vbuy-node:nth-child(6) .vbuy-sat{animation-delay:-3.9s}
+  .vbuy-sat--hot{color:var(--ac);background:var(--agl);border-color:color-mix(in srgb,var(--ac) 42%,var(--bd));box-shadow:0 8px 20px -8px var(--ac)}
+  @keyframes pcFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+  /* viz 03 · filter analysis -> shortlisted winner */
+  .vfilter{display:flex;flex-direction:column;gap:13px}
+  .vfilter-log{display:flex;flex-direction:column;gap:9px}
+  .vfilter-hd{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:.04em;color:var(--wd)}
+  .vfilter-step{display:flex;align-items:center;gap:9px;font-family:var(--fu);font-size:12px;color:var(--wd)}
+  .vfilter-ck{display:grid;place-items:center;width:16px;height:16px;border-radius:50%;flex-shrink:0;color:#fff;
+    background:var(--ag);box-shadow:0 3px 8px -2px var(--ac)}
+  .vfilter-win{position:relative;padding:13px 15px;border-radius:14px;
+    background:linear-gradient(118deg,color-mix(in srgb,var(--ac) 16%,var(--s1)),color-mix(in srgb,var(--ac) 5%,var(--s1)));
+    border:1px solid color-mix(in srgb,var(--ac) 46%,var(--bd));
+    box-shadow:0 16px 34px -18px color-mix(in srgb,var(--ac) 66%,transparent),inset 0 1px 0 color-mix(in srgb,var(--w) 12%,transparent)}
+  .vfilter-win-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .vfilter-badge{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;flex-shrink:0;color:#fff;
+    background:var(--ag);box-shadow:0 5px 14px -4px var(--ac)}
+  .vfilter-kw{font-family:var(--fu);font-size:14px;font-weight:800;color:var(--w)}
+  .vfilter-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .vfilter-tag{font-family:var(--fm);font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--wm);
+    background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-pill);padding:4px 9px}
+  .vfilter-tag--com{color:var(--ac);background:var(--agl);border-color:color-mix(in srgb,var(--ac) 34%,var(--bd))}
+  .vfilter-tag--low{color:var(--green);background:color-mix(in srgb,var(--green) 10%,transparent);border-color:color-mix(in srgb,var(--green) 34%,var(--bd))}
+  .vfilter-vol{font-family:var(--fm);font-size:9px;color:var(--wd)}
+
+  /* viz 04 · terminal audit (intentionally dark in both themes, matching the site's
+     always-dark code/terminal convention) */
+  .vterm{border:1px solid #1E222C;border-radius:12px;overflow:hidden;background:#0B0D12;
+    box-shadow:0 20px 44px -26px var(--pc-sh),inset 0 1px 0 rgba(255,255,255,.05)}
+  .vterm-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#12151C;border-bottom:1px solid rgba(255,255,255,.06)}
+  .vterm-bar i{width:8px;height:8px;border-radius:50%;background:#333A47;display:block}
+  .vterm-ttl{margin-left:6px;font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:#7A8291}
+  .vterm-body{padding:13px 14px;display:flex;flex-direction:column;gap:8px}
+  .vterm-line{display:flex;align-items:center;gap:9px;font-family:var(--fm);font-size:11px;color:#AEB6C4;line-height:1.4}
+  .vterm-p{color:var(--ac)}
+  .vterm-ok{color:#C7D0DD}
+  .vterm-ck{display:grid;place-items:center;width:15px;height:15px;border-radius:4px;flex-shrink:0;color:#0B0D12;background:#3BD488}
+  .vterm-cur{width:7px;height:13px;background:var(--ac)}
+  .vterm-run{opacity:.9}
+
+  /* viz 05 · content pillars */
+  .vpil-cols{display:flex;align-items:flex-end;gap:11px;height:clamp(80px,10.5vh,108px)}
+  .vpil-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%}
+  .vpil-track{flex:1;min-height:0;width:100%;display:flex;align-items:flex-end;justify-content:center}
+  .vpil-bar{width:100%;max-width:26px;height:var(--h);border-radius:6px 6px 3px 3px;
+    background:linear-gradient(180deg,var(--ac),color-mix(in srgb,var(--ac) 22%,transparent))}
+  .vpil-col b{font-family:var(--fm);font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--wd)}
+
+  /* viz 06 · answer-first document */
+  .vdoc-lines{display:flex;flex-direction:column;gap:8px;margin-bottom:13px}
+  .vdoc-line{height:7px;border-radius:4px;background:var(--s3);width:88%}
+  .vdoc-line--lead{height:9px;width:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 50%,transparent),color-mix(in srgb,var(--ac) 12%,transparent))}
+  .vdoc-line--sm{width:60%}
+  .vdoc-tags{display:flex;flex-wrap:wrap;gap:7px}
+  .vdoc-cite{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:8.5px;letter-spacing:.03em;
+    color:var(--ac);background:var(--agl);border:1px solid color-mix(in srgb,var(--ac) 32%,var(--bd));border-radius:var(--r-pill);padding:4px 9px}
+  .vdoc-cite .vfilter-ck{width:13px;height:13px}
+  .vdoc-schema{font-family:var(--fm);font-size:8.5px;color:var(--wd);background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-pill);padding:4px 9px}
+
+  /* viz 07 · distribution */
+  .vdist-logos{display:flex;gap:8px;margin-bottom:12px}
+  .vdist-logo{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#fff;flex-shrink:0;
+    box-shadow:0 5px 14px -6px var(--pc-sh),0 0 0 1px rgba(0,0,0,.05);animation:pcFloat 5s ease-in-out infinite;will-change:transform}
+  .vdist-logo:nth-child(2){animation-delay:-1.2s}
+  .vdist-logo:nth-child(3){animation-delay:-2.4s}
+  .vdist-logo:nth-child(4){animation-delay:-3.6s}
+  .vdist-stat{font-family:var(--fu);font-size:11px;color:var(--wd)}
+  .vdist-n{font-family:var(--fd);font-size:19px;color:var(--w);font-weight:400;margin-right:2px}
+
+  /* viz 08 · pipeline impact */
+  .vtrack-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+  .vtrack-metric{display:flex;flex-direction:column;gap:2px}
+  .vtrack-metric b{font-family:var(--fd);font-size:26px;font-weight:400;color:var(--w);line-height:1}
+  .vtrack-metric span{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+  .vtrack-spark{width:50%;height:40px;color:var(--ac);flex-shrink:0}
+  .vtrack-sub{font-family:var(--fu);font-size:10.5px;color:var(--wd);padding-top:10px;border-top:1px solid var(--bd)}
+  .vtrack-sub b{font-family:var(--fm);color:var(--w);font-size:11px;margin-left:4px}
+
+  /* viz 09 · content freshness */
+  .vfresh-meter{height:8px;border-radius:5px;background:var(--s3);overflow:hidden;margin-bottom:8px}
+  .vfresh-fill{display:block;height:100%;width:var(--w);border-radius:5px;background:var(--ag);box-shadow:0 0 14px -3px var(--ac)}
+  .vfresh-scale{display:flex;justify-content:space-between;margin-bottom:14px;font-family:var(--fm);font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--wm)}
+  .vfresh-pct{color:var(--green)}
+  .vfresh-log{display:flex;flex-direction:column;gap:9px}
+  .vfresh-item{display:flex;align-items:center;gap:9px;font-family:var(--fu);font-size:12px;color:var(--wd)}
+  .vfresh-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--ac);box-shadow:0 0 8px var(--ac)}
+
+  /* finale · knowledge graph */
+  .pc-fin{margin-top:clamp(24px,4vh,44px)}
+  .pc-fin-card{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+    gap:clamp(20px,3vw,48px);align-items:center;padding:clamp(24px,3vw,40px);
+    border:1px solid var(--bd);border-radius:24px;background:linear-gradient(150deg,var(--s2) 0%,var(--s1) 60%);
+    box-shadow:0 24px 56px -30px var(--pc-sh)}
+  .pc-fin-card::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(52% 60% at 78% 50%,color-mix(in srgb,var(--ac) 12%,transparent),transparent 72%)}
+  .pc-fin-txt,.pc-fin-viz{position:relative;z-index:1}
+  .pc-tab--fin{margin-bottom:14px}
+  .pc-fin-h{font-family:var(--fd);font-size:clamp(24px,3vw,34px);font-weight:400;color:var(--w);letter-spacing:-.02em;line-height:1.08;margin:0 0 12px}
+  .pc-fin-d{font-family:var(--fu);font-size:14px;color:var(--wd);line-height:1.7;margin:0;max-width:44ch}
+  .vent{position:relative;width:100%;aspect-ratio:520/300;
+    background:
+      radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--ac) 12%,transparent),transparent 44%),
+      radial-gradient(color-mix(in srgb,var(--w) 6%,transparent) 1px,transparent 1px) 0 0/17px 17px,transparent;
+    -webkit-mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,#000 62%,transparent 100%);
+    mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,#000 62%,transparent 100%)}
+  :global(html.light) .vent{background:
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--ac) 10%,transparent),transparent 44%),
+    radial-gradient(color-mix(in srgb,#000 6%,transparent) 1px,transparent 1px) 0 0/17px 17px,transparent}
+  .vent-links{position:absolute;inset:0;width:100%;height:100%;color:var(--ac);pointer-events:none}
+  .vent-link{stroke:currentColor;stroke-width:1;fill:none;opacity:.32;vector-effect:non-scaling-stroke}
+  .vent-pulse{fill:currentColor;filter:drop-shadow(0 0 4px var(--ac))}
+  .vent-node{position:absolute;transform:translate(-50%,-50%);z-index:2;display:grid;place-items:center}
+  .vent-eng,.vent-id{width:clamp(30px,3.4vw,40px);aspect-ratio:1;border-radius:50%;background:#fff;
+    box-shadow:0 8px 20px -6px var(--pc-sh),0 0 0 1px rgba(0,0,0,.06)}
+  .vent-eng img,.vent-id img{width:52%;height:52%;object-fit:contain}
+  .vent-core{padding:9px 16px;border-radius:var(--r-pill);background:var(--ag);white-space:nowrap;
+    box-shadow:0 14px 30px -8px var(--ac),0 0 0 7px color-mix(in srgb,var(--ac) 12%,transparent)}
+  .vent-core .iccl-1,.vent-core .iccl-2{color:#fff;-webkit-text-fill-color:#fff;background:none;
+    font-family:var(--fu);font-weight:800;font-size:clamp(13px,1.5vw,16px);font-style:normal}
+  .vent-core .iccl-2{font-family:var(--fd);font-style:italic;font-weight:400}
+
+  .vterm-cur{animation:pcCaret 1.1s steps(1) infinite}
+  @keyframes pcCaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  @media(max-width:820px){
+    .pc-bento{grid-template-columns:1fr}
+    .pcard--01,.pcard--02,.pcard--half,.pcard--hero{grid-column:auto}
+    .pcard--hero{flex-direction:column;align-items:stretch}
+    .pcard--hero .pcard-txt{flex:none;max-width:none}
+    .pc-fin-card{grid-template-columns:1fr;gap:24px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .vbuy-sat,.vbuy-core,.vdist-logo,.vspin,.vterm-cur{animation:none}
+    .vbuy-pulse,.vent-pulse{display:none}
+  }
+
+
+  /* ══ SERVICES: rounded inset panel, click-to-reveal + gradient art ══ */
+  .svc{--pc-sh:rgba(0,0,0,.5);
+    position:relative;margin:14px 14px 0;border-radius:32px;overflow:hidden;isolation:isolate;scroll-margin-top:90px;
+    padding:clamp(58px,8vh,92px) 0;background:var(--s1)}
+  :global(html.light) .svc{--pc-sh:rgba(60,52,40,.16)}
+  .svc>.container{position:relative;z-index:1}
+  .svc-hd{max-width:640px;margin:0 auto clamp(20px,3.5vh,38px);text-align:center}
+  .svc-hd .hair{justify-content:center}
+  .svc .sec-h{font-size:clamp(27px,3.6vw,46px);line-height:1.02}
+  .svc-deck{font-family:var(--fu);font-size:clamp(13px,1.4vw,15px);color:var(--wd);line-height:1.65;margin:14px auto 0;max-width:500px}
+  .svc-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,52px);align-items:center}
+
+  /* left · service list */
+  .svc-nav{display:flex;flex-direction:column;gap:2px}
+  .svc-item{display:flex;align-items:center;gap:13px;width:100%;text-align:left;cursor:pointer;
+    padding:clamp(9px,1.4vh,14px) 16px;border:1px solid transparent;border-radius:14px;background:transparent;
+    transition:background .3s,border-color .3s}
+  .svc-item-n{font-family:var(--fm);font-size:11px;color:var(--wm);transition:color .3s;flex-shrink:0}
+  .svc-item-t{font-family:var(--fu);font-size:clamp(15px,1.6vw,18px);font-weight:600;color:var(--wd);letter-spacing:-.01em;line-height:1.25;transition:color .3s}
+  .svc-item-ar{margin-left:auto;display:grid;place-items:center;color:var(--ac);opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .3s;flex-shrink:0}
+  .svc-item:hover .svc-item-t{color:var(--w)}
+  .svc-item.is-active{background:color-mix(in srgb,var(--ac) 9%,var(--s2));border-color:color-mix(in srgb,var(--ac) 22%,var(--bd))}
+  .svc-item.is-active .svc-item-n{color:var(--ac)}
+  .svc-item.is-active .svc-item-t{color:var(--w)}
+  .svc-item.is-active .svc-item-ar{opacity:1;transform:none}
+
+  /* right · stage */
+  .svc-stage{min-width:0;max-width:500px;justify-self:center}
+  .svc-art-wrap{position:relative;width:100%;height:clamp(210px,30vh,290px);border-radius:18px;overflow:hidden;
+    border:1px solid var(--bd);box-shadow:0 22px 50px -30px var(--pc-sh);margin-bottom:clamp(14px,2vh,20px)}
+  .svc-art{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility .6s;
+    background:radial-gradient(120% 120% at 30% 20%,color-mix(in srgb,var(--ac) 20%,var(--s2)),var(--s1) 70%)}
+  .svc-art.is-active{opacity:1;visibility:visible}
+  .svc-blob{position:absolute;border-radius:50%;filter:blur(30px);mix-blend-mode:screen;opacity:1;will-change:transform}
+  :global(html.light) .svc-blob{mix-blend-mode:normal;opacity:.6;filter:blur(34px)}
+  .svc-b1{width:82%;aspect-ratio:1;left:calc(-4% + var(--seed,0)*6%);top:calc(-2% + var(--seed,0)*5%);
+    background:radial-gradient(circle,var(--ac),transparent 66%);animation:svcDrift 17s ease-in-out infinite}
+  .svc-b2{width:72%;aspect-ratio:1;right:calc(-6% + var(--seed,0)*5%);bottom:calc(-4% + var(--seed,0)*5%);
+    background:radial-gradient(circle,var(--ac2),transparent 66%);animation:svcDrift 21s ease-in-out infinite reverse}
+  .svc-b3{width:50%;aspect-ratio:1;left:calc(38% - var(--seed,0)*3%);top:calc(40% + var(--seed,0)*3%);
+    background:radial-gradient(circle,color-mix(in srgb,var(--ac) 45%,#fff),transparent 64%);opacity:.85;animation:svcDrift 25s ease-in-out infinite}
+  @keyframes svcDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(7%,-6%) scale(1.09)}66%{transform:translate(-6%,5%) scale(.95)}}
+  .svc-grain{position:absolute;inset:0;pointer-events:none;opacity:.4;mix-blend-mode:soft-light;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .svc-art-tag{position:absolute;left:14px;bottom:12px;z-index:2;font-family:var(--fm);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:rgba(0,0,0,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);border-radius:var(--r-pill);padding:4px 11px}
+  .svc-art-icon{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);z-index:2;display:grid;place-items:center;
+    width:clamp(54px,6vw,68px);aspect-ratio:1;border-radius:19px;color:#fff;
+    background:rgba(255,255,255,.13);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.24);box-shadow:0 16px 36px -12px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25)}
+  .svc-art-icon svg{width:50%;height:50%}
+
+  .svc-copy-wrap{display:grid}
+  .svc-copy{grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease,visibility .5s}
+  .svc-copy.is-active{opacity:1;visibility:visible;transform:none}
+  .svc-copy-t{font-family:var(--fd);font-size:clamp(20px,2.2vw,27px);font-weight:400;color:var(--w);letter-spacing:-.01em;line-height:1.1;margin:0 0 10px}
+  .svc-copy-d{font-family:var(--fu);font-size:13.5px;color:var(--wd);line-height:1.7;margin:0 0 18px;max-width:46ch}
+  .svc-copy-cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--fu);font-size:13px;font-weight:700;color:var(--ac);
+    transition:gap .25s}
+  .svc-copy-cta:hover{gap:12px}
+
+  /* ══ AEO OUTCOMES: featured case + hero stat + citation tiles ══ */
+  .aeo-results-sec{--pc-sh:rgba(0,0,0,.5);position:relative;margin:14px 14px 0;border-radius:32px;overflow:hidden;
+    background:var(--s1);padding:clamp(48px,7vh,84px) 0}
+  :global(html.light) .aeo-results-sec{--pc-sh:rgba(60,52,40,.16)}
+  .ro-hd{max-width:640px;margin:0 auto clamp(30px,4.5vh,48px);text-align:center}
+  .ro-hd .hair{justify-content:center}
+  .aeo-results-sec .sec-h{font-size:clamp(27px,3.6vw,46px);line-height:1.02}
+  .ro-deck{font-family:var(--fu);font-size:clamp(13.5px,1.5vw,16px);color:var(--wd);line-height:1.65;margin:16px auto 0;max-width:520px}
+  .ro-grid{display:grid;grid-template-columns:1.04fr 1fr;gap:14px;align-items:stretch}
+
+  /* featured card with animated gradient background */
+  .ro-feat{position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--bd);display:flex;isolation:isolate;
+    min-height:clamp(300px,42vh,420px)}
+  .ro-feat-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(150deg,color-mix(in srgb,var(--ac) 32%,var(--s1)),var(--s1) 72%)}
+  .ro-blob{position:absolute;border-radius:50%;filter:blur(46px);mix-blend-mode:screen;will-change:transform}
+  :global(html.light) .ro-blob{mix-blend-mode:normal;opacity:.6;filter:blur(50px)}
+  .ro-b1{width:72%;aspect-ratio:1;left:-8%;top:-12%;background:radial-gradient(circle,var(--ac),transparent 66%);animation:svcDrift 18s ease-in-out infinite}
+  .ro-b2{width:66%;aspect-ratio:1;right:-10%;bottom:-14%;background:radial-gradient(circle,var(--ac2),transparent 66%);animation:svcDrift 23s ease-in-out infinite reverse}
+  .ro-b3{width:46%;aspect-ratio:1;left:34%;top:36%;background:radial-gradient(circle,color-mix(in srgb,var(--ac) 46%,#fff),transparent 64%);opacity:.82;animation:svcDrift 27s ease-in-out infinite}
+  .ro-grain{position:absolute;inset:0;opacity:.4;mix-blend-mode:soft-light;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .ro-feat::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.58),transparent 60%)}
+  .ro-feat-in{position:relative;z-index:2;margin-top:auto;padding:clamp(20px,2.6vw,32px)}
+  .ro-feat-tag{display:inline-flex;font-family:var(--fm);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#fff;
+    background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);border-radius:var(--r-pill);padding:5px 11px;margin-bottom:14px}
+  .ro-feat-h{font-family:var(--fd);font-size:clamp(26px,3.4vw,40px);font-weight:400;color:#fff;letter-spacing:-.02em;line-height:1.04;margin:0 0 10px}
+  .ro-feat-sub{font-family:var(--fu);font-size:13.5px;color:rgba(255,255,255,.84);line-height:1.6;margin:0 0 18px;max-width:40ch}
+  .ro-feat-cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--fu);font-size:13px;font-weight:700;color:#fff;
+    background:rgba(0,0,0,.32);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.24);border-radius:var(--r-pill);padding:10px 18px;transition:gap .25s,background .25s}
+  .ro-feat-cta:hover{gap:12px;background:rgba(0,0,0,.46)}
+
+  /* right column: hero stat + citation tiles */
+  .ro-right{display:grid;grid-template-rows:auto 1fr;gap:14px;min-width:0}
+  .ro-stat{position:relative;overflow:hidden;border-radius:20px;padding:clamp(20px,2.6vw,28px);background:var(--ag);color:#fff;
+    display:flex;flex-direction:column;gap:3px;box-shadow:0 22px 46px -26px var(--ac)}
+  .ro-stat-n{font-family:var(--fd);font-size:clamp(38px,5vw,56px);font-weight:400;line-height:1}
+  .ro-stat-l{font-family:var(--fu);font-size:14px;font-weight:700}
+  .ro-stat-sub{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:5px}
+  .ro-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ro-tile{border:1px solid var(--bd);border-radius:16px;padding:15px 16px;background:linear-gradient(158deg,var(--s2) 0%,var(--s1) 70%);
+    display:flex;flex-direction:column;gap:5px;transition:transform .3s cubic-bezier(.4,0,.2,1),border-color .3s}
+  .ro-tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--ac) 34%,var(--bd))}
+  .ro-tile-n{font-family:var(--fd);font-size:clamp(24px,2.8vw,32px);font-weight:400;line-height:1;
+    background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .ro-tile-l{font-family:var(--fu);font-size:12px;font-weight:700;color:var(--w)}
+  .ro-tile-note{font-family:var(--fm);font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--wm);line-height:1.5}
+  .ro-note{font-family:var(--fm);font-size:9px;letter-spacing:.05em;color:var(--wm);line-height:1.6;margin-top:22px;max-width:760px}
+
+  /* ══ PLATFORMS: the AI surfaces grid ══ */
+  .plat{position:relative;margin:14px 14px 0;border-radius:32px;overflow:hidden;isolation:isolate;
+    padding:clamp(52px,7vh,84px) 0;background:var(--s1)}
+  .plat>.container{position:relative;z-index:1}
+  .plat-hd{max-width:640px;margin:0 auto clamp(34px,5vh,52px);text-align:center}
+  .plat-hd .hair{justify-content:center}
+  .plat .sec-h{font-size:clamp(27px,3.6vw,46px);line-height:1.02}
+  .plat-deck{font-family:var(--fu);font-size:clamp(13.5px,1.5vw,16px);color:var(--wd);line-height:1.68;margin:16px auto 0;max-width:540px}
+  .plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .plat-card{position:relative;display:flex;flex-direction:column;min-height:clamp(148px,19vh,178px);
+    padding:15px 16px;border:1px solid var(--bd);border-radius:16px;background:linear-gradient(158deg,var(--s2) 0%,var(--s1) 68%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1),border-color .3s,box-shadow .3s}
+  .plat-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ac) 36%,var(--bd));box-shadow:0 22px 46px -26px var(--pc-sh,rgba(0,0,0,.5))}
+  .plat-top{display:flex;align-items:center;gap:8px}
+  .plat-n{font-family:var(--fm);font-size:10px;letter-spacing:.05em;color:var(--wm)}
+  .plat-cat{font-family:var(--fm);font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);
+    background:var(--agl);border:1px solid color-mix(in srgb,var(--ac) 26%,var(--bd));border-radius:var(--r-pill);padding:3px 8px}
+  .plat-mid{margin-top:auto;display:flex;align-items:center;gap:11px}
+  .plat-logo{display:grid;place-items:center;width:38px;height:38px;flex-shrink:0;border-radius:10px;background:#fff;
+    box-shadow:0 4px 12px -5px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.05)}
+  .plat-logo img{width:22px;height:22px;object-fit:contain}
+  .plat-name{font-family:var(--fu);font-size:16px;font-weight:700;color:var(--w);letter-spacing:-.012em}
+  .plat-sig{font-family:var(--fu);font-size:11.5px;color:var(--wd);line-height:1.5;margin:11px 0 0}
+  @media(max-width:900px){.plat{margin:8px 8px 0;border-radius:24px}.plat-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.plat-grid{grid-template-columns:1fr}}
+
+  /* ══ FAQ: accordion left, sticky WhatsApp card right ══ */
+  /* No overflow:hidden here: it would clip position:sticky on the WhatsApp card. */
+  .aeo-faq-sec{--pc-sh:rgba(0,0,0,.5);position:relative;margin:14px 14px 0;border-radius:32px;background:var(--s1);
+    padding:clamp(48px,7vh,82px) 0}
+  :global(html.light) .aeo-faq-sec{--pc-sh:rgba(60,52,40,.16)}
+  .aeo-faq-grid{display:grid;grid-template-columns:minmax(0,1.34fr) minmax(0,.8fr);gap:clamp(28px,4.5vw,64px);align-items:start}
+  .aeo-faq-sec .sec-h{font-size:clamp(28px,3.6vw,48px);line-height:1.02;margin-bottom:clamp(22px,3.5vh,38px)}
+  .aeo-faq-sec .faq-list{max-width:none;display:flex;flex-direction:column;gap:10px}
+  .aeo-faq-sec .faq-item{position:relative;border:1px solid var(--bd);border-radius:14px;background:var(--s2);overflow:hidden;
+    transition:border-color .3s,background .3s,transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s}
+  .aeo-faq-sec .faq-item:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ac) 24%,var(--bd));box-shadow:0 14px 30px -22px var(--pc-sh)}
+  .aeo-faq-sec .faq-item:has([aria-expanded="true"]){border-color:color-mix(in srgb,var(--ac) 34%,var(--bd));background:color-mix(in srgb,var(--ac) 7%,var(--s2));box-shadow:0 16px 34px -24px var(--pc-sh)}
+  .aeo-faq-sec .faq-btn{display:flex;align-items:center;justify-content:flex-start;gap:14px;width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:16px 18px}
+  /* Global `.faq-list .faq-btn span{flex:1}` also hits .faq-num, so pin it here
+     with higher specificity, otherwise the number grows and pushes the question in. */
+  .aeo-faq-sec .faq-btn .faq-num{font-family:var(--fm);font-size:11px;color:var(--wm);flex:0 0 auto;transition:color .25s}
+  .aeo-faq-sec .faq-item:has([aria-expanded="true"]) .faq-num{color:var(--ac)}
+  .aeo-faq-sec .faq-q{flex:1 1 auto;min-width:0;text-align:left;font-family:var(--fu);font-size:clamp(13.5px,1.4vw,15px);font-weight:700;color:var(--w);letter-spacing:-.01em;line-height:1.4}
+  .aeo-faq-sec .faq-icon{position:relative;width:20px;height:20px;flex-shrink:0}
+  .aeo-faq-sec .faq-icon::before,.aeo-faq-sec .faq-icon::after{content:'';position:absolute;top:50%;left:50%;width:11px;height:1.6px;border-radius:2px;
+    background:var(--wd);transform:translate(-50%,-50%);transition:transform .25s,background .25s}
+  .aeo-faq-sec .faq-icon::after{transform:translate(-50%,-50%) rotate(90deg)}
+  .aeo-faq-sec .faq-btn[aria-expanded="true"] .faq-icon::before,.aeo-faq-sec .faq-btn[aria-expanded="true"] .faq-icon::after{background:var(--ac)}
+  .aeo-faq-sec .faq-btn[aria-expanded="true"] .faq-icon::after{transform:translate(-50%,-50%) rotate(0)}
+  .aeo-faq-sec .faq-ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1)}
+  .aeo-faq-sec .faq-item:has([aria-expanded="true"]) .faq-ans{grid-template-rows:1fr}
+  .aeo-faq-sec .faq-ans-in{overflow:hidden;min-height:0;padding:0 18px 16px 46px;font-family:var(--fu);font-size:13.5px;color:var(--wd);line-height:1.7}
+
+  .aeo-faq-side{position:sticky;top:100px}
+  .faq-cta{display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--bd);border-radius:20px;
+    background:linear-gradient(160deg,var(--s2) 0%,var(--s1) 72%);padding:clamp(22px,2.6vw,30px);box-shadow:0 22px 48px -30px var(--pc-sh)}
+  .faq-cta-av{width:64px;height:64px;border-radius:50%;object-fit:cover;margin-bottom:18px;
+    border:2px solid color-mix(in srgb,var(--ac) 30%,var(--bd));box-shadow:0 8px 20px -8px var(--ac)}
+  .faq-cta-ey{display:block;font-family:var(--fu);font-size:13px;color:var(--wd);margin-bottom:5px}
+  .faq-cta-h{font-family:var(--fd);font-size:clamp(20px,2vw,25px);font-weight:400;color:var(--w);letter-spacing:-.01em;line-height:1.12;margin:0 0 12px}
+  .faq-cta-d{font-family:var(--fu);font-size:13px;color:var(--wd);line-height:1.6;margin:0 0 18px}
+  .faq-cta-btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--fu);font-size:14px;font-weight:700;color:#fff;
+    background:#25D366;border-radius:var(--r-pill);padding:12px 20px;transition:transform .2s,box-shadow .25s;box-shadow:0 10px 26px -10px rgba(37,211,102,.6)}
+  .faq-cta-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px -12px rgba(37,211,102,.72)}
+  .faq-cta-btn svg{flex-shrink:0}
+  .faq-cta-note{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--wm);margin-top:14px}
+  @media(max-width:900px){
+    .aeo-faq-sec{margin:8px 8px 0;border-radius:24px}
+    .aeo-faq-grid{grid-template-columns:1fr;gap:28px}
+    .aeo-faq-side{position:static;max-width:440px}
+  }
+
+  @media(max-width:900px){
+    .aeo-results-sec{margin:8px 8px 0;border-radius:24px}
+    .ro-grid{grid-template-columns:1fr}
+    .ro-feat{min-height:270px}
+  }
   @media(max-width:960px){
     .shift-in{grid-template-columns:1fr;gap:30px;align-items:start}
     .shift{min-height:auto;padding:clamp(56px,8vh,84px) 0}
     .shift-p{max-width:none}
     .shift-nav{margin-top:18px}
-    .aeo-vs-row{grid-template-columns:160px 1fr 1fr}
   }
   @media(max-width:860px){
     .shift{margin:8px 8px 0;border-radius:24px}
@@ -716,19 +1381,20 @@ const results = [
     .ah-card-l{display:none}
     .ah-cols{height:clamp(64px,10vh,90px)}
   }
-  @media(max-width:720px){
-    .aeo-vs-row{grid-template-columns:1fr}
-    .aeo-vs-head{display:none}
-    .aeo-results-grid{grid-template-columns:1fr 1fr}
-  }
   @media(max-width:640px){
     .ah-bc{display:none}
     .ah-sub{font-size:13.5px;line-height:1.66}
     .ah-cta .btn-p,.ah-cta .btn-s{padding:11px 20px;font-size:13px}
-    .aeo-del-row,.aeo-how-step{grid-template-columns:48px 1fr}
-    .aeo-del-num,.aeo-how-num{font-size:18px}
-    .aeo-results-grid{grid-template-columns:1fr}
+    .ro-tiles{grid-template-columns:1fr}
   }
+  /* Services: stack the list above the stage on narrow screens */
+  @media(max-width:860px){
+    .svc{margin:8px 8px 0;border-radius:24px}
+    .svc-grid{grid-template-columns:1fr;gap:26px}
+    .svc-nav{gap:4px}
+    .svc-item{padding:12px 14px}
+  }
+  @media(prefers-reduced-motion:reduce){.svc-blob,.ro-blob{animation:none}}
   @media(max-width:520px){
     .ah-card{gap:6px;padding:8px 7px}
     .ah-ring{width:24px}
@@ -856,12 +1522,103 @@ const results = [
     track.addEventListener('pointercancel',endDrag);
   }
 
+  // ── Process clusters: one generic scroll-in animation for every cluster ──────
+  // Markup renders in FINAL state; GSAP rewinds a cluster then plays it once when
+  // it scrolls in. Hooks are declarative so new cards need zero new JS:
+  //   .pcard      → fade + rise (staggered)
+  //   .pgrow      → horizontal bar/fill grows from left (scaleX)
+  //   .pgrow-y    → vertical bar grows from the base (scaleY)
+  //   [data-count]→ number counts up (data-pre/suf/dec/fmt supported)
+  //   .pc-seq     → sequenced reveal (audit lines, insight rows, chips)
+  const procClusters=document.querySelectorAll('.pc, .pc-fin');
+  if(procClusters.length&&!reduceMo){
+    import('gsap').then(m=>{
+      const g=(m as any).gsap||(m as any).default;if(!g)return;
+
+      const fmtNum=(el:HTMLElement,v:number)=>{
+        const dec=parseInt(el.dataset.dec||'0',10);
+        const s=dec>0?v.toFixed(dec):Math.round(v).toString();
+        el.textContent=(el.dataset.pre||'')+(el.dataset.fmt?Number(s).toLocaleString('en-US'):s)+(el.dataset.suf||'');
+      };
+
+      procClusters.forEach(cl=>{
+        const cards=cl.querySelectorAll('.pcard');
+        const barsX=cl.querySelectorAll('.pgrow');
+        const barsY=cl.querySelectorAll('.pgrow-y');
+        const nums=cl.querySelectorAll('[data-count]');
+        const seq=cl.querySelectorAll('.pc-seq');
+
+        g.set(cards,{autoAlpha:0,y:20});
+        g.set(barsX,{scaleX:0});
+        g.set(barsY,{scaleY:0});
+        g.set(seq,{autoAlpha:0,y:8});
+        nums.forEach((n:any)=>{n.textContent=(n.dataset.pre||'')+(n.dataset.dec?'0.0':'0')+(n.dataset.suf||'')});
+
+        const play=()=>{
+          const tl=g.timeline({defaults:{ease:'power3.out'}});
+          tl.to(cards,{autoAlpha:1,y:0,duration:.55,stagger:.1,clearProps:'transform'})
+            .to(barsX,{scaleX:1,duration:.8,stagger:.06,ease:'power2.out',clearProps:'transform'},'-=.3')
+            .to(barsY,{scaleY:1,duration:.75,stagger:.07,ease:'back.out(1.4)',clearProps:'transform'},'<')
+            .to(seq,{autoAlpha:1,y:0,duration:.4,stagger:.12,clearProps:'transform'},'-=.55');
+          nums.forEach((n:any)=>{
+            const o={v:0},t=parseFloat(n.dataset.count||'0');
+            tl.to(o,{v:t,duration:1,ease:'power2.out',onUpdate:()=>fmtNum(n,o.v)},'-=.9');
+          });
+        };
+        const ob=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){play();ob.unobserve(e.target)}})},{threshold:.15});
+        ob.observe(cl);
+      });
+    }).catch(()=>{});
+  }
+
+  // ── Services: click / hover / keyboard to reveal each service ───────────────
+  const svcItems=Array.from(document.querySelectorAll('.svc-item')) as HTMLButtonElement[];
+  if(svcItems.length){
+    const svcArts=Array.from(document.querySelectorAll('.svc-art'));
+    const svcCopies=Array.from(document.querySelectorAll('.svc-copy'));
+    const canHover=matchMedia('(hover:hover)').matches;
+    const activate=(i:number)=>{
+      svcItems.forEach((it,n)=>{const on=n===i;it.classList.toggle('is-active',on);it.setAttribute('aria-selected',on?'true':'false')});
+      svcArts.forEach((a,n)=>{const on=n===i;a.classList.toggle('is-active',on);a.setAttribute('aria-hidden',on?'false':'true')});
+      svcCopies.forEach((c,n)=>c.classList.toggle('is-active',n===i));
+    };
+    svcItems.forEach((it,i)=>{
+      it.addEventListener('click',()=>activate(i));
+      if(canHover)it.addEventListener('mouseenter',()=>activate(i));
+      it.addEventListener('keydown',(e:KeyboardEvent)=>{
+        if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();const n=(i+1)%svcItems.length;svcItems[n].focus();activate(n)}
+        else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();const n=(i-1+svcItems.length)%svcItems.length;svcItems[n].focus();activate(n)}
+      });
+    });
+  }
+
+  // Accordion: toggle aria-expanded only. CSS animates the answer height via
+  // grid-template-rows on [aria-expanded="true"], so no hidden-attribute jumps.
   document.querySelectorAll('.faq-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const isOpen=btn.getAttribute('aria-expanded')==='true';
-      document.querySelectorAll('.faq-btn').forEach(b=>{b.setAttribute('aria-expanded','false');const a=b.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(a)a.hidden=true});
-      if(!isOpen){btn.setAttribute('aria-expanded','true');const ans=btn.closest('.faq-item')?.querySelector('.faq-ans') as HTMLElement|null;if(ans)ans.hidden=false}
+      document.querySelectorAll('.faq-btn').forEach(b=>b.setAttribute('aria-expanded','false'));
+      if(!isOpen)btn.setAttribute('aria-expanded','true');
     });
   });
+
+  // FAQ entrance: items and the WhatsApp card fade + rise, staggered, on scroll-in.
+  const faqSec=document.querySelector('.aeo-faq-sec');
+  if(faqSec&&!reduceMo){
+    import('gsap').then(m=>{
+      const g=(m as any).gsap||(m as any).default;if(!g)return;
+      const items=faqSec.querySelectorAll('.faq-item');
+      const card=faqSec.querySelector('.faq-cta');
+      g.set(items,{autoAlpha:0,y:18});
+      g.set(card,{autoAlpha:0,y:18});
+      const play=()=>{
+        g.timeline({defaults:{ease:'power3.out'}})
+         .to(items,{autoAlpha:1,y:0,duration:.5,stagger:.08,clearProps:'transform'})
+         .to(card,{autoAlpha:1,y:0,duration:.55,clearProps:'transform'},'-=.4');
+      };
+      const ob=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){play();ob.unobserve(e.target)}})},{threshold:.12});
+      ob.observe(faqSec);
+    }).catch(()=>{});
+  }
   </script>
 </Layout>

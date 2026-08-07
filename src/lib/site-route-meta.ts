@@ -99,9 +99,11 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
 
   // ─── AEO Service ─────────────────────────────────────────────────────────────
   '/services/aeo': {
-    title: 'Hire AEO Consultant — AI Search Optimization and Citation Growth | Shivam Attri',
+    // Title 60 chars, both target keywords, no brand suffix (dropped for keyword focus + char budget).
+    title: 'AI SEO Services & AEO Services to Get You Cited by AI Search',
+    // Description 159 chars: benefit-first (citable), keywords, ends on the CTA.
     description:
-      'Hire an AEO consultant for AI search visibility. Entity schema, answer-first content restructure, 6-engine citation growth. Get Visible in AI search today',
+      'Get cited by ChatGPT, Perplexity and Google AI with AEO and AI SEO services. Entity schema, answer-first content, and the leads that follow. Book a free audit.',
   },
 
   // ─── SEO Service ─────────────────────────────────────────────────────────────
