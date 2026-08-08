@@ -139,7 +139,7 @@ const schema = {
 ---
 
 <Layout
-  title={blogLayoutTitle(post.data.title)}
+  title={post.data.seoTitle ?? blogLayoutTitle(post.data.title)}
   description={post.data.description}
   canonical={articleUrl}
   ogImage={articleOgImage}

@@ -5,6 +5,10 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
+    // Optional SEO <title> override. When set, it is used RAW (no " | Shivam Attri"
+    // suffix) so a post can hold its meta title to a strict character budget while
+    // the on-page H1 (title) stays longer. Falls back to blogLayoutTitle(title).
+    seoTitle: z.string().optional(),
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
