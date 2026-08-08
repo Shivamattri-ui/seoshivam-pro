@@ -6,7 +6,7 @@
  * serverless function, validates + sanitizes the payload, then makes
  * two Brevo calls:
  *
- *   1. POST /v3/contacts          → adds the lead to list 3
+ *   1. POST /v3/contacts          → adds the lead to list 2 (lead capture)
  *      (triggers any welcome automation set up in Brevo dashboard)
  *
  *   2. POST /v3/smtp/email        → sends a notification email to
@@ -138,15 +138,26 @@ export const POST: APIRoute = async ({ request }) => {
   if (!deadline)    return json({ ok: false, error: 'Select a deadline.' }, 400);
   if (!sourceField) return json({ ok: false, error: 'Select where you heard about me.' }, 400);
 
+  // Human-readable phone for the notification email, plus a strict E.164 form for
+  // Brevo. SMS and WHATSAPP are *validated* phone attributes: they reject spaces
+  // and anything that is not E.164, and that rejection fails the WHOLE contact
+  // (that is what silently blocked every lead from saving). "+91 999..." → "+91999...".
   const fullPhone = phone ? `${dial} ${phone}` : '';
+  const e164Phone = phone ? `+${dial.replace(/\D/g, '')}${phone.replace(/\D/g, '')}` : '';
 
-  // ── 4. Brevo: add contact ──
-  const attributes: Record<string, string> = {
+  const headers: Record<string, string> = {
+    accept: 'application/json',
+    'content-type': 'application/json',
+    'api-key': apiKey,
+  };
+
+  // Text attributes that already exist on the account (the prior 55 leads used
+  // them). The phone is added separately so a rejected number can be dropped
+  // without losing the lead.
+  const baseAttrs: Record<string, string> = {
     FIRSTNAME:    name.split(' ')[0] || name,
     LASTNAME:     name.split(' ').slice(1).join(' ') || '',
     FULLNAME:     name,
-    SMS:          fullPhone,
-    WHATSAPP:     fullPhone,
     SERVICE:      service,
     BUDGET:       budget,
     DEADLINE:     deadline,
@@ -156,17 +167,38 @@ export const POST: APIRoute = async ({ request }) => {
     SUBMITTED_AT: new Date().toISOString(),
   };
 
-  const headers: Record<string, string> = {
-    accept: 'application/json',
-    'content-type': 'application/json',
-    'api-key': apiKey,
-  };
+  const postContact = (attrs: Record<string, string>) =>
+    fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ email, listIds: [listId], attributes: attrs, updateEnabled: true }),
+    });
 
-  const addContactReq = fetch('https://api.brevo.com/v3/contacts', {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ email, listIds: [listId], attributes, updateEnabled: true }),
-  });
+  // A 400 counts as success ONLY when Brevo's own text says the contact is already
+  // there. Never a blind 400 (that is the bug that reported failures as success).
+  const isDuplicate = (status: number, text: string) =>
+    status === 409 ||
+    (status === 400 && /duplicate|already exist|already in list|contact already/i.test(text));
+
+  // Save the lead to list 2, guaranteed. Attempt 1 includes the phone in the
+  // validated SMS/WHATSAPP fields. If Brevo rejects for anything other than a
+  // duplicate (a bad phone is the usual cause), retry WITHOUT those fields so the
+  // lead is still captured. Lead capture must never fail on a phone number.
+  const saveLead = async (): Promise<{ ok: boolean; status: number; detail: string }> => {
+    const attempts = e164Phone
+      ? [{ ...baseAttrs, SMS: e164Phone, WHATSAPP: e164Phone }, baseAttrs]
+      : [baseAttrs];
+    let last = { status: 0, detail: '' };
+    for (const attrs of attempts) {
+      const res = await postContact(attrs);
+      const text = await res.text().catch(() => '');
+      if (res.ok || res.status === 204 || isDuplicate(res.status, text)) {
+        return { ok: true, status: res.status, detail: '' };
+      }
+      last = { status: res.status, detail: text.slice(0, 200) };
+    }
+    return { ok: false, status: last.status, detail: last.detail };
+  };
 
   // ── 5. Brevo: notification email to Shivam ──
   const notifyHtml = `
@@ -200,29 +232,22 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   // ── 6. Run both, evaluate outcomes ──
-  const [contactRes, notifyRes] = await Promise.allSettled([addContactReq, sendNotifyReq]);
+  const [contactSettled, notifyRes] = await Promise.allSettled([saveLead(), sendNotifyReq]);
 
-  const contactOk =
-    contactRes.status === 'fulfilled' &&
-    (contactRes.value.ok ||
-     contactRes.value.status === 204 ||
-     contactRes.value.status === 400 /* duplicate email */ ||
-     contactRes.value.status === 409);
+  const contactOk = contactSettled.status === 'fulfilled' && contactSettled.value.ok;
+  const contactDetail =
+    contactSettled.status === 'fulfilled'
+      ? `contact ${contactSettled.value.status}: ${contactSettled.value.detail}`
+      : (contactSettled.reason as Error)?.message || 'contact network error';
 
-  const notifyOk =
-    notifyRes.status === 'fulfilled' &&
-    (notifyRes.value.ok || notifyRes.value.status === 201);
+  const notifyOk = notifyRes.status === 'fulfilled' && notifyRes.value.ok;
 
-  // Both legs failed → real failure
+  // Both legs failed → real failure, surface the true reason.
   if (!contactOk && !notifyOk) {
-    let detail = 'Brevo API failed';
+    let detail = contactDetail;
     try {
-      if (contactRes.status === 'fulfilled') {
-        detail = `contact ${contactRes.value.status}: ` + (await contactRes.value.text()).slice(0, 200);
-      } else if (notifyRes.status === 'fulfilled') {
-        detail = `notify ${notifyRes.value.status}: ` + (await notifyRes.value.text()).slice(0, 200);
-      } else {
-        detail = (contactRes.reason as Error)?.message || 'Network error';
+      if (notifyRes.status === 'fulfilled') {
+        detail += ` | notify ${notifyRes.value.status}: ` + (await notifyRes.value.text()).slice(0, 160);
       }
     } catch {}
     return json({ ok: false, error: 'Could not deliver. Email hello@seoshivam.pro directly.', detail }, 502);
@@ -232,6 +257,9 @@ export const POST: APIRoute = async ({ request }) => {
     ok: true,
     message: 'Got it. Replying within 4 hours from hello@seoshivam.pro.',
     delivery: { contact: contactOk, email: notifyOk },
+    // If the notification sent but the list-save did not, say so plainly instead of
+    // hiding it, so a silent gap can never happen again.
+    ...(contactOk ? {} : { warning: 'lead emailed but not saved to list', detail: contactDetail }),
   });
 };
 

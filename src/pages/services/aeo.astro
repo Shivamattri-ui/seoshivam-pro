@@ -1353,9 +1353,15 @@ const outcomeTiles = [
     .ro-feat{min-height:270px}
   }
   @media(max-width:960px){
-    .shift-in{grid-template-columns:1fr;gap:30px;align-items:start}
+    /* minmax(0,1fr), not plain 1fr: a bare 1fr track is minmax(auto,1fr), and the
+       auto minimum lets the non-wrapping card row force the column open to its full
+       content width (~1400px). That blew the track past the viewport, so it could
+       not scroll and both arrows auto-disabled. The 0 minimum caps the column at the
+       container width, restoring the horizontal scroll and the arrow controls. */
+    .shift-in{grid-template-columns:minmax(0,1fr);gap:30px;align-items:start}
     .shift{min-height:auto;padding:clamp(56px,8vh,84px) 0}
     .shift-p{max-width:none}
+    .shift-r{min-width:0}
     .shift-nav{margin-top:18px}
   }
   @media(max-width:860px){

@@ -475,7 +475,8 @@ const dialCodes = [
         if(submitBtn) submitBtn.disabled = false;
         if(submitTxt) submitTxt.textContent = 'Submit and book a call';
         const msg = (err as Error)?.message || 'Could not submit.';
-        setStatus(msg + ' Email hello@seoshivam.pro directly.', 'err');
+        // Server messages already tell the user to email directly; only add it when missing.
+        setStatus(/hello@/.test(msg) ? msg : msg + ' Email hello@seoshivam.pro directly.', 'err');
       }
     });
   });

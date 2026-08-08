@@ -1,11 +1,13 @@
 /**
  * POST /api/subscribe — lightweight email capture, server-side Brevo.
  *
- * Routes to different Brevo lists by leadSource:
+ * Routes to different Brevo lists by leadSource. Everything here is a newsletter /
+ * general email opt-in, so it all goes to List 4 (newsletter). List 3 is reserved
+ * for the 80-Point AEO Audit resource only (see resource-gate.ts), never polluted here.
  *   blog-sidebar    → List 4  (newsletter — blog post sidebar form)
- *   blog-newsletter → List 3  (resource — homepage "AEO Visibility Playbook. Free.")
- *   ai-score-tool   → List 3  (resource — homepage AI score capture)
- *   (anything else) → List 3  (default resource list)
+ *   blog-newsletter → List 4  (newsletter — homepage "AEO Visibility Playbook. Free.")
+ *   ai-score-tool   → List 4  (newsletter — homepage AI score capture)
+ *   (anything else) → List 4  (default newsletter list)
  *
  * Contact form leads go through /api/contact, not this endpoint.
  */
@@ -19,13 +21,13 @@ import {
 
 export const prerender = false;
 
-/** Maps leadSource to Brevo list IDs. */
+/** Maps leadSource to Brevo list IDs. All newsletter/general opt-ins → List 4. */
 const LIST_ROUTING: Record<string, number> = {
-  'blog-sidebar':    4,   // newsletter
-  'blog-newsletter': 3,   // AEO Visibility Playbook (homepage lead magnet)
-  'ai-score-tool':   3,   // AI score capture (homepage tool)
+  'blog-sidebar':    4,   // newsletter — blog sidebar
+  'blog-newsletter': 4,   // newsletter — homepage AEO Visibility Playbook opt-in
+  'ai-score-tool':   4,   // newsletter — homepage AI score capture
 };
-const DEFAULT_LIST = 3;
+const DEFAULT_LIST = 4;
 
 const MIN_FILL_MS = 2000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

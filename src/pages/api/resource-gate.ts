@@ -6,7 +6,9 @@
  *   2. Add contact to the Brevo list for that resource with LEAD_SOURCE attribute.
  *   3. Return success — Brevo automation handles file delivery email.
  *
- * Lists: default list 3 (seoshivam-leads). Claude Skills PDF uses list 6 only.
+ * Lists: aeo-audit-80 → list 3 (80-Point AEO Audit), claude-skills-seo-pdf → list 6,
+ * aeo-content-brief-notion → list 4 (no dedicated list; grouped with newsletter,
+ * still identifiable by its LEAD_SOURCE `resource:aeo-content-brief-notion`).
  *
  * No download URL is returned to the browser. Users must check their inbox.
  * This keeps the email list as the gate and lets the Brevo automation build the relationship.
@@ -21,11 +23,13 @@ import {
 
 export const prerender = false;
 
-const DEFAULT_LIST_ID = 3;
+const DEFAULT_LIST_ID = 3; // 80-Point AEO Audit
 
-/** Per-resource Brevo list overrides. All others use DEFAULT_LIST_ID. */
+/** Per-resource Brevo list overrides. All others use DEFAULT_LIST_ID (list 3, audit). */
 const RESOURCE_LIST_IDS: Record<string, number> = {
-  'claude-skills-seo-pdf': 6,
+  'aeo-audit-80':            3,   // 80-Point AEO Audit
+  'aeo-content-brief-notion': 4,  // no dedicated list → newsletter/general
+  'claude-skills-seo-pdf':   6,   // Claude Skills for SEO
 };
 
 function listIdFor(resourceId: string): number {
