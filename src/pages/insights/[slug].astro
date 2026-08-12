@@ -307,15 +307,11 @@ const schema = {
             {postFaqs.length > 0 && (
               <section class="art-faq rv" id="faq">
                 <header class="art-faq-hdr">
-                  <span class="hair left">FREQUENTLY ASKED / AI-CITABLE Q&amp;A</span>
+                  <span class="hair left">FREQUENTLY ASKED</span>
                   <h2 class="art-faq-h">
                     Common questions,<br>
                     <em class="grad-anim">direct answers.</em>
                   </h2>
-                  <p class="art-faq-deck">
-                    Direct answers to the questions buyers and AI engines ask about this topic.
-                    Each answer is structured for citation in ChatGPT, Perplexity, and Google AI Overviews.
-                  </p>
                 </header>
                 <div class="art-faq-list">
                   {postFaqs.map((f, i) => (
@@ -408,7 +404,7 @@ const schema = {
                   <div class="art-au-name">Shivam Attri</div>
                   <div class="art-au-role">AEO Specialist &middot; SEO Strategist</div>
                 </div>
-                <p class="art-au-bio">I help B2B SaaS founders get cited by ChatGPT, Perplexity and Google AI Overviews. Seven years across logistics, health tech, hospitality, and SaaS.</p>
+                <p class="art-au-bio">I'm an AEO specialist and SEO strategist with seven years in search, working on AI visibility since 2022. I've shipped 150+ websites and 50+ landing pages, and gotten brands named by ChatGPT, Perplexity, Gemini, and Google AI Overviews across the US, UK, EU, and Australia. My work runs from entity and schema architecture to answer-first content and AI-visible web design, for brands in logistics, health tech, ecommerce, manufacturing, and more.</p>
                 <div class="art-au-stats">
                   <div class="art-au-stat">
                     <span class="art-au-stat-n grad-anim">7+</span>
@@ -916,8 +912,8 @@ const schema = {
     color:var(--wd);
     line-height:1.65;
     margin:12px 0 14px;
-    text-align:left;
-    text-wrap:balance;
+    text-align:center;
+    text-wrap:pretty;
   }
 
   .art-au-stats{
@@ -1275,6 +1271,10 @@ const schema = {
     .art-cta-r{flex-direction:column;align-items:stretch}
     .art-cta-r .btn-p,.art-cta-r .btn-s{width:100%;justify-content:center}
     .art-side-col{flex-direction:column}
+    /* In a column the tablet rule's flex-basis:280px becomes a fixed HEIGHT and
+       clips the author/newsletter cards (stats, socials, and the Work-with-me
+       button get sliced off). Reset to auto so each card grows to its content. */
+    .art-au-card,.art-nl-card{flex:0 0 auto}
     .art-cover{aspect-ratio:3/4;padding:18px 14px;border-radius:14px}
   }
 
