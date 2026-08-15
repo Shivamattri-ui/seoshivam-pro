@@ -53,7 +53,7 @@ Email:         Brevo (formerly Sendinblue) — list ID 3
 Domain:        seoshivam.pro
 ```
 
-**Pages prerender by default. Only `src/pages/api/contact.ts`, `src/pages/api/subscribe.ts`, and `src/pages/api/resource-gate.ts` are dynamic** (they set `export const prerender = false;`). Don't switch the project to `output: 'server'` — every other page would lose static prerendering.
+**Pages prerender by default. Only `src/pages/api/contact.ts`, `src/pages/api/subscribe.ts`, `src/pages/api/resource-gate.ts`, and `src/pages/api/robots-txt.ts` are dynamic** (they set `export const prerender = false;`). Don't switch the project to `output: 'server'` — every other page would lose static prerendering.
 
 ---
 
@@ -158,10 +158,11 @@ CSS vars: `--fd` (display), `--fu` (ui), `--fm` (mono). Always use these — nev
 | `/resources` | `src/pages/resources.astro` | ✅ Built | Hero + sticky author sidebar, three email-gated resources (80-point AEO audit PDF, AEO Notion brief, Claude Skills PDF), FAQ, ContactCta |
 | `/tools` | `src/pages/tools/index.astro` | ✅ Built | Hub with two-tool listing, FAQ, ContactCta |
 | `/tools/ai-visibility-score` | `src/pages/tools/ai-visibility-score.astro` | ✅ Built | 10-question quiz with `<style is:global>` (critical — JS-rendered options need global scope), animated progress bar, eyebrow + serif question, gradient-sweep options |
-| `/tools/robots-txt-checker` | `src/pages/tools/robots-txt-checker.astro` | ✅ Built | Multi-proxy CORS fallback (direct → corsproxy.io → allorigins/raw), proper RFC-compliant parser (groups, longest-prefix, allow-wins) |
+| `/tools/robots-txt-checker` | `src/pages/tools/robots-txt-checker.astro` | ✅ Built | Fetches robots.txt via the same-origin `/api/robots-txt` serverless endpoint (the old browser CORS proxies corsproxy.io/allorigins rotted: 403/522 in Aug 2026, breaking the tool for every site). Proper RFC-compliant parser (groups, longest-prefix, allow-wins) |
 | `/api/contact` | `src/pages/api/contact.ts` | ✅ Built | **Server-side endpoint** — `export const prerender = false;` |
 | `/api/subscribe` | `src/pages/api/subscribe.ts` | ✅ Built | Blog sidebar email only → Brevo list 3, server-side key — `export const prerender = false;` |
 | `/api/resource-gate` | `src/pages/api/resource-gate.ts` | ✅ Built | `/resources` per-file email gate → Brevo list 3; `LEAD_SOURCE` includes `resource:{slug}` and optional title (no custom Brevo fields required) — `export const prerender = false;` |
+| `/api/robots-txt` | `src/pages/api/robots-txt.ts` | ✅ Built | Server-side robots.txt fetch for the AI Bot Access Checker (replaces the dead browser CORS proxies). GET or POST with `?url=`, SSRF-guarded (blocks localhost/private/link-local/metadata hosts, only ever fetches `/robots.txt` on the host), 10s timeout, 404/410 treated as empty. `export const prerender = false;` |
 | `/og/[slug].svg` | `src/pages/og/[slug].svg.ts` | ✅ Built | Per-blog dynamic OG image generator |
 
 ### Auto-generated

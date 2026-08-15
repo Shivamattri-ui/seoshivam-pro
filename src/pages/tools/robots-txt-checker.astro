@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "Is this tool safe to run on any domain?",
-    a: "Yes. The checker fetches only the public /robots.txt file using a CORS proxy. No login required, no scraping behind authentication, and no data stored beyond your current session. It reads exactly what any AI crawler would already see when visiting your domain.",
+    a: "Yes. The checker fetches only the public /robots.txt file through our own server, never a third-party proxy. No login required, no scraping behind authentication, and no data stored beyond your current session. It reads exactly what any AI crawler would already see when visiting your domain.",
   },
   {
     q: "Why are AI bots blocked so often by accident?",
@@ -215,8 +215,8 @@ const pageSchema = {
           </div>
           <div class="rtc-hs-sep hide-mob"></div>
           <div class="rtc-hs hide-mob">
-            <span class="rtc-hs-n">3</span>
-            <span class="rtc-hs-l">Proxy fallbacks<br>for reliability</span>
+            <span class="rtc-hs-n">0</span>
+            <span class="rtc-hs-l">Third-party<br>proxies used</span>
           </div>
         </div>
       </div>
@@ -233,7 +233,7 @@ const pageSchema = {
           <div class="rtc-input-area">
             <div class="rtc-input-head">
               <div class="rtc-input-label">Enter your domain</div>
-              <span class="rtc-live-badge"><span class="rtc-live-dot"></span>Live · Multi-proxy fallback</span>
+              <span class="rtc-live-badge"><span class="rtc-live-dot"></span>Live · Server-side fetch</span>
             </div>
             <div class="rtc-url-row">
               <input
@@ -249,7 +249,7 @@ const pageSchema = {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
             </div>
-            <p class="rtc-hint">We fetch your public robots.txt using a CORS proxy. No data is stored. No login required.</p>
+            <p class="rtc-hint">We fetch your public robots.txt from our own server. No data is stored. No login required.</p>
           </div>
 
           <!-- Error state -->
@@ -910,14 +910,21 @@ function checkBotAccess(text: string, botUa: string): boolean {
 }
 
 async function fetchRobotsTxt(robotsUrl: string): Promise<string> {
-  const attempts = [
-    async () => { const r = await fetch(robotsUrl, { redirect: 'follow' }); if (!r.ok && r.status !== 404) throw new Error('direct ' + r.status); return r.status === 404 ? '' : await r.text(); },
-    async () => { const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(robotsUrl)}`); if (!r.ok && r.status !== 404) throw new Error('corsproxy ' + r.status); return r.status === 404 ? '' : await r.text(); },
-    async () => { const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(robotsUrl)}`); if (!r.ok) throw new Error('allorigins ' + r.status); return await r.text(); },
-  ];
-  let lastErr: any = null;
-  for (const a of attempts) { try { return await a(); } catch (e) { lastErr = e; } }
-  throw lastErr || new Error('All proxies failed');
+  // Primary: our own same-origin serverless endpoint. No CORS, no third-party
+  // proxy that can rot (corsproxy.io now 403s, allorigins.win goes down).
+  let res: Response;
+  try {
+    res = await fetch(`/api/robots-txt?url=${encodeURIComponent(robotsUrl)}`);
+  } catch {
+    // Endpoint itself unreachable (rare). Best-effort public proxy fallback.
+    const r2 = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(robotsUrl)}`);
+    if (r2.status === 404) return '';
+    if (!r2.ok) throw new Error('Failed to fetch');
+    return await r2.text();
+  }
+  const data = (await res.json().catch(() => null)) as { ok?: boolean; content?: string; error?: string } | null;
+  if (data && data.ok) return data.content || '';
+  throw new Error((data && data.error) || `server ${res.status}`);
 }
 
 document.getElementById('rtcCheckBtn')?.addEventListener('click', async () => {
