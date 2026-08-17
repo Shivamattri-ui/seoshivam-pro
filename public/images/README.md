@@ -8,14 +8,12 @@ don't see the same face on every section.
 
 | Path | Where it shows up |
 |---|---|
-| `/images/shivam-portrait-square.jpg` | About page dossier portrait (hero zone) |
-| `/images/shivam-portrait-tall.jpg` | ContactCta photo card (left of every contact form) |
-| `/images/shivam-headshot.jpg` | Blog detail author card + bylines |
-| `/images/shivam-working.jpg` | Footer brand column (optional editorial shot) |
+| `/images/shivam-attri-aeo-consultant-portrait.jpg` | About dossier + ContactCta + consultant portrait (800×1000) |
+| `/images/shivam-attri-seo-podcast.jpg` | Blog author card, bylines, FAQ avatars (600×600) |
 
-The legacy `/shivam-attri.jpg` at the project root still works as a
-fallback. Components use the new paths first and fall back to the
-legacy file via the `onerror` handler.
+The root `/shivam-attri-aeo-seo-specialist.jpg` (520×640) is the homepage
+hero photo and the shared `onerror` fallback for the avatars above.
+Filenames carry the name + role for image-search relevance.
 
 ## Image guidelines
 

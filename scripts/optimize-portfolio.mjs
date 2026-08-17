@@ -11,19 +11,19 @@ const outDir = path.join(root, 'public', 'work');
 const sources = [
   {
     file: 'c__Users_Shivam_Attri_AppData_Roaming_Cursor_User_workspaceStorage_bb447228b61a94df3636f03fe8340cbc_images_113shots_so-14ae7b5f-2a49-49e9-aaf6-9d4103b536f1.png',
-    out: 'jmj-creations.webp',
+    out: 'corporate-gifting-ecommerce-website-us.webp',
   },
   {
     file: 'c__Users_Shivam_Attri_AppData_Roaming_Cursor_User_workspaceStorage_bb447228b61a94df3636f03fe8340cbc_images_whitestone-eea3ce20-fa2b-47c1-99ba-eb3d111c3a37.png',
-    out: 'hotel-white-stone.webp',
+    out: 'hospitality-hotel-website-india.webp',
   },
   {
     file: 'c__Users_Shivam_Attri_AppData_Roaming_Cursor_User_workspaceStorage_bb447228b61a94df3636f03fe8340cbc_images_462_1x_shots_so-aa33dadf-8e60-4e70-8698-c62418c81873.png',
-    out: 'connectio.webp',
+    out: 'it-recruitment-website-design.webp',
   },
   {
     file: 'c__Users_Shivam_Attri_AppData_Roaming_Cursor_User_workspaceStorage_bb447228b61a94df3636f03fe8340cbc_images_image-a8eaade4-9181-4791-905d-526b9982a797.png',
-    out: 'av-production.webp',
+    out: 'audio-visual-company-website-us.webp',
   },
 ];
 

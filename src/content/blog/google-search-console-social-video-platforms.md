@@ -31,7 +31,7 @@ On July 7, Search Console <a href="https://developers.google.com/search/blog/202
 Read that last line again. The tool built for site owners now works for people who never built a site, and it's the clearest sign yet that search visibility has turned into the multi-platform problem behind [generative engine optimization](/services/generative-engine-optimization).
 
 <figure>
-  <img src="/images/gsc-platform-properties.jpg" width="1600" height="900" alt="Google Search Console screen titled Track and improve your performance on Google Search, with an Add a website button above a new section to add a platform account or channel for Instagram, TikTok, and X." loading="lazy" decoding="async" />
+  <img src="/images/google-search-console-social-platform-properties.jpg" width="1600" height="900" alt="Google Search Console screen titled Track and improve your performance on Google Search, with an Add a website button above a new section to add a platform account or channel for Instagram, TikTok, and X." loading="lazy" decoding="async" />
   <figcaption>Search Console's new platform properties: add a social or video account alongside your website. Source: Google Search Central.</figcaption>
 </figure>
 

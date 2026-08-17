@@ -72,7 +72,7 @@ Here is the live Person schema this site (seoshivam.pro) ships in production. St
   "jobTitle": "AEO Specialist, SEO Strategist, AI-Visible Web Designer",
   "description": "Shivam Attri helps B2B SaaS founders and growing brands get cited by ChatGPT, Perplexity, and Google AI Overviews through AEO strategy, SEO architecture, and AI-visible web design.",
   "url": "https://seoshivam.pro",
-  "image": "https://seoshivam.pro/shivam-attri.jpg",
+  "image": "https://seoshivam.pro/shivam-attri-aeo-seo-specialist.jpg",
   "sameAs": [
     "https://www.linkedin.com/in/seoshivampro/",
     "https://www.instagram.com/seoshivam.pro/",

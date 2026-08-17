@@ -5,12 +5,14 @@ Default items live in `src/components/PortfolioGallery.astro`.
 
 ## Current WebP assets (~1024px wide, quality 82)
 
-| File | Slug |
+| File | Industry · Region |
 |---|---|
-| `jmj-creations.webp` | Corporate gifting · US |
-| `hotel-white-stone.webp` | Hospitality · IN |
-| `connectio.webp` | Recruitment + IT consulting · US |
-| `av-production.webp` | Audio visual · US |
+| `corporate-gifting-ecommerce-website-us.webp` | Corporate gifting · US |
+| `hospitality-hotel-website-india.webp` | Hospitality · IN |
+| `it-recruitment-website-design.webp` | Recruitment + IT consulting · US |
+| `audio-visual-company-website-us.webp` | Audio visual · US |
+
+Filenames are anonymised by industry (never real brand names): all client work is under NDA.
 
 Regenerate from source PNGs: `node scripts/optimize-portfolio.mjs`
 

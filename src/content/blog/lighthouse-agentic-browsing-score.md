@@ -29,7 +29,7 @@ Open Chrome's Lighthouse, run an audit, and next to Performance, Accessibility, 
 My site scores 3 out of 3. Screenshot below, because a claim about [AI-visible web design](/insights/what-is-ai-visible-web-design) is worth nothing without the receipt.
 
 <figure>
-  <img src="/images/seoshivampro-pagespeed.jpg" width="1920" height="1280" alt="PageSpeed Insights desktop report for seoshivam.pro showing Performance 99, Accessibility 100, Best Practices 100, SEO 100, and Agentic Browsing 3 out of 3, with Cumulative Layout Shift 0.001." loading="lazy" decoding="async" />
+  <img src="/images/seoshivam-pro-pagespeed-insights-perfect-score.jpg" width="1920" height="1280" alt="PageSpeed Insights desktop report for seoshivam.pro showing Performance 99, Accessibility 100, Best Practices 100, SEO 100, and Agentic Browsing 3 out of 3, with Cumulative Layout Shift 0.001." loading="lazy" decoding="async" />
   <figcaption>seoshivam.pro on PageSpeed Insights: 3/3 Agentic Browsing, CLS 0.001. Built clean, not retrofitted.</figcaption>
 </figure>
 
