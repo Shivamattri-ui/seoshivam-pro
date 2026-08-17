@@ -50,6 +50,15 @@ export default defineConfig({
   }),
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
+    // Old image URLs -> renamed SEO/AEO files. 301 permanent so any image-search
+    // equity or inbound reference transfers to the new filename (no dead image URLs).
+    // Portfolio /work/*.webp are intentionally NOT redirected: nothing links to them,
+    // and a redirect would re-expose the real client names removed under NDA.
+    '/shivam-attri.jpg': { status: 301, destination: '/shivam-attri-aeo-seo-specialist.jpg' },
+    '/images/shivam-headshot.jpg': { status: 301, destination: '/images/shivam-attri-seo-podcast.jpg' },
+    '/images/shivam-portrait-square.jpg': { status: 301, destination: '/images/shivam-attri-aeo-consultant-portrait.jpg' },
+    '/images/gsc-platform-properties.jpg': { status: 301, destination: '/images/google-search-console-social-platform-properties.jpg' },
+    '/images/seoshivampro-pagespeed.jpg': { status: 301, destination: '/images/seoshivam-pro-pagespeed-insights-perfect-score.jpg' },
   },
   integrations: [sitemap({
     serialize(item) {
