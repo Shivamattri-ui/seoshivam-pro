@@ -59,6 +59,28 @@ export default defineConfig({
     '/images/shivam-portrait-square.jpg': { status: 301, destination: '/images/shivam-attri-aeo-consultant-portrait.jpg' },
     '/images/gsc-platform-properties.jpg': { status: 301, destination: '/images/google-search-console-social-platform-properties.jpg' },
     '/images/seoshivampro-pagespeed.jpg': { status: 301, destination: '/images/seoshivam-pro-pagespeed-insights-perfect-score.jpg' },
+
+    // ---------------------------------------------------------------------
+    // LEGACY URL MIGRATION (old WordPress site -> this Astro rebuild).
+    // These 11 old URLs are the exact set Shivam confirmed from the Wayback
+    // archive (Aug 2026); each 301s to the closest live page so residual link
+    // equity transfers instead of dying on a 404. Keys are slash-less: the old
+    // indexed URLs carry a trailing slash, which trailingSlash:'never'
+    // 308-strips first, then these 301s finish the hop. Every destination was
+    // verified to return 200 before wiring. Do NOT add any URL here that has
+    // not been confirmed against the archive or by Shivam (a URL 404'ing today
+    // is not proof it was ever a real page).
+    '/no-1-seo-expert-in-india': { status: 301, destination: '/services/seo' },
+    '/best-web-development-services': { status: 301, destination: '/services/web-design' },
+    '/best-digital-marketing-consultant-in-india': { status: 301, destination: '/about' },
+    '/best-digital-marketing-and-web-development-services': { status: 301, destination: '/services' },
+    '/best-social-media-marketing-services': { status: 301, destination: '/services' },
+    '/contact-best-seo-expert': { status: 301, destination: '/contact' },
+    '/blogs': { status: 301, destination: '/insights' },
+    '/seo-consultant-how-to-become-an-seo-expert-in-2025': { status: 301, destination: '/insights' },
+    '/seo-timeline-how-long-does-seo-take-in-2025': { status: 301, destination: '/insights' },
+    '/local-seo-checklist-2024': { status: 301, destination: '/insights' },
+    '/seo-for-website-expert-seo-strategies-to-rank-your-website-in-2025': { status: 301, destination: '/insights' },
   },
   integrations: [sitemap({
     serialize(item) {
