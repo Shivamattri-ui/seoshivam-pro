@@ -275,6 +275,10 @@ const finalSchema = schema || defaultSchema;
   <!-- JSON-LD Schema -->
   <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 
+  <!-- Umami analytics (privacy-friendly, cookieless) — site-wide via this Layout
+       head. is:inline keeps Astro from bundling it so it loads from Umami's CDN
+       exactly as authored (deferred, non-blocking). -->
+  <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="0d384274-794f-4322-9332-62f7b75262d7"></script>
 
 </head>
 
