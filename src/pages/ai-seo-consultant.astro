@@ -347,30 +347,6 @@ const schema = {
       </div>
     </section>
 
-    <!-- About + portrait -->
-    <section class="hire-about-sec">
-      <div class="container">
-        <div class="hire-about-grid">
-          <div class="hire-about-img-wrap rv">
-            <img src="/images/shivam-attri-aeo-consultant-portrait.jpg" width="600" height="600" alt="Shivam Attri, AI SEO and AEO consultant based in Gurugram, India, in a Himalayan pine forest" class="hire-about-img" />
-            <div class="hire-about-badge"><span class="hire-about-badge-dot"></span>Available for new work</div>
-          </div>
-          <div class="hire-about-body rv d1">
-            <div class="hair left">ABOUT / THE PERSON YOU HIRE</div>
-            <h2 class="hire-about-h">The person you want<br><em class="grad-anim">when visibility matters.</em></h2>
-            <p>I started in web development in 2018, moved into SEO because of how it compounds, then into content, paid search, and automation. When AI search arrived, I did not resist it. I leaned in completely: AEO, structured data, entity optimization, answer-first systems. I was three moves ahead before most agencies knew the rules had changed.</p>
-            <p>Seven years later, that work spans logistics, health tech, hospitality, ecommerce, and SaaS, for brands in India, the US, the UK, the EU, and Australia. From near-zero organic presence to being cited by ChatGPT and Copilot. From two organic leads a month to forty-plus. From spending everything on ads to an organic channel that compounds without touching the budget.</p>
-            <p>I do not hand you a report. I hand you a system: one that makes AI engines understand your brand, cite your content, and send you buyers who already trust you before they reach your site. That is a different outcome from anything traditional SEO delivers, and it is the only thing I build.</p>
-            <div class="hire-about-sign">
-              <span class="hire-about-sign-name">Shivam Attri</span>
-              <span class="hire-about-sign-role">AEO Specialist · SEO Strategist · AI-Visible Web Designer</span>
-              <a href="/about" class="ilink hire-about-link">Read the full story →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Engagement tiers -->
     <section class="hire-eng-sec">
       <div class="container">
@@ -712,21 +688,6 @@ const schema = {
   .hire-ind-t{font-family:var(--fu);font-size:16px;font-weight:700;color:var(--w);letter-spacing:-.01em}
   .hire-ind-r-note{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac)}
 
-  /* ABOUT */
-  .hire-about-sec{padding:88px 0}
-  .hire-about-grid{display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:start}
-  .hire-about-img-wrap{position:relative}
-  .hire-about-img{width:100%;height:auto;border-radius:20px;display:block;object-fit:cover;border:1px solid var(--bd)}
-  .hire-about-badge{position:absolute;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:8px;background:rgba(8,8,8,.78);backdrop-filter:blur(8px);border:1px solid var(--bd);border-radius:100px;padding:8px 14px;font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--w)}
-  .hire-about-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.18)}
-  .hire-about-h{font-family:var(--fd);font-size:clamp(30px,4vw,52px);font-weight:400;line-height:1;letter-spacing:-.022em;color:var(--w);margin:14px 0 24px}
-  .hire-about-h em{font-style:italic}
-  .hire-about-body p{font-family:var(--fu);font-size:15.5px;color:var(--wd);line-height:1.8;margin:0 0 18px;max-width:640px}
-  .hire-about-sign{display:flex;flex-direction:column;gap:4px;margin-top:28px;padding-top:24px;border-top:1px solid var(--bd)}
-  .hire-about-sign-name{font-family:var(--fd);font-size:24px;font-style:italic;color:var(--w)}
-  .hire-about-sign-role{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--wm)}
-  .hire-about-link{margin-top:10px;font-family:var(--fu);font-size:14px}
-
   /* ENGAGEMENT TIERS */
   .hire-eng-sec{padding:88px 0;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
   .hire-eng-hdr{margin-bottom:48px}
@@ -749,8 +710,7 @@ const schema = {
 
   @media(max-width:1100px){.hire-results-grid{grid-template-columns:1fr}.hire-ind-r{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:960px){
-    .hire-hero-grid,.hire-ind-grid,.hire-about-grid{grid-template-columns:1fr;gap:40px}
-    .hire-about-img-wrap{max-width:420px}
+    .hire-hero-grid,.hire-ind-grid{grid-template-columns:1fr;gap:40px}
     .hire-tiers{grid-template-columns:1fr}
     .hire-vs-row{grid-template-columns:150px 1fr 1fr}
   }
