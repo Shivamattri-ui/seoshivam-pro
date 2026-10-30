@@ -1,6 +1,6 @@
 ---
 /**
- * Footer — engineer + editorial magazine.
+ * Footer · engineer + editorial magazine.
  *
  * Components:
  *   - Animated "seoshivam.pro" wordmark (matches blog cover treatment:
@@ -110,7 +110,7 @@ const askAi = [
         </ul>
       </nav>
 
-      <!-- CONNECT — real brand icons -->
+      <!-- CONNECT · real brand icons -->
       <div class="ft-col">
         <div class="ft-col-t">Connect</div>
 
@@ -441,7 +441,7 @@ html.light .ft-ghost{color:rgba(20,16,12,.16)}
 }
 /* Light mode: invert single-color dark SVGs (Claude is OK; ChatGPT
    has its own green; Gemini multicolor; Perplexity navy renders
-   on dark bg only — light-mode tweak below). */
+   on dark bg only · light-mode tweak below). */
 html.light .ft-ai-btn--perplexity .ft-ai-ico{filter:none}
 
 /* ─── Bottom strip ─── */
@@ -522,7 +522,7 @@ html.light .ft-soc:hover{color:#fff}
   const btn = document.querySelector<HTMLButtonElement>('.ft-totop');
   if(!btn) return;
   btn.addEventListener('click', () => {
-    // @ts-ignore — Lenis instance is on window if present
+    // @ts-ignore · Lenis instance is on window if present
     const lenis = (window as any).__lenis;
     if(lenis && typeof lenis.scrollTo === 'function'){
       lenis.scrollTo(0, { duration: 1.4 });

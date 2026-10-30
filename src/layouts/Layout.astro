@@ -45,39 +45,25 @@ const defaultSchema = {
       "@type": "Person",
       "@id": "https://seoshivam.pro/#shivam",
       "name": authorName,
-      "jobTitle": "AEO Specialist, SEO Strategist, AI-Visible Web Designer",
-      "description": "Shivam Attri helps B2B SaaS founders and growing brands get cited by ChatGPT, Perplexity, and Google AI Overviews through AEO strategy, SEO architecture, and AI-visible web design.",
       "url": authorProfileUrl,
       "image": {
         "@type": "ImageObject",
-        "url": "https://seoshivam.pro/shivam-attri-aeo-seo-specialist.jpg",
-        "caption": "Shivam Attri, AEO specialist and SEO strategist",
-        "width": 520,
-        "height": 640
+        "url": "https://seoshivam.pro/images/shivam-attri-aeo-consultant-portrait.jpg",
+        "caption": "Shivam Attri, AI SEO consultant and AEO specialist",
+        "width": 800,
+        "height": 1000
       },
+      "jobTitle": "AI SEO Consultant, AEO and GEO Specialist",
+      "description": "AI SEO consultant and AEO specialist helping brands get cited by ChatGPT, Perplexity, Claude, Gemini, and Google AI Overviews across the US, UK, EU, UAE, and Australia.",
+      "address": { "@type": "PostalAddress", "addressLocality": "Gurugram", "addressCountry": "IN" },
+      "knowsAbout": ["Answer Engine Optimization", "Generative Engine Optimization", "AI Search Visibility", "SEO", "Schema Markup", "Entity SEO", "Topical Authority"],
       "sameAs": [
         "https://www.linkedin.com/in/seoshivampro/",
         "https://www.instagram.com/seoshivam.pro/",
         "https://www.threads.com/@seoshivam.pro",
         "https://substack.com/@seoshivampro",
-        "https://www.reddit.com/r/aiseovisibility/"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "IN"
-      },
-      "knowsAbout": [
-        "Answer Engine Optimization",
-        "AI Search Visibility",
-        "Search Engine Optimization",
-        "Google AI Overviews",
-        "ChatGPT Citation Strategy",
-        "Technical SEO",
-        "Programmatic SEO",
-        "Webflow",
-        "Framer",
-        "WordPress",
-        "JSON-LD Schema Markup"
+        "https://www.reddit.com/r/aiseovisibility/",
+        "https://twitter.com/seoshivampro"
       ]
     },
     {
@@ -106,7 +92,7 @@ const finalSchema = schema || defaultSchema;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--
-    THEME BOOT — single source of truth, FOUC-proof, animation-safe
+    THEME BOOT · single source of truth, FOUC-proof, animation-safe
     --------------------------------------------------------------
     1. Inline <style> defines dark + light tokens AND paints html/body
        background AND text colour using those tokens. Because this CSS
@@ -114,7 +100,7 @@ const finalSchema = schema || defaultSchema;
        themed (no white flash, no light/dark flash).
     2. Inline <script> runs synchronously BEFORE <body> parses. It only
        toggles html.light + theme-color meta. It never touches inline
-       styles on <html> or <body> — CSS variables in this same block
+       styles on <html> or <body> · CSS variables in this same block
        (and global.css later) handle all colours. This means JS and CSS
        can never go out of sync.
     3. .rv reveal animations are NEVER touched here. They keep working
@@ -160,14 +146,14 @@ const finalSchema = schema || defaultSchema;
       function applyTheme() {
         var light = readTheme() === 'light';
         html.classList.toggle('light', light);
-        // Set inline style directly — highest specificity, paints before CSS cascade.
+        // Set inline style directly · highest specificity, paints before CSS cascade.
         html.style.backgroundColor = light ? '#F7F4EE' : '#080808';
         html.style.colorScheme = light ? 'light' : 'dark';
         var tc = document.querySelector('meta[name="theme-color"]');
         if (tc) tc.setAttribute('content', light ? '#F7F4EE' : '#080808');
       }
 
-      // Synchronous paint — runs before <body> parses, before first paint.
+      // Synchronous paint · runs before <body> parses, before first paint.
       applyTheme();
       // Mark JS available so .rv is hidden + revealed (CSS is gated on .js).
       html.classList.add('js');
@@ -182,12 +168,12 @@ const finalSchema = schema || defaultSchema;
          EARLY .rv REVEAL OBSERVER
          Attaches as soon as the DOM is parsed so hero / above-fold
          content does not sit at opacity:0 waiting for Nav.astro to
-         load. Nav.astro has its own observer too — duplicates are
+         load. Nav.astro has its own observer too · duplicates are
          harmless because we mark elements .in and unobserve them.
          --------------------------------------------------------------- */
       function attachRvObserver() {
         if (!('IntersectionObserver' in window)) {
-          // Old browsers — just reveal everything.
+          // Old browsers · just reveal everything.
           var all = document.querySelectorAll('.rv:not(.in)');
           for (var j = 0; j < all.length; j++) all[j].classList.add('in');
           return;
@@ -224,7 +210,7 @@ const finalSchema = schema || defaultSchema;
   <link rel="canonical" href={canonical}>
   <meta name="robots" content="index, follow, max-image-preview:large">
 
-  <!-- AI Bot access — critical for AEO -->
+  <!-- AI Bot access · critical for AEO -->
   <meta name="googlebot" content="index, follow">
   <meta name="bingbot" content="index, follow">
 
@@ -275,7 +261,7 @@ const finalSchema = schema || defaultSchema;
   <!-- JSON-LD Schema -->
   <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 
-  <!-- Umami analytics (privacy-friendly, cookieless) — site-wide via this Layout
+  <!-- Umami analytics (privacy-friendly, cookieless) · site-wide via this Layout
        head. is:inline keeps Astro from bundling it so it loads from Umami's CDN
        exactly as authored (deferred, non-blocking). -->
   <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="0d384274-794f-4322-9332-62f7b75262d7"></script>
@@ -288,7 +274,7 @@ const finalSchema = schema || defaultSchema;
   <!-- Page content -->
   <slot />
 
-  <!-- Google Analytics 4 — loaded after page is fully interactive so it
+  <!-- Google Analytics 4 · loaded after page is fully interactive so it
        never blocks FCP, LCP, or TBT. requestIdleCallback fires once the
        browser has spare cycles; setTimeout(,4000) is the Safari fallback. -->
   <script is:inline>

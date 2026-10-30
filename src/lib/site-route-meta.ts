@@ -22,14 +22,15 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
 
   // ─── AI SEO Consultant (hire page) ───────────────────────────────────────────
   '/ai-seo-consultant': {
-    title: 'AI SEO Consultant for AEO, GEO & AI Search | Shivam Attri',
+    // Locked in ai-seo-consultant-content.md; the page reads these (single source for page + link previews).
+    title: 'AI SEO Consultant & Expert for AEO, GEO, AI Search | Shivam Attri',
     description:
-      'Shivam Attri is an AI SEO, AEO and GEO consultant getting brands cited by ChatGPT, Perplexity, Gemini and Google AI Overviews across the US, UK, EU and Australia.',
+      'Shivam Attri is an AI SEO consultant and AEO, GEO expert getting brands cited by ChatGPT, Perplexity, Gemini and Google AI Overviews in the US, UK, EU, UAE and Australia.',
   },
 
   // ─── About ───────────────────────────────────────────────────────────────────
   '/about': {
-    title: 'Shivam Attri — International AEO Expert and AI SEO Specialist | seoshivampro',
+    title: 'Shivam Attri · International AEO Expert and AI SEO Specialist | seoshivampro',
     description:
       'International AEO specialist based in India. 7+ years, 30+ brands, US · UK · EU · AU · IN. 16x click growth in 30 days. 60+ AI citations tracked. Entity schema, answer-first content, 6-engine citation growth.',
   },

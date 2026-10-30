@@ -43,7 +43,7 @@ const drops = [
     </ul>
     <div class="nr">
       <div class="avail hide-mob"><span class="adot"></span>Available</div>
-      <!-- Dark/Light toggle — brand matched -->
+      <!-- Dark/Light toggle · brand matched -->
       <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light mode" aria-pressed="false">
         <svg class="icon-dark" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-light" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -150,7 +150,7 @@ html.light .mob-menu{background:rgba(248,246,242,.97)}
 .mm-links{width:100%;display:flex;flex-direction:column;gap:2px}
 .mm-a{display:block;font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--wd);padding:10px 0;border-bottom:1px solid var(--s3);transition:color .2s,padding-left .2s}
 .mm-a:hover{color:var(--w);padding-left:8px}
-/* Mobile sub-menu — services sub-pages */
+/* Mobile sub-menu · services sub-pages */
 .mm-has-sub{position:relative}
 .mm-has-sub>.mm-a{border-bottom:none;padding-bottom:6px}
 .mm-sub{list-style:none;margin:0 0 2px 16px;padding:0;border-left:1px solid var(--bd);display:flex;flex-direction:column;gap:0}
@@ -289,7 +289,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
     const overlay = document.createElement('div');
     overlay.style.cssText =
       'position:fixed;inset:0;z-index:99998;pointer-events:none;' +
-      'will-change:opacity;opacity:1;' +
+      'will-change:opacity,transform;opacity:1;transform:scale(1);transform-origin:50% 50%;' +
       'background-color:' + (isCurrentlyLight ? '#F7F4EE' : '#080808');
     document.body.appendChild(overlay);
 
@@ -301,7 +301,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
 
     // Switch theme under the opaque overlay.
     document.documentElement.classList.toggle('light', goLight);
-    // Also update inline style — ensures next pageshow lands on correct color.
+    // Also update inline style · ensures next pageshow lands on correct color.
     document.documentElement.style.backgroundColor = goLight ? '#F7F4EE' : '#080808';
     document.documentElement.style.colorScheme    = goLight ? 'light'   : 'dark';
     try {
@@ -312,17 +312,18 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
     if (meta) meta.setAttribute('content', goLight ? '#F7F4EE' : '#080808');
     syncThemeUi();
 
-    // Fade out overlay — reveals new theme. 400ms feels instant but not jarring.
+    // Fade out overlay · reveals new theme with a slow, cinematic cross-dissolve.
     requestAnimationFrame(() => {
-      overlay.style.transition = 'opacity 0.40s cubic-bezier(0.4,0,0.2,1)';
+      overlay.style.transition = 'opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1)';
       overlay.style.opacity    = '0';
+      overlay.style.transform  = 'scale(1.06)';
       const cleanup = () => {
         overlay.remove();
         themeBtn.classList.remove('theme-switching');
       };
       overlay.addEventListener('transitionend', cleanup, { once: true });
       // Safety fallback in case transitionend misfires.
-      setTimeout(cleanup, 500);
+      setTimeout(cleanup, 950);
     });
   });
 }
@@ -346,7 +347,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
 //      as the heading scrolls into the upper-third of the viewport
 //   5. [data-tilt] elements get a subtle 3D tilt on mouse-move
 //   6. .ic-cover → very subtle parallax shift (8px max) on scroll
-//   7. Section-scoped progress bar (data-section-prog) — fills as the
+//   7. Section-scoped progress bar (data-section-prog) · fills as the
 //      section passes through the viewport
 // ──────────────────────────────────────────────
 (function(){
@@ -369,10 +370,10 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   // background-clip:text gradient on every site-wide heading
   // (gradient is computed per-span, so it appeared as plain white).
   // Removed entirely. Heading entrance is handled by the parent
-  // .rv reveal — gradient text stays intact.
+  // .rv reveal · gradient text stays intact.
 
   // Reduced-motion users: stop here. The CSS rule above flattens
-  // .rv transitions for them — content still appears, just without
+  // .rv transitions for them · content still appears, just without
   // the slide choreography.
   if(reduced) return;
 
@@ -412,7 +413,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
     mut.disconnect();
   }, 3200);
 
-  // ── 2. Stagger reveals — children of [data-reveal-stagger] fade up sequentially ──
+  // ── 2. Stagger reveals · children of [data-reveal-stagger] fade up sequentially ──
   document.querySelectorAll<HTMLElement>('[data-reveal-stagger]').forEach(parent => {
     const kids = Array.from(parent.children) as HTMLElement[];
     kids.forEach((k, i) => {
@@ -514,7 +515,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
   //
   // 2. Magnetic hover on .btn-p  → primary CTAs subtly pull toward
   //    the cursor on hover. Transform applied to the BUTTON element
-  //    itself — never an ancestor of fixed-position content.
+  //    itself · never an ancestor of fixed-position content.
   //
   // 3. Scroll-linked image scale → <img> elements with [data-scale-in]
   //    fade + scale 1.05→1.00 as they enter the viewport. Uses
@@ -529,11 +530,11 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
     // ── 1. Lenis everywhere smooth wheel + touch sync (skip only when reduced motion). autoRaf avoids a second global RAF loop.
     if(!reduceMotion){
       try {
-        // @ts-ignore — Lenis is bundled by Vite from npm
+        // @ts-ignore · Lenis is bundled by Vite from npm
         const Lenis = (await import('lenis')).default;
         const easeOut = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
 
-        // ── GSAP + ScrollTrigger — DESKTOP ONLY (lazy). Mobile uses native scroll
+        // ── GSAP + ScrollTrigger · DESKTOP ONLY (lazy). Mobile uses native scroll
         //    (smoothWheel:false) and has no GSAP animations, so loading ~45KB gzip
         //    there is pure dead weight. If it fails to load, Lenis falls back to its
         //    own RAF loop (autoRaf) so scroll can NEVER break. ──
@@ -550,7 +551,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
         const useGsap = !!(gsap && ScrollTrigger);
 
         const lenis = new Lenis({
-          // GSAP's ticker drives Lenis when available (one shared clock — the
+          // GSAP's ticker drives Lenis when available (one shared clock · the
           // canonical integration). Fall back to Lenis' own loop only if GSAP is absent.
           autoRaf: !useGsap,
           // lerp 0.11 = crisp but smooth (midpoint of 0.2 "cheap" and 0.085 "laggy").
@@ -636,7 +637,7 @@ if (themeBtn && !themeBtn.dataset.spmThemeBound) {
 
     // ── 3. Scroll-linked image fade + scale on viewport entry ──
     if(!reduceMotion && 'IntersectionObserver' in window){
-      // Style hook — we set the initial state inline so even if JS is
+      // Style hook · we set the initial state inline so even if JS is
       // late, images don't pop. Once observed and intersecting, we
       // remove the inline style for a smooth transition.
       const candidates = document.querySelectorAll<HTMLImageElement>(
