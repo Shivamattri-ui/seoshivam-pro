@@ -121,6 +121,14 @@ export const SITE_ROUTE_META: Record<string, RouteMeta> = {
       'Websites cited by ChatGPT, Perplexity, and Google AI Overviews from launch day. JSON-LD schema, semantic HTML, AI bot access. Webflow, Framer, Astro, WordPress.',
   },
 
+  // ─── Website Redesign Service ────────────────────────────────────────────────
+  '/services/website-redesign': {
+    // Title 57 chars. Description 160 chars, keyword first, ends on the CTA.
+    title: 'Website Redesign Services: Keep Rankings, Get Cited by AI',
+    description:
+      'Website redesign services that keep your Google rankings and get your new site cited by ChatGPT, Perplexity and Google AI. Live in two weeks. Book a free audit.',
+  },
+
   // ─── GEO Service ─────────────────────────────────────────────────────────────
   '/services/generative-engine-optimization': {
     title: 'Generative Engine Optimization Services (GEO) | Shivam Attri',

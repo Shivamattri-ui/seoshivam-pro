@@ -10,6 +10,8 @@ don't see the same face on every section.
 |---|---|
 | `/images/shivam-attri-aeo-consultant-portrait.jpg` | About dossier + ContactCta + consultant portrait (800×1000) |
 | `/images/shivam-attri-seo-podcast.jpg` | Blog author card, bylines, FAQ avatars (600×600) |
+| `/images/shivam-attri-ai-seo-consultant-{480,720,1120}w.webp` | ContactBrief portrait card, served as one `srcset` (1120×1396 source, 25–76KB) |
+| `/images/shivam-attri-website-redesign-sprint-{blue,terra}.webp` + `-motion` | `/services/website-redesign` sprint cards: CSS backgrounds (decorative, so no alt), blue in dark mode, terracotta in light |
 
 The root `/shivam-attri-aeo-seo-specialist.jpg` (520×640) is the homepage
 hero photo and the shared `onerror` fallback for the avatars above.

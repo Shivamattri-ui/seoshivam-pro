@@ -49,7 +49,7 @@ Smooth scroll: lenis ^1.x            ← initialised globally in Nav.astro
 Animation:     gsap 3.15.x, motion 12.x (installed but used sparingly)
 Markdown:      built-in MDX-less .md + Shiki (theme: github-dark-default)
 Hosting:       Vercel (free tier, auto-deploys from GitHub main branch)
-Email:         Brevo (formerly Sendinblue) — list ID 3
+Email:         Brevo (formerly Sendinblue) — contact leads list 2 · newsletter list 4 · resource downloads list 3 (set server-side in each /api endpoint)
 Domain:        seoshivam.pro
 ```
 
@@ -160,7 +160,7 @@ CSS vars: `--fd` (display), `--fu` (ui), `--fm` (mono). Always use these — nev
 | `/tools/ai-visibility-score` | `src/pages/tools/ai-visibility-score.astro` | ✅ Built | 10-question quiz with `<style is:global>` (critical — JS-rendered options need global scope), animated progress bar, eyebrow + serif question, gradient-sweep options |
 | `/tools/robots-txt-checker` | `src/pages/tools/robots-txt-checker.astro` | ✅ Built | Fetches robots.txt via the same-origin `/api/robots-txt` serverless endpoint (the old browser CORS proxies corsproxy.io/allorigins rotted: 403/522 in Aug 2026, breaking the tool for every site). Proper RFC-compliant parser (groups, longest-prefix, allow-wins) |
 | `/api/contact` | `src/pages/api/contact.ts` | ✅ Built | **Server-side endpoint** — `export const prerender = false;` |
-| `/api/subscribe` | `src/pages/api/subscribe.ts` | ✅ Built | Blog sidebar email only → Brevo list 3, server-side key — `export const prerender = false;` |
+| `/api/subscribe` | `src/pages/api/subscribe.ts` | ✅ Built | Blog sidebar email only → Brevo list 4 (newsletter, `DEFAULT_LIST` in subscribe.ts), server-side key — `export const prerender = false;` |
 | `/api/resource-gate` | `src/pages/api/resource-gate.ts` | ✅ Built | `/resources` per-file email gate → Brevo list 3; `LEAD_SOURCE` includes `resource:{slug}` and optional title (no custom Brevo fields required) — `export const prerender = false;` |
 | `/api/robots-txt` | `src/pages/api/robots-txt.ts` | ✅ Built | Server-side robots.txt fetch for the AI Bot Access Checker (replaces the dead browser CORS proxies). GET or POST with `?url=`, SSRF-guarded (blocks localhost/private/link-local/metadata hosts, only ever fetches `/robots.txt` on the host), 10s timeout, 404/410 treated as empty. `export const prerender = false;` |
 | `/og/[slug].svg` | `src/pages/og/[slug].svg.ts` | ✅ Built | Per-blog dynamic OG image generator |
@@ -180,6 +180,7 @@ CSS vars: `--fd` (display), `--fu` (ui), `--fm` (mono). Always use these — nev
 | `Nav.astro` | `src/components/` | Sticky pill nav, dropdown, theme toggle, scramble logo · **also hosts the global motion layer** (cursor, Lenis, magnetic, image fade) | none — auto-detects current path |
 | `Footer.astro` | `src/components/` | Editorial masthead footer with animated wordmark, real social SVGs, AI buttons (4 brand SVGs), keyword marquee, back-to-top via Lenis | none |
 | `ContactCta.astro` | `src/components/` | **Primary site-wide lead form.** 8 fields (Name/Phone+dial/Email/Service/Budget/Deadline/Source/Message). Photo-left layout. POSTs to `/api/contact`. Honeypot + time-trap + rate-limit. | `eyebrow`, `heading`, `headingEm`, `deck`, `id`, `listId` (default 3), `source` |
+| `ContactBrief.astro` | `src/components/` | **Redesigned lead form** (used on `/services/website-redesign`). Same 8 fields, options, `/api/contact` payload, honeypot, time-trap, 60s rate limit (shares `ccta-last-submit`), gtag events and `/thank-you` redirect as ContactCta. Real-colour portrait card (`/images/shivam-attri-ai-seo-consultant-{480,720,1120}w.webp` via srcset), "Available globally" label, keyword role line (`role` prop), underline fields with ticks, submit ring. Global styles prefixed `brf-` (`ct-` is taken on /contact, `cb-` by code blocks). | `heading`, `headingEm`, `deck`, `id`, `source`, `role` |
 | `GscDashboard.astro` | `src/components/` | Search Console-style widget. URL bar + 4 metric tiles + animated SVG line chart + top queries + insights pills | `domain`, `industry`, `range`, `clicks {from, to}`, `impressions`, `ctr`, `position`, `queries[]`, `insights[]`, `id` |
 | `AudienceWidget.astro` | `src/components/` | GA4-style audience widget. 4 metric tiles + 90-day chart + realtime card with country breakdown | `property`, `industry`, `range`, `activeUsers`, `sessions`, `views`, `newUsers`, `realtime`, `countries[]`, `id` |
 | `PortfolioGallery.astro` | `src/components/` | Browser-mockup design showcase. URL bar shows industry+region (no real domains). Supports image OR CSS-rendered placeholder. | `items[]` (slug, label, industry, region, platform, year, deliverable, image?, accent?), `eyebrow`, `heading`, `headingEm`, `deck`, `id` |
@@ -200,14 +201,14 @@ Flow:
 4. Sanitizes all inputs (HTML-strip, whitespace-collapse, length-clamp, HTML-escape)
 5. Validates name/email/phone with regex
 6. Fires both Brevo calls in parallel via `Promise.allSettled`:
-   - `POST /v3/contacts` — adds lead to **list ID 3** with attributes (FIRSTNAME, LASTNAME, FULLNAME, SMS, WHATSAPP, SERVICE, BUDGET, DEADLINE, SOURCE_FIELD, MESSAGE, LEAD_SOURCE, SUBMITTED_AT). Triggers Brevo welcome automation.
+   - `POST /v3/contacts` — adds lead to **list ID 2** (leads; hard-coded as `CONTACT_LIST_ID` in contact.ts, the client's `list_id` is ignored) with attributes (FIRSTNAME, LASTNAME, FULLNAME, SMS, WHATSAPP, SERVICE, BUDGET, DEADLINE, SOURCE_FIELD, MESSAGE, LEAD_SOURCE, SUBMITTED_AT). Triggers Brevo welcome automation.
    - `POST /v3/smtp/email` — sends styled HTML notification to `shivamattri27@gmail.com` with `replyTo` set to the lead's email (so you hit Reply and respond directly).
 7. Returns success JSON. 400-duplicate from contacts call is treated as success (automation still fires).
 
 ### Endpoint: `POST /api/subscribe`
 File: `src/pages/api/subscribe.ts` (Vercel serverless, `prerender = false`)
 
-Blog sidebar only: JSON body `{ email, website?, mountedAt }`. Same honeypot + 2.5s time-trap as contact. Calls **only** `POST /v3/contacts` (list 3, `LEAD_SOURCE: blog-sidebar`). No exposed keys in the browser; the old inline Brevo fetch on blog posts was removed.
+Blog sidebar only: JSON body `{ email, website?, mountedAt }`. Same honeypot + 2.5s time-trap as contact. Calls **only** `POST /v3/contacts` (list 4, `LEAD_SOURCE: blog-sidebar`). No exposed keys in the browser; the old inline Brevo fetch on blog posts was removed.
 
 ### Endpoint: `POST /api/resource-gate`
 File: `src/pages/api/resource-gate.ts` (Vercel serverless, `prerender = false`)

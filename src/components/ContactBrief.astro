@@ -1,0 +1,439 @@
+---
+/**
+ * ContactBrief · lead form on a stage: a portrait card on the left, the brief on the right.
+ *
+ * Same contract as ContactCta (fields, options, payload, anti-abuse, redirect), new design:
+ *   Fields: Full Name *, Phone / WhatsApp (dial + number), Email Address *, Service *, Budget *,
+ *           Deadline *, How did you hear about me? *, Message. Honeypot `website`.
+ *   Submit: POST /api/contact (JSON) → Brevo list `listId` + notification email, server-validated.
+ *   Client: 60s sessionStorage rate limit, mountedAt for the server time-trap, gtag lead events,
+ *           first name handed to /thank-you via sessionStorage('ccta-lead-name'), then redirect.
+ *
+ * Design: a real-colour portrait card (responsive srcset, resolves out of a blur, eases closer on hover),
+ * underline fields, a tick per finished field, and a ring on the submit button that fills as the six
+ * required answers come in. Styles are global (prefix brf-) because the
+ * script toggles state classes; every rule is held under .brf.
+ */
+interface Props {
+  heading?: string;
+  headingEm?: string;
+  deck?: string;
+  /** Section id, also the anchor other links point at */
+  id?: string;
+  /** Sent as list_id for the record only: /api/contact always saves leads to Brevo List 2 (CONTACT_LIST_ID) */
+  listId?: number;
+  /** Lead source attribute (`services-website-redesign`, etc.) */
+  source?: string;
+  /** Role line under the name on the portrait card */
+  role?: string;
+}
+
+const {
+  heading = 'Let’s build something',
+  headingEm = 'AI engines actually cite.',
+  deck = 'Have a project in mind? Drop the details and I will reply within 4 hours with a 1-page audit of where your brand stands and exactly what to fix.',
+  id = 'contact-brief',
+  listId = 2,
+  source = 'contact-brief',
+  role = 'AI SEO Consultant · AEO Specialist',
+} = Astro.props;
+
+// Option values match ContactCta exactly: Brevo attributes and the notification email read them as is.
+const services = [
+  'AEO Strategy: AI Search Visibility',
+  'SEO Architecture & Content',
+  'Web Design (Webflow / Framer / Astro)',
+  'Full Suite: SEO + AEO + Web Design',
+  'Google Ads & Paid Search',
+  'Audit & Strategy Session Only',
+];
+const budgets = ['$2K–$4K', '$5K–$10K', '$10K–$20K', '$20K–$50K', 'Not sure yet'];
+const deadlines = ['Less than 4 weeks', '1–2 months', '3–6 months', '6+ months', 'Flexible'];
+const sources = ['LinkedIn', 'X (Twitter)', 'ChatGPT / Perplexity / AI search', 'Google search', 'Substack', 'Reddit', 'Referral', 'Other'];
+// Windows has no flag emoji (it prints the letters), so the label shows the country code only. Values unchanged.
+const dialCodes = [
+  { code: '+1', country: 'US' }, { code: '+91', country: 'IN' }, { code: '+44', country: 'UK' }, { code: '+1', country: 'CA' },
+  { code: '+61', country: 'AU' }, { code: '+49', country: 'DE' }, { code: '+33', country: 'FR' }, { code: '+31', country: 'NL' },
+  { code: '+34', country: 'ES' }, { code: '+39', country: 'IT' }, { code: '+65', country: 'SG' }, { code: '+971', country: 'AE' },
+];
+const hId = `${id}-h`;
+const OK = '<svg class="brf-ok" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5"/></svg>';
+---
+
+<section class="brf" id={id} aria-labelledby={hId}>
+  <div class="brf-stage">
+    <figure class="brf-cover">
+      <img class="brf-ph"
+        src="/images/shivam-attri-ai-seo-consultant-720w.webp"
+        srcset="/images/shivam-attri-ai-seo-consultant-480w.webp 480w, /images/shivam-attri-ai-seo-consultant-720w.webp 720w, /images/shivam-attri-ai-seo-consultant-1120w.webp 1120w"
+        sizes="(max-width: 600px) calc(100vw - 50px), (max-width: 1100px) calc(100vw - 100px), 560px"
+        width="1120" height="1396"
+        alt="Shivam Attri, AI SEO consultant and web designer, in a poppy field with three more versions of himself, one holding a laptop"
+        loading="lazy" decoding="async">
+      <figcaption class="brf-cap">
+        <span class="brf-avail"><span class="brf-dot" aria-hidden="true"></span>Available globally</span>
+        <div>
+          <b class="brf-name">Shivam Attri</b>
+          <span class="brf-role">{role}</span>
+          <p class="brf-promise">Every brief gets a personal reply from <b>hello@seoshivam.pro</b> within 4 hours.</p>
+          <a class="brf-wa" href="https://wa.me/919991853859?text=Hi%20Shivam%2C%20I%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener" data-cursor="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7 0-1.4-.7-2.3-1.3-3.3-2.9-.3-.5.3-.4.8-1.4.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.2 3.3 5.2 4.7 1.9.8 2.6.9 3.5.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.2-.3-.2-.6-.4z"/><path d="M20.5 3.5c-2.2-2.2-5.2-3.5-8.5-3.5C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.7 6L0 24l6.2-1.6c1.7.9 3.7 1.4 5.7 1.4 6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.4-8.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.6 15.7 2 13.9 2 12 2 6.5 6.5 2 12 2c2.7 0 5.2 1 7.1 2.9 1.9 1.9 2.9 4.4 2.9 7.1 0 5.5-4.5 9.8-10 9.8z"/></svg>
+            WhatsApp Shivam
+          </a>
+        </div>
+      </figcaption>
+    </figure>
+
+    <div class="brf-main">
+      <span class="brf-glow" aria-hidden="true"></span>
+      <h2 class="sec-h" id={hId}>{heading}<br><em class="grad-anim">{headingEm}</em></h2>
+      <p class="brf-deck">{deck}</p>
+
+      <form class="brf-form" id={`${id}-form`} novalidate data-list-id={listId} data-source={source} data-mounted-at="0">
+        <!-- Honeypot: hidden from people, bots fill anything named "website" -->
+        <div class="brf-honey" aria-hidden="true"><label>Do not fill this field<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+        <label class="brf-f">
+          <span class="brf-l">Full Name <i aria-hidden="true">*</i></span>
+          <input class="brf-i" type="text" name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Tony Stark" pattern="[A-Za-zÀ-ſ .'\-]{2,80}">
+          <Fragment set:html={OK} />
+        </label>
+        <div class="brf-f">
+          <label class="brf-l" for={`${id}-phone`}>Phone / WhatsApp</label>
+          <div class="brf-tel">
+            <select class="brf-i" name="dial" aria-label="Country code">
+              {dialCodes.map((d) => <option value={d.code}>{d.country} {d.code}</option>)}
+            </select>
+            <input class="brf-i" id={`${id}-phone`} type="tel" name="phone" maxlength="20" autocomplete="tel" placeholder="555 000 0000" pattern="[0-9 +\-]{5,20}">
+          </div>
+          <Fragment set:html={OK} />
+        </div>
+        <label class="brf-f brf-wide">
+          <span class="brf-l">Email Address <i aria-hidden="true">*</i></span>
+          <input class="brf-i" type="email" name="email" required maxlength="100" autocomplete="email" placeholder="tony@starkindustries.com">
+          <Fragment set:html={OK} />
+        </label>
+        <label class="brf-f">
+          <span class="brf-l">Service you need <i aria-hidden="true">*</i></span>
+          <select class="brf-i" name="service" required><option value="" disabled selected>Select</option>{services.map((o) => <option value={o}>{o}</option>)}</select>
+          <Fragment set:html={OK} />
+        </label>
+        <label class="brf-f">
+          <span class="brf-l">Project budget <i aria-hidden="true">*</i></span>
+          <select class="brf-i" name="budget" required><option value="" disabled selected>Select</option>{budgets.map((o) => <option value={o}>{o}</option>)}</select>
+          <Fragment set:html={OK} />
+        </label>
+        <label class="brf-f">
+          <span class="brf-l">Project deadline <i aria-hidden="true">*</i></span>
+          <select class="brf-i" name="deadline" required><option value="" disabled selected>Select</option>{deadlines.map((o) => <option value={o}>{o}</option>)}</select>
+          <Fragment set:html={OK} />
+        </label>
+        <label class="brf-f">
+          <span class="brf-l">How did you hear about me? <i aria-hidden="true">*</i></span>
+          <select class="brf-i" name="source_field" required><option value="" disabled selected>Select</option>{sources.map((o) => <option value={o}>{o}</option>)}</select>
+          <Fragment set:html={OK} />
+        </label>
+        <label class="brf-f brf-wide">
+          <span class="brf-l">Message</span>
+          <textarea class="brf-i" name="message" rows="2" maxlength="1500" placeholder="A few sentences about the brand, the goal, and where you are stuck. The more specific, the faster I can reply with something useful."></textarea>
+        </label>
+
+        <div class="brf-act">
+          <button class="brf-btn" type="submit">
+            <span class="brf-btn-t">Submit and book a call</span>
+            <span class="brf-ring" aria-hidden="true">
+              <svg class="brf-r" viewBox="0 0 36 36" fill="none"><circle class="brf-r-track" cx="18" cy="18" r="16" stroke-width="2"/><circle class="brf-r-fill" cx="18" cy="18" r="16" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg class="brf-ic brf-ic-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              <svg class="brf-ic brf-ic-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </span>
+          </button>
+          <div class="brf-meta"><span>Secure form · Reply within 4 hours</span><span>hello@seoshivam.pro</span></div>
+          <p class="brf-status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .brf{--brf-line:rgba(255,255,255,.1);--brf-line-hi:rgba(255,255,255,.24);--brf-acl:#7BAEFF;
+    position:relative;z-index:1;padding:clamp(24px,4vw,64px) clamp(16px,3vw,40px) clamp(80px,9vw,140px)}
+  html.light .brf{--brf-line:rgba(26,23,20,.12);--brf-line-hi:rgba(26,23,20,.3);--brf-acl:#EBA98C;color-scheme:light}
+  .brf-stage{--brf-panel:#0E0E11;--brf-panel-hi:#141419;--brf-edge:rgba(255,255,255,.07);--brf-sh:0,0,0;--brf-glow-c:79,142,247;
+    position:relative;isolation:isolate;max-width:1360px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
+    border-radius:32px;overflow:hidden;
+    background:radial-gradient(70% 55% at 100% 0%,rgba(var(--brf-glow-c),.12),transparent 70%),linear-gradient(180deg,var(--brf-panel-hi),var(--brf-panel));
+    box-shadow:inset 0 0 0 1px var(--brf-edge),inset 0 1px 0 rgba(255,255,255,.05),0 2px 8px rgba(var(--brf-sh),.35),0 60px 120px -60px rgba(var(--brf-sh),.9)}
+  html.light .brf-stage{--brf-panel:#FFFFFF;--brf-panel-hi:#FFFFFF;--brf-edge:rgba(26,23,20,.08);--brf-sh:70,48,24;--brf-glow-c:218,119,86;
+    box-shadow:inset 0 0 0 1px var(--brf-edge),0 1px 2px rgba(var(--brf-sh),.06),0 40px 90px -50px rgba(var(--brf-sh),.38)}
+
+  /* portrait card: the real photo, resolving out of a blur on arrival and easing closer on hover */
+  .brf-cover{position:relative;margin:10px;border-radius:24px;overflow:hidden;min-height:560px;background:#16181D;isolation:isolate}
+  .brf-ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 32%;display:block;
+    transition:scale 1.6s cubic-bezier(.16,1,.3,1),filter 1.2s ease}
+  html.js .brf-ph{scale:1.08;filter:blur(14px)}
+  html.js .brf.is-in .brf-ph{scale:1;filter:blur(0)}
+  .brf-cover::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.06) 22%,rgba(0,0,0,.06) 48%,rgba(0,0,0,.34) 66%,rgba(0,0,0,.84) 100%)}
+  .brf-cap{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,2.2vw,30px);color:#fff}
+  .brf-avail{display:flex;align-items:center;gap:9px;font:500 11px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.86)}
+  .brf-dot{width:7px;height:7px;border-radius:50%;background:#22C55E;animation:brfPulse 2.4s ease-out infinite}
+  @keyframes brfPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  .brf-name{display:block;font-family:var(--fd);font-weight:400;font-size:clamp(34px,3vw,46px);line-height:1;letter-spacing:-.02em;color:#fff}
+  .brf-role{display:block;margin-top:10px;font:500 10.5px var(--fm);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+  .brf-promise{margin:18px 0 0;max-width:24rem;font-family:var(--fu);font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+  .brf-promise b{font-weight:600;color:#fff}
+  .brf-wa{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font:600 14px var(--fu);color:#fff;text-decoration:none;
+    padding-bottom:3px;background:linear-gradient(90deg,#fff,#fff) no-repeat 0 100%/0% 1px;transition:background-size .6s cubic-bezier(.16,1,.3,1)}
+  .brf-wa svg{width:15px;height:15px;color:#4ADE80}
+  .brf-wa:hover{color:#fff;background-size:100% 1px}
+  @media (hover:hover) and (pointer:fine){
+    html.js .brf.is-in .brf-cover:hover .brf-ph{scale:1.045}
+  }
+
+  /* the brief */
+  .brf-main{position:relative;padding:clamp(28px,3.2vw,50px) clamp(24px,4.2vw,72px) clamp(24px,2.6vw,38px) clamp(24px,3.4vw,56px)}
+  /* a soft light that glides to whichever field is being filled in */
+  .brf-glow{position:absolute;left:-10%;right:-10%;top:0;height:300px;z-index:-1;pointer-events:none;opacity:0;
+    background:radial-gradient(50% 50% at 50% 50%,rgba(var(--brf-glow-c),.13),transparent 70%);
+    translate:0 var(--fy,0px);transition:translate .9s cubic-bezier(.16,1,.3,1),opacity .6s ease}
+  .brf-main:focus-within .brf-glow{opacity:1}
+  .brf .sec-h{margin:0;font-size:clamp(34px,3.7vw,54px)}
+  .brf-deck{margin:16px 0 0;max-width:38rem;font-family:var(--fu);font-size:clamp(15px,1.1vw,16.5px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .brf-form{margin-top:clamp(24px,2.6vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,1.7vw,24px) clamp(20px,2.4vw,36px)}
+  .brf-wide{grid-column:1 / -1}
+  .brf-honey{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+
+  .brf-f{position:relative;display:flex;flex-direction:column;gap:6px;min-width:0;margin:0}
+  .brf-l{font:500 13px var(--fu);color:var(--wd);letter-spacing:.005em;transition:color .35s ease}
+  .brf-l i{font-style:normal;color:var(--ac);margin-left:2px}
+  .brf-i{all:unset;box-sizing:border-box;width:100%;min-width:0;font:500 17px/1.4 var(--fu);color:var(--w);letter-spacing:-.005em;
+    padding:6px 28px 10px 0;border-bottom:1px solid var(--brf-line);transition:border-color .35s ease}
+  .brf-i::placeholder{color:var(--wm);opacity:1;font-weight:400}
+  .brf-f:hover .brf-i{border-color:var(--brf-line-hi)}
+  select.brf-i{cursor:pointer;padding-right:30px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23A8A49C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 4px center/12px 8px;
+    transition:border-color .35s ease,background-size .3s ease}
+  select.brf-i:invalid{color:var(--wm);font-weight:400}
+  select.brf-i option{color:var(--w);background:var(--s1);font-weight:500}
+  textarea.brf-i{resize:none;field-sizing:content;min-height:calc(2 * 1.55em + 16px);max-height:calc(10 * 1.55em + 16px);line-height:1.55;overflow:auto}
+  /* focus: the underline draws in brand colour */
+  .brf-f::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5px;pointer-events:none;
+    background:linear-gradient(90deg,var(--ac),var(--brf-acl));transform:scaleX(0);transform-origin:left;transition:transform .65s cubic-bezier(.16,1,.3,1),background .3s}
+  .brf-f:focus-within::after{transform:scaleX(1)}
+  .brf-f:focus-within .brf-l{color:var(--w)}
+  .brf-f.is-bad::after{transform:scaleX(1);background:var(--red,#EF4444)}
+  .brf-f.is-bad .brf-l{color:var(--red,#EF4444)}
+  /* a finished field gets a quiet tick */
+  .brf-ok{position:absolute;right:0;bottom:12px;width:16px;height:16px;color:var(--ac);opacity:0;scale:.6;transition:opacity .35s ease,scale .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+  .brf-ok path{stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .5s ease .05s}
+  .brf-f.is-ok .brf-ok{opacity:1;scale:1}
+  .brf-f.is-ok .brf-ok path{stroke-dashoffset:0}
+  .brf-f:has(select[required]) .brf-ok{right:2px}
+  /* a chosen dropdown swaps its chevron for the tick; pointing at it brings the chevron back */
+  .brf-f.is-ok select.brf-i[required]{background-size:0 0}
+  @media (hover:hover) and (pointer:fine){
+    .brf-f.is-ok:hover select.brf-i[required]{background-size:12px 8px}
+    .brf-f.is-ok:has(select[required]):hover .brf-ok{opacity:0}
+  }
+  .brf-tel{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;border-bottom:1px solid var(--brf-line);transition:border-color .35s ease}
+  .brf-tel .brf-i{border-bottom:0}
+  .brf-f:hover .brf-tel{border-color:var(--brf-line-hi)}
+  .brf-tel select.brf-i{background-position:right 2px center;padding-right:20px}
+
+  /* submit: the ring fills as the six required answers come in */
+  .brf-act{grid-column:1 / -1;margin-top:clamp(4px,.6vw,8px)}
+  .brf-btn{all:unset;box-sizing:border-box;position:relative;overflow:hidden;isolation:isolate;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    min-height:64px;padding:10px 12px 10px 26px;border-radius:18px;color:#fff;font:600 16px var(--fu);letter-spacing:-.005em;
+    background:linear-gradient(120deg,var(--ac) 0%,var(--ac2) 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.08),0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(var(--brf-glow-c),.65);
+    transition:box-shadow .5s ease,translate .5s cubic-bezier(.16,1,.3,1)}
+  .brf-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%) no-repeat;background-size:250% 100%;background-position:130% 0;transition:background-position 1.1s cubic-bezier(.16,1,.3,1)}
+  .brf-btn:focus-visible{outline:2px solid var(--ac);outline-offset:4px}
+  .brf-btn:disabled{cursor:progress}
+  .brf-ring{position:relative;flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.12)}
+  .brf-r{position:absolute;inset:4px;width:36px;height:36px;rotate:-90deg}
+  .brf-r-track{stroke:rgba(255,255,255,.2)}
+  .brf-r-fill{stroke:#fff;stroke-dasharray:100.53;stroke-dashoffset:var(--off,100.53);transition:stroke-dashoffset .7s cubic-bezier(.16,1,.3,1)}
+  .brf-ic{position:absolute;width:15px;height:15px;transition:opacity .3s ease,translate .5s cubic-bezier(.16,1,.3,1),scale .4s ease}
+  .brf-ic-ok{opacity:0;scale:.5}
+  .brf-ic-ok path{stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .45s ease .1s}
+  .brf-btn.is-ready{box-shadow:inset 0 1px 0 rgba(255,255,255,.26),inset 0 0 0 1px rgba(255,255,255,.12),0 1px 2px rgba(0,0,0,.3),0 24px 50px -16px rgba(var(--brf-glow-c),.85)}
+  .brf-btn.is-busy .brf-r-fill{stroke-dashoffset:70;animation:brfSpin .9s linear infinite;transform-origin:50% 50%}
+  @keyframes brfSpin{to{rotate:360deg}}
+  .brf-btn.is-sent .brf-ic-go{opacity:0;scale:.5}
+  .brf-btn.is-sent .brf-ic-ok{opacity:1;scale:1}
+  .brf-btn.is-sent .brf-ic-ok path{stroke-dashoffset:0}
+  @media (hover:hover) and (pointer:fine){
+    .brf-btn:hover:not(:disabled){translate:0 -2px}
+    .brf-btn:hover:not(:disabled)::before{background-position:-30% 0}
+    .brf-btn:hover:not(:disabled) .brf-ic-go{translate:3px 0}
+  }
+  .brf-meta{display:flex;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-top:14px;font:500 10.5px var(--fm);letter-spacing:.08em;color:var(--wm)}
+  .brf-status{margin:10px 0 0;font:500 12px var(--fm);letter-spacing:.04em;color:var(--wm)}
+  .brf-status:empty{display:none}
+  .brf-status.ok{color:var(--green,#22C55E)}
+  .brf-status.err{color:var(--red,#EF4444)}
+
+  /* entrance */
+  html.js .brf-stage{opacity:0;translate:0 28px;transition:opacity 1s ease,translate 1.2s cubic-bezier(.16,1,.3,1)}
+  html.js .brf.is-in .brf-stage{opacity:1;translate:0 0}
+
+  @media (max-width:1100px){
+    .brf-stage{grid-template-columns:minmax(0,1fr);border-radius:26px}
+    .brf-cover{min-height:0;aspect-ratio:5/4;border-radius:20px}
+  }
+  @media (max-width:600px){
+    .brf-form{grid-template-columns:minmax(0,1fr)}
+    .brf-cover{aspect-ratio:1/1;margin:8px;border-radius:18px}
+    .brf-promise{display:none}
+    .brf-name{font-size:32px}
+    .brf-main{padding:26px 18px 24px}
+    .brf-meta{flex-direction:column;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .brf-stage,.brf-ph,.brf-glow,.brf-f::after,.brf-btn,.brf-btn::before{transition:none!important}
+    html.js .brf-stage{opacity:1;translate:none}
+    html.js .brf-ph{scale:1;filter:none}
+    .brf-dot{animation:none}
+  }
+</style>
+
+<script>
+  const ENDPOINT = '/api/contact';
+  const RATE_KEY = 'ccta-last-submit';          // shared with ContactCta: one submission per 60s across both forms
+  const RATE_WINDOW_MS = 60_000;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const REQUIRED = ['name', 'email', 'service', 'budget', 'deadline', 'source_field'] as const;
+  const MSG: Record<string, string> = {
+    name: 'Enter your full name.', email: 'Enter a valid email address.', service: 'Select a service.',
+    budget: 'Select a budget.', deadline: 'Select a deadline.', source_field: 'Select where you heard about me.',
+  };
+  const LABEL = 'Submit and book a call';
+  type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+  document.querySelectorAll<HTMLElement>('.brf').forEach((sec) => {
+    const form = sec.querySelector<HTMLFormElement>('.brf-form');
+    const main = sec.querySelector<HTMLElement>('.brf-main');
+    if (!form || !main) return;
+    const btn = form.querySelector<HTMLButtonElement>('.brf-btn')!;
+    const btnT = form.querySelector<HTMLElement>('.brf-btn-t')!;
+    const statusEl = form.querySelector<HTMLElement>('.brf-status')!;
+    const fill = form.querySelector<SVGCircleElement>('.brf-r-fill')!;
+    const el = (n: string) => form.elements.namedItem(n) as Field;
+    const field = (f: Field) => f.closest('.brf-f') as HTMLElement;
+
+    form.dataset.mountedAt = String(Date.now());
+
+    const valid = (f: Field) => {
+      const v = f.value.trim();
+      if (f.name === 'email') return EMAIL_RE.test(v.toLowerCase());
+      if (f.name === 'phone') return v === '' || f.checkValidity();
+      if (f instanceof HTMLSelectElement) return v !== '';
+      return v !== '' && f.checkValidity();
+    };
+    function refresh() {
+      let done = 0;
+      REQUIRED.forEach((n) => {
+        const f = el(n), ok = valid(f);
+        field(f).classList.toggle('is-ok', ok);
+        if (ok) { done++; field(f).classList.remove('is-bad'); }
+      });
+      const ph = el('phone');
+      field(ph).classList.toggle('is-ok', ph.value.trim() !== '' && valid(ph));
+      if (valid(ph)) field(ph).classList.remove('is-bad');
+      fill.style.setProperty('--off', String(100.53 * (1 - done / REQUIRED.length)));
+      btn.classList.toggle('is-ready', done === REQUIRED.length);
+    }
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+    // a field only turns red once something wrong was typed and the visitor moved on
+    form.addEventListener('focusout', (e) => {
+      const f = e.target as Field;
+      if (!(f instanceof Element) || !f.matches('.brf-i') || f.name === 'dial') return;
+      if (f.value.trim() !== '' && !valid(f)) field(f).classList.add('is-bad');
+    });
+    // the light follows the field being filled in
+    form.addEventListener('focusin', (e) => {
+      const f = (e.target as Element).closest?.('.brf-f'); if (!f) return;
+      const mr = main.getBoundingClientRect(), fr = f.getBoundingClientRect();
+      main.style.setProperty('--fy', `${fr.top - mr.top + fr.height / 2 - 150}px`);
+    });
+
+    const setStatus = (msg: string, kind: 'ok' | 'err' | '' = '') => { statusEl.textContent = msg; statusEl.className = 'brf-status' + (kind ? ' ' + kind : ''); };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setStatus('');
+      try {
+        const last = parseInt(sessionStorage.getItem(RATE_KEY) || '0', 10);
+        if (last && Date.now() - last < RATE_WINDOW_MS) {
+          setStatus(`Please wait ${Math.ceil((RATE_WINDOW_MS - (Date.now() - last)) / 1000)}s before submitting again.`, 'err');
+          return;
+        }
+      } catch {}
+
+      const bad = REQUIRED.find((n) => !valid(el(n))) ?? (!valid(el('phone')) ? 'phone' : null);
+      if (bad) {
+        const f = el(bad);
+        field(f).classList.add('is-bad');
+        setStatus(bad === 'phone' ? 'Phone has invalid characters.' : MSG[bad], 'err');
+        f.focus({ preventScroll: true });
+        const lenis = (window as any).__lenis;
+        if (lenis) lenis.scrollTo(f, { offset: -window.innerHeight / 2 + 40 }); else f.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return;
+      }
+
+      const fd = new FormData(form);
+      const name = String(fd.get('name') || '').trim();
+      const email = String(fd.get('email') || '').trim().toLowerCase();
+      btn.disabled = true; btn.classList.add('is-busy'); btnT.textContent = 'Sending...';
+
+      // same payload as ContactCta; the server sanitizes and validates it again
+      const payload = {
+        name,
+        email,
+        dial: String(fd.get('dial') || '+1'),
+        phone: String(fd.get('phone') || ''),
+        service: String(fd.get('service') || ''),
+        budget: String(fd.get('budget') || ''),
+        deadline: String(fd.get('deadline') || ''),
+        source_field: String(fd.get('source_field') || ''),
+        message: String(fd.get('message') || ''),
+        website: String(fd.get('website') || ''),      // honeypot
+        list_id: parseInt(form.dataset.listId || '3', 10),
+        lead_source: form.dataset.source || 'contact-brief',
+        mountedAt: parseInt(form.dataset.mountedAt || '0', 10),
+      };
+
+      try {
+        const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+        let data: { ok?: boolean; error?: string } = {};
+        try { data = await res.json(); } catch {}
+        if (!(res.ok && data.ok)) throw new Error(data.error || `Server returned ${res.status}`);
+
+        try { sessionStorage.setItem(RATE_KEY, String(Date.now())); } catch {}
+        btn.classList.remove('is-busy'); btn.classList.add('is-sent'); btnT.textContent = 'Sent';
+        fill.style.setProperty('--off', '0');
+        const gtag = (window as any).gtag;
+        if (typeof gtag === 'function') {
+          gtag('event', 'qualify_lead', { event_category: 'contact', event_label: 'contact_form' });
+          gtag('event', 'close_convert_lead', { event_category: 'contact', event_label: 'contact_form' });
+        }
+        // first name for the personalised thank-you heading
+        try { const first = name.split(' ')[0] || ''; if (first) sessionStorage.setItem('ccta-lead-name', first); } catch {}
+        // a moment for the tick to draw, then the thank-you page
+        setTimeout(() => { window.location.href = '/thank-you'; }, 650);
+      } catch (err) {
+        btn.disabled = false; btn.classList.remove('is-busy'); btnT.textContent = LABEL;
+        // a server message is shown as is; a dropped connection gets a plain sentence instead of the browser's error text
+        const msg = err instanceof TypeError ? 'Could not reach the server.' : ((err as Error)?.message || 'Could not submit.');
+        setStatus(/hello@/.test(msg) ? msg : `${msg} Email hello@seoshivam.pro directly.`, 'err');
+      }
+    });
+
+    refresh();
+    const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { sec.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.12 });
+    io.observe(sec);
+  });
+</script>

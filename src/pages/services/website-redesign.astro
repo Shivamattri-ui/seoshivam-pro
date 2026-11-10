@@ -1,0 +1,2141 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE_ROUTE_META } from '../../lib/site-route-meta';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ContactBrief from '../../components/ContactBrief.astro';
+
+const meta = SITE_ROUTE_META['/services/website-redesign'];
+const url = 'https://seoshivam.pro/services/website-redesign';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: 'Website Redesign Services',
+      serviceType: 'Website redesign',
+      description: meta.description,
+      provider: { '@type': 'Person', '@id': 'https://seoshivam.pro/#shivam' },
+      url,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://seoshivam.pro' },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://seoshivam.pro/services' },
+        { '@type': 'ListItem', position: 3, name: 'Website Redesign', item: url },
+      ],
+    },
+  ],
+};
+
+// Hero scene: each old page lifts off the pile, is rebuilt, and lands in the new sitemap.
+// to / mto = final x, y, z on desktop / phones. pile / mpile = x, y, rotation in the starting pile.
+// m = also shown on phones (three-card cascade). rot = stamp angle. sr / st = stamp offsets.
+const scenePages = [
+  { tier: 'home', m: true, rot: -11, to: [0, -206, 34], mto: [0, -152, 30], pile: [-6, 40, -7], mpile: [-4, 44, -6],
+    oldT: 'Welcome to Our Website', oldP: 'We are a leading provider of <u>quality services</u> since 1998.', oldU: '/index.php',
+    newT: 'Home', newP: 'Freight quotes in under a minute.', newU: '/' },
+  { tier: 'mid', m: true, rot: -15, st: 16, to: [-232, -14, 0], mto: [-44, 10, 0], pile: [26, 18, 6], mpile: [18, 26, 5],
+    oldT: 'Our Services', oldP: 'We offer a <u>wide range</u> of services for all your needs.', oldU: '/services.html',
+    newT: 'Services', newP: 'Ocean, air and road.', newU: '/services' },
+  { tier: 'mid', rot: -7, sr: 16, to: [0, -14, 0], pile: [-30, 6, -3],
+    oldT: 'Portfolio', oldP: 'Click on a project to <u>view more</u>.', oldU: '/portfolio/item-7',
+    newT: 'Logistics platform', newP: 'Case file, 2026.', newU: '/work/logistics-platform' },
+  { tier: 'mid', rot: -17, st: 24, to: [232, -14, 0], pile: [18, -12, 8],
+    oldT: 'Latest News', oldP: 'Posted on 03/14/2019 by <u>admin</u>', oldU: '/blog/?p=214',
+    newT: 'Redesign checklist', newP: '12 min read.', newU: '/blog/redesign-checklist' },
+  { tier: 'leaf', rot: -9, to: [-108, 152, -34], pile: [-8, -28, -10],
+    oldT: 'About Us', oldP: 'Founded in 1998, we are <u>dedicated</u> to excellence.', oldU: '/about-us.php',
+    newT: 'About', newP: 'The team and the method.', newU: '/about' },
+  { tier: 'leaf', m: true, rot: -13, sr: 14, to: [108, 152, -34], mto: [44, 166, -20], pile: [30, -42, 3], mpile: [-16, 8, -4],
+    oldT: 'Contact Us', oldP: 'Call us today or fill in the <u>form below</u>.', oldU: '/contact-us.php',
+    newT: 'Contact', newP: 'Book a call in two clicks.', newU: '/contact' },
+];
+
+const cardVars = (p: (typeof scenePages)[number]) => {
+  const [tx, ty, tz] = p.to;
+  const [mx, my, mz] = p.mto ?? p.to;
+  return `--tx:${tx}px;--ty:${ty}px;--tz:${tz}px;--mtx:${mx}px;--mty:${my}px;--mtz:${mz}px;--rot:${p.rot}deg;--sr:${p.sr ?? 10}px;--st:${p.st ?? 20}px`;
+};
+
+const SITE_MOVE = 'https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes';
+const G2_REPORT = 'https://learn.g2.com/g2-2026-ai-search-insight-report';
+
+const leaks = [
+  { t: 'The staging block goes live.', d: `The noindex tag or robots.txt rule that kept the dev site hidden ships with the launch. Google lists it first in its own <a class="ilink" href="${SITE_MOVE}" target="_blank" rel="noopener">site-move troubleshooting</a>.` },
+  { t: "Redirects point to pages that don't exist.", d: 'Google says it frequently sees sites redirect old URLs to wrong, non-existent URLs on the new site.' },
+  { t: 'Everything redirects to the homepage.', d: "It's the fast option. Google may treat it as a soft 404, a page that's gone." },
+  { t: 'Old URLs live on inside the new site.', d: 'Internal links, canonical tags and the sitemap still point at the old addresses, so every click becomes a redirect hop. Google wants self-referencing canonicals and short chains, ideally no more than 3 hops.' },
+  { t: 'Schema stays behind.', d: "Schema that came from an old plugin or theme doesn't follow you to the new one. The new pages go live without it." },
+  { t: 'AI crawlers get shut out.', d: 'A fresh robots.txt blocks GPTBot or ClaudeBot by accident. I keep finding this one in audits.' },
+];
+
+// Section 2. g = which glyph draws the item's story (markup in GLYPH, motion in the page script).
+const carried = [
+  { g: 'redirect', t: 'Every old URL mapped and 301-redirected.', d: 'Google recommends server-side permanent redirects, kept for at least a year.' },
+  { g: 'meta', t: 'Titles, meta descriptions, headings and schema moved across.', d: 'Page by page.' },
+  { g: 'sitemap', t: 'An automated sitemap.xml.', d: 'It rebuilds on every publish, with a real last-modified date on each URL.' },
+  { g: 'index', t: 'Indexing submitted on launch day.', d: 'The sitemap goes to Google Search Console and Bing Webmaster Tools, plus an IndexNow ping. Fastest so far: a page indexed and ranking in <strong>under 22 hours</strong>.' },
+];
+
+const rebuilt = [
+  { g: 'answer', t: 'Designed for AI engines.', d: 'One clear answer per section, and headings written the way buyers ask.' },
+  { g: 'nav', t: 'Better UX and easy navigation.', d: 'Every service page one click from the menu.' },
+  { g: 'semantic', t: 'Semantic HTML structure.', d: 'Header, main, article, section and nav where they belong, so machines read the page the way people do.' },
+  { g: 'fast', t: 'Static render, fast loading.', d: 'Pages ship as pre-rendered HTML.' },
+  { g: 'lead', t: 'Automated lead capture.', d: 'Every form sends the lead to HubSpot or your CRM and adds them to your email list and newsletter.' },
+  { g: 'analytics', t: 'Better analytics.', d: 'GA4 and Search Console connected, with every form tracked as a conversion.' },
+];
+
+// 48x48 glyphs. Their finished drawing is the static state, so they read even without JS.
+const GLYPH: Record<string, string> = {
+  redirect: '<rect class="m" x="4" y="8" width="23" height="8" rx="2.5"/><path class="strike" d="M7 12h17" pathLength="1"/><path class="arc" d="M11 17c0 10 4 16.5 11 16.5" pathLength="1"/><path class="head" d="M19 30l3.4 3.5-3.4 3.5" pathLength="1"/><rect class="nw" x="23" y="29.5" width="21" height="8" rx="2.5" pathLength="1"/><text class="t" x="25" y="23.5">301</text>',
+  meta: '<rect class="m" x="3.5" y="9" width="17" height="30" rx="3"/><rect class="m" x="27.5" y="9" width="17" height="30" rx="3"/><path class="l" d="M7.5 16.5h9"/><path class="l" d="M7.5 23h6.5"/><path class="l" d="M7.5 29.5h9"/>',
+  sitemap: '<path class="e" d="M24 13v6.5M24 19.5H12.5v6M24 19.5h11.5v6M24 19.5v6" pathLength="1"/><circle class="n0" cx="24" cy="9.5" r="3.4"/><circle class="n1" cx="12.5" cy="29" r="3.4"/><circle class="n2" cx="24" cy="29" r="3.4"/><circle class="n3" cx="35.5" cy="29" r="3.4"/><path class="e2" d="M35.5 32.5v4.5" pathLength="1"/><circle class="n4 fill" cx="35.5" cy="40.5" r="3.4"/>',
+  index: '<rect class="m" x="4" y="13" width="15" height="21" rx="2.5"/><path class="m" d="M7.5 19h8M7.5 23.5h6M7.5 28h8"/><path class="p p1" d="M19.5 20c8 0 9-8 14.5-8" pathLength="1"/><path class="p p2" d="M19.5 27c8 0 9 8 14.5 8" pathLength="1"/><circle class="eg" cx="39" cy="12" r="4.4"/><circle class="eg" cx="39" cy="35" r="4.4"/><path class="k k1" d="M37 12.2l1.4 1.4 2.6-2.8" pathLength="1"/><path class="k k2" d="M37 35.2l1.4 1.4 2.6-2.8" pathLength="1"/>',
+  answer: '<rect class="m q" x="5" y="6" width="27" height="10" rx="5"/><path class="a" d="M8 24.5h30" pathLength="1"/><path class="m a" d="M8 31h23" pathLength="1"/><path class="m a" d="M8 37.5h27" pathLength="1"/><path class="sp fill" d="M40.5 5l1.3 3.3 3.3 1.3-3.3 1.3-1.3 3.3-1.3-3.3-3.3-1.3 3.3-1.3z"/>',
+  nav: '<rect class="m" x="4" y="7" width="40" height="9" rx="3"/><path class="m" d="M9 11.5h6"/><path class="i2" d="M20.5 11.5h7"/><path class="m" d="M33 11.5h6"/><rect class="pg" x="8" y="21" width="32" height="20" rx="3" pathLength="1"/><path class="cur fill" d="M0 0l9 4.6-3.8 1-1.8 3.8z" transform="translate(24 12)"/>',
+  semantic: '<rect class="b" x="5" y="5" width="38" height="7" rx="2" pathLength="1"/><rect class="b" x="5" y="15.5" width="24" height="19" rx="2" pathLength="1"/><rect class="b" x="32" y="15.5" width="11" height="19" rx="2" pathLength="1"/><rect class="b" x="5" y="38" width="38" height="5" rx="2" pathLength="1"/><path class="m tl" d="M9.5 21.5h15M9.5 26h11M9.5 30.5h13"/>',
+  fast: '<rect class="m" x="5" y="7" width="26" height="34" rx="3"/><path class="pl" d="M10 15h16M10 21h11M10 27h16M10 33h8"/><path class="bolt" d="M41 6l-7 14h6.5l-5 15" pathLength="1"/>',
+  lead: '<rect class="m" x="3.5" y="9" width="19" height="6.5" rx="2"/><rect class="m" x="3.5" y="18.5" width="19" height="6.5" rx="2"/><rect x="3.5" y="28" width="11" height="6.5" rx="2"/><circle class="tok fill" cx="9" cy="31.2" r="2.2" opacity="0"/><rect class="m c1" x="30" y="25" width="14.5" height="10" rx="2.5"/><rect class="m c2" x="30" y="13" width="14.5" height="10" rx="2.5"/><rect class="cn" x="30" y="13" width="14.5" height="10" rx="2.5"/>',
+  analytics: '<path class="m" d="M6 7v34h36"/><path class="up" d="M9 35l8-8 6 3.5 8-10.5 9-9" pathLength="1"/><circle class="ring" cx="40" cy="11" r="3" opacity="0"/><circle class="dot fill" cx="40" cy="11" r="3"/>',
+};
+
+// Section 3. bs/bp crop one frame of the shoot per card: three motion clones, then the figure in focus on launch day.
+const sprint = [
+  { days: 'Days 1 to 2', bs: '340%', bp: '0% 51%', t: 'Crawl and map.', d: 'I crawl every URL on your current site and pull its Search Console history. Every page with clicks, impressions or links pointing at it gets a new home before design starts.' },
+  { days: 'Days 3 to 5', bs: '311%', bp: '18.4% 46%', t: 'Design.', d: 'You see the homepage, a service page, a blog post and the contact page by day 5. You approve, or we fix it the same week.' },
+  { days: 'Days 6 to 9', bs: '310%', bp: '100% 48.5%', t: 'Build.', d: 'Pages, schema, forms wired to your CRM, analytics and the sitemap.' },
+  { days: 'Day 10', bs: '280%', bp: '50.6% 21.9%', t: 'Test, then launch.', d: 'Every old URL is tested against its redirect, and robots.txt, canonicals and schema are checked on staging first. Then the site goes live, and the sitemap, IndexNow ping and Search Console requests go out the same day.' },
+];
+
+const b2b = [
+  { t: 'One page per service.', d: "Who it's for, how it works, how long it takes. Answered in the first lines, where a buyer and an AI can both find it." },
+  { t: 'Proof next to the claim.', d: 'Case files labelled by industry and region, with the numbers, on the pages where the decision happens.' },
+  { t: 'Forms that qualify.', d: 'Ask what your sales team asks on the first call, then send it straight to your CRM.' },
+  { t: 'Schema that names you.', d: 'Organization, Service and FAQ markup, so AI engines can tell who you are, what you sell and who you sell it to.' },
+];
+
+// Section 5. rgb = the platform's own brand colour (Astro gets its two-tone gradient).
+const platforms = [
+  { name: 'WordPress', icon: '/icons/wordpress-icon-alt.svg', rgb: '56,88,233',
+    d: 'Stay if your team publishes every week and lives in the editor. A WordPress website redesign rebuilds the theme and keeps your slugs. Anything that has to move gets a 301 through the Redirection plugin.' },
+  { name: 'Webflow', icon: '/icons/webflow-icon.svg', rgb: '20,110,245',
+    d: 'For marketing teams who want to change a page without waiting on a developer. The URL map and the 301 plan work the same way.' },
+  { name: 'Framer', icon: '/icons/framer.svg', rgb: '0,153,255',
+    d: 'Pick it when motion is part of the brand. Framer writes the sitemap and handles permanent redirects in its site settings. Schema goes in through its custom code, page by page.' },
+  { name: 'Astro', icon: '/icons/astro-icon.svg', rgb: '255,93,1', rgb2: '188,82,238',
+    d: 'The one I reach for when speed matters most. Pages ship as static HTML, and the sitemap rebuilds on every deploy. This site runs on it.' },
+];
+
+// Section 4. The buyer's question, asked in three AI engines. Vendors A to C stand in for real shipping companies.
+const CHAT_Q = 'Which companies export cars from the US to Dubai?';
+const GPT_PATH = 'M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z';
+const LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>';
+const SCHEMA_SNIPPET = '{ "@type": <span class="bb-s">"Organization"</span>,\n  <span class="bb-hl" style="--dl:.2s">"name": <span class="bb-s">"Vendor A"</span>,</span>\n  "makesOffer": {\n    "@type": <span class="bb-s">"Service"</span>,\n    <span class="bb-hl" style="--dl:.5s">"name": <span class="bb-s">"Car shipping to Dubai"</span></span>\n  } }';
+const industryRows = [
+  ['Logistics', '3PL', 'Import/Export', 'Ecommerce', 'SaaS', 'Software Development & Agencies', 'Manufacturing'],
+  ['Consultancies', 'Hospitality', 'Dental & Med Spa', 'Scaffolding', 'Trades and Home Services', 'HVAC', 'Real Estate and Property'],
+];
+
+const faqs = [
+  { q: 'How long does a website redesign take?', a: "Two weeks. Ten working days from the first crawl to launch. That assumes your copy and brand files are ready on day one. If they aren't, the sprint starts when they are." },
+  { q: 'Will a website redesign hurt my SEO?', a: 'It can. The damage comes from the move, not the design: broken redirects, a staging block left live, schema left behind. Every one of those gets checked on staging before launch. Expect a short wobble while Google processes the move. Google itself says rankings settle down over time.' },
+  { q: 'What should a website redesign checklist include?', a: 'Start with what you already have: a full crawl, your Search Console data and a URL map. Then the 301 plan. Metadata and schema carried across. Internal links pointed at the new URLs. robots.txt and noindex checks. A fresh sitemap, and indexing requests on launch day.' },
+  { q: 'What is the website redesign process?', a: 'Map, design, build, test, launch. In that order. The URL map comes first because it sets what the new design has to keep. Design comes before build so you approve the look before a single page is coded.' },
+  { q: 'Do I need a full redesign, or just fixes?', a: "Fix it if the site is fast, your team can edit it, and leads come in. Redesign it if pages take seconds to load, every change needs a developer, or buyers and AI engines can't tell what you sell from the homepage. A free audit tells you which, before you spend anything." },
+  { q: 'How do I write a website redesign RFP?', a: 'Give vendors what they need to quote: your goals, current platform, page count, the pages that bring traffic and leads, integrations like your CRM, and your deadline. Then ask each one how they handle redirects and SEO during the move. A vague answer to that question tells you enough.' },
+  { q: 'What happens to my existing content?', a: 'Pages that earn traffic or links keep their content, or merge into a stronger page with a 301. Pages nobody visits get merged or retired. Nothing disappears without a redirect or a reason.' },
+];
+// The FAQ section renders these answers and emits this FAQPage schema next to them.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<Layout title={meta.title} description={meta.description} canonical={url} schema={schema}>
+  <Nav />
+  <div class="scroll-prog" id="scrollProg"></div>
+
+  <main class="rd-page">
+
+    <!-- Hero: the old site's pages move into the new sitemap, each one stamped with its 301 -->
+    <section class="rd-hero" id="rdHero">
+      <div class="rd-pin">
+        <div class="rd-copy">
+          <nav class="rd-bc rv" aria-label="Breadcrumb">
+            <a href="/">Home</a><span aria-hidden="true">/</span><a href="/services">Services</a><span aria-hidden="true">/</span><span aria-current="page">Website redesign</span>
+          </nav>
+          <h1 class="rd-h1 rv d1">Website redesign services <em class="grad-anim">that protect your rankings.</em></h1>
+          <p class="rd-deck rv d2">Two weeks, old site to new. Every URL, redirect and piece of schema your old site earned moves across first. Then the design, speed and lead capture get rebuilt in a structure AI engines can read.</p>
+          <div class="rd-actions rv d3">
+            <a class="btn-p" href="#rd-cta" data-cursor="Book a free audit">Book a free audit</a>
+            <a class="rd-link" href="#sprint">See the 2-week sprint</a>
+          </div>
+        </div>
+
+        <div class="rd-scene" aria-hidden="true">
+          <div class="rd-fit">
+            <div class="rd-stage">
+              <div class="rd-bloom"></div>
+              {scenePages.map((p, i) => (
+                <div class={`rd-ground is-${p.tier}`} data-m={p.m ? '' : undefined} style={cardVars(p)}></div>
+              ))}
+              {scenePages.map((p, i) => (
+                <div
+                  class={`rd-card is-${p.tier}`}
+                  data-i={i}
+                  data-m={p.m ? '' : undefined}
+                  data-to={p.to.join(',')}
+                  data-mto={(p.mto ?? p.to).join(',')}
+                  data-pile={p.pile.join(',')}
+                  data-mpile={(p.mpile ?? p.pile).join(',')}
+                  data-rot={p.rot}
+                  style={cardVars(p)}
+                >
+                  <span class="rd-slab"></span><span class="rd-sh rd-sh-rest"></span><span class="rd-sh rd-sh-lift"></span>
+                  <div class="rd-face rd-old">
+                    <div class="o-bar"><b>LOGO</b><span>Home</span><span>Services</span><span>About</span><span>Contact</span></div>
+                    <div class="o-body"><div class="o-title">{p.oldT}</div><div class="o-p" set:html={p.oldP} /><span class="o-btn">Click Here</span></div>
+                    <span class="rd-url">{p.oldU}</span>
+                  </div>
+                  <div class="rd-face rd-new">
+                    <div class="n-bar"><i></i></div>
+                    <div class="n-title">{p.newT}</div><div class="n-p">{p.newP}</div>
+                    <span class="rd-url">{p.newU}</span>
+                  </div>
+                  <span class="rd-stamp"><b>301</b><small>from {p.oldU}</small></span>
+                </div>
+              ))}
+            </div>
+            <p class="rd-caption">Every old URL has a <strong>new home</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1 · Where redesigns lose traffic: each leak replays the move with the hero's materials and ends in a red ink stamp.
+         Desktop: the leak crossing mid-screen drives one sticky stage. Phones: every leak plays its own scene. -->
+    <section class="lk" id="leaks" aria-labelledby="lkH">
+      <div class="lk-wrap">
+        <header class="lk-hdr">
+          <h2 class="sec-h rv" id="lkH">Where redesigns<br><em class="grad-anim">lose traffic.</em></h2>
+          <p class="lk-lead rv d1">Rankings don't drop because the new site looks different. They drop because of what breaks in the move.</p>
+        </header>
+        <div class="lk-story">
+          <ol class="lk-list">
+            {leaks.map((l, i) => (
+              <li class={`lk-item${i === 0 ? ' is-on' : ''}`} data-i={i}>
+                <span class="lk-n">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="lk-t">{l.t}</h3>
+                  <p class="lk-d" set:html={l.d} />
+                  <div class="lk-inline" aria-hidden="true"></div>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div class="lk-stage-col" aria-hidden="true">
+            <div class="lk-stage">
+              <div class="lk-box">
+                <div class="lk-hud"><span>Leak <b class="lk-num">01</b> / 06</span><span class="lk-ticks">{leaks.map((_, i) => <i class={i === 0 ? 'is-on' : undefined}></i>)}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lk-foot">
+          <div class="lk-check" aria-hidden="true"><span class="stp ok"><b>DAY 10</b></span></div>
+          <p class="lk-callout">Day 10 of the sprint checks every one of these on staging before anything goes live.</p>
+          <p class="lk-note">Even a clean move wobbles. <a class="ilink" href={SITE_MOVE} target="_blank" rel="noopener">Google says</a> to expect temporary fluctuation in rankings, and that they settle down over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · What the redesign includes: a plain two-group list. Each glyph tile is a tiny page from the hero:
+         old paper page = carried over, new brand page = rebuilt. -->
+    <section class="inc" id="includes" aria-labelledby="incH">
+      <div class="inc-wrap">
+        <header class="inc-hdr">
+          <h2 class="sec-h rv" id="incH">What the redesign<br><em class="grad-anim">includes.</em></h2>
+          <p class="inc-lead rv d1">Your old site earned its rankings. Those move with you. The design, the speed and the way leads reach you get rebuilt.</p>
+        </header>
+
+        <div class="inc-grp inc-grp--old">
+          <div class="inc-lab">
+            <div class="inc-obj inc-obj--old" aria-hidden="true">
+              <div class="pp pp1"><div class="bar"></div><div class="tt"></div><div class="ln"></div><span class="u">/about-us.php</span></div>
+              <div class="pp pp2"><div class="bar"></div><div class="tt"></div><div class="ln"></div><span class="u">/blog/?p=214</span></div>
+              <div class="pp pp3"><div class="bar"></div><div class="tt"></div><div class="ln"></div><span class="u">/services.html</span></div>
+              <span class="stp"><b>301</b><small>moved</small></span>
+            </div>
+            <h3 class="inc-gt">Carried over from your old site</h3>
+          </div>
+          <ol class="inc-items">
+            {carried.map((c, i) => (
+              <li class={`inc-it rv d${(i % 2) + 1}`}>
+                <span class="inc-g inc-g--ink" aria-hidden="true"><svg viewBox="0 0 48 48" data-g={c.g} set:html={GLYPH[c.g]} /></span>
+                <div>
+                  <span class="inc-n">{String(i + 1).padStart(2, '0')}</span>
+                  <h4 class="inc-t">{c.t}</h4>
+                  <p class="inc-d" set:html={c.d} />
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="inc-grp inc-grp--new">
+          <div class="inc-lab">
+            <div class="inc-obj inc-obj--new" aria-hidden="true">
+              <span class="bloom"></span>
+              <div class="np"><i></i><span class="nt">Services</span><span class="nu">/services</span></div>
+            </div>
+            <h3 class="inc-gt">New design</h3>
+          </div>
+          <ol class="inc-items" start="5">
+            {rebuilt.map((r, i) => (
+              <li class={`inc-it rv d${(i % 2) + 1}`}>
+                <span class="inc-g inc-g--lit" aria-hidden="true"><svg viewBox="0 0 48 48" data-g={r.g} set:html={GLYPH[r.g]} /></span>
+                <div>
+                  <span class="inc-n">{String(i + 5).padStart(2, '0')}</span>
+                  <h4 class="inc-t">{r.t}</h4>
+                  <p class="inc-d">{r.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · Two weeks, old site to new. Desktop: the section pins and phases 3 and 4 rise into the row.
+         Each card is a frame of the same shoot in brand colour (blue / terracotta); the figure is in focus only on launch day. -->
+    <section class="sp" id="sprint" aria-labelledby="spH">
+      <div class="sp-pin">
+        <div class="sp-wrap">
+          <header class="sp-hdr">
+            <h2 class="sec-h rv" id="spH">Two weeks,<br><em class="grad-anim">old site to new.</em></h2>
+            <div class="sp-side rv d1">
+              <p class="sp-note">The order follows <a class="ilink" href={SITE_MOVE} target="_blank" rel="noopener">Google's own site-move guide</a>: test the new site, map URLs, redirect, then monitor.</p>
+              <span class="sp-day" aria-hidden="true">Day <b class="sp-day-n">01</b> / 10</span>
+            </div>
+          </header>
+          <ol class="sp-row">
+            {sprint.map((s, i) => (
+              <li class="sp-slot">
+                <article class="sp-card" style={`--bs:${s.bs};--bp:${s.bp}`}>
+                  <div class="sp-ph sp-ph-main" aria-hidden="true"></div><div class="sp-ph sp-ph-g sp-ph-gl" aria-hidden="true"></div><div class="sp-ph sp-ph-g sp-ph-gr" aria-hidden="true"></div>
+                  <div class="sp-shade" aria-hidden="true"></div><div class="sp-grain" aria-hidden="true"></div>
+                  <span class="sp-days">{s.days}</span>
+                  <span class="sp-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <div class="sp-body"><h3 class="sp-t">{s.t}</h3><p class="sp-d">{s.d}</p></div>
+                </article>
+                <span class="sp-glow" aria-hidden="true"></span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · B2B website redesign. A buyer asks an AI engine (ChatGPT, Claude or Google AI Mode, each in its own UI)
+         about car exports; the four page fragments are the recommended vendor's own pages. -->
+    <section class="bb" id="b2b" aria-labelledby="bbH">
+      <div class="bb-wrap">
+        <header class="bb-hdr">
+          <h2 class="sec-h rv" id="bbH">B2B website redesign,<br><em class="grad-anim">built for how buyers research.</em></h2>
+          <p class="bb-lead rv d1">Your buyer has done most of the homework before they fill in your form. More of that homework now starts in a chatbot.</p>
+        </header>
+
+        <div class="bb-proof">
+          <div class="ai" aria-hidden="true">
+            <div class="ai-tabs">
+              <button type="button" class="ai-tab" aria-pressed="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="currentColor"><path d={GPT_PATH}/></svg><span>ChatGPT</span></button>
+              <button type="button" class="ai-tab" aria-pressed="false" tabindex="-1"><img src="/icons/claude-icon.svg" alt="" width="18" height="18" /><span>Claude</span></button>
+              <button type="button" class="ai-tab" aria-pressed="false" tabindex="-1"><img src="/icons/google-icon.svg" alt="" width="18" height="18" /><span>AI Mode</span></button>
+            </div>
+            <div class="ai-win">
+              <div class="ai-ui ui-gpt is-on">
+                <div class="ai-head">ChatGPT <small>⌄</small></div>
+                <div class="ai-feed">
+                  <div class="ai-q">{CHAT_Q}</div>
+                  <div>
+                    <div class="ai-think"><i></i></div>
+                    <div class="ai-a"><p>Three companies that handle US-to-Dubai car exports from pickup to delivery:</p><ol><li><b>Vendor A</b>: RoRo and container shipping, with export paperwork and clearance at Jebel Ali handled for you.<span class="ai-cite">vendor-a.com</span></li><li><b>Vendor B</b>: Shared containers, usually the cheapest way to ship a single car.<span class="ai-cite">vendor-b.com</span></li><li><b>Vendor C</b>: Enclosed shipping for classic and high-value cars.<span class="ai-cite">vendor-c.com</span></li></ol><p>If you want one company to handle everything from pickup to customs, start with Vendor A.</p></div>
+                    <div class="ai-acts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11v9H4v-9zM7 11l4-7a2 2 0 0 1 3 2l-1 5h5a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 21H7"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 13V4h3v9zM17 13l-4 7a2 2 0 0 1-3-2l1-5H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 3H17"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div>
+                  </div>
+                </div>
+                <div class="ai-comp"><svg class="ai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span>Ask anything</span><svg class="ai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span class="ai-send"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="5" y="9" width="2" height="6" rx="1"/><rect x="9" y="6" width="2" height="12" rx="1"/><rect x="13" y="8" width="2" height="8" rx="1"/><rect x="17" y="10" width="2" height="4" rx="1"/></svg></span></div>
+              </div>
+              <div class="ai-ui ui-cl">
+                <div class="ai-head"><b>Shipping a car from the US to Dubai</b> ⌄</div>
+                <div class="ai-feed">
+                  <div class="ai-q"><i>Y</i><span>{CHAT_Q}</span></div>
+                  <div>
+                    <div class="ai-think"><img src="/icons/claude-icon.svg" alt="" width="22" height="22" /></div>
+                    <div class="ai-a"><p>A few companies handle this end to end:</p><ol><li><b>Vendor A</b> covers pickup, export paperwork, RoRo or container shipping and clearance at Jebel Ali.<span class="ai-cite">vendor-a.com</span></li><li><b>Vendor B</b> runs shared containers, which is usually the cheapest way to ship one car.<span class="ai-cite">vendor-b.com</span></li><li><b>Vendor C</b> specialises in enclosed shipping for classic and high-value cars.<span class="ai-cite">vendor-c.com</span></li></ol><p>For a first export, Vendor A is the simplest choice: one booking covers everything.</p></div>
+                    <img class="ai-mark" src="/icons/claude-icon.svg" alt="" width="22" height="22" />
+                  </div>
+                </div>
+                <div class="ai-comp"><span>Reply to Claude...</span><span class="ai-send"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span></div>
+              </div>
+              <div class="ai-ui ui-gg">
+                <div class="ai-head"><img src="/icons/google-icon.svg" alt="" width="20" height="20" /><b>AI Mode</b></div>
+                <div class="ai-feed">
+                  <div class="ai-q">{CHAT_Q}</div>
+                  <div>
+                    <div class="ai-think"><i></i></div>
+                    <div class="ai-a"><p>Several US companies export cars to Dubai. These three come up most often:</p><ul><li><b>Vendor A</b>: door-to-door RoRo and container shipping, including clearance at Jebel Ali.<span class="ai-cite" set:html={LINK_ICON} /></li><li><b>Vendor B</b>: shared container service, often the lowest price for one car.<span class="ai-cite" set:html={LINK_ICON} /></li><li><b>Vendor C</b>: enclosed transport for classic and high-value cars.<span class="ai-cite" set:html={LINK_ICON} /></li></ul></div>
+                    <div class="ai-src"><div class="ai-card"><small><i></i>vendor-a.com</small>Car shipping from the US to Dubai</div><div class="ai-card"><small><i class="is-grey"></i>vendor-b.com</small>Shared container rates</div><div class="ai-card"><small><i class="is-grey"></i>vendor-c.com</small>Enclosed car transport</div></div>
+                  </div>
+                </div>
+                <div class="ai-comp"><span>Ask anything</span><svg class="ai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+              </div>
+            </div>
+            <p class="ai-note">Illustration. Vendor A, Vendor B and Vendor C stand in for real shipping companies. The answer is an example.</p>
+          </div>
+
+          <div class="bb-stats">
+            <p class="bb-src"><a class="ilink" href={G2_REPORT} target="_blank" rel="noopener">G2's 2026 AI Search Insight Report</a> polled over 1,000 B2B software buyers.</p>
+            <div class="bb-stat"><span class="bb-n"><span data-to="51">51</span><sup>%</sup></span><p>now start their research in an AI chatbot more often than in Google.</p></div>
+            <div class="bb-stat"><span class="bb-n"><span data-to="69">69</span><sup>%</sup></span><p>said a chatbot led them to a different vendor than they planned.</p></div>
+          </div>
+        </div>
+
+        <p class="bb-both">A B2B redesign has to work for both: <em>the buyer, and the AI answering on their behalf.</em></p>
+
+        <ol class="bb-pts">
+          <li class="bb-pt">
+            <div class="bb-fr" aria-hidden="true">
+              <span class="bb-fr-k">vendor-a.com/car-shipping-to-dubai</span>
+              <p class="bb-fr-h">Car shipping, US to Dubai</p>
+              <p class="bb-fr-l"><b>Who</b><span><span class="bb-hl" style="--dl:.1s">dealers and exporters</span></span></p>
+              <p class="bb-fr-l"><b>How</b><span><span class="bb-hl" style="--dl:.4s">RoRo or container</span></span></p>
+              <p class="bb-fr-l"><b>How long</b><span><span class="bb-hl" style="--dl:.7s">4 to 6 weeks</span></span></p>
+            </div>
+            <span class="bb-n2">01</span>
+            <h3 class="bb-t">{b2b[0].t}</h3>
+            <p class="bb-d">{b2b[0].d}</p>
+          </li>
+          <li class="bb-pt">
+            <div class="bb-fr" aria-hidden="true">
+              <span class="bb-fr-k">vendor-a.com/car-shipping-to-dubai</span>
+              <p class="bb-fr-h"><span class="bb-hl" style="--dl:.1s">Jebel Ali clearance, handled.</span></p>
+              <span class="bb-sk" style="width:100%"></span><span class="bb-sk" style="width:72%"></span>
+              <div class="bb-fr-row">
+                <div class="bb-fr-case"><b>1,200</b><span><small>cars shipped to the UAE</small><small>Dealer · Texas</small></span></div>
+              </div>
+            </div>
+            <span class="bb-n2">02</span>
+            <h3 class="bb-t">{b2b[1].t}</h3>
+            <p class="bb-d">{b2b[1].d}</p>
+          </li>
+          <li class="bb-pt">
+            <div class="bb-fr" aria-hidden="true">
+              <span class="bb-fr-k">vendor-a.com/get-a-quote</span>
+              <div class="bb-fr-grid">
+                <div class="bb-fr-in"><span>Vehicle</span><b>2022 Land Cruiser</b></div>
+                <div class="bb-fr-in"><span>Pickup</span><b>Houston, TX</b></div>
+                <div class="bb-fr-in"><span>Shipping</span><b>Container</b></div>
+                <div class="bb-fr-in"><span>Ready</span><b>This month</b></div>
+              </div>
+              <div class="bb-fr-send">Sent <i></i><em>CRM</em></div>
+            </div>
+            <span class="bb-n2">03</span>
+            <h3 class="bb-t">{b2b[2].t}</h3>
+            <p class="bb-d">{b2b[2].d}</p>
+          </li>
+          <li class="bb-pt">
+            <div class="bb-fr" aria-hidden="true">
+              <span class="bb-fr-k">vendor-a.com · JSON-LD</span>
+              <div class="bb-fr-code" set:html={SCHEMA_SNIPPET} />
+            </div>
+            <span class="bb-n2">04</span>
+            <h3 class="bb-t">{b2b[3].t}</h3>
+            <p class="bb-d">{b2b[3].d}</p>
+          </li>
+        </ol>
+
+        <div class="bb-ind">
+          <div class="bb-ind-top"><span class="bb-ind-k">Industries I work with</span><a class="ilink" href="/work">See the case files</a></div>
+          <div class="bb-mq">
+            {industryRows.map((row, ri) => (
+              <div class={`bb-mq-row${ri ? ' is-rev' : ''}`}>
+                {[false, true].map((hidden) => (
+                  <ul class="bb-mq-track" aria-hidden={hidden ? 'true' : undefined}>
+                    {row.map((t, j) => (
+                      <>
+                        <li class={`bb-mq-i${j % 2 ? ' is-em' : ''}`}>{t}</li>
+                        <svg class="bb-mq-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.1 6.4 6.4 2.1-6.4 2.1L12 19.5l-2.1-6.4L3.5 11l6.4-2.1z"/></svg>
+                      </>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Your platform or a new one. Fits one screen on desktop. Each panel carries its platform's colour and mark,
+         and the same redirect row rides along on every panel: the URL map comes with you. -->
+    <section class="pf" id="platforms" aria-labelledby="pfH">
+      <div class="pf-wrap">
+        <header class="pf-hdr">
+          <h2 class="sec-h rv" id="pfH">Stay on your platform, or move.<br><em class="grad-anim">The URL map comes with you.</em></h2>
+          <p class="pf-lead rv d1">Most redesigns don't need a new CMS. Some do. You get a straight answer on which one before anything is built.</p>
+        </header>
+        <ul class="pf-grid">
+          {platforms.map((p) => (
+            <li class="pf-card" style={`--b:${p.rgb};${p.rgb2 ? `--b2:${p.rgb2};` : ''}--m:url(${p.icon})`}>
+              <span class="pf-mark" aria-hidden="true"></span>
+              <div class="pf-top"><span class="pf-logo"><img src={p.icon} width="27" height="27" alt="" loading="lazy" decoding="async" /></span><h3 class="pf-name">{p.name}</h3></div>
+              <p class="pf-d">{p.d}</p>
+              <div class="pf-map" aria-hidden="true"><span class="pf-old">/services.html</span><span class="pf-arr">→</span><span class="pf-new">/services</span><b class="pf-301">301</b></div>
+            </li>
+          ))}
+        </ul>
+        <div class="pf-foot">
+          <p>Moving off Wix, Squarespace or a custom build? Same process. Every old URL gets mapped before anything moves.</p>
+          <p>No old site to protect? <a class="ilink" href="/services/web-design">That's a new build</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · FAQ: an editorial index. Pointing at a question dims the rest and rolls the counter to it. -->
+    <section class="fq" id="rd-faq" aria-labelledby="fqH">
+      <div class="fq-wrap">
+        <div class="fq-side">
+          <h2 class="sec-h rv" id="fqH">Questions before<br><em class="grad-anim">you redesign.</em></h2>
+          <div class="fq-count" aria-hidden="true">
+            <span class="fq-count-box"><span class="fq-count-roll"><span class="fq-count-n">01</span></span></span>
+            <span class="fq-count-of">/ {String(faqs.length).padStart(2, '0')}</span>
+          </div>
+          <p class="fq-ask">Not on the list? Ask it in the <a class="ilink" href="#rd-cta">brief below</a>. I reply within 4 hours.</p>
+        </div>
+        <ol class="fq-list">
+          {faqs.map((f, i) => (
+            <li class={`fq-item${i === 0 ? ' is-open' : ''}`} style={`--i:${i}`}>
+              <h3 class="fq-h3">
+                <button class="fq-q" type="button" id={`fq-q-${i + 1}`} aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`fq-a-${i + 1}`}>
+                  <span class="fq-n">{String(i + 1).padStart(2, '0')}</span><span class="fq-t">{f.q}</span><span class="fq-x" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="fq-a" id={`fq-a-${i + 1}`} role="region" aria-labelledby={`fq-q-${i + 1}`}><div class="fq-a-in"><p>{f.a}</p></div></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    </section>
+
+    <!-- 7 · contact: portrait card + the brief (same fields and /api/contact flow as ContactCta) -->
+    <ContactBrief id="rd-cta" source="services-website-redesign" />
+
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Hero scene. Desktop (mouse + wide): pinned, scroll-scrubbed with GSAP ScrollTrigger, which Nav.astro
+  // already wires to Lenis. Touch or narrow: plays once when the scene comes into view. Reduced motion,
+  // no JS or a failed GSAP load: the CSS already renders the finished frame, so nothing is lost.
+  const hero = document.getElementById('rdHero');
+  if (hero) setupRedesignHero(hero);
+
+  function setupRedesignHero(hero: HTMLElement) {
+    const scene = hero.querySelector<HTMLElement>('.rd-scene')!;
+    const fit = hero.querySelector<HTMLElement>('.rd-fit')!;
+    const stage = hero.querySelector<HTMLElement>('.rd-stage')!;
+    const bloom = hero.querySelector<HTMLElement>('.rd-bloom')!;
+    const caption = hero.querySelector<HTMLElement>('.rd-caption')!;
+    const allCards = [...hero.querySelectorAll<HTMLElement>('.rd-card')];
+    const allGrounds = [...hero.querySelectorAll<HTMLElement>('.rd-ground')];
+    const narrow = matchMedia('(max-width: 900px)');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const touch = matchMedia('(hover: none)').matches;
+    const nums = (s?: string) => (s || '').split(',').map(Number);
+    const q = (el: Element, s: string) => el.querySelector(s);
+
+    const fitScene = () => {
+      const s = narrow.matches
+        ? Math.min(1, scene.clientWidth / 410, scene.clientHeight / 520)
+        : Math.min(1, scene.clientWidth / 720, scene.clientHeight / 620);
+      fit.style.setProperty('--fit', s.toFixed(3));
+    };
+    fitScene();
+    addEventListener('resize', fitScene, { passive: true });
+
+    if (reduce) { hero.classList.add('is-ready'); return; }
+
+    let gsap: any = null, ST: any = null;
+    let run: any = null;
+
+    async function loadGsap() {
+      if (!gsap) {
+        gsap = (await import('gsap')).default;
+        ST = (await import('gsap/ScrollTrigger')).ScrollTrigger;
+        gsap.registerPlugin(ST);
+      }
+    }
+
+    function teardown() {
+      if (!run) return;
+      run.st?.kill(); run.io?.disconnect(); run.tween?.kill(); run.tl.kill();
+      gsap.set([...allCards, ...allGrounds, stage, bloom, caption], { clearProps: 'transform,opacity' });
+      gsap.set(hero.querySelectorAll('.rd-old,.rd-new,.rd-sh-rest,.rd-sh-lift,.rd-stamp'), { clearProps: 'transform,opacity' });
+      run = null;
+    }
+
+    async function build() {
+      try { await loadGsap(); } catch { hero.classList.add('is-ready'); return; }
+      teardown();
+      const mobile = narrow.matches;
+      const scrub = !mobile && !touch;
+      hero.classList.toggle('is-scrub', scrub);
+      const cards = mobile ? allCards.filter((c) => c.hasAttribute('data-m')) : allCards;
+      const grounds = cards.map((c) => allGrounds[Number(c.dataset.i)]);
+
+      // starting pile: the old site
+      cards.forEach((c, i) => {
+        const [x, y, r] = nums(mobile ? c.dataset.mpile : c.dataset.pile);
+        gsap.set(c, { x, y, z: (cards.length - i) * 4, rotationX: 0, rotationY: 0, rotationZ: r, scale: 1.22 });
+        gsap.set(grounds[i], { x, y, z: -2, rotationZ: r, scale: 1.22, opacity: .85 });
+        gsap.set(q(c, '.rd-old'), { opacity: 1 });
+        gsap.set(q(c, '.rd-new'), { opacity: 0 });
+        gsap.set(q(c, '.rd-sh-rest'), { opacity: 1 });
+        gsap.set(q(c, '.rd-sh-lift'), { opacity: 0 });
+        gsap.set(q(c, '.rd-stamp'), { opacity: 0, z: 1, scale: 2.1, rotation: -26 });
+      });
+      gsap.set(bloom, { opacity: 0, scale: .82 });
+      gsap.set(caption, { opacity: 0, y: 10 });
+      gsap.set(stage, { rotationX: 24, rotationY: -26, rotationZ: 3 });
+      hero.classList.add('is-ready');
+
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+      const step = mobile ? .16 : .1;
+      cards.forEach((c, i) => {
+        const g = grounds[i];
+        const [tx, ty, tz] = nums(mobile ? c.dataset.mto : c.dataset.to);
+        const t0 = .04 + i * step;
+        tl.to(c, { z: 170, rotationX: -18, rotationY: 14, rotationZ: 0, duration: .07, ease: 'power2.out' }, t0)          // lift
+          .to(q(c, '.rd-sh-rest'), { opacity: 0, duration: .05 }, t0)
+          .to(q(c, '.rd-sh-lift'), { opacity: 1, duration: .05 }, t0)
+          .to(g, { scale: 1.4, opacity: .3, rotationZ: 0, duration: .07, ease: 'power2.out' }, t0)
+          .to(c, { x: tx, y: ty, scale: 1, duration: .13, ease: 'power1.inOut' }, t0 + .04)                              // travel
+          .to(g, { x: tx, y: ty, duration: .13, ease: 'power1.inOut' }, t0 + .04)
+          .to(q(c, '.rd-old'), { opacity: 0, duration: .05 }, t0 + .1)                                                   // rebuilt mid-flight
+          .to(q(c, '.rd-new'), { opacity: 1, duration: .05 }, t0 + .1)
+          .to(c, { z: tz, rotationX: 0, rotationY: 0, duration: .07, ease: 'back.out(1.7)' }, t0 + .16)                 // land
+          .to(g, { scale: 1, opacity: .85, duration: .07, ease: 'power2.in' }, t0 + .16)
+          .to(q(c, '.rd-sh-lift'), { opacity: 0, duration: .05 }, t0 + .17)
+          .to(q(c, '.rd-sh-rest'), { opacity: 1, duration: .05 }, t0 + .17)
+          .to(q(c, '.rd-stamp'), { opacity: .92, scale: 1, rotation: Number(c.dataset.rot), duration: .035, ease: 'back.out(3)' }, t0 + .21); // stamped
+      });
+      const landed = .04 + (cards.length - 1) * step + .25;
+      tl.to(stage, { rotationX: 9, rotationY: -9, rotationZ: 0, duration: landed + .1, ease: 'power1.inOut' }, 0)
+        .to(bloom, { opacity: 1, scale: 1, duration: .2, ease: 'power2.out' }, landed - .06)
+        .to(caption, { opacity: 1, y: 0, duration: .1, ease: 'power2.out' }, landed + .08)
+        .to({}, { duration: .06 }, landed + .18);
+
+      run = { tl, st: null, io: null, tween: null };
+      if (scrub) {
+        run.st = ST.create({ trigger: hero, start: 'top top', end: 'bottom bottom', scrub: .7, animation: tl });
+      } else {
+        run.io = new IntersectionObserver((entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          run.io.disconnect();
+          run.tween = gsap.to(tl, { progress: 1, duration: 4, ease: 'power1.inOut' });
+        }, { threshold: .35 });
+        run.io.observe(scene);
+      }
+      fitScene();
+      ST.refresh();
+    }
+
+    // Phones and touch screens only download GSAP when the scene is about to be seen.
+    if (touch || narrow.matches) {
+      const lazy = new IntersectionObserver((entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        lazy.disconnect();
+        build();
+      }, { rootMargin: '300px 0px' });
+      lazy.observe(scene);
+    } else {
+      build();
+    }
+    narrow.addEventListener('change', () => { if (run) build(); });
+  }
+</script>
+
+<style>
+  .rd-page{
+    /* old site = a dated, light-themed page; new site = the brand */
+    --paper:#D8D3C8; --paper-2:#CFC9BC; --paper-ink:#3C3A36; --paper-link:#3F55A8; --paper-edge:#B9B2A3; --paper-bar:#3F4A63;
+    --card:#18181B; --card-hi:#232327; --card-edge:rgba(79,142,247,.34); --card-side:#0C0C0E;
+    --shade:0,0,0; --bloom-a:rgba(79,142,247,.30); --bloom-b:rgba(26,58,143,.12); --acl:#7BAEFF;
+  }
+  :global(html.light) .rd-page{
+    --paper:#E9E5DC; --paper-2:#DFDACF; --paper-ink:#55524C; --paper-link:#4D5E9C; --paper-edge:#CFC8BA; --paper-bar:#5A6584;
+    --card:#FFFFFF; --card-hi:#FFFFFF; --card-edge:rgba(218,119,86,.42); --card-side:#E2DBCE;
+    --shade:70,48,24; --bloom-a:rgba(218,119,86,.22); --bloom-b:rgba(184,92,60,.06); --acl:#EBA98C;
+  }
+
+  /* ── hero ─────────────────────────────────────────────── */
+  .rd-hero{position:relative;padding:0}
+  .rd-hero.is-scrub{height:280vh}
+  .rd-pin{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);align-items:center;gap:clamp(16px,3vw,48px);
+    min-height:100vh;padding:112px 40px 48px;max-width:1480px;margin:0 auto}
+  .rd-hero.is-scrub .rd-pin{position:sticky;top:0;height:100vh;min-height:640px;overflow:hidden}
+  .rd-copy{position:relative;z-index:2}
+  .rd-bc{display:flex;gap:8px;font-size:12px;color:var(--wm);margin-bottom:28px}
+  .rd-bc a{color:inherit;transition:color .2s}
+  .rd-bc a:hover{color:var(--w)}
+  .rd-h1{font-family:var(--fd);font-weight:400;font-size:clamp(46px,5.6vw,94px);line-height:.94;letter-spacing:-.026em;color:var(--w)}
+  /* global .grad-anim is inline-block, which forces the phrase onto its own line; let it wrap with the sentence */
+  .rd-h1 em.grad-anim{font-style:italic;display:inline;padding:0 .06em .06em 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .rd-deck{margin-top:26px;max-width:33rem;font-size:clamp(15px,1.25vw,17px);line-height:1.75;color:var(--wd)}
+  .rd-actions{margin-top:34px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .rd-link{font-size:14px;font-weight:600;color:var(--w);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--ac) 55%,transparent);
+    text-underline-offset:5px;text-decoration-thickness:1.5px;transition:text-decoration-color .2s}
+  .rd-link:hover{text-decoration-color:var(--ac)}
+  .rd-link:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+
+  .rd-scene{position:relative;height:min(80vh,680px);perspective:2000px;perspective-origin:50% 38%}
+  .rd-fit{position:absolute;left:50%;top:50%;width:700px;height:600px;margin:-300px 0 0 -350px;
+    transform:scale(var(--fit,1));transform-origin:50% 50%}
+  .rd-stage{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(9deg) rotateY(-9deg)}
+  :global(html.js) .rd-hero:not(.is-ready) .rd-stage{visibility:hidden}
+  .rd-bloom{position:absolute;left:50%;top:46%;width:820px;height:660px;margin:-330px 0 0 -410px;border-radius:50%;
+    background:radial-gradient(closest-side,var(--bloom-a),var(--bloom-b) 55%,transparent 100%);pointer-events:none;transform:translateZ(-80px)}
+
+  .rd-card,.rd-ground{--cw:214px;--ch:140px}
+  .rd-card.is-home,.rd-ground.is-home{--cw:262px;--ch:172px}
+  .rd-card.is-leaf,.rd-ground.is-leaf{--cw:196px;--ch:128px}
+  .rd-ground{position:absolute;left:50%;top:50%;width:var(--cw);height:var(--ch);margin:calc(var(--ch) / -2 + 10px) 0 0 calc(var(--cw) / -2);
+    border-radius:18px;background:radial-gradient(ellipse at center,rgba(var(--shade),.6) 0%,rgba(var(--shade),.25) 48%,transparent 74%);
+    transform:translate3d(var(--tx),var(--ty),-2px);opacity:.85;pointer-events:none}
+  .rd-card{position:absolute;left:50%;top:50%;width:var(--cw);height:var(--ch);margin:calc(var(--ch) / -2) 0 0 calc(var(--cw) / -2);
+    transform-style:preserve-3d;transform:translate3d(var(--tx),var(--ty),var(--tz))}
+  .rd-slab{position:absolute;inset:0;border-radius:12px;transform:translateZ(-5px);background:var(--card-side)}
+  .rd-sh{position:absolute;inset:0;border-radius:12px;pointer-events:none}
+  .rd-sh-rest{box-shadow:0 2px 3px rgba(var(--shade),.4),0 10px 22px rgba(var(--shade),.32)}
+  .rd-sh-lift{opacity:0;box-shadow:0 30px 60px rgba(var(--shade),.42),0 70px 120px rgba(var(--shade),.32)}
+  .rd-face{position:absolute;inset:0;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;backface-visibility:hidden}
+
+  .rd-old{opacity:0;background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%);border:1px solid var(--paper-edge);
+    color:var(--paper-ink);font-family:Arial,Helvetica,sans-serif;padding:0 0 9px}
+  .rd-old::after{content:'';position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .42 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .o-bar{display:flex;gap:7px;align-items:center;padding:5px 9px;background:var(--paper-bar);color:#E8E6E0;font-size:7px;letter-spacing:.02em}
+  .o-bar b{font:700 8px Georgia,serif;margin-right:auto;letter-spacing:.04em}
+  .o-body{padding:8px 10px 0;text-align:center}
+  .o-title{font:700 12px/1.15 'Times New Roman',Times,serif;color:var(--paper-ink)}
+  .o-p{margin-top:4px;font-size:6.5px;line-height:1.35;color:color-mix(in srgb,var(--paper-ink) 72%,transparent)}
+  .o-p :global(u){color:var(--paper-link)}
+  .o-btn{display:inline-block;margin-top:5px;font-size:6.5px;padding:2px 7px;border:1px solid #8C877C;border-radius:2px;
+    background:linear-gradient(180deg,#F2EFE9,#C9C3B6);color:#2E2C28}
+
+  .rd-new{background:linear-gradient(165deg,var(--card-hi) 0%,var(--card) 62%);border:1px solid var(--card-edge);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07);padding:9px 11px}
+  :global(html.light) .rd-new{box-shadow:inset 0 1px 0 #fff}
+  .n-bar{display:flex;align-items:center}
+  .n-bar i{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac)}
+  .n-title{margin-top:auto;font-family:var(--fd);font-style:italic;font-size:22px;line-height:1;letter-spacing:-.01em;color:var(--w)}
+  .is-home .n-title{font-size:27px}
+  .n-p{margin-top:5px;font-size:9px;line-height:1.3;color:var(--wd)}
+
+  .rd-url{margin:8px 9px 0;font:500 10.5px/1 var(--fm);padding:6px 7px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rd-old .rd-url{margin-top:auto;background:rgba(255,255,255,.55);color:#4A4740;box-shadow:inset 0 1px 2px rgba(60,50,30,.22)}
+  .rd-new .rd-url{margin:8px 0 0;color:var(--w);background:color-mix(in srgb,var(--ac) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 24%,transparent)}
+
+  .rd-stamp{position:absolute;right:var(--sr);top:var(--st);opacity:.92;transform:translateZ(1px) rotate(var(--rot));pointer-events:none;
+    display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 10px 4px;border-radius:10px;
+    color:var(--ac);border:2px solid currentColor;outline:1px solid currentColor;outline-offset:2px;
+    font-family:var(--fm);font-weight:500;line-height:1;mix-blend-mode:screen;
+    -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 2.05'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>");
+    mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 2.05'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>")}
+  :global(html.light) .rd-stamp{mix-blend-mode:multiply}
+  .rd-stamp b{font-size:18px;font-weight:500;letter-spacing:.04em}
+  .rd-stamp small{font-size:9px;max-width:132px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .rd-caption{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:15px;color:var(--wd)}
+  .rd-caption strong{color:var(--w);font-weight:600}
+
+  /* ── phones and small tablets ─────────────────────────── */
+  @media (max-width:900px){
+    .rd-pin{grid-template-columns:1fr;min-height:0;padding:104px 20px 32px}
+    .rd-scene{height:470px;margin-top:4px}
+    .rd-fit{width:400px;height:500px;margin:-250px 0 0 -200px}
+    .rd-card:not([data-m]),.rd-ground:not([data-m]){display:none}
+    .rd-card[data-m].is-leaf,.rd-ground[data-m].is-leaf{--cw:214px;--ch:140px}
+    .rd-card{transform:translate3d(var(--mtx),var(--mty),var(--mtz))}
+    .rd-ground{transform:translate3d(var(--mtx),var(--mty),-2px)}
+    .rd-caption{bottom:-6px}
+  }
+</style>
+
+<!-- Sections 1 + 2 build their scenes and glyph motion in JS, so these styles are global (scoped markup would miss
+     the JS-made nodes). Every rule is held inside .lk or .inc. Paper and card materials come from .rd-page above. -->
+<style is:global>
+  .lk,.inc{
+    --bad:#FF5A4F; --ink-blend:screen; --ink:#2C47A6; --shadow:0,0,0;
+    --stage:#101013; --stage-hi:#16161B; --stage-edge:rgba(255,255,255,.06);
+    --code:#0A0A0D; --code-ink:#B7B2A9; --lit:#131318; --lit-hi:#1C1C23;
+    --rule:linear-gradient(90deg,transparent,rgba(255,255,255,.1) 10%,rgba(255,255,255,.1) 90%,transparent);
+  }
+  html.light .lk,html.light .inc{
+    --bad:#C7342A; --ink-blend:multiply; --ink:#3A4F9A; --shadow:70,48,24;
+    --stage:#FFFFFF; --stage-hi:#FCFAF6; --stage-edge:rgba(26,23,20,.07); --lit:#FFFFFF; --lit-hi:#FFFFFF;
+    --rule:linear-gradient(90deg,transparent,rgba(26,23,20,.13) 10%,rgba(26,23,20,.13) 90%,transparent);
+  }
+  /* ink stamp texture, shared by both sections */
+  .lk .stp,.inc .stp{
+    -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 2.05'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>");
+    mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 2.05'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>");
+  }
+
+  /* ── 1 · Where redesigns lose traffic ───────────────────── */
+  .lk{position:relative;padding:clamp(72px,9vw,140px) clamp(16px,3vw,40px) clamp(64px,8vw,120px)}
+  .lk-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px)}
+  .lk-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,5vw,80px)}
+  .lk-lead{max-width:30rem;margin-bottom:6px;font-size:clamp(15.5px,1.2vw,18px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .lk-story{display:grid;grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);gap:clamp(36px,5vw,96px);align-items:start;margin-top:clamp(28px,4vw,56px)}
+  .lk-list{list-style:none;margin:0;padding:0}
+  .lk-item{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:clamp(10px,1.2vw,18px);align-content:center;
+    min-height:clamp(250px,42vh,380px);padding:30px 0;transition:opacity .5s ease;cursor:pointer}
+  html.js .lk-item:not(.is-on){opacity:.3}
+  @media (hover:hover) and (pointer:fine){html.js .lk-item:not(.is-on):hover{opacity:.55}}
+  .lk-item+.lk-item::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule)}
+  .lk-n{padding-top:.55em;font:500 12px var(--fm);letter-spacing:.14em;color:var(--wm);font-variant-numeric:tabular-nums;transition:color .4s ease}
+  .lk-item.is-on .lk-n{color:var(--bad)}
+  .lk-t{font-family:var(--fu);font-weight:800;font-size:clamp(22px,2.05vw,30px);line-height:1.14;letter-spacing:-.026em;color:var(--w);text-wrap:balance}
+  .lk-d{margin-top:12px;max-width:33em;font-size:clamp(15px,1.1vw,16.5px);line-height:1.72;color:var(--wd);text-wrap:pretty}
+  .lk-inline{display:none}
+  html:not(.js) .lk-story{grid-template-columns:minmax(0,1fr)}
+  html:not(.js) .lk-stage-col{display:none}
+
+  .lk-stage-col{align-self:stretch}
+  .lk-stage{position:sticky;top:max(92px,calc((100vh - min(580px,100vh - 150px)) / 2));height:min(580px,calc(100vh - 150px));min-height:440px}
+  .lk-box{position:absolute;inset:0;border-radius:24px;overflow:hidden;isolation:isolate;
+    background:radial-gradient(90% 60% at 50% 0%,color-mix(in srgb,var(--ac) 7%,transparent),transparent 70%),linear-gradient(180deg,var(--stage-hi),var(--stage));
+    box-shadow:inset 0 0 0 1px var(--stage-edge),inset 0 1px 0 rgba(255,255,255,.04),0 40px 80px -48px rgba(var(--shadow),.9)}
+  html.light .lk-box{box-shadow:inset 0 0 0 1px var(--stage-edge),0 1px 2px rgba(26,23,20,.05),0 24px 60px -28px rgba(70,48,24,.22)}
+  .lk-hud{position:absolute;left:22px;right:22px;top:20px;z-index:3;display:flex;align-items:center;justify-content:space-between;font:500 11px var(--fm);letter-spacing:.16em;text-transform:uppercase;color:var(--wm)}
+  .lk-hud b{font-weight:500;color:var(--bad);font-variant-numeric:tabular-nums}
+  .lk-ticks{display:flex;gap:6px}
+  .lk-ticks i{display:block;width:14px;height:3px;border-radius:2px;background:color-mix(in srgb,var(--wm) 45%,transparent);transition:background .4s ease,width .4s ease}
+  .lk-ticks i.is-on{width:28px;background:var(--bad)}
+  .lk-fit{position:absolute;left:50%;top:50%;transform-origin:50% 50%}
+  .lk-scene{position:absolute;inset:0;visibility:hidden}
+  .lk-scene.is-on{visibility:visible}
+
+  /* scene objects, placed by x/y from the script */
+  .lk .o{position:absolute;left:0;top:0;will-change:transform}
+  .lk .zl{font:500 11px var(--fm);letter-spacing:.18em;text-transform:uppercase;color:var(--wm);white-space:nowrap}
+  .lk .pg{border-radius:12px}
+  .lk .pg-old{width:208px;height:136px}
+  .lk .pg-sm{width:150px;height:98px}
+  .lk .pg-new{width:224px;height:144px}
+  .lk .pg-md{width:204px;height:132px}
+  .lk .sh{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+  .lk .sh-r{box-shadow:0 2px 4px rgba(var(--shadow),.4),0 14px 30px rgba(var(--shadow),.42)}
+  .lk .sh-l{opacity:0;box-shadow:0 26px 50px rgba(var(--shadow),.5),0 60px 110px rgba(var(--shadow),.35)}
+  html.light .lk .sh-r{box-shadow:0 1px 2px rgba(var(--shadow),.12),0 10px 26px rgba(var(--shadow),.16)}
+  html.light .lk .sh-l{box-shadow:0 22px 44px rgba(var(--shadow),.2),0 50px 90px rgba(var(--shadow),.14)}
+  .lk .face{position:absolute;inset:0;border-radius:inherit;overflow:hidden;display:flex;flex-direction:column}
+  .lk .f-old{background:linear-gradient(180deg,var(--paper),var(--paper-2));border:1px solid var(--paper-edge);color:var(--paper-ink);font-family:Arial,Helvetica,sans-serif;padding-bottom:9px}
+  .lk .f-old::after{content:'';position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .42 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .lk .o-bar{display:flex;gap:7px;align-items:center;padding:5px 9px;background:var(--paper-bar);color:#E8E6E0;font-size:7.5px}
+  .lk .o-bar b{font:700 8.5px Georgia,serif;margin-right:auto;letter-spacing:.04em}
+  .lk .o-body{padding:9px 10px 0;text-align:center}
+  .lk .o-title{font:700 14px/1.15 'Times New Roman',Times,serif}
+  .lk .o-p{margin-top:4px;font-size:7.5px;line-height:1.35;color:color-mix(in srgb,var(--paper-ink) 72%,transparent)}
+  .lk .o-p u{color:var(--paper-link)}
+  .lk .pg-sm .o-bar{padding:4px 7px;font-size:6px}
+  .lk .pg-sm .o-bar span:nth-child(n+4){display:none}
+  .lk .pg-sm .o-title{font-size:11.5px}
+  .lk .f-new{background:linear-gradient(165deg,var(--card-hi) 0%,var(--card) 62%);border:1px solid var(--card-edge);padding:10px 12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+  html.light .lk .f-new{box-shadow:inset 0 1px 0 #fff}
+  .lk .n-bar{display:flex;align-items:center;gap:6px}
+  .lk .n-bar i{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac)}
+  .lk .n-title{margin-top:auto;font-family:var(--fd);font-style:italic;font-size:27px;line-height:1;letter-spacing:-.01em;color:var(--w)}
+  .lk .n-p{margin-top:5px;font-size:10px;line-height:1.35;color:var(--wd)}
+  .lk .n-link{margin-top:6px;font:600 11.5px var(--fu);color:var(--w);text-decoration:underline;text-decoration-color:var(--ac);text-underline-offset:3px}
+  .lk .n-href{margin-top:3px;font:500 10.5px var(--fm);color:var(--wd)}
+  .lk .n-href em,.lk .n-miss em{font-style:normal;color:var(--bad)}
+  .lk .n-miss{position:absolute;right:2px;top:calc(100% + 10px);font:500 10.5px var(--fm);color:var(--wd);white-space:nowrap;opacity:0}
+  .lk .url{position:relative;display:block;margin:8px 9px 0;font:500 12px/1 var(--fm);padding:6px 7px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lk .f-old .url{margin-top:auto;background:rgba(255,255,255,.55);color:#4A4740;box-shadow:inset 0 1px 2px rgba(60,50,30,.22)}
+  .lk .f-new .url{margin:8px 0 0;color:var(--w);background:color-mix(in srgb,var(--ac) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 24%,transparent)}
+  .lk .pg-sm .url{font-size:10.5px;margin:6px 7px 0;padding:5px 6px}
+  .lk .url .u-b{position:absolute;left:7px;top:6px}
+  .lk .pg-void{width:224px;height:144px;border-radius:12px;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 12px;
+    border:1.5px dashed color-mix(in srgb,var(--wm) 75%,transparent);background:color-mix(in srgb,var(--stage) 60%,transparent)}
+  .lk .pg-void .url{margin:0;color:var(--wd);background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--wm) 40%,transparent)}
+  .lk .ghost{border-radius:12px;border:1.5px dashed color-mix(in srgb,var(--wm) 80%,transparent);display:flex;align-items:flex-end;padding:9px 10px}
+  .lk .g-url{font:500 11.5px var(--fm);color:var(--wm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--wm) 70%,transparent)}
+  .lk .pg-sm .g-url{font-size:10px}
+  .lk .slip{position:absolute;font:500 11px/1.5 var(--fm);border-radius:9px;white-space:nowrap}
+  .lk .slip-code{left:12px;bottom:calc(100% + 8px);padding:7px 11px 8px;background:var(--code);color:var(--code-ink);box-shadow:0 0 0 1px rgba(255,255,255,.07),0 10px 24px rgba(0,0,0,.45)}
+  .lk .slip-code::after{content:'';position:absolute;left:22px;top:100%;width:2px;height:9px;background:rgba(255,255,255,.14)}
+  .lk .slip-k{display:block;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#6C6860}
+  .lk .slip em{position:relative;font-style:normal;color:#FF8A80}
+  .lk .slip em .hl{position:absolute;inset:-1px -3px;border-radius:3px;background:rgba(255,90,79,.24);opacity:0}
+  .lk .slip-paper{padding:9px 12px 10px;background:linear-gradient(180deg,#EDE8DD,#E1DBCE);color:#3C3A36;box-shadow:0 1px 2px rgba(60,50,30,.25),0 12px 26px rgba(0,0,0,.35)}
+  html.light .lk .slip-paper{box-shadow:0 1px 2px rgba(60,50,30,.14),0 10px 22px rgba(70,48,24,.14)}
+  .lk .slip-paper .slip-k{color:#8A8478}
+  .lk .slip-paper .ty{color:var(--paper-link);font-weight:600}
+  .lk .slip-paper .clip{position:absolute;left:-7px;top:-9px;width:14px;height:30px;border:2px solid #8E959E;border-radius:7px}
+  .lk .robots{width:196px;padding:11px 14px 12px;font-size:11.5px;line-height:1.6}
+  .lk .robots .rl{display:block;white-space:pre}
+  .lk .bot{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .lk .bot-disc{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#F3F0EA;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 8px 20px rgba(0,0,0,.45)}
+  html.light .lk .bot-disc{background:#FFFFFF;box-shadow:0 1px 2px rgba(70,48,24,.12),0 8px 20px rgba(70,48,24,.14)}
+  .lk .bot-disc img{width:26px;height:26px}
+  .lk .bot-n{font:500 11px var(--fm);color:var(--wd)}
+  .lk .route{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+  .lk .route .dots{fill:none;stroke:color-mix(in srgb,var(--ac) 70%,transparent);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:0 9}
+  .lk .route.is-bad .dots{stroke:color-mix(in srgb,var(--bad) 70%,transparent)}
+  .lk .ping{width:12px;height:12px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 22%,transparent),0 0 18px var(--ac)}
+  .lk .cursor{width:22px;height:22px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.45))}
+  /* ink stamps: red = what broke, brand = what is right */
+  .lk .stp{position:absolute;left:50%;top:50%;z-index:4;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 14px 6px;border-radius:11px;
+    font-family:var(--fm);line-height:1;white-space:nowrap;pointer-events:none;opacity:0;color:var(--bad);
+    border:2.5px solid currentColor;outline:1.5px solid currentColor;outline-offset:3px;mix-blend-mode:var(--ink-blend)}
+  .lk .stp b{font-size:25px;font-weight:600;letter-spacing:.05em}
+  .lk .stp small{font-size:9.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+  .lk .stp.ok{color:var(--ac)}
+  .lk .stp.on-paper{mix-blend-mode:multiply}
+  html:not(.light) .lk .stp.on-paper{color:#E0362B}
+  .lk .stp.mini{padding:5px 9px 4px;border-width:2px;outline-offset:2px}
+  .lk .stp.mini b{font-size:15px}
+  .lk .stp.mini small{font-size:8.5px}
+
+  .lk-foot{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 34px;align-items:center;margin-top:clamp(40px,5vw,72px);padding-top:clamp(32px,4vw,48px)}
+  .lk-foot::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule)}
+  .lk-check{grid-row:span 2;position:relative;width:150px;height:84px}
+  .lk-check .stp{opacity:.95;transform:translate(-50%,-50%) rotate(-8deg);transition:opacity .25s ease,transform .32s cubic-bezier(.34,1.56,.64,1)}
+  .lk-check .stp b{font-size:24px}
+  html.js .lk-foot:not(.is-in) .lk-check .stp{opacity:0;transform:translate(-50%,-50%) rotate(-8deg) scale(2)}
+  .lk-callout{font-family:var(--fu);font-weight:700;font-size:clamp(19px,1.75vw,25px);line-height:1.35;letter-spacing:-.018em;color:var(--w);max-width:30em;text-wrap:balance}
+  .lk-note{font-size:15px;line-height:1.7;color:var(--wd);max-width:46em}
+
+  /* ── 2 · What the redesign includes ─────────────────────── */
+  .inc{position:relative;padding:clamp(72px,9vw,140px) clamp(16px,3vw,40px)}
+  .inc-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px)}
+  .inc-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,5vw,80px);margin-bottom:clamp(36px,5vw,72px)}
+  .inc-lead{max-width:30rem;margin-bottom:6px;font-size:clamp(15.5px,1.2vw,18px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .inc-grp{position:relative;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(28px,4.5vw,80px);padding:clamp(36px,4vw,56px) 0}
+  .inc-grp::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule)}
+  .inc-lab{display:flex;flex-direction:column;gap:22px}
+  .inc-gt{font-family:var(--fd);font-weight:400;font-size:clamp(28px,2.5vw,38px);line-height:1.02;letter-spacing:-.015em;color:var(--w);text-wrap:balance}
+
+  /* group objects: the hero's materials. They settle in once, when the group arrives. */
+  .inc-obj{position:relative;width:220px;height:150px}
+  .inc .pp{position:absolute;width:150px;height:98px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,var(--paper),var(--paper-2));border:1px solid var(--paper-edge);
+    box-shadow:0 2px 4px rgba(var(--shadow),.35),0 14px 28px rgba(var(--shadow),.38);transition:translate .6s cubic-bezier(.16,1,.3,1),opacity .4s ease}
+  html.light .inc .pp{box-shadow:0 1px 2px rgba(var(--shadow),.12),0 10px 22px rgba(var(--shadow),.14)}
+  .inc .pp::after{content:'';position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .42 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .inc .pp .bar{height:12px;background:var(--paper-bar)}
+  .inc .pp .tt{margin:9px auto 0;width:60%;height:6px;border-radius:2px;background:color-mix(in srgb,var(--paper-ink) 55%,transparent)}
+  .inc .pp .ln{margin:6px auto 0;width:74%;height:3px;border-radius:2px;background:color-mix(in srgb,var(--paper-ink) 25%,transparent)}
+  .inc .pp .u{position:absolute;left:8px;right:8px;bottom:8px;padding:4px 6px;border-radius:5px;font:500 10px/1 var(--fm);color:#4A4740;background:rgba(255,255,255,.55);white-space:nowrap}
+  .inc .pp1{left:4px;top:30px;rotate:-8deg}
+  .inc .pp2{left:28px;top:18px;rotate:4deg;transition-delay:.08s}
+  .inc .pp3{left:52px;top:36px;rotate:-2deg;transition-delay:.16s}
+  .inc .stp{position:absolute;left:96px;top:58px;rotate:-12deg;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 11px 4px;border-radius:10px;
+    font-family:var(--fm);line-height:1;white-space:nowrap;color:var(--ink);border:2px solid currentColor;outline:1.5px solid currentColor;outline-offset:2.5px;
+    mix-blend-mode:multiply;opacity:.92;transition:opacity .2s ease .5s,scale .3s cubic-bezier(.34,1.56,.64,1) .5s,rotate .3s cubic-bezier(.34,1.56,.64,1) .5s}
+  .inc .stp b{font-size:18px;font-weight:600;letter-spacing:.05em}
+  .inc .stp small{font-size:8.5px;letter-spacing:.06em;text-transform:uppercase}
+  .inc .np{position:absolute;left:18px;top:18px;width:184px;height:118px;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;
+    background:linear-gradient(165deg,var(--card-hi) 0%,var(--card) 62%);border:1px solid var(--card-edge);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 2px 4px rgba(var(--shadow),.4),0 16px 34px rgba(var(--shadow),.45);transition:translate .7s cubic-bezier(.16,1,.3,1) .1s,opacity .5s ease .1s}
+  html.light .inc .np{box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(var(--shadow),.12),0 12px 26px rgba(var(--shadow),.14)}
+  .inc .np i{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac)}
+  .inc .np .nt{margin-top:auto;font-family:var(--fd);font-style:italic;font-size:24px;line-height:1;color:var(--w)}
+  .inc .np .nu{margin-top:8px;padding:5px 6px;border-radius:5px;font:500 10px/1 var(--fm);color:var(--w);background:color-mix(in srgb,var(--ac) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 24%,transparent)}
+  .inc .bloom{position:absolute;left:50%;top:50%;width:300px;height:220px;margin:-110px 0 0 -150px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(closest-side,color-mix(in srgb,var(--ac) 30%,transparent),color-mix(in srgb,var(--ac2) 10%,transparent) 55%,transparent);transition:opacity .9s ease,scale .9s cubic-bezier(.16,1,.3,1)}
+  html.light .inc .bloom{opacity:.6}
+  html.js .inc-grp:not(.is-in) .pp{opacity:0;translate:0 -22px}
+  html.js .inc-grp:not(.is-in) .stp{opacity:0;scale:2.2;rotate:-30deg}
+  html.js .inc-grp:not(.is-in) .np{opacity:0;translate:0 18px}
+  html.js .inc-grp:not(.is-in) .bloom{opacity:0;scale:.7}
+
+  .inc-items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(28px,3.6vw,64px);align-content:start}
+  .inc-it{position:relative;display:grid;grid-template-columns:92px minmax(0,1fr);gap:clamp(16px,1.6vw,22px);padding:26px 0;align-items:start}
+  .inc-it:nth-child(n+3)::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule)}
+  .inc-it:nth-child(-n+2){padding-top:4px}
+  .inc-n{display:block;font:500 11.5px var(--fm);letter-spacing:.16em;color:var(--wm);font-variant-numeric:tabular-nums}
+  .inc-t{margin:7px 0 8px;font-family:var(--fu);font-weight:700;font-size:clamp(18px,1.5vw,22px);line-height:1.28;letter-spacing:-.018em;color:var(--w);text-wrap:balance}
+  .inc-d{font-size:clamp(14.5px,1.05vw,15.5px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .inc-d strong{font-weight:600;color:var(--w)}
+
+  /* glyph tiles are tiny pages: an old page on paper (kept) or a new brand page (rebuilt) */
+  .inc-g{position:relative;display:grid;place-items:center;width:92px;height:70px;padding-top:9px;border-radius:10px;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+  .inc-g svg{width:44px;height:44px;overflow:visible;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+  .inc-g text{font:600 8px var(--fm);stroke:none;letter-spacing:.02em}
+  .inc-g--ink{overflow:hidden;transform:rotate(var(--tilt,-1.5deg));background:linear-gradient(180deg,var(--paper),var(--paper-2));
+    box-shadow:inset 0 0 0 1px var(--paper-edge),0 2px 4px rgba(var(--shadow),.3),0 12px 24px rgba(var(--shadow),.3)}
+  .inc-it:nth-child(even) .inc-g--ink{--tilt:1.6deg}
+  html.light .inc-g--ink{box-shadow:inset 0 0 0 1px var(--paper-edge),0 1px 2px rgba(var(--shadow),.1),0 8px 18px rgba(var(--shadow),.1)}
+  .inc-g--ink::before{content:'';position:absolute;left:0;right:0;top:0;height:9px;background:var(--paper-bar)}
+  .inc-g--ink::after{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.35;mix-blend-mode:multiply;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .42 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .inc-g--ink svg{stroke:var(--ink)}
+  .inc-g--ink .m{stroke:color-mix(in srgb,var(--paper-ink) 45%,transparent)}
+  .inc-g--ink .fill{fill:var(--ink);stroke:none}
+  .inc-g--ink text{fill:var(--ink)}
+  .inc-g--lit{background:linear-gradient(165deg,var(--card-hi) 0%,var(--card) 62%);
+    box-shadow:inset 0 0 0 1px var(--card-edge),inset 0 1px 0 rgba(255,255,255,.07),0 2px 4px rgba(var(--shadow),.35),0 14px 30px -8px color-mix(in srgb,var(--ac) 26%,transparent)}
+  html.light .inc-g--lit{box-shadow:inset 0 0 0 1px var(--card-edge),0 1px 2px rgba(var(--shadow),.08),0 10px 22px -8px color-mix(in srgb,var(--ac) 30%,transparent)}
+  .inc-g--lit::before{content:'';position:absolute;left:8px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac)}
+  .inc-g--lit svg{stroke:var(--ac);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--ac) 50%,transparent))}
+  html.light .inc-g--lit svg{filter:none}
+  .inc-g--lit .m{stroke:color-mix(in srgb,var(--wd) 55%,transparent)}
+  .inc-g--lit .fill{fill:var(--ac);stroke:none}
+  @media (hover:hover) and (pointer:fine){
+    .inc-it:hover .inc-g{transform:translateY(-3px)}
+    .inc-it:hover .inc-g--ink{transform:translateY(-3px) rotate(0deg)}
+  }
+
+  /* ── smaller screens ────────────────────────────────────── */
+  @media (max-width:1100px){
+    .inc-grp{grid-template-columns:minmax(0,1fr)}
+    .inc-lab{flex-direction:row;align-items:center;gap:24px}
+    .inc-obj{flex:0 0 auto;transform:scale(.8);transform-origin:left center;margin-right:-44px}
+  }
+  @media (max-width:900px){
+    .lk-hdr{flex-direction:column;align-items:flex-start;gap:20px}
+    .lk-story{grid-template-columns:minmax(0,1fr)}
+    .lk-stage-col{display:none}
+    .lk-item{min-height:0;padding:30px 0 34px;grid-template-columns:34px minmax(0,1fr);cursor:auto}
+    html.js .lk-item:not(.is-on){opacity:1}
+    .lk-item .lk-n{color:var(--bad)}
+    /* the scene breaks out of the text column so it renders near full size */
+    .lk.is-ready .lk-inline{display:block;position:relative;margin:22px 0 0 -44px;width:calc(100% + 44px);aspect-ratio:340/420;max-width:460px}
+    .lk-inline .lk-box{border-radius:20px}
+    .lk-foot{grid-template-columns:minmax(0,1fr)}
+    .lk-check{grid-row:auto;height:70px;width:130px}
+  }
+  @media (max-width:760px){
+    .inc-hdr{flex-direction:column;align-items:flex-start;gap:20px}
+    .inc-items{grid-template-columns:minmax(0,1fr)}
+    .inc-it:nth-child(2){padding-top:26px}
+    .inc-it:nth-child(2)::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule)}
+    .inc-it{grid-template-columns:76px minmax(0,1fr)}
+    .inc-g{width:76px;height:60px;padding-top:8px}
+    .inc-g svg{width:38px;height:38px}
+    .inc-lab{flex-direction:column;align-items:flex-start;gap:8px}
+    .inc-obj{transform:scale(.72);margin:-20px 0 -26px 4px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .lk-item,.lk-n,.lk-ticks i,.lk-check .stp,.inc .pp,.inc .stp,.inc .np,.inc .bloom,.inc-g{transition:none}
+  }
+</style>
+
+<script>
+  // Sections 1 + 2. GSAP is downloaded only when either section is close to the screen.
+  // Without JS or GSAP, both sections still read: section 1 as a plain list, section 2 with its glyphs in their finished state.
+  const leaksEl = document.getElementById('leaks');
+  const incEl = document.getElementById('includes');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let gsapLib: any = null;
+  const loadGsapOnce = async () => (gsapLib ||= (await import('gsap')).default);
+  const whenNear = (el: Element | null, fn: () => void) => {
+    if (!el) return;
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); fn(); } }, { rootMargin: '600px 0px' });
+    io.observe(el);
+  };
+  whenNear(leaksEl, () => loadGsapOnce().then((g) => setupLeaks(leaksEl!, g)).catch(() => {}));
+  whenNear(incEl, () => setupIncludes(incEl!));
+
+  /* ── 1 · leaks ─────────────────────────────────────────── */
+  function setupLeaks(sec: HTMLElement, gsap: any) {
+    const ICON = { gpt: '/icons/chatgpt-icon.svg', claude: '/icons/claude-icon.svg' };
+    const narrow = matchMedia('(max-width: 900px)');
+    const DESK = { W: 560, H: 385 }, MOB = { W: 340, H: 420 };
+    let uid = 0;
+    sec.classList.add('is-ready');   // phones reserve room for their scenes only once GSAP is here
+
+    const el = (cls: string, html?: string, parent?: Element) => { const n = document.createElement('div'); n.className = cls; if (html) n.innerHTML = html; if (parent) parent.appendChild(n); return n; };
+    const at = (n: any, p: number[], more?: object) => gsap.set(n, Object.assign({ x: p[0], y: p[1], xPercent: -50, yPercent: -50 }, more || {}));
+    const q = (n: Element, s: string) => n.querySelector(s) as HTMLElement;
+    const bez = (a: number[], c: number[], b: number[], t: number) => { const u = 1 - t; return [u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]; };
+    const shadows = '<span class="sh sh-r"></span><span class="sh sh-l"></span>';
+    const oldFace = (p: any) => '<div class="face f-old"><div class="o-bar"><b>LOGO</b><span>Home</span><span>Services</span><span>About</span><span>Contact</span></div>' +
+      '<div class="o-body"><div class="o-title">' + p.t + '</div>' + (p.p ? '<div class="o-p">' + p.p + '</div>' : '') + '</div><span class="url">' + p.u + '</span></div>';
+    const newFace = (p: any, cls = '') => '<div class="face f-new' + cls + '"><div class="n-bar"><i></i></div><div class="n-title">' + p.t + '</div>' + (p.p ? '<div class="n-p">' + p.p + '</div>' : '') + (p.extra || '') + '<span class="url">' + p.u + '</span></div>';
+    const oldPage = (p: any, size?: string) => el('o pg ' + (size || 'pg-old'), shadows + oldFace(p));
+    const newPage = (p: any, size?: string) => el('o pg ' + (size || 'pg-new'), shadows + newFace(p));
+    const stamp = (b: string, s: string, cls: string, parent: Element, sx?: string, sy?: string) => {
+      const n = document.createElement('span'); n.className = 'stp ' + cls;
+      if (sx) n.style.left = sx; if (sy) n.style.top = sy;
+      n.innerHTML = '<b>' + b + '</b>' + (s ? '<small>' + s + '</small>' : ''); parent.appendChild(n); return n;
+    };
+    const label = (root: Element, txt: string, p: number[]) => { const n = el('o zl', txt, root); at(n, p); return n; };
+    const pin = (root: Element, p: number[]) => { const n = el('o', '', root); n.style.width = '0'; n.style.height = '0'; at(n, p); return n; };
+
+    // a dotted route that draws itself from a to b
+    function route(root: Element, dims: any, a: number[], c: number[], b: number[], bad?: boolean) {
+      const id = 'lkm' + (++uid), d = 'M' + a + ' Q' + c + ' ' + b;
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'o route' + (bad ? ' is-bad' : ''));
+      svg.setAttribute('width', dims.W); svg.setAttribute('height', dims.H); svg.setAttribute('viewBox', '0 0 ' + dims.W + ' ' + dims.H);
+      svg.innerHTML = '<defs><mask id="' + id + '" maskUnits="userSpaceOnUse"><path class="mk" d="' + d + '" fill="none" stroke="#fff" stroke-width="10"/></mask></defs><path class="dots" d="' + d + '" mask="url(#' + id + ')"/>';
+      root.appendChild(svg);
+      const mk = svg.querySelector('.mk') as SVGPathElement, len = mk.getTotalLength();
+      gsap.set(mk, { strokeDasharray: len, strokeDashoffset: len });
+      return { draw: (tl: any, pos: number, dur: number) => tl.to(mk, { strokeDashoffset: 0, duration: dur, ease: 'power2.inOut' }, pos) };
+    }
+    // move a node along a curve (onUpdate, so seek/restart must not suppress events)
+    function fly(tl: any, node: Element, a: number[], c: number[], b: number[], dur: number, pos: number, ease?: string) {
+      const o = { t: 0 };
+      tl.to(o, { t: 1, duration: dur, ease: ease || 'power2.inOut', onUpdate: () => { const p = bez(a, c, b, o.t); gsap.set(node, { x: p[0], y: p[1] }); } }, pos);
+    }
+    function lift(tl: any, card: Element, pos: number, up: boolean) {
+      tl.to(q(card, '.sh-r'), { opacity: up ? 0 : 1, duration: .25 }, pos)
+        .to(q(card, '.sh-l'), { opacity: up ? 1 : 0, duration: .25 }, pos)
+        .to(card, { scale: up ? 1.05 : 1, duration: up ? .3 : .22, ease: up ? 'power2.out' : 'power2.in' }, pos);
+    }
+    // ink stamp pressed onto a surface; the surface gives a little under it
+    function slam(tl: any, st: Element, rot: number, pos: number, host?: Element) {
+      tl.fromTo(st, { opacity: 0, scale: 2.3, rotation: rot - 18, xPercent: -50, yPercent: -50 }, { opacity: .95, scale: 1, rotation: rot, duration: .24, ease: 'back.out(2.4)' }, pos);
+      if (host) tl.to(host, { scale: .975, duration: .07, yoyo: true, repeat: 1, ease: 'power1.out' }, pos + .16);
+    }
+    const fadeIn = (tl: any, nodes: any, pos: number, dy = 8) => tl.fromTo(nodes, { opacity: 0, yPercent: -50 + dy }, { opacity: 1, yPercent: -50, duration: .5, ease: 'power3.out', stagger: .08 }, pos);
+
+    // Desktop positions are written for a 640 x 440 desk and squeezed by K into the 560 x 385 canvas,
+    // so pages render larger on screen. Phone positions are written for the 340 x 420 canvas as is.
+    const K = .875;
+    const P = (M: boolean, mob: number[], desk: number[]) => M ? mob : [desk[0] * K, desk[1] * K];
+    const LY = 58;
+    const ghostOf = (root: Element, p: number[], size: string, rot: number, url: string) => { const g = el('o ghost ' + size, '<span class="g-url">' + url + '</span>', root); at(g, p, { rotation: rot, opacity: 0 }); return g; };
+    const HOME = { t: 'Home', p: 'Freight quotes in under a minute.' };
+
+    const SCENES: ((root: Element, M: boolean, dims: any) => any)[] = [
+      // 01 · the staging noindex rides along into the live site
+      (root, M) => {
+        const A = P(M, [170, 108], [168, 246]), B = P(M, [170, 334], [472, 246]), C = P(M, [262, 222], [320, 150]);
+        const gh = ghostOf(root, A, 'pg-new', 0, 'staging.yoursite.com');
+        const card = newPage({ ...HOME, u: '<span class="u-a">staging.yoursite.com</span><span class="u-b">yoursite.com</span>' }); root.appendChild(card);
+        const slip = el('slip slip-code', '<span class="slip-k">&lt;head&gt;</span>&lt;meta name="robots"<br>&nbsp;&nbsp;content="<em><span class="hl"></span>noindex</em>"&gt;', card);
+        const st = stamp('NOINDEX', 'shipped to live', '', card, '70%', '16%');
+        const lbl = M ? [] : [label(root, 'Staging', P(M, [], [168, LY])), label(root, 'Live', P(M, [], [472, LY]))];
+        at(card, A); gsap.set(q(card, '.u-b'), { opacity: 0 });
+        const tl = gsap.timeline({ paused: true });
+        if (lbl.length) fadeIn(tl, lbl, 0, 0);
+        fadeIn(tl, card, .1, 6);
+        tl.fromTo(slip, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: .45, ease: 'power3.out' }, .5)
+          .to(q(slip, '.hl'), { opacity: 1, duration: .25, yoyo: true, repeat: 3 }, 1.0);
+        lift(tl, card, 1.75, true);
+        fly(tl, card, A, C, B, 1.05, 1.85);
+        tl.to(gh, { opacity: 1, duration: .4 }, 2.1)
+          .to(q(card, '.u-a'), { opacity: 0, duration: .2 }, 2.3).to(q(card, '.u-b'), { opacity: 1, duration: .2 }, 2.38)
+          .to(q(slip, '.hl'), { opacity: 1, duration: .3 }, 2.9);
+        lift(tl, card, 2.86, false);
+        slam(tl, st, -11, 3.15, card);
+        return tl.addLabel('end', 3.6);
+      },
+      // 02 · the redirect points at a page that was never built
+      (root, M, dims) => {
+        const A = P(M, [170, 104], [160, 250]), B = P(M, [170, 322], [480, 250]), C = P(M, [302, 213], [320, 70]);
+        const gh = ghostOf(root, A, 'pg-old', 0, '/services.html');
+        const rt = route(root, dims, A, C, B);
+        const mid = bez(A, C, B, .5);
+        const r301 = pin(root, M ? [mid[0] + 6, mid[1]] : [mid[0], mid[1] - 12]);
+        const s301 = stamp('301', 'to /our-services', 'ok mini', r301);
+        const vd = el('o pg-void', '<span class="url">/our-services</span>', root);
+        const old = oldPage({ t: 'Our Services', p: 'We offer a <u>wide range</u> of services for all your needs.', u: '/services.html' }); root.appendChild(old);
+        const st = stamp('404', 'page not found', '', vd, '50%', '40%');
+        const lbl = M ? [] : [label(root, 'Old site', P(M, [], [160, LY])), label(root, 'New site', P(M, [], [480, LY]))];
+        at(old, A); at(vd, B);
+        const tl = gsap.timeline({ paused: true });
+        if (lbl.length) fadeIn(tl, lbl, 0, 0);
+        fadeIn(tl, [old, vd], .1, 6);
+        rt.draw(tl, .7, .8);
+        slam(tl, s301, -8, 1.25);
+        lift(tl, old, 1.8, true);
+        fly(tl, old, A, C, B, 1.05, 1.9);
+        tl.to(gh, { opacity: 1, duration: .4 }, 2.15)
+          // nothing to land on: the page drops through
+          .to(old, { scale: .7, opacity: 0, rotation: 7, duration: .45, ease: 'power2.in' }, 2.85)
+          .to(vd, { borderColor: 'var(--bad)', duration: .2 }, 2.95);
+        slam(tl, st, -9, 3.25, vd);
+        return tl.addLabel('end', 3.7);
+      },
+      // 03 · every old page is funnelled into the homepage
+      (root, M) => {
+        const PS = M ? [[92, 70], [250, 70], [92, 182], [250, 182]] : [[148, 124], [190, 200], [148, 276], [190, 352]].map((p) => P(M, [], p));
+        const R = M ? [-3, 2, 3, -2] : [-5, 3, -3, 4];
+        const H = P(M, [170, 334], [480, 246]);
+        const data = [{ t: 'Our Services', u: '/services.html' }, { t: 'Portfolio', u: '/portfolio/item-7' }, { t: 'Latest News', u: '/blog/?p=214' }, { t: 'About Us', u: '/about-us.php' }];
+        const ghosts = PS.map((p, i) => ghostOf(root, p, 'pg-sm', R[i], data[i].u));
+        const home = newPage({ ...HOME, u: '/' }); root.appendChild(home); at(home, H);
+        const pages = data.map((d, i) => { const n = oldPage(d, 'pg-sm'); root.appendChild(n); at(n, PS[i], { rotation: R[i] }); return n; });
+        const st = stamp('SOFT 404', 'treated as gone', '', pin(root, P(M, [171, 128], [169, 238])));
+        const lbl = M ? [] : [label(root, 'Old site', P(M, [], [169, LY - 6])), label(root, 'New site', P(M, [], [480, LY - 6]))];
+        const tl = gsap.timeline({ paused: true });
+        if (lbl.length) fadeIn(tl, lbl, 0, 0);
+        fadeIn(tl, home, .1, 6);
+        fadeIn(tl, pages, .2, 6);
+        pages.forEach((n, i) => {
+          const t0 = 1.15 + i * .42, c = [(PS[i][0] + H[0]) / 2 + (M ? 40 : 0), Math.min(PS[i][1], H[1]) - (M ? 10 : 44)];
+          tl.to(n, { scale: 1.06, duration: .2, ease: 'power2.out' }, t0);
+          fly(tl, n, PS[i], c, H, .78, t0 + .1, 'power2.in');
+          tl.to(n, { scale: .3, rotation: 0, duration: .5, ease: 'power2.in' }, t0 + .38)
+            .to(n, { opacity: 0, duration: .16 }, t0 + .74)
+            .to(ghosts[i], { opacity: 1, duration: .3 }, t0 + .2)
+            .to(home, { scale: 1.035, duration: .1, yoyo: true, repeat: 1 }, t0 + .84);
+        });
+        slam(tl, st, -9, 3.15);
+        return tl.addLabel('end', 3.6);
+      },
+      // 04 · a link on the new site still points at an old address: every click takes a detour
+      (root, M, dims) => {
+        const AB = P(M, [118, 82], [474, 128]), GH = P(M, [228, 216], [166, 246]), SV = P(M, [118, 344], [474, 352]);
+        const s1 = M ? [[96, 134], [96, 216], [124, 216]] : [[404, 168], [310, 150], [270, 222]].map((p) => P(M, [], p));
+        const s2 = M ? [[228, 284], [236, 330], [230, 336]] : [[270, 270], [300, 352], [362, 352]].map((p) => P(M, [], p));
+        const r1 = route(root, dims, s1[0], s1[1], s1[2], true), r2 = route(root, dims, s2[0], s2[1], s2[2], true);
+        const ghost = oldPage({ t: 'Our Services', p: 'Moved. Redirecting...', u: '/services.html' }); root.appendChild(ghost); at(ghost, GH);
+        const about = newPage({ t: 'About', extra: '<div class="n-link">Services</div><div class="n-href">href="<em>/services.html</em>"</div>', u: '/about' }); root.appendChild(about); at(about, AB);
+        const svc = newPage({ t: 'Services', p: 'Ocean, air and road.', u: '/services' }); root.appendChild(svc); at(svc, SV);
+        const ping = el('o ping', '', root);
+        const cur = el('o cursor', '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>', root);
+        const st = stamp('EXTRA HOP', 'on every click', 'on-paper', ghost, '56%', '44%');
+        const lbl = M ? [] : [label(root, 'Old address', [GH[0], GH[1] - 86])];
+        const tl = gsap.timeline({ paused: true });
+        fadeIn(tl, [about, svc], .1, 6);
+        if (lbl.length) tl.set(lbl, { opacity: 0 }, 0);
+        tl.set(ghost, { opacity: 0 }, 0).set(ping, { opacity: 0 }, 0)
+          .fromTo(cur, { opacity: 0, x: s1[0][0] + 46, y: s1[0][1] + 40 }, { opacity: 1, x: s1[0][0] + 6, y: s1[0][1] - 6, duration: .55, ease: 'power3.out' }, .7)
+          .to(cur, { scale: .82, duration: .08, yoyo: true, repeat: 1 }, 1.3)
+          .set(ping, { x: s1[0][0], y: s1[0][1], xPercent: -50, yPercent: -50, opacity: 1 }, 1.4)
+          .to(cur, { opacity: 0, duration: .3 }, 1.6);
+        r1.draw(tl, 1.4, .7);
+        fly(tl, ping, s1[0], s1[1], s1[2], .7, 1.4);
+        tl.to(ghost, { opacity: 1, duration: .35 }, 1.5);
+        if (lbl.length) tl.to(lbl, { opacity: 1, duration: .3 }, 1.6);
+        tl.to(ghost, { scale: 1.04, duration: .12, yoyo: true, repeat: 1 }, 2.1);
+        r2.draw(tl, 2.45, .65);
+        fly(tl, ping, s2[0], s2[1], s2[2], .65, 2.45);
+        tl.to(ping, { opacity: 0, duration: .2 }, 3.1)
+          .to(q(svc, '.f-new'), { boxShadow: '0 0 0 1px var(--ac), 0 0 30px color-mix(in srgb,var(--ac) 35%,transparent)', duration: .3 }, 3.05);
+        slam(tl, st, -10, 3.35, ghost);
+        return tl.addLabel('end', 3.8);
+      },
+      // 05 · the page moves, the schema clipped to it stays behind
+      (root, M) => {
+        const A = P(M, [170, 132], [168, 254]), B = P(M, [170, 312], [478, 254]), C = P(M, [300, 222], [322, 150]);
+        const SL = P(M, [248, 52], [262, 166]);
+        const card = el('o pg pg-old', shadows + oldFace({ t: 'Our Services', p: 'We offer a <u>wide range</u> of services for all your needs.', u: '/services.html' }) +
+          newFace({ t: 'Services', p: 'Ocean, air and road.', u: '/services' }, ' nf'), root);
+        const miss = el('n-miss', '&lt;script type="application/ld+json"&gt; <em>none</em>', card);
+        const slip = el('o slip slip-paper', '<span class="clip"></span><span class="slip-k">JSON-LD</span>{ "@type": "<span class="ty">Service</span>",<br>&nbsp;&nbsp;"provider": "..." }', root);
+        const st = stamp('NO SCHEMA', 'left on the old site', '', card, '68%', '16%');
+        const lbl = M ? [] : [label(root, 'Old site', P(M, [], [168, LY])), label(root, 'New site', P(M, [], [478, LY]))];
+        at(card, A); at(slip, SL, { rotation: 5 }); gsap.set(q(card, '.nf'), { opacity: 0 });
+        const tl = gsap.timeline({ paused: true });
+        if (lbl.length) fadeIn(tl, lbl, 0, 0);
+        fadeIn(tl, card, .1, 6);
+        tl.fromTo(slip, { opacity: 0, yPercent: -60, rotation: -4 }, { opacity: 1, yPercent: -50, rotation: 5, duration: .5, ease: 'back.out(1.6)' }, .5)
+          .to(q(slip, '.ty'), { backgroundColor: 'rgba(63,85,168,.16)', duration: .25, yoyo: true, repeat: 3 }, 1.1);
+        lift(tl, card, 1.8, true);
+        tl.to(slip, { yPercent: -58, rotation: 2, duration: .2, ease: 'power2.out' }, 1.8)
+          .to(slip, { yPercent: -10, rotation: 17, opacity: .6, duration: .55, ease: 'power2.in' }, 2.02);
+        fly(tl, card, A, C, B, 1.1, 1.9);
+        tl.to(q(card, '.f-old'), { opacity: 0, duration: .25 }, 2.35).to(q(card, '.nf'), { opacity: 1, duration: .25 }, 2.35);
+        lift(tl, card, 2.95, false);
+        tl.to(miss, { opacity: 1, duration: .3 }, 3.1);
+        slam(tl, st, -9, 3.35, card);
+        return tl.addLabel('end', 3.8);
+      },
+      // 06 · a fresh robots.txt turns the AI crawlers away
+      (root, M) => {
+        const G = P(M, [92, 52], [76, 172]), CL = P(M, [248, 52], [76, 316]), RB = P(M, [170, 198], [276, 246]), NP = P(M, [170, 350], [524, 246]);
+        const bot = (src: string, n: string, p: number[]) => { const b = el('o bot', '<span class="bot-disc"><img src="' + src + '" width="26" height="26" alt=""></span><span class="bot-n">' + n + '</span>', root); at(b, p); return b; };
+        const site = newPage({ ...HOME, u: 'yoursite.com' }, 'pg-md'); root.appendChild(site); at(site, NP);
+        const rb = el('o slip slip-paper robots', '<span class="slip-k">robots.txt</span><span class="rl">User-agent: GPTBot</span><span class="rl d">Disallow: /</span><span class="rl">User-agent: ClaudeBot</span><span class="rl d">Disallow: /</span>', root);
+        at(rb, RB);
+        const gpt = bot(ICON.gpt, 'GPTBot', G), cla = bot(ICON.claude, 'ClaudeBot', CL);
+        const st = stamp('BLOCKED', 'GPTBot · ClaudeBot', 'on-paper', rb, '64%', '92%');
+        const lbl = M ? [] : [label(root, 'AI crawlers', P(M, [], [76, LY])), label(root, 'New site', P(M, [], [524, LY]))];
+        const tl = gsap.timeline({ paused: true });
+        if (lbl.length) fadeIn(tl, lbl, 0, 0);
+        fadeIn(tl, [rb, site], .1, 6);
+        fadeIn(tl, [gpt, cla], .35, 6);
+        tl.fromTo(rb.querySelectorAll('.rl'), { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: .32, ease: 'steps(14)', stagger: .22 }, .7);
+        const d = M ? 34 : 62, hit = M ? { y: '+=' + d } : { x: '+=' + d }, back = M ? { y: '-=' + d } : { x: '-=' + d };
+        tl.to([gpt, cla], { duration: .5, ease: 'power2.in', stagger: .12, ...hit }, 1.95)
+          .to(rb.querySelectorAll('.rl.d'), { color: 'var(--bad)', duration: .15, stagger: .12 }, 2.42)
+          .to(rb, { x: M ? RB[0] : RB[0] + 4, y: M ? RB[1] - 4 : RB[1], duration: .06, yoyo: true, repeat: 3 }, 2.44)
+          .to(gpt, { duration: .7, ease: 'back.out(1.8)', ...back }, 2.45)
+          .to(cla, { duration: .7, ease: 'back.out(1.8)', ...back }, 2.57);
+        slam(tl, st, -10, 3.2, rb);
+        return tl.addLabel('end', 3.65);
+      },
+    ];
+
+    // one stage: the desktop sticky stage holds all six scenes, each phone stage holds one
+    function makeStage(box: HTMLElement, dims: any, indexes: number[]) {
+      const fit = el('lk-fit', '', box) as HTMLElement;
+      fit.style.width = dims.W + 'px'; fit.style.height = dims.H + 'px';
+      fit.style.margin = (-dims.H / 2) + 'px 0 0 ' + (-dims.W / 2) + 'px';
+      const players: Record<number, any> = {};
+      indexes.forEach((i) => {
+        const root = el('lk-scene', '', fit);
+        const tl = SCENES[i](root, dims === MOB, dims);
+        tl.to(root.children, { opacity: 0, duration: .4, ease: 'power1.in' }, 'end+=2.4');   // hold the stamped frame, clear the desk, go again
+        let dc: any = null;
+        const p: any = {
+          root,
+          play() { p.stop(); root.classList.add('is-on'); if (reduceMotion) { tl.seek('end', false); return; } tl.restart(false, false); },
+          stop() { tl.pause(); if (dc) { dc.kill(); dc = null; } },
+          hide() { p.stop(); root.classList.remove('is-on'); },
+        };
+        tl.eventCallback('onComplete', () => { dc = gsap.delayedCall(.35, p.play); });
+        tl.seek('end', false).pause();
+        players[i] = p;
+      });
+      const resize = () => {
+        const desk = dims === DESK, w = box.clientWidth, h = box.clientHeight - (desk ? 56 : 0);
+        if (!w || !h) return;
+        const s = Math.min(1.36, w / dims.W, h / dims.H);
+        fit.style.transform = 'translateY(' + (desk ? 18 : 0) + 'px) scale(' + s.toFixed(3) + ')';
+      };
+      return { players, resize };
+    }
+
+    const items = [...sec.querySelectorAll<HTMLElement>('.lk-item')];
+    const stageEl = sec.querySelector<HTMLElement>('.lk-stage')!;
+    const desk = makeStage(sec.querySelector<HTMLElement>('.lk-stage .lk-box')!, DESK, SCENES.map((_, i) => i));
+    const inline = items.map((it, i) => {
+      const holder = it.querySelector<HTMLElement>('.lk-inline')!;
+      const st = makeStage(el('lk-box', '', holder) as HTMLElement, MOB, [i]);
+      st.players[i].root.classList.add('is-on');   // the stamped frame shows until the scene plays
+      return { i, holder, ...st };
+    });
+    const ticks = [...sec.querySelectorAll('.lk-ticks i')];
+    const num = sec.querySelector('.lk-num')!;
+
+    // desktop: the leak crossing the middle of the screen drives the stage
+    let active = 0, stageVisible = false;
+    function activate(i: number) {
+      if (narrow.matches) return;
+      if (i !== active) {
+        items[active].classList.remove('is-on'); ticks[active].classList.remove('is-on'); desk.players[active].hide();
+        active = i;
+        items[i].classList.add('is-on'); ticks[i].classList.add('is-on');
+        num.textContent = String(i + 1).padStart(2, '0');
+      }
+      if (stageVisible) desk.players[i].play(); else desk.players[i].root.classList.add('is-on');
+    }
+    const centerIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) activate(Number((e.target as HTMLElement).dataset.i)); }), { rootMargin: '-50% 0px -49% 0px' });
+    items.forEach((it) => centerIO.observe(it));
+    new IntersectionObserver((es) => es.forEach((e) => {
+      stageVisible = e.isIntersecting;
+      if (narrow.matches) return;
+      if (stageVisible) desk.players[active].play(); else desk.players[active].stop();
+    }), { threshold: .25 }).observe(stageEl);
+    desk.players[0].root.classList.add('is-on');
+    items.forEach((it) => it.addEventListener('click', (e) => {
+      if (narrow.matches || (e.target as Element).closest('a')) return;
+      const r = it.getBoundingClientRect(), y = scrollY + r.top + r.height / 2 - innerHeight / 2;
+      const lenis = (window as any).__lenis;
+      if (lenis && !reduceMotion) lenis.scrollTo(y); else scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }));
+
+    // phones: each leak plays its own scene while it is on screen
+    const inlineIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!narrow.matches) return;
+      const s = inline.find((x) => x.holder === e.target)!, p = s.players[s.i];
+      if (e.isIntersecting) p.play(); else p.stop();
+    }), { threshold: .4 });
+    inline.forEach((s) => inlineIO.observe(s.holder));
+
+    function layout() {
+      desk.resize(); inline.forEach((s) => s.resize());
+      if (narrow.matches) Object.values(desk.players).forEach((p: any) => p.stop());
+      else { inline.forEach((s) => s.players[s.i].stop()); if (stageVisible) desk.players[active].play(); }
+    }
+    layout();
+    addEventListener('resize', () => { desk.resize(); inline.forEach((s) => s.resize()); }, { passive: true });
+    narrow.addEventListener('change', layout);
+
+    // section close: the Day 10 stamp lands when the line comes into view
+    const foot = sec.querySelector('.lk-foot')!;
+    const footIO = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { foot.classList.add('is-in'); footIO.disconnect(); } }, { threshold: .6 });
+    footIO.observe(foot);
+  }
+
+  /* ── 2 · includes ───────────────────────────────────────── */
+  function setupIncludes(sec: HTMLElement) {
+    const groups = [...sec.querySelectorAll<HTMLElement>('.inc-grp')];
+    // group objects settle in with CSS once their group arrives
+    const inIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); inIO.unobserve(e.target); } }), { threshold: .2 });
+    groups.forEach((g) => inIO.observe(g));
+    if (reduceMotion) return;   // glyphs stay in their finished drawing
+
+    loadGsapOnce().then((gsap) => {
+      const q = (n: Element, s: string) => n.querySelector(s);
+      const qa = (n: Element, s: string) => [...n.querySelectorAll(s)];
+      const DRAW = { strokeDasharray: 1, strokeDashoffset: 1 };
+      const draw = (tl: any, n: any, pos: number, d = .5) => tl.to(n, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, pos);
+      const pop = (tl: any, n: any, pos: number) => tl.fromTo(n, { opacity: 0, scale: .4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: .35, ease: 'back.out(2.4)' }, pos);
+
+      // each glyph draws its item's line in under two seconds, holds, then goes again
+      const GLYPHS: Record<string, (s: Element, tl: any) => number> = {
+        redirect(s, tl) {
+          gsap.set(qa(s, '.strike,.arc,.head,.nw'), DRAW);
+          draw(tl, q(s, '.strike'), .2, .35); draw(tl, q(s, '.arc'), .55, .55);
+          pop(tl, q(s, '.t'), .75);
+          draw(tl, q(s, '.head'), 1.05, .2); draw(tl, q(s, '.nw'), 1.2, .55);
+          return 1.9;
+        },
+        meta(s, tl) {
+          qa(s, '.l').forEach((l, i) => tl.fromTo(l, { x: 0 }, { x: 24, duration: .6, ease: 'power3.inOut' }, .2 + i * .28));
+          return 1.6;
+        },
+        sitemap(s, tl) {
+          gsap.set(qa(s, '.e,.e2'), DRAW);
+          pop(tl, q(s, '.n0'), .1); draw(tl, q(s, '.e'), .35, .55);
+          qa(s, '.n1,.n2,.n3').forEach((n, i) => pop(tl, n, .7 + i * .12));
+          draw(tl, q(s, '.e2'), 1.45, .25); pop(tl, q(s, '.n4'), 1.65);   // a page is published: the sitemap grows on its own
+          return 2.1;
+        },
+        index(s, tl) {
+          gsap.set(qa(s, '.p,.k'), DRAW);
+          draw(tl, q(s, '.p1'), .25, .5); draw(tl, q(s, '.p2'), .4, .5);
+          qa(s, '.eg').forEach((e, i) => pop(tl, e, .7 + i * .15));
+          draw(tl, q(s, '.k1'), .85, .25); draw(tl, q(s, '.k2'), 1.0, .25);
+          return 1.5;
+        },
+        answer(s, tl) {
+          gsap.set(qa(s, '.a'), DRAW);
+          tl.fromTo(q(s, '.q'), { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: .35, ease: 'power2.out' }, .1);
+          qa(s, '.a').forEach((a, i) => draw(tl, a, .45 + i * .2, .45));
+          tl.fromTo(q(s, '.sp'), { opacity: 0, scale: .3, rotation: -40, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: 'back.out(2)' }, 1.25);
+          return 1.9;
+        },
+        nav(s, tl) {
+          gsap.set(q(s, '.pg'), DRAW);
+          const c = q(s, '.cur');
+          tl.fromTo(c, { x: 38, y: 34, opacity: 0 }, { x: 24, y: 12, opacity: 1, duration: .6, ease: 'power3.out' }, .1)
+            .to(c, { scale: .8, transformOrigin: '0 0', duration: .08, yoyo: true, repeat: 1 }, .75)
+            .fromTo(q(s, '.i2'), { strokeWidth: 2.1 }, { strokeWidth: 3.6, duration: .15 }, .8);
+          draw(tl, q(s, '.pg'), .9, .5);
+          return 1.6;
+        },
+        semantic(s, tl) {
+          gsap.set(qa(s, '.b'), DRAW);
+          qa(s, '.b').forEach((b, i) => draw(tl, b, .15 + i * .22, .45));
+          tl.fromTo(q(s, '.tl'), { opacity: 0 }, { opacity: 1, duration: .3 }, 1.2);
+          return 1.7;
+        },
+        fast(s, tl) {
+          gsap.set(q(s, '.bolt'), DRAW);
+          draw(tl, q(s, '.bolt'), .2, .28);
+          tl.fromTo(q(s, '.pl'), { opacity: 0 }, { opacity: 1, duration: .05 }, .5);
+          return 1.3;
+        },
+        lead(s, tl) {
+          const tok = q(s, '.tok'), cn = q(s, '.cn');
+          tl.fromTo(tok, { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: .15 }, .3)
+            .to(tok, { x: 28, y: -13, duration: .55, ease: 'power2.inOut' }, .45)
+            .to(tok, { opacity: 0, duration: .1 }, .95)
+            .fromTo(cn, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: .35, ease: 'back.out(2)' }, .95)
+            .fromTo(q(s, '.c2'), { y: 0 }, { y: 12, duration: .35, ease: 'power2.out' }, .95)
+            .fromTo(q(s, '.c1'), { opacity: 1 }, { opacity: .35, duration: .35 }, .95);
+          return 1.6;
+        },
+        analytics(s, tl) {
+          gsap.set(q(s, '.up'), DRAW);
+          draw(tl, q(s, '.up'), .15, .8); pop(tl, q(s, '.dot'), .9);
+          tl.fromTo(q(s, '.ring'), { opacity: .9, scale: 1, transformOrigin: '50% 50%' }, { opacity: 0, scale: 2.6, duration: .7, ease: 'power2.out' }, 1.05);
+          return 1.9;
+        },
+      };
+
+      groups.forEach((g) => {
+        const tls = qa(g, 'svg[data-g]').map((svg) => {
+          const tl = gsap.timeline({ paused: true, repeat: -1, repeatDelay: 1.6 });
+          const len = GLYPHS[(svg as SVGElement).dataset.g!](svg, tl);
+          tl.to({}, { duration: Math.max(.1, 3.1 - len) });   // hold the finished drawing
+          tl.seek(len);                                       // show the finished drawing until the group plays
+          return tl;
+        });
+        // glyphs only run while their group is on screen, staggered the first time so they do not fire in unison
+        let seen = false, live = false;
+        new IntersectionObserver((es) => es.forEach((e) => {
+          live = e.isIntersecting;
+          if (!live) { tls.forEach((tl) => tl.pause()); return; }
+          if (seen) { tls.forEach((tl) => tl.play()); return; }
+          seen = true;
+          tls.forEach((tl, i) => gsap.delayedCall(.3 + i * .18, () => { if (live) tl.restart(); }));
+        }), { threshold: .2 }).observe(g);
+      });
+    }).catch(() => {});
+  }
+</script>
+
+<!-- Sections 3 to 5: global for the same reason as above (JS adds classes and builds nodes). Every rule is held inside .sp, .bb or .pf. -->
+<style is:global>
+  /* ── 3 · the sprint ─────────────────────────────────────── */
+  .sp{--sp-ph:url(/images/shivam-attri-website-redesign-sprint-blue.webp);--sp-phm:url(/images/shivam-attri-website-redesign-sprint-blue-motion.webp);--sp-deep:#01040E;--sp-glow:58,120,238;position:relative}
+  html.light .sp{--sp-ph:url(/images/shivam-attri-website-redesign-sprint-terra.webp);--sp-phm:url(/images/shivam-attri-website-redesign-sprint-terra-motion.webp);--sp-deep:#130401;--sp-glow:216,95,45}
+  .sp.is-pinned{height:250vh}
+  .sp-pin{padding:clamp(72px,9vw,120px) clamp(16px,3vw,40px)}
+  .sp.is-pinned .sp-pin{position:sticky;top:0;height:100vh;min-height:720px;display:flex;flex-direction:column;justify-content:center;padding-top:96px;padding-bottom:40px;overflow:hidden}
+  .sp-wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px)}
+  .sp-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,5vw,80px);margin-bottom:clamp(28px,3.4vw,48px)}
+  .sp-side{display:flex;flex-direction:column;align-items:flex-end;gap:16px;max-width:27rem;margin-bottom:6px;text-align:right}
+  .sp-note{font-size:clamp(14.5px,1.1vw,16px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .sp-day{font:500 11px var(--fm);letter-spacing:.18em;text-transform:uppercase;color:var(--wm);font-variant-numeric:tabular-nums}
+  .sp-day b{font-weight:500;color:var(--ac)}
+  .sp:not(.is-pinned) .sp-day{display:none}
+  .sp-row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.4vw,22px)}
+  .sp-slot{position:relative;will-change:transform}
+  .sp-card{position:relative;height:clamp(440px,58vh,560px);border-radius:22px;overflow:hidden;isolation:isolate;color:#fff;background:var(--sp-deep);
+    translate:0 0;transition:translate .7s cubic-bezier(.16,1,.3,1),box-shadow .7s cubic-bezier(.16,1,.3,1);
+    box-shadow:0 0 0 1px rgba(255,255,255,.06) inset,0 2px 6px rgba(0,0,0,.35),0 24px 50px -22px rgba(0,0,0,.75)}
+  html.light .sp-card{box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 2px 6px rgba(70,48,24,.12),0 24px 50px -22px rgba(120,52,24,.4)}
+  .sp-ph{position:absolute;inset:-2px;background-image:var(--sp-ph);background-size:var(--bs) auto;background-position:var(--bp);background-repeat:no-repeat}
+  .sp-ph-main{scale:1.02;transition:scale 1.6s cubic-bezier(.16,1,.3,1)}
+  /* motion clones: the long-exposure copy of the same frame. --land/--lx come from the scroll landing, hover overrides them */
+  .sp-ph-g{background-image:var(--sp-phm);transition:translate 1.1s cubic-bezier(.16,1,.3,1),opacity .8s ease}
+  .sp-ph-gl{opacity:var(--land,0);translate:calc(var(--lx,0) * -1px) 0}
+  .sp-ph-gr{opacity:calc(var(--land,0) * .85);translate:calc(var(--lx,0) * .9px) 0}
+  .sp-shade{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--sp-deep) 45%,transparent) 0%,transparent 26%,transparent 44%,color-mix(in srgb,var(--sp-deep) 78%,transparent) 74%,var(--sp-deep) 100%)}
+  .sp-grain{position:absolute;inset:0;opacity:.32;mix-blend-mode:overlay;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>")}
+  .sp-days{position:absolute;left:22px;top:20px;display:flex;align-items:center;gap:8px;font:500 11px var(--fm);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+  .sp-days::before{content:'';width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.8)}
+  .sp-num{position:absolute;left:0;right:0;top:6.5%;text-align:center;font-family:var(--fd);font-weight:400;font-size:clamp(108px,9.4vw,158px);line-height:1;letter-spacing:-.045em;color:#fff;
+    text-shadow:0 4px 18px rgba(0,0,0,.25),0 14px 44px rgba(0,0,0,.3);transition:translate .9s cubic-bezier(.16,1,.3,1);font-variant-numeric:lining-nums}
+  .sp-body{position:absolute;left:22px;right:22px;bottom:22px}
+  .sp-t{font-family:var(--fu);font-weight:700;font-size:clamp(21px,1.7vw,25px);line-height:1.15;letter-spacing:-.02em;color:#fff}
+  .sp-d{margin-top:10px;font-size:clamp(14px,1vw,15px);line-height:1.62;color:rgba(255,255,255,.8);text-wrap:pretty;transition:color .6s ease}
+  .sp-glow{position:absolute;left:12%;right:12%;bottom:-30px;height:80px;border-radius:50%;background:rgb(var(--sp-glow));filter:blur(40px);opacity:0;z-index:-1;pointer-events:none;transition:opacity .8s ease}
+  @media (hover:hover) and (pointer:fine){
+    .sp-slot:hover .sp-card{translate:0 -6px;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 36px 70px -28px rgba(var(--sp-glow),.75),0 10px 24px rgba(0,0,0,.35)}
+    .sp-slot:hover .sp-ph-main{scale:1.08}
+    .sp-slot:hover .sp-ph-gl{opacity:.55;translate:-38px 0}
+    .sp-slot:hover .sp-ph-gr{opacity:.42;translate:34px 0}
+    .sp-slot:hover .sp-num{translate:0 -8px}
+    .sp-slot:hover .sp-d{color:rgba(255,255,255,.94)}
+    .sp-slot:hover .sp-glow{opacity:.6}
+  }
+  @keyframes spClones{0%{opacity:0;translate:0 0}35%{opacity:.55}100%{opacity:0;translate:var(--gx) 0}}
+  .sp-slot.is-snap .sp-ph-gl{--gx:-40px;animation:spClones 1.4s cubic-bezier(.16,1,.3,1)}
+  .sp-slot.is-snap .sp-ph-gr{--gx:36px;animation:spClones 1.4s cubic-bezier(.16,1,.3,1) .08s}
+
+  /* ── 4 · B2B ────────────────────────────────────────────── */
+  .bb{--bb-card:#18181B;--bb-card-hi:#232327;--bb-edge:rgba(79,142,247,.34);--bb-sh:0,0,0;--bb-sk:rgba(255,255,255,.08);--bb-sk2:rgba(255,255,255,.14);
+    --bb-rule:linear-gradient(90deg,transparent,rgba(255,255,255,.1) 10%,rgba(255,255,255,.1) 90%,transparent);
+    position:relative;overflow-x:clip;padding:clamp(72px,9vw,140px) clamp(16px,3vw,40px)}
+  html.light .bb{--bb-card:#FFFFFF;--bb-card-hi:#FFFFFF;--bb-edge:rgba(218,119,86,.42);--bb-sh:70,48,24;--bb-sk:rgba(26,23,20,.07);--bb-sk2:rgba(26,23,20,.12);
+    --bb-rule:linear-gradient(90deg,transparent,rgba(26,23,20,.13) 10%,rgba(26,23,20,.13) 90%,transparent)}
+  .bb-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px)}
+  .bb-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,5vw,80px)}
+  .bb-lead{max-width:30rem;margin-bottom:6px;font-size:clamp(15.5px,1.2vw,18px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .bb-proof{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,5vw,96px);align-items:center;margin-top:clamp(40px,5vw,72px)}
+
+  /* engine switch, with the real product marks */
+  .bb .ai-tabs{display:flex;gap:6px;margin-bottom:14px}
+  .bb .ai-tab{all:unset;cursor:pointer;position:relative;display:flex;align-items:center;gap:9px;padding:9px 14px 11px;border-radius:12px;
+    font:500 13.5px ui-sans-serif,-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;color:var(--wd);transition:color .3s ease,background .3s ease}
+  .bb .ai-tab svg,.bb .ai-tab img{width:18px;height:18px}
+  .bb .ai-tab::after{content:'';position:absolute;left:14px;right:14px;bottom:3px;height:2px;border-radius:2px;background:var(--w);transform:scaleX(0);transition:transform .45s cubic-bezier(.16,1,.3,1)}
+  .bb .ai-tab[aria-pressed="true"]{color:var(--w)}
+  .bb .ai-tab[aria-pressed="true"]::after{transform:scaleX(1)}
+  @media (hover:hover) and (pointer:fine){.bb .ai-tab:hover{color:var(--w);background:var(--bb-sk)}}
+  /* the window: each engine paints it in its own product colours and type, not the site's */
+  .bb .ai-win{position:relative;height:clamp(480px,58vh,540px);border-radius:18px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(255,255,255,.08),0 2px 6px rgba(0,0,0,.4),0 40px 90px -40px rgba(0,0,0,.9),0 30px 80px -50px color-mix(in srgb,var(--ac) 50%,transparent)}
+  html.light .bb .ai-win{box-shadow:0 0 0 1px rgba(0,0,0,.08),0 2px 6px rgba(70,48,24,.08),0 40px 80px -40px rgba(70,48,24,.35)}
+  .bb .ai-ui{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+  .bb .ai-ui.is-on{opacity:1;visibility:visible;transition:opacity .45s ease}
+  .bb .ai-head{display:flex;align-items:center;gap:8px;height:52px;padding:0 18px;flex:0 0 auto}
+  .bb .ai-feed{flex:1;overflow:hidden;padding:8px 26px 0;display:flex;flex-direction:column;gap:20px}
+  .bb .ai-q{align-self:flex-end;max-width:78%;opacity:0;translate:0 8px;transition:opacity .4s ease,translate .5s cubic-bezier(.16,1,.3,1)}
+  .bb .ai-a p,.bb .ai-a ol,.bb .ai-a ul{margin:0}
+  .bb .ai-a p+p,.bb .ai-a ol+p,.bb .ai-a ul+p,.bb .ai-a p+ol,.bb .ai-a p+ul{margin-top:12px}
+  .bb .ai-a ol,.bb .ai-a ul{padding-left:1.35em}
+  .bb .ai-a li+li{margin-top:8px}
+  .bb .ai-w{opacity:0;transition:opacity .25s ease}
+  .bb .ai-cite{display:inline-flex;align-items:center;gap:5px;margin-left:6px;padding:1px 9px;border-radius:999px;font-size:12px;line-height:20px;vertical-align:1px;opacity:0;scale:.9;transition:opacity .35s ease,scale .45s cubic-bezier(.34,1.56,.64,1)}
+  .bb .ai-think{display:none;align-items:center;gap:8px;font-size:14px}
+  .bb .ai-think.is-on{display:flex}
+  .bb .ai-comp{flex:0 0 auto;margin:12px 18px 16px;display:flex;align-items:center;gap:12px;padding:0 10px 0 16px;height:52px}
+  .bb .ai-comp > span:not(.ai-send){flex:1;font-size:15px}
+  .bb .ai-ic{width:20px;height:20px;flex:0 0 auto;opacity:.7}
+  .bb .ai-send{display:grid;place-items:center;flex:0 0 auto;width:34px;height:34px;border-radius:50%}
+  .bb .ai-note{margin-top:12px;font:500 10.5px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--wm)}
+  /* shown states (before JS runs everything is visible, so the chat reads without motion) */
+  html.js .bb .ai.is-live .ai-q:not(.is-in),html.js .bb .ai.is-live .ai-w:not(.is-in),html.js .bb .ai.is-live .ai-cite:not(.is-in),
+  html.js .bb .ai.is-live .ai-acts:not(.is-in),html.js .bb .ai.is-live .ai-mark:not(.is-in),html.js .bb .ai.is-live .ai-src:not(.is-in){opacity:0}
+  .bb .ai-q.is-in,.bb .ai-w.is-in,.bb .ai-cite.is-in,.bb .ai-acts.is-in,.bb .ai-mark.is-in,.bb .ai-src.is-in{opacity:1;translate:0 0;scale:1}
+  .bb .ai:not(.is-live) .ai-q,.bb .ai:not(.is-live) .ai-w,.bb .ai:not(.is-live) .ai-cite,.bb .ai:not(.is-live) .ai-acts,.bb .ai:not(.is-live) .ai-mark,.bb .ai:not(.is-live) .ai-src{opacity:1;translate:0 0;scale:1}
+
+  /* ChatGPT */
+  .bb .ui-gpt{background:#212121;color:#ECECEC;font-family:ui-sans-serif,-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif}
+  .bb .ui-gpt .ai-head{font-size:17px;font-weight:500;color:#ECECEC}
+  .bb .ui-gpt .ai-head small{font-size:17px;color:#9B9B9B;font-weight:400}
+  .bb .ui-gpt .ai-q{background:#303030;border-radius:22px;padding:10px 18px;font-size:15.5px;line-height:1.55}
+  .bb .ui-gpt .ai-a{font-size:15.5px;line-height:1.72}
+  .bb .ui-gpt .ai-a b{font-weight:600}
+  .bb .ui-gpt .ai-cite{background:#303030;color:#AFAFAF}
+  .bb .ui-gpt .ai-think i{width:12px;height:12px;border-radius:50%;background:#ECECEC;animation:gptDot 1s ease-in-out infinite}
+  @keyframes gptDot{50%{scale:.6}}
+  .bb .ui-gpt .ai-acts{display:flex;gap:14px;margin-top:10px;color:#9B9B9B;transition:opacity .4s ease}
+  .bb .ui-gpt .ai-acts svg{width:17px;height:17px}
+  .bb .ui-gpt .ai-comp{background:#303030;border-radius:28px;color:#9B9B9B}
+  .bb .ui-gpt .ai-send{background:#ECECEC;color:#000}
+  html.light .bb .ui-gpt{background:#FFFFFF;color:#0D0D0D}
+  html.light .bb .ui-gpt .ai-head{color:#0D0D0D}
+  html.light .bb .ui-gpt .ai-q{background:#F4F4F4}
+  html.light .bb .ui-gpt .ai-cite{background:#F4F4F4;color:#5D5D5D}
+  html.light .bb .ui-gpt .ai-think i{background:#0D0D0D}
+  html.light .bb .ui-gpt .ai-comp{background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 4px 14px rgba(0,0,0,.06);color:#8F8F8F}
+  html.light .bb .ui-gpt .ai-send{background:#0D0D0D;color:#fff}
+  /* Claude */
+  .bb .ui-cl{background:#262624;color:#C2C0B6;font-family:ui-sans-serif,-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif}
+  .bb .ui-cl .ai-head{font-size:14.5px;color:#C2C0B6}
+  .bb .ui-cl .ai-head b{font-weight:500;color:#F5F4EF}
+  .bb .ui-cl .ai-q{align-self:flex-start;display:flex;gap:10px;align-items:flex-start;max-width:86%;background:#141413;border-radius:14px;padding:10px 14px 10px 10px;font-size:15px;line-height:1.55;color:#F5F4EF}
+  .bb .ui-cl .ai-q i{flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#C2C0B6;color:#141413;font:600 12px ui-sans-serif,system-ui,sans-serif;font-style:normal}
+  .bb .ui-cl .ai-a{font-family:ui-serif,'Tiempos Text',Georgia,'Times New Roman',serif;font-size:16.5px;line-height:1.62;color:#F5F4EF}
+  .bb .ui-cl .ai-a b{font-weight:600}
+  .bb .ui-cl .ai-cite{font-family:ui-sans-serif,system-ui,sans-serif;background:#141413;color:#C2C0B6;border-radius:6px}
+  .bb .ui-cl .ai-mark{width:22px;height:22px;margin-top:10px;transition:opacity .4s ease}
+  .bb .ui-cl .ai-think img{width:22px;height:22px;animation:clSpin 1.6s ease-in-out infinite}
+  @keyframes clSpin{50%{rotate:45deg;scale:.85}}
+  .bb .ui-cl .ai-comp{background:#30302E;border-radius:18px;height:58px;box-shadow:0 0 0 1px rgba(255,255,255,.06);color:#9C9A92}
+  .bb .ui-cl .ai-send{background:#C6613F;color:#fff;border-radius:10px;width:32px;height:32px}
+  html.light .bb .ui-cl{background:#FAF9F5;color:#3D3D3A}
+  html.light .bb .ui-cl .ai-head b{color:#141413}
+  html.light .bb .ui-cl .ai-q{background:#F0EEE6;color:#141413}
+  html.light .bb .ui-cl .ai-q i{background:#3D3D3A;color:#FAF9F5}
+  html.light .bb .ui-cl .ai-a{color:#141413}
+  html.light .bb .ui-cl .ai-cite{background:#F0EEE6;color:#3D3D3A}
+  html.light .bb .ui-cl .ai-comp{background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.05);color:#73726C}
+  /* Google AI Mode */
+  .bb .ui-gg{background:#1F1F1F;color:#E3E3E3;font-family:'Google Sans','Google Sans Text',Roboto,Arial,sans-serif}
+  .bb .ui-gg .ai-head{gap:10px;font-size:15px;color:#E3E3E3}
+  .bb .ui-gg .ai-head img{width:20px;height:20px}
+  .bb .ui-gg .ai-head b{font-weight:500}
+  .bb .ui-gg .ai-q{background:#303134;border-radius:22px 22px 6px 22px;padding:10px 18px;font-size:15px;line-height:1.5}
+  .bb .ui-gg .ai-a{font-size:15.5px;line-height:1.7;color:#E3E3E3}
+  .bb .ui-gg .ai-a b{font-weight:500;color:#fff}
+  .bb .ui-gg .ai-cite{background:#303134;color:#A8C7FA;padding:1px 7px}
+  .bb .ui-gg .ai-cite svg{width:13px;height:13px}
+  .bb .ui-gg .ai-think i{width:130px;height:10px;border-radius:5px;background:linear-gradient(90deg,#303134 0%,#4C8DF6 40%,#303134 80%);background-size:200% 100%;animation:ggShim 1.2s linear infinite}
+  @keyframes ggShim{to{background-position:-200% 0}}
+  .bb .ui-gg .ai-src{display:flex;gap:10px;margin-top:14px;transition:opacity .4s ease,translate .5s cubic-bezier(.16,1,.3,1)}
+  .bb .ui-gg .ai-card{flex:1;max-width:260px;padding:12px 14px;border-radius:16px;background:#282A2C;font-size:13px;line-height:1.45}
+  .bb .ui-gg .ai-card small{display:flex;align-items:center;gap:7px;color:#C4C7C5;font-size:12px;margin-bottom:5px}
+  .bb .ui-gg .ai-card small i{width:16px;height:16px;border-radius:50%;background:#4C8DF6}
+  .bb .ui-gg .ai-card small i.is-grey{background:#9AA0A6}
+  .bb .ui-gg .ai-comp{background:#303134;border-radius:28px;color:#9AA0A6}
+  html.light .bb .ui-gg{background:#FFFFFF;color:#1F1F1F}
+  html.light .bb .ui-gg .ai-head{color:#1F1F1F}
+  html.light .bb .ui-gg .ai-q{background:#F0F4F9}
+  html.light .bb .ui-gg .ai-a{color:#1F1F1F}
+  html.light .bb .ui-gg .ai-a b{color:#000}
+  html.light .bb .ui-gg .ai-cite{background:#F0F4F9;color:#0B57D0}
+  html.light .bb .ui-gg .ai-card{background:#F0F4F9}
+  html.light .bb .ui-gg .ai-card small{color:#444746}
+  html.light .bb .ui-gg .ai-comp{background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);color:#70757A}
+  html.light .bb .ui-gg .ai-think i{background:linear-gradient(90deg,#E9EEF6 0%,#4C8DF6 40%,#E9EEF6 80%);background-size:200% 100%}
+
+  /* the numbers */
+  .bb-stats{display:grid;gap:clamp(26px,3vw,40px)}
+  .bb-stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,2vw,28px);align-items:center;padding-top:clamp(22px,2.6vw,34px);position:relative}
+  .bb-stat::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--bb-rule)}
+  .bb-n{font-family:var(--fd);font-weight:400;font-size:clamp(84px,8.6vw,138px);line-height:.82;letter-spacing:-.04em;color:var(--w);font-variant-numeric:tabular-nums;min-width:2.05ch}
+  .bb-n sup{font-size:.42em;vertical-align:.95em;margin-left:.04em;font-style:italic;color:var(--ac)}
+  .bb-stat p{font-size:clamp(16px,1.35vw,19px);line-height:1.5;color:var(--w);max-width:20rem;text-wrap:pretty}
+  .bb-src{font-size:14px;line-height:1.7;color:var(--wd)}
+  .bb-both{margin:clamp(64px,8vw,120px) auto clamp(40px,5vw,64px);max-width:22em;text-align:center;font-family:var(--fd);font-weight:400;font-size:clamp(30px,3.4vw,50px);line-height:1.12;letter-spacing:-.018em;color:var(--w);text-wrap:balance}
+  .bb-both em{font-style:italic;color:var(--ac)}
+
+  /* four points, each with the recommended vendor's own page fragment */
+  .bb-pts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,1.8vw,28px)}
+  .bb-pt{display:flex;flex-direction:column;gap:18px}
+  .bb-fr{position:relative;height:172px;border-radius:16px;padding:16px;overflow:hidden;display:flex;flex-direction:column;gap:9px;container-type:inline-size;
+    background:linear-gradient(165deg,var(--bb-card-hi),var(--bb-card) 70%);box-shadow:inset 0 0 0 1px var(--bb-edge),inset 0 1px 0 rgba(255,255,255,.06),0 2px 6px rgba(var(--bb-sh),.3),0 22px 44px -26px rgba(var(--bb-sh),.8);
+    transition:translate .5s cubic-bezier(.16,1,.3,1),box-shadow .5s ease}
+  html.light .bb-fr{box-shadow:inset 0 0 0 1px var(--bb-edge),0 1px 3px rgba(var(--bb-sh),.08),0 16px 34px -22px rgba(var(--bb-sh),.3)}
+  @media (hover:hover) and (pointer:fine){.bb-pt:hover .bb-fr{translate:0 -4px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 55%,transparent),0 26px 50px -24px color-mix(in srgb,var(--ac) 45%,transparent)}}
+  .bb-fr::before{content:'';position:absolute;left:14px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac)}
+  .bb-fr-k{margin-left:14px;margin-top:-4px;font:500 10.5px var(--fm);letter-spacing:.02em;color:var(--wm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* one line per row, always: a label column and a value column, like a real spec block */
+  .bb-fr-h{margin:0;font:700 13.5px/1.3 var(--fu);letter-spacing:-.01em;color:var(--w);white-space:nowrap}
+  .bb-fr-l{margin:0;display:grid;grid-template-columns:76px minmax(0,1fr);align-items:baseline;font:500 12.5px/1.45 var(--fu);color:var(--wd);white-space:nowrap}
+  .bb-fr-l b{font-weight:700;color:var(--w)}
+  .bb-sk{display:block;height:8px;border-radius:4px;background:var(--bb-sk2)}
+  /* highlighter: a soft marker sweeps behind the line that answers the question */
+  .bb-hl{padding:0 2px;margin:0 -2px;border-radius:2px;color:var(--w);
+    background:linear-gradient(color-mix(in srgb,var(--ac) 24%,transparent),color-mix(in srgb,var(--ac) 24%,transparent)) no-repeat 0 0/var(--hl,100%) 100%;
+    transition:background-size .7s cubic-bezier(.65,0,.35,1) var(--dl,0s)}
+  html.js .bb-pt:not(.is-in) .bb-hl{--hl:0%}
+  .bb-fr-row{display:flex;align-items:flex-end;flex:1}
+  /* the proof sits under the claim as one row: the number, then what it counts */
+  .bb-fr-case{flex:1;min-width:0;border-radius:11px;padding:9px 12px;display:flex;align-items:center;gap:12px;background:color-mix(in srgb,var(--ac) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 30%,transparent);
+    transition:opacity .45s ease .2s,translate .55s cubic-bezier(.16,1,.3,1) .2s}
+  html.js .bb-pt:not(.is-in) .bb-fr-case{opacity:0;translate:10px 0}
+  .bb-fr-case b{font-family:var(--fd);font-weight:400;font-size:min(36px,12.5cqi);line-height:.9;color:var(--w)}
+  .bb-fr-case span{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .bb-fr-case small{font:500 min(9.5px,3.9cqi) var(--fm);letter-spacing:.03em;color:var(--wd);white-space:nowrap}
+  .bb-fr-case small + small{color:var(--wm)}
+  .bb-fr-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .bb-fr-in{display:flex;flex-direction:column;gap:3px;padding:7px 10px;border-radius:9px;background:var(--bb-sk);box-shadow:inset 0 0 0 1px var(--bb-sk)}
+  .bb-fr-in span{font:500 9px var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--wm)}
+  .bb-fr-in b{font:600 12px var(--fu);color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bb-fr-send{display:flex;align-items:center;gap:8px;margin-top:auto;font:500 11px var(--fm);color:var(--wd)}
+  .bb-fr-send i{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--ac),transparent);transform-origin:left;transition:transform .6s cubic-bezier(.65,0,.35,1) .35s}
+  .bb-fr-send em{font-style:normal;padding:4px 8px;border-radius:7px;color:var(--w);background:color-mix(in srgb,var(--ac) 18%,transparent);transition:opacity .4s ease .9s}
+  html.js .bb-pt:not(.is-in) .bb-fr-send i{transform:scaleX(0)}
+  html.js .bb-pt:not(.is-in) .bb-fr-send em{opacity:0}
+  /* type that must stay on one line scales down with the card instead of being cut */
+  .bb-fr-code{font:500 min(11.5px,4.7cqi)/1.55 var(--fm);color:var(--wd);white-space:pre}
+  .bb-s{color:var(--acl)}
+  html.light .bb-s{color:var(--ac2)}
+  .bb-n2{font:500 11.5px var(--fm);letter-spacing:.16em;color:var(--wm)}
+  .bb-t{margin:-8px 0 0;font-family:var(--fu);font-weight:700;font-size:clamp(18px,1.45vw,21px);line-height:1.25;letter-spacing:-.018em;color:var(--w)}
+  .bb-d{margin:-8px 0 0;font-size:clamp(14.5px,1.05vw,15.5px);line-height:1.68;color:var(--wd);text-wrap:pretty}
+
+  /* industries: a slow two-row marquee in opposite directions, edges fading into the page */
+  .bb-ind{margin-top:clamp(56px,6vw,96px);padding-top:30px;position:relative}
+  .bb-ind::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--bb-rule)}
+  .bb-ind-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:clamp(18px,2vw,28px)}
+  .bb-ind-k{font:500 11px var(--fm);letter-spacing:.18em;text-transform:uppercase;color:var(--wm)}
+  .bb-ind-top .ilink{font-size:15px}
+  .bb-mq{width:100vw;margin-left:calc(50% - 50vw);display:grid;gap:clamp(4px,.8vw,12px);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .bb-mq-row{display:flex;width:max-content;animation:bbMq 58s linear infinite}
+  .bb-mq-row.is-rev{animation-duration:66s;animation-direction:reverse}
+  .bb-mq:hover .bb-mq-row{animation-play-state:paused}
+  .bb-mq-track{list-style:none;margin:0;padding:0;display:flex;align-items:center;flex:0 0 auto}
+  .bb-mq-i{font-family:var(--fd);font-weight:400;font-size:clamp(38px,4.6vw,72px);line-height:1.12;letter-spacing:-.022em;color:var(--w);white-space:nowrap;padding:0 .08em;transition:opacity .4s ease}
+  .bb-mq-i.is-em{font-style:italic;background:linear-gradient(110deg,var(--ac) 0%,var(--acl) 50%,var(--ac2) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:.16em}
+  .bb-mq-s{width:clamp(14px,1.4vw,20px);height:clamp(14px,1.4vw,20px);margin:0 clamp(18px,2.2vw,36px);fill:var(--ac);opacity:.7;flex:0 0 auto}
+  @media (hover:hover) and (pointer:fine){.bb-mq-row:hover .bb-mq-i{opacity:.35}.bb-mq-row .bb-mq-i:hover{opacity:1}}
+  @keyframes bbMq{to{translate:-50% 0}}
+
+  /* ── 5 · platforms: one screen ───────────────────────────── */
+  .pf{--pf-panel:#111114;--pf-panel-hi:#17171C;--pf-edge:rgba(255,255,255,.07);--pf-sh:0,0,0;--pf-row:rgba(255,255,255,.05);
+    position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:96px clamp(16px,3vw,40px) 48px}
+  html.light .pf{--pf-panel:#FFFFFF;--pf-panel-hi:#FFFFFF;--pf-edge:rgba(26,23,20,.08);--pf-sh:70,48,24;--pf-row:rgba(26,23,20,.045)}
+  .pf-wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px)}
+  .pf-hdr{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,5vw,80px)}
+  .pf-lead{max-width:28rem;margin-bottom:6px;font-size:clamp(15.5px,1.2vw,18px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+  .pf-grid{list-style:none;margin:clamp(28px,3.6vw,48px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.2vw,18px)}
+  .pf-card{--px:50%;--py:0%;position:relative;display:flex;flex-direction:column;gap:16px;height:clamp(330px,44vh,400px);padding:22px 22px 18px;border-radius:22px;overflow:hidden;isolation:isolate;
+    background:radial-gradient(120% 70% at 0% 0%,rgba(var(--b),.14),transparent 55%),linear-gradient(180deg,var(--pf-panel-hi),var(--pf-panel));
+    box-shadow:inset 0 0 0 1px var(--pf-edge),inset 0 1px 0 rgba(255,255,255,.04),0 2px 6px rgba(var(--pf-sh),.3),0 30px 60px -40px rgba(var(--pf-sh),.8);
+    transition:translate .6s cubic-bezier(.16,1,.3,1),box-shadow .6s cubic-bezier(.16,1,.3,1)}
+  html.light .pf-card{background:radial-gradient(120% 70% at 0% 0%,rgba(var(--b),.1),transparent 55%),#fff;box-shadow:inset 0 0 0 1px var(--pf-edge),0 1px 2px rgba(var(--pf-sh),.06),0 22px 44px -30px rgba(var(--pf-sh),.3)}
+  /* the platform's own mark, huge and quiet, in its own colour */
+  .pf-mark{position:absolute;right:-18%;bottom:-16%;width:78%;aspect-ratio:1;z-index:-1;background:linear-gradient(135deg,rgb(var(--b)),rgb(var(--b2,var(--b))));
+    -webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;opacity:.09;rotate:-10deg;
+    transition:opacity .7s ease,rotate 1s cubic-bezier(.16,1,.3,1),translate 1s cubic-bezier(.16,1,.3,1)}
+  /* spotlight: a ring of the platform's colour on the edge and a soft pool inside, both following the pointer */
+  .pf-card::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.2px;pointer-events:none;opacity:0;transition:opacity .5s ease;
+    background:radial-gradient(240px circle at var(--px) var(--py),rgba(var(--b),.95),transparent 65%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .pf-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .5s ease;
+    background:radial-gradient(360px circle at var(--px) var(--py),rgba(var(--b),.16),transparent 60%)}
+  @media (hover:hover) and (pointer:fine){
+    .pf-card:hover{translate:0 -5px;box-shadow:inset 0 0 0 1px var(--pf-edge),0 34px 70px -34px rgba(var(--b),.6),0 8px 22px rgba(var(--pf-sh),.3)}
+    .pf-card:hover::before,.pf-card:hover::after{opacity:1}
+    .pf-card:hover .pf-mark{opacity:.2;rotate:-4deg;translate:-10px -10px}
+  }
+  .pf-top{display:flex;align-items:center;gap:14px}
+  .pf-logo{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;flex:0 0 auto;background:#F3F0EA;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 8px 18px rgba(0,0,0,.4)}
+  html.light .pf-logo{background:#fff;box-shadow:0 0 0 1px rgba(26,23,20,.06),0 6px 14px rgba(var(--pf-sh),.12)}
+  .pf-logo img{width:27px;height:27px}
+  .pf-name{margin:0;font-family:var(--fd);font-weight:400;font-size:clamp(28px,2.4vw,36px);line-height:1;letter-spacing:-.015em;color:var(--w)}
+  .pf-d{margin:0;font-size:clamp(14px,1vw,15px);line-height:1.66;color:var(--wd);text-wrap:pretty}
+  /* the redirect that comes with you */
+  .pf-map{margin-top:auto;display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:7px;padding:10px 12px;border-radius:12px;
+    background:var(--pf-row);box-shadow:inset 0 0 0 1px var(--pf-edge);font:500 11.5px var(--fm);white-space:nowrap}
+  .pf-old{position:relative;color:var(--wd);overflow:hidden;text-overflow:ellipsis}
+  .pf-old::after{content:'';position:absolute;left:0;right:0;top:52%;height:1.5px;background:var(--wd);transform:scaleX(var(--s,1));transform-origin:left;transition:transform .45s cubic-bezier(.65,0,.35,1)}
+  .pf-arr{color:var(--wm);translate:var(--ax,0) 0;opacity:var(--ao,1);transition:translate .4s cubic-bezier(.16,1,.3,1) .25s,opacity .3s ease .25s}
+  .pf-new{color:var(--w);overflow:hidden;text-overflow:ellipsis;clip-path:inset(0 var(--nc,0%) 0 0);transition:clip-path .5s cubic-bezier(.65,0,.35,1) .4s}
+  .pf-301{justify-self:end;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:rgb(var(--b));padding:2px 6px;border:1.5px solid currentColor;border-radius:6px;rotate:-8deg;
+    opacity:var(--so,1);scale:var(--ss,1);transition:opacity .2s ease .85s,scale .35s cubic-bezier(.34,1.56,.64,1) .85s}
+  html.light .pf-301{color:color-mix(in srgb,rgb(var(--b)) 85%,#000)}
+  .pf-map.is-reset{--s:0;--ax:-6px;--ao:0;--nc:100%;--so:0;--ss:1.8}
+  .pf-map.is-reset *{transition:none}
+  .pf-foot{display:flex;justify-content:space-between;gap:12px 40px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,34px);font-size:15px;line-height:1.7;color:var(--wd)}
+  .pf-foot p{margin:0}
+
+  /* ── smaller screens ────────────────────────────────────── */
+  @media (max-width:1279px){.bb-pts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:1023px),(hover:none){
+    .sp-hdr{flex-direction:column;align-items:flex-start;gap:18px}
+    .sp-side{align-items:flex-start;text-align:left}
+    .sp-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 calc(-1 * clamp(20px,4vw,40px));padding:6px clamp(20px,4vw,40px) 34px;scrollbar-width:none}
+    .sp-row::-webkit-scrollbar{display:none}
+    .sp-slot{flex:0 0 min(80vw,340px);scroll-snap-align:start}
+    .sp-card{height:470px}
+    .sp-num{font-size:120px}
+  }
+  @media (max-width:1023px){
+    .pf{min-height:0;display:block;padding:clamp(72px,9vw,120px) clamp(16px,3vw,40px)}
+    .pf-hdr{flex-direction:column;align-items:flex-start;gap:20px}
+    .pf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .pf-card{height:auto;min-height:330px}
+  }
+  @media (max-width:900px){
+    .bb-hdr{flex-direction:column;align-items:flex-start;gap:20px}
+    .bb-proof{grid-template-columns:minmax(0,1fr)}
+  }
+  @media (max-width:600px){
+    .bb .ai-win{height:640px}
+    .bb .ui-gg .ai-card+.ai-card{display:none}
+    .bb-pts{grid-template-columns:minmax(0,1fr)}
+    .bb-both{text-align:left}
+    .bb .ai-feed{padding:6px 16px 0}
+    .bb .ai-tab span{display:none}
+    .bb .ai-tab{padding:9px 12px 11px}
+    .pf-grid{grid-template-columns:minmax(0,1fr)}
+    .pf-card{min-height:0}
+    .pf-foot{flex-direction:column}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sp-card,.sp-ph-main,.sp-ph-g,.sp-num,.sp-d,.sp-glow{transition:none}
+    .sp-slot.is-snap .sp-ph-g{animation:none}
+    .bb .ui-gpt .ai-think i,.bb .ui-cl .ai-think img,.bb .ui-gg .ai-think i{animation:none}
+    .bb .ai-ui,.bb .ai-q,.bb .ai-w,.bb .ai-cite,.bb-hl,.bb-fr-case,.bb-fr-send i,.bb-fr-send em,.bb-fr{transition:none}
+    .bb-mq-row{animation:none;width:auto;flex-wrap:wrap}
+    .bb-mq-track[aria-hidden]{display:none}
+    .bb-mq-track{flex-wrap:wrap}
+    .pf-card,.pf-mark,.pf-card::before,.pf-card::after,.pf-old::after,.pf-arr,.pf-new,.pf-301{transition:none}
+  }
+</style>
+
+<script>
+  // Sections 3 to 5. Everything reads without JS; motion is layered on top.
+  const reduceMo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const near = (el: Element | null, fn: () => void) => {
+    if (!el) return;
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); fn(); } }, { rootMargin: '600px 0px' });
+    io.observe(el);
+  };
+  near(document.getElementById('sprint'), () => setupSprint(document.getElementById('sprint')!));
+  near(document.getElementById('b2b'), () => setupB2B(document.getElementById('b2b')!));
+  near(document.getElementById('platforms'), () => setupPlatforms(document.getElementById('platforms')!));
+
+  /* ── 3 · sprint ─────────────────────────────────────────── */
+  async function setupSprint(sec: HTMLElement) {
+    const slots = [...sec.querySelectorAll<HTMLElement>('.sp-slot')];
+    const day = sec.querySelector('.sp-day-n')!;
+    const wide = matchMedia('(min-width: 1024px) and (hover: hover)');
+
+    // phones and touch: the card that snaps into view plays its motion clones once
+    if (!reduceMo) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (wide.matches || !e.isIntersecting) return;
+        const s = e.target as HTMLElement; s.classList.remove('is-snap'); void s.offsetWidth; s.classList.add('is-snap');
+      }), { root: sec.querySelector('.sp-row'), threshold: .8 });
+      slots.forEach((s) => io.observe(s));
+    }
+    if (reduceMo) return;
+
+    // desktop: the section pins, the day count runs, cards 3 and 4 rise into the row trailing their clones,
+    // and the clones close in as each card lands (same CSS-sticky + scrub pattern as the hero)
+    let gsap: any, ST: any;
+    try {
+      gsap = (await import('gsap')).default;
+      ST = (await import('gsap/ScrollTrigger')).ScrollTrigger;
+      gsap.registerPlugin(ST);
+    } catch { return; }
+    let run: any = null;
+    const build = () => {
+      if (run) { run.st.kill(); run.tl.kill(); gsap.set(slots, { clearProps: 'transform,--land,--lx' }); run = null; }
+      const pin = wide.matches;
+      sec.classList.toggle('is-pinned', pin);
+      if (!pin) { ST.refresh(); return; }
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      [[2, .32, .04, .42], [3, .72, .3, .5]].forEach(([i, from, at, dur]) => {
+        const s = slots[i];
+        gsap.set(s, { y: () => innerHeight * from, '--land': .5, '--lx': 40 });
+        tl.to(s, { y: 0, duration: dur }, at)
+          .to(s, { '--land': 0, '--lx': 0, duration: dur * .9, ease: 'power3.out' }, at + dur * .2);
+      });
+      tl.to({}, { duration: .2 });
+      const st = ST.create({ trigger: sec, start: 'top top', end: 'bottom bottom', scrub: .6, animation: tl, invalidateOnRefresh: true,
+        onUpdate: (self: any) => { day.textContent = String(Math.max(1, Math.min(10, Math.round(1 + self.progress * 11)))).padStart(2, '0'); } });
+      run = { tl, st };
+      ST.refresh();
+    };
+    build();
+    wide.addEventListener('change', build);
+  }
+
+  /* ── 4 · B2B ────────────────────────────────────────────── */
+  function setupB2B(sec: HTMLElement) {
+    const ai = sec.querySelector<HTMLElement>('.ai')!;
+    const tabs = [...ai.querySelectorAll<HTMLButtonElement>('.ai-tab')];
+    const uis = [...ai.querySelectorAll<HTMLElement>('.ai-ui')];
+    const win = ai.querySelector('.ai-win')!;
+
+    // the answer streams in word by word, the way the real products write
+    uis.forEach((ui) => {
+      const walk = (n: Node) => [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const f = document.createDocumentFragment();
+          (c.textContent || '').split(/(\s+)/).forEach((t) => {
+            if (!t) return;
+            if (/^\s+$/.test(t)) f.append(t);
+            else { const s = document.createElement('span'); s.className = 'ai-w'; s.textContent = t; f.append(s); }
+          });
+          c.replaceWith(f);
+        } else if (c.nodeType === 1 && !(c as Element).classList.contains('ai-cite')) walk(c);
+      });
+      walk(ui.querySelector('.ai-a')!);
+    });
+
+    let cur = 0, timers: number[] = [], auto = true, visible = false;
+    const later = (ms: number, fn: () => void) => { timers.push(window.setTimeout(fn, ms)); };
+    const clear = () => { timers.forEach(clearTimeout); timers = []; };
+    const show = (ui: HTMLElement) => ui.querySelectorAll('.ai-q,.ai-w,.ai-cite,.ai-acts,.ai-mark,.ai-src').forEach((n) => n.classList.add('is-in'));
+    function play(i: number) {
+      clear();
+      cur = i;
+      tabs.forEach((t, k) => t.setAttribute('aria-pressed', k === i ? 'true' : 'false'));
+      uis.forEach((u, k) => u.classList.toggle('is-on', k === i));
+      const ui = uis[i], feed = ui.querySelector<HTMLElement>('.ai-feed')!, think = ui.querySelector('.ai-think')!;
+      const words = [...ui.querySelectorAll('.ai-w')];
+      ui.querySelectorAll('.is-in').forEach((n) => n.classList.remove('is-in'));
+      if (reduceMo) { show(ui); feed.scrollTop = feed.scrollHeight; return; }
+      feed.scrollTop = 0;
+      later(250, () => ui.querySelector('.ai-q')!.classList.add('is-in'));
+      later(800, () => think.classList.add('is-on'));
+      later(2000, () => {
+        think.classList.remove('is-on');
+        words.forEach((w, k) => later(k * 34, () => {
+          w.classList.add('is-in');
+          if (feed.scrollHeight > feed.clientHeight) feed.scrollTo({ top: feed.scrollHeight, behavior: 'smooth' });
+        }));
+        const end = words.length * 34;
+        later(end + 120, () => ui.querySelectorAll('.ai-cite').forEach((c) => c.classList.add('is-in')));
+        later(end + 420, () => { ui.querySelectorAll('.ai-acts,.ai-mark,.ai-src').forEach((c) => c.classList.add('is-in')); feed.scrollTo({ top: feed.scrollHeight, behavior: 'smooth' }); });
+        // the same question, asked in the next engine
+        later(end + 6200, () => { if (auto && visible) play((i + 1) % uis.length); });
+      });
+    }
+    ai.classList.add('is-live');
+    uis.forEach((u, k) => { if (k !== 0) u.classList.remove('is-on'); });
+    show(uis[0]);
+    tabs.forEach((t, i) => t.addEventListener('click', () => { auto = false; play(i); }));
+    new IntersectionObserver((es) => es.forEach((e) => {
+      const was = visible; visible = e.isIntersecting;
+      if (visible && !was) play(cur); else if (!visible) clear();
+    }), { threshold: .45 }).observe(win);
+
+    // the two numbers count up the first time they are seen
+    if (!reduceMo) sec.querySelectorAll<HTMLElement>('[data-to]').forEach((n) => {
+      const to = Number(n.dataset.to);
+      const io = new IntersectionObserver((es) => {
+        if (!es.some((e) => e.isIntersecting)) return; io.disconnect();
+        const t0 = performance.now(), dur = 1300;
+        const tick = (t: number) => { const p = Math.min(1, (t - t0) / dur); n.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); };
+        n.textContent = '0';
+        requestAnimationFrame(tick);
+      }, { threshold: .6 });
+      io.observe(n);
+    });
+
+    // each fragment marks its answer lines when it scrolls in
+    const pts = [...sec.querySelectorAll<HTMLElement>('.bb-pt')];
+    if (reduceMo) pts.forEach((p) => p.classList.add('is-in'));
+    else {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        setTimeout(() => el.classList.add('is-in'), pts.indexOf(el) * 140);
+        io.unobserve(el);
+      }), { threshold: .45 });
+      pts.forEach((p) => io.observe(p));
+    }
+  }
+
+  /* ── 5 · platforms ──────────────────────────────────────── */
+  function setupPlatforms(sec: HTMLElement) {
+    if (reduceMo) return;
+    const cards = [...sec.querySelectorAll<HTMLElement>('.pf-card')];
+    const maps = cards.map((c) => c.querySelector<HTMLElement>('.pf-map')!);
+    const replay = (m: HTMLElement, delay: number) => { m.classList.add('is-reset'); void m.offsetWidth; setTimeout(() => m.classList.remove('is-reset'), delay); };
+
+    // on arrival the redirect plays panel by panel, left to right: the same URL map landing on each platform
+    maps.forEach((m) => m.classList.add('is-reset'));
+    const io = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return; io.disconnect();
+      maps.forEach((m, i) => setTimeout(() => m.classList.remove('is-reset'), 250 + i * 380));
+    }, { threshold: .5 });
+    io.observe(sec.querySelector('.pf-grid')!);
+
+    // hover: a ring of the platform's colour follows the pointer, and that panel's redirect plays again
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) cards.forEach((c, i) => {
+      c.addEventListener('pointermove', (e) => {
+        const r = c.getBoundingClientRect();
+        c.style.setProperty('--px', (e.clientX - r.left) + 'px'); c.style.setProperty('--py', (e.clientY - r.top) + 'px');
+      });
+      c.addEventListener('pointerenter', () => replay(maps[i], 30));
+    });
+  }
+</script>
+
+<!-- Section 6 (FAQ): the script toggles open/hover state, so these styles are global. Every rule is held under .fq. -->
+<style is:global>
+  .fq{--fq-line:rgba(255,255,255,.1);position:relative;padding:clamp(88px,9vw,150px) clamp(16px,3vw,40px) clamp(56px,6vw,96px)}
+  html.light .fq{--fq-line:rgba(26,23,20,.12)}
+  .fq-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(4px,2vw,40px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6vw,120px);align-items:start}
+  .fq-side{position:sticky;top:112px}
+  .fq .sec-h{margin:0}
+  .fq-count{display:flex;align-items:flex-end;gap:0;margin-top:clamp(40px,4.6vw,72px)}
+  .fq-count-box{display:block;overflow:hidden;padding:.06em 0 .1em;margin-bottom:-.1em}
+  /* the roll animates .fq-count-roll: a filter on the gradient-clipped numeral itself makes Chrome drop the text */
+  .fq-count-roll{display:block}
+  /* gradient text only paints inside its own box and italic digits lean past it: the padding gives the lean room */
+  .fq-count-n{display:block;padding:0 .26em 0 .06em;margin-left:-.06em;font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(84px,8.4vw,140px);line-height:.86;letter-spacing:-.04em;
+    background:linear-gradient(110deg,var(--ac) 0%,var(--acl) 45%,var(--ac2) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    font-variant-numeric:tabular-nums}
+  .fq-count-of{font:500 12px var(--fm);letter-spacing:.14em;color:var(--wm);padding-bottom:.9em}
+  .fq-ask{margin:clamp(28px,3vw,40px) 0 0;max-width:23rem;font-family:var(--fu);font-size:clamp(15px,1.1vw,16.5px);line-height:1.7;color:var(--wd);text-wrap:pretty}
+
+  .fq-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--fq-line)}
+  .fq-item{position:relative;border-bottom:1px solid var(--fq-line)}
+  /* the rule under a question draws in brand colour when you point at it or open it */
+  .fq-item::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;pointer-events:none;
+    background:linear-gradient(90deg,var(--ac),var(--acl) 55%,transparent);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+  .fq-item.is-open::after{transform:scaleX(1)}
+  .fq-h3{margin:0;font:inherit;letter-spacing:normal}
+  .fq-q{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:clamp(44px,4.4vw,64px) minmax(0,1fr) 22px;column-gap:16px;align-items:baseline;
+    padding:clamp(22px,2.1vw,30px) 0;-webkit-tap-highlight-color:transparent}
+  .fq-q:focus-visible{outline:2px solid var(--ac);outline-offset:4px;border-radius:6px}
+  .fq-n{font:500 11.5px var(--fm);letter-spacing:.12em;color:var(--wm);transition:color .45s ease}
+  .fq-t{font-family:var(--fd);font-weight:400;font-size:clamp(23px,2.1vw,31px);line-height:1.14;letter-spacing:-.016em;color:var(--w);text-wrap:balance;
+    transition:opacity .45s ease,translate .7s cubic-bezier(.16,1,.3,1)}
+  .fq-x{position:relative;width:16px;height:16px;align-self:center;justify-self:end}
+  .fq-x::before,.fq-x::after{content:'';position:absolute;left:0;top:50%;width:100%;height:1.5px;margin-top:-.75px;border-radius:2px;background:var(--wd);
+    transition:rotate .7s cubic-bezier(.16,1,.3,1),background .35s ease}
+  .fq-x::after{rotate:90deg}
+  .fq-item.is-open .fq-n{color:var(--ac)}
+  .fq-item.is-open .fq-x::before,.fq-item.is-open .fq-x::after{background:var(--ac)}
+  .fq-item.is-open .fq-x::after{rotate:0deg}
+  .fq-item.is-open .fq-x::before{rotate:180deg}
+  /* answers: the row opens on a grid track, the text resolves out of a blur */
+  .fq-a{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .75s cubic-bezier(.16,1,.3,1),visibility 0s linear .75s}
+  .fq-item.is-open .fq-a{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .75s cubic-bezier(.16,1,.3,1)}
+  .fq-a-in{min-height:0;overflow:hidden}
+  .fq-a p{margin:0;padding:0 clamp(16px,3vw,44px) clamp(26px,2.4vw,34px) calc(clamp(44px,4.4vw,64px) + 16px);max-width:calc(62ch + 120px);
+    font-family:var(--fu);font-size:clamp(15.5px,1.12vw,17.5px);line-height:1.75;color:var(--wd);text-wrap:pretty;
+    opacity:0;filter:blur(7px);translate:0 12px;transition:opacity .45s ease,filter .5s ease,translate .7s cubic-bezier(.16,1,.3,1)}
+  .fq-item.is-open .fq-a p{opacity:1;filter:blur(0);translate:0 0;transition-delay:.14s,.14s,.1s}
+  @media (hover:hover) and (pointer:fine){
+    .fq-item:hover::after{transform:scaleX(1)}
+    .fq-list:hover .fq-item:not(:hover) .fq-t{opacity:.34}
+    .fq-item:hover .fq-t{translate:6px 0}
+    .fq-item:hover .fq-n{color:var(--ac)}
+    .fq-item:hover .fq-x::before,.fq-item:hover .fq-x::after{background:var(--w)}
+  }
+  /* entrance: the rows settle in one after another */
+  html.js .fq-item{opacity:0;translate:0 16px;transition:opacity .8s ease calc(var(--i) * 70ms),translate 1s cubic-bezier(.16,1,.3,1) calc(var(--i) * 70ms)}
+  html.js .fq.is-in .fq-item{opacity:1;translate:0 0}
+  /* without JS every answer is simply open */
+  html:not(.js) .fq-a{grid-template-rows:1fr;visibility:visible}
+  html:not(.js) .fq-a p{opacity:1;filter:none;translate:none}
+
+  @media (max-width:1100px){
+    .fq-wrap{grid-template-columns:minmax(0,1fr);gap:clamp(28px,5vw,48px)}
+    .fq-side{position:static}
+    .fq-count{display:none}
+    .fq-ask{margin-top:18px}
+  }
+  @media (max-width:600px){
+    .fq-q{grid-template-columns:34px minmax(0,1fr) 16px;column-gap:10px}
+    .fq-a p{padding:0 0 24px 44px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .fq-item,.fq-t,.fq-a,.fq-a p,.fq-x::before,.fq-x::after{transition:none!important}
+    html.js .fq-item{opacity:1;translate:none}
+  }
+</style>
+
+<script>
+  /* ── 6 · FAQ ───────────────────────────────────────────── */
+  {
+    const fq = document.getElementById('rd-faq');
+    if (fq) {
+      const items = [...fq.querySelectorAll<HTMLElement>('.fq-item')];
+      const btns = items.map((it) => it.querySelector<HTMLButtonElement>('.fq-q')!);
+      const num = fq.querySelector<HTMLElement>('.fq-count-n')!;
+      const roller = fq.querySelector<HTMLElement>('.fq-count-roll')!;
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let shown = 1, pinned = 1, hoverT = 0;
+      let anims: Animation[] = [];
+
+      // the numeral rolls: out through a blur, the new one rises in
+      const roll = (n: number) => {
+        if (n === shown) return;
+        const dir = n > shown ? 1 : -1;
+        shown = n;
+        anims.forEach((a) => a.cancel());
+        const txt = String(n).padStart(2, '0');
+        if (still) { num.textContent = txt; return; }
+        const out = roller.animate(
+          [{ transform: 'translateY(0)', opacity: 1, filter: 'blur(0)' }, { transform: `translateY(${-45 * dir}%)`, opacity: 0, filter: 'blur(10px)' }],
+          { duration: 220, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' });
+        anims = [out];
+        out.onfinish = () => {
+          num.textContent = txt;
+          out.cancel();
+          anims = [roller.animate(
+            [{ transform: `translateY(${55 * dir}%)`, opacity: 0, filter: 'blur(10px)' }, { transform: 'translateY(0)', opacity: 1, filter: 'blur(0)' }],
+            { duration: 560, easing: 'cubic-bezier(.16,1,.3,1)' })];
+        };
+      };
+
+      // several answers can stay open, so the page never jumps under the reader
+      const toggle = (i: number) => {
+        const open = !items[i].classList.contains('is-open');
+        items[i].classList.toggle('is-open', open);
+        btns[i].setAttribute('aria-expanded', String(open));
+        if (open) { pinned = i + 1; roll(pinned); }
+      };
+      btns.forEach((b, i) => {
+        b.addEventListener('click', () => toggle(i));
+        b.addEventListener('keydown', (e) => {
+          const k = ({ ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: btns.length - 1 } as Record<string, number>)[e.key];
+          if (k === undefined) return;
+          e.preventDefault();
+          btns[(k + btns.length) % btns.length].focus();
+        });
+      });
+
+      // pointing at a question previews its number; leaving the list returns to the last one opened
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        items.forEach((it, i) => it.addEventListener('pointerenter', () => { clearTimeout(hoverT); hoverT = window.setTimeout(() => roll(i + 1), 70); }));
+        fq.querySelector('.fq-list')!.addEventListener('pointerleave', () => { clearTimeout(hoverT); hoverT = window.setTimeout(() => roll(pinned), 140); });
+      }
+
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { fq.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.15 });
+      io.observe(fq.querySelector('.fq-list')!);
+    }
+  }
+</script>
